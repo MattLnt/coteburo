@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f7f4ef;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0ece4;
+  --color-ink: #23262a;
+  --color-ink-soft: #5c616a;
+  --color-orange: #f0661b;
+  --color-orange-dark: #d9551a;
+  --color-orange-tint: #fce6d6;
+  --color-charcoal: #212428;
+  --color-line: rgba(35, 38, 42, 0.12);
+
+  --font-display: var(--font-display), Georgia, serif;
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  img, picture, svg, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
