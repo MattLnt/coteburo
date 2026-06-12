@@ -7,6 +7,7 @@ import Featured from "@/components/Featured";
 import Brands from "@/components/Brands";
 import Realisations from "@/components/Realisations";
 import Reviews from "@/components/Reviews";
+import CtaBand from "@/components/CtaBand";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Brands />
       <Realisations />
       <Reviews />
+      <CtaBand />
     </main>
   );
 }
