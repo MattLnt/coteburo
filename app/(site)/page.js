@@ -6,6 +6,7 @@ import Steps from "@/components/Steps";
 import Featured from "@/components/Featured";
 import Brands from "@/components/Brands";
 import Realisations from "@/components/Realisations";
+import Reviews from "@/components/Reviews";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Featured />
       <Brands />
       <Realisations />
+      <Reviews />
     </main>
   );
 }
