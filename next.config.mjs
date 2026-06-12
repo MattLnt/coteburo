@@ -6,6 +6,9 @@ const nextConfig = {
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
+  async redirects() {
+    return [{ source: "/devis", destination: "/contact", permanent: false }];
+  },
 };
 
 export default nextConfig;
