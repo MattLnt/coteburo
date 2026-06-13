@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Marque {
+  id        String    @id @default(cuid())
+  nom       String    @unique
+  slug      String    @unique
+  remise    Float     @default(0)   // 0.20 = -20% sur le tarif public
+  actif     Boolean   @default(true)
+  produits  Produit[]
+  createdAt DateTime  @default(now())
+}
+
+model Produit {
+  codeRacine             String     @id
+  marque                 Marque     @relation(fields: [marqueId], references: [id])
+  marqueId               String
+  gamme                  String
+  designation            String
+  slug                   String?    @unique
+  descriptionWeb         String?
+  categorie              String?    // sieges, bureaux, tables, rangements, acoustique, accueil
+  imageUrl               String?
+  prixPublicHT           Float
+  prixVenteHT            Float?
+  prixVarieSelonFinition Boolean    @default(false)
+  prixVerrouille         Boolean    @default(false)
+  publie                 Boolean    @default(false)
+  variantes              Variante[]
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+
+  @@index([marqueId])
+  @@index([categorie])
+}
+
+model Variante {
+  codeArticle     String   @id
+  produit         Produit  @relation(fields: [codeRacine], references: [codeRacine], onDelete: Cascade)
+  codeRacine      String
+  finition        String?
+  ean             String?
+  poids           Float?
+  prixPublicHT    Float
+  ecoContribution Float    @default(0)
+  prixVenteHT     Float?
+  prixVerrouille  Boolean  @default(false)
+
+  @@index([codeRacine])
+}
+
+model Reglages {
+  id            Int      @id @default(1)
+  tva           Float    @default(0.20)   // 20 %
+  remiseGlobale Float    @default(0.20)   // -20 % par défaut
+  updatedAt     DateTime @updatedAt
+}
+
+model Realisation {
+  id        String   @id @default(cuid())
+  titre     String
+  client    String?
+  secteur   String?
+  surface   String?
+  imageUrl  String?
+  slug      String   @unique
+  publie    Boolean  @default(false)
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+}
