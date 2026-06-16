@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import CategoryBar from "@/components/CategoryBar";
 import ProjectTypes from "@/components/ProjectTypes";
 import Categories from "@/components/Categories";
 import TrustStrip from "@/components/TrustStrip";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <CategoryBar />
       <ProjectTypes />
       <Categories />
       <TrustStrip />
