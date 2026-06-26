@@ -61,7 +61,7 @@ export default function Header() {
     <header className="sticky top-0 z-50">
       {/* Barre utilitaire */}
       <div className="bg-charcoal text-[#cdd1d6]" style={{ fontSize: 13 }}>
-        <div className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ height: 38, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 38, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
           <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             <span className="text-orange">●</span> Showroom Aix-en-Provence — 645 rue Mayor de Montricher
           </p>
@@ -76,7 +76,7 @@ export default function Header() {
 
       {/* Barre principale */}
       <div className="bg-bg/90 backdrop-blur border-b border-line">
-        <div className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ height: 78, display: "flex", alignItems: "center", gap: 24 }}>
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 78, display: "flex", alignItems: "center", gap: 24 }}>
           <Link href="/" aria-label="Côté BURO — accueil" style={{ flexShrink: 0 }}>
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority />
           </Link>
@@ -102,7 +102,7 @@ export default function Header() {
 
         {/* Barre catégories + méga-menu (desktop) */}
         <div className="hidden lg:block border-t border-line/60" onMouseLeave={() => setActive(null)} style={{ position: "relative" }}>
-          <div className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
+          <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
             {NAV.map((cat) => (
               <Link key={cat.href} href={cat.href} onMouseEnter={() => enter(cat)}
                 className={`transition ${active === cat.label ? "text-orange" : "text-ink hover:text-orange"}`}
@@ -118,7 +118,7 @@ export default function Header() {
 
           {/* Panneau méga-menu */}
           <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(8px)", pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease, transform .18s ease" }}>
-            <div className="mx-auto max-w-[1240px] px-5 sm:px-7">
+            <div className="mx-auto max-w-[1400px] px-5 sm:px-7">
               <div className="bg-surface border border-line" style={{ marginTop: 8, borderRadius: 20, boxShadow: "0 30px 70px -25px rgba(33,36,40,0.28)", padding: 28, display: "grid", gridTemplateColumns: "1.7fr 1fr", gap: 32 }}>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content.label}</p>

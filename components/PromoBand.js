@@ -27,13 +27,18 @@ export default function PromoBand() {
     return () => clearInterval(id);
   }, []);
 
-  const visible = [PROMOS[start], PROMOS[(start + 1) % PROMOS.length]];
+  const visible = [
+    PROMOS[start],
+    PROMOS[(start + 1) % PROMOS.length],
+    PROMOS[(start + 2) % PROMOS.length],
+  ];
 
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 w-full">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
       <div className="flex flex-wrap items-stretch gap-5">
 
-        <div className="flex-1 basis-[460px] min-w-0" onMouseEnter={() => (pause.current = true)} onMouseLeave={() => (pause.current = false)}>
+        {/* Colonne gauche 60% : carrousel 3 produits */}
+        <div className="flex-[3] basis-[560px] min-w-0" onMouseEnter={() => (pause.current = true)} onMouseLeave={() => (pause.current = false)}>
           <div className="flex items-end justify-between gap-4 mb-5">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Bons plans</p>
@@ -49,14 +54,15 @@ export default function PromoBand() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
             {visible.map((p, i) => (
               <ProductCard key={`${start}-${i}`} {...p} />
             ))}
           </div>
         </div>
 
-        <div className="flex-1 basis-[340px] min-w-0 relative overflow-hidden rounded-3xl p-10 bg-charcoal flex flex-col justify-center">
+        {/* Colonne droite 40% : encadré promo */}
+        <div className="flex-[2] basis-[360px] min-w-0 relative overflow-hidden rounded-3xl p-10 bg-charcoal flex flex-col justify-center">
           <div className="absolute w-[420px] h-[420px] rounded-full -right-[150px] -top-[180px] pointer-events-none bg-[radial-gradient(circle,rgba(240,102,27,0.55),transparent_65%)]" />
           <span className="relative text-orange text-xs font-bold tracking-[0.22em] uppercase">Offres du moment</span>
           <h2 className="relative font-display font-bold text-white text-[34px] leading-tight mt-3">Jusqu'à <span className="text-orange">-25 %</span> sur une sélection</h2>

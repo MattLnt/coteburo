@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import CategoryBar from "@/components/CategoryBar";
 import BestSellers from "@/components/BestSellers";
+import AmbianceBand from "@/components/AmbianceBand";
 import ProductSelection from "@/components/ProductSelection";
 import PromoBand from "@/components/PromoBand";
 import TrustStrip from "@/components/TrustStrip";
@@ -16,6 +17,7 @@ export default function Home() {
       <Hero />
       <CategoryBar />
       <BestSellers />
+      <AmbianceBand />
       <ProductSelection />
       <PromoBand />
       <TrustStrip />

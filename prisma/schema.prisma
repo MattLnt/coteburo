@@ -27,8 +27,9 @@ model Produit {
   descriptionWeb         String?
   categorie              String?    // sieges, bureaux, tables, rangements, acoustique, accueil
   imageUrl               String?
-  prixPublicHT           Float
-  prixVenteHT            Float?
+  prixPublicHT           Float                      // tarif public catalogue (référence fournisseur)
+  prixAchatHT            Float?                     // prix d'achat Côté BURO (prix commerçant)
+  prixVenteHT            Float?                     // prix de revente affiché sur le site
   prixVarieSelonFinition Boolean    @default(false)
   prixVerrouille         Boolean    @default(false)
   publie                 Boolean    @default(false)
@@ -48,6 +49,7 @@ model Variante {
   ean             String?
   poids           Float?
   prixPublicHT    Float
+  prixAchatHT     Float?                          // prix d'achat fournisseur de la variante
   ecoContribution Float    @default(0)
   prixVenteHT     Float?
   prixVerrouille  Boolean  @default(false)
@@ -72,5 +74,14 @@ model Realisation {
   slug      String   @unique
   publie    Boolean  @default(false)
   ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  nom       String?
+  role      String   @default("ADMIN")
   createdAt DateTime @default(now())
 }

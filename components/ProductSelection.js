@@ -31,7 +31,7 @@ export default function ProductSelection() {
 
   return (
     <section className="bg-surface-2 border-y border-line/60">
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-7 py-20">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-20">
         <div className="text-center mb-2">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Notre sélection</p>
           <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mt-1.5">Le meilleur de chaque rayon</h2>

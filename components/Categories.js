@@ -11,7 +11,7 @@ export default function Categories() {
   ];
 
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 py-16">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 py-16">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-9">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Le catalogue</p>

@@ -16,7 +16,7 @@ export default function BestSellers() {
   const scroll = (dir) => track.current?.scrollBy({ left: dir * 320, behavior: "smooth" });
 
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 w-full">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
       <div className="flex items-end justify-between gap-4 mb-7">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Les préférés de nos clients</p>

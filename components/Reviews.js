@@ -1,28 +1,40 @@
-export default function Reviews() {
-  const REVIEWS = [
-    { initial: "C", name: "Chantal C.", role: "Gérante · Aix-en-Provence", text: "Travail sérieux et très bon suivi de dossier et de chantier. J'ai apprécié tout le conseil pour bien cibler nos besoins. Excellente prestation, je recommande !" },
-    { initial: "Y", name: "Yvan G.", role: "Directeur · Marseille", text: "Conseillère professionnelle, attentive et impliquée du début à la fin. Pleinement satisfait de cette collaboration et du mobilier livré." },
-    { initial: "A", name: "AP Ressources", role: "Responsable RH", text: "Excellent conseil sur l'implantation, de la réactivité et un bon rapport qualité-prix. Toute l'équipe a été au top." },
-  ];
+const REVIEWS = [
+  { stars: 5, text: "Travail sérieux et très bon suivi de dossier et de chantier. J'ai apprécié tout le conseil pour bien cibler nos besoins. Excellente prestation, je recommande !", name: "Chantal C.", role: "Gérante · Aix-en-Provence", initial: "C" },
+  { stars: 5, text: "Conseillère professionnelle, attentive et impliquée du début à la fin. Pleinement satisfait de cette collaboration et du mobilier livré.", name: "Yvan G.", role: "Directeur · Marseille", initial: "Y" },
+  { stars: 5, text: "Excellent conseil sur l'implantation, de la réactivité et un bon rapport qualité-prix. Toute l'équipe a été au top.", name: "AP Ressources", role: "Responsable RH", initial: "A" },
+];
 
+function Stars({ n }) {
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
-      <div className="mb-9">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">★ 4,9 / 5 sur Google</p>
-        <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-[42px] mt-2">Ce qu&apos;en disent nos clients</h2>
+    <div className="flex gap-0.5 text-orange">
+      {Array.from({ length: n }).map((_, i) => (
+        <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.5 7 .6-5.3 4.6 1.6 6.8L12 17l-6.9 3.5L6.7 13.7 1.4 9.1l7-.6z" /></svg>
+      ))}
+    </div>
+  );
+}
+
+export default function Reviews() {
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
+      <div className="flex items-end justify-between gap-4 mb-8">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">★ 4,9 / 5 sur Google</p>
+          <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mt-1.5">Ce qu'en disent nos clients</h2>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {REVIEWS.map((r) => (
-          <div key={r.name} className="rounded-2xl border border-line bg-surface p-6">
-            <div className="text-orange text-[15px] tracking-[2px] mb-3">★★★★★</div>
-            <p className="text-[14.5px] text-ink">« {r.text} »</p>
-            <div className="flex items-center gap-3 mt-5">
-              <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-orange-tint text-orange-dark font-display font-bold">{r.initial}</span>
-              <span>
-                <span className="block text-sm font-bold">{r.name}</span>
-                <span className="block text-xs text-ink-soft">{r.role}</span>
-              </span>
+      <div className="grid md:grid-cols-3 gap-5">
+        {REVIEWS.map((r, i) => (
+          <div key={i} className="rounded-3xl bg-surface border border-line p-7 flex flex-col">
+            <Stars n={r.stars} />
+            <p className="text-ink text-[15px] leading-relaxed mt-4 flex-1">« {r.text} »</p>
+            <div className="flex items-center gap-3 mt-6 pt-5 border-t border-line">
+              <span className="grid place-items-center w-10 h-10 rounded-full bg-orange-tint text-orange-dark font-display font-bold">{r.initial}</span>
+              <div>
+                <p className="font-display font-bold text-ink text-sm leading-tight">{r.name}</p>
+                <p className="text-ink-soft text-xs mt-0.5">{r.role}</p>
+              </div>
             </div>
           </div>
         ))}

@@ -17,7 +17,7 @@ export default function ContactPage() {
 
   return (
     <main>
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pt-14 pb-8">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-14 pb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Contact</p>
         <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mt-3">Parlons de votre projet</h1>
         <p className="text-ink-soft text-lg mt-5 max-w-[560px]">
@@ -25,7 +25,7 @@ export default function ContactPage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-20">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-20">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-10">
           <div>
             <div className="grid sm:grid-cols-2 gap-4">

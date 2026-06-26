@@ -25,7 +25,7 @@ export default function AProposPage() {
 
   return (
     <main>
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pt-14 pb-8">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-14 pb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Notre société</p>
         <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mt-3 max-w-3xl">Le partenaire de vos espaces de travail</h1>
         <p className="text-ink-soft text-lg mt-5 max-w-[580px]">
@@ -33,7 +33,7 @@ export default function AProposPage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
           <div className="relative aspect-[4/3] rounded-[24px] overflow-hidden border border-line">
             <Image src="https://images.unsplash.com/photo-1746021535489-00edc5efb203?auto=format&fit=crop&w=1000&q=80" alt="Espace de travail aménagé par Côté BURO" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
@@ -50,7 +50,7 @@ export default function AProposPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {VALUES.map((v) => (
             <div key={v.title} className="rounded-2xl border border-line bg-surface p-6">
@@ -64,7 +64,7 @@ export default function AProposPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
         <div className="rounded-[24px] bg-charcoal text-white p-9 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
           {STATS.map((s) => (
             <div key={s.label}>

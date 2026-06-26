@@ -20,7 +20,7 @@ export default function ServicesPage() {
 
   return (
     <main>
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pt-14 pb-8">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-14 pb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Nos services</p>
         <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mt-3 max-w-3xl">Un accompagnement de A à Z</h1>
         <p className="text-ink-soft text-lg mt-5 max-w-[580px]">
@@ -28,7 +28,7 @@ export default function ServicesPage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s) => (
             <div key={s.title} className="rounded-2xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(33,36,40,0.08)]">

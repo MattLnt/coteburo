@@ -35,11 +35,11 @@ export default async function ProduitPage({ params }) {
 
   return (
     <main>
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-7 pt-6 pb-4 text-sm text-ink-soft">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-6 pb-4 text-sm text-ink-soft">
         <Link href="/" className="hover:text-orange">Accueil</Link> / <Link href="/catalogue" className="hover:text-orange">Catalogue</Link> / <Link href="/catalogue/sieges" className="hover:text-orange">Sièges</Link> / <span className="text-ink">Fauteuil ergonomique Atlas</span>
       </div>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           <ProductGallery images={[g, gr, b]} alt="Fauteuil ergonomique Atlas" />
 
@@ -70,7 +70,7 @@ export default async function ProduitPage({ params }) {
       </section>
 
       <section>
-        <div className="mx-auto max-w-[1240px] px-5 sm:px-7 py-14 border-t border-line">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-14 border-t border-line">
           <h2 className="font-display font-bold text-2xl mb-5">Caractéristiques</h2>
           <div className="rounded-[24px] border border-line bg-surface overflow-hidden">
             {SPECS.map(([k, v], i) => (
@@ -83,7 +83,7 @@ export default async function ProduitPage({ params }) {
       </section>
 
       <section>
-        <div className="mx-auto max-w-[1240px] px-5 sm:px-7 py-14 border-t border-line">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-14 border-t border-line">
           <h2 className="font-display font-bold text-2xl mb-6">Vous aimerez aussi</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {RELATED.map((p) => (

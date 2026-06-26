@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="bg-charcoal text-[#aab0b8] mt-20">
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-7 py-14">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-14">
         <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Image src="/logo-coteburo-blanc.svg" alt="Côté BURO" width={160} height={31} className="mb-4" />

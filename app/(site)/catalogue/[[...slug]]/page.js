@@ -41,7 +41,7 @@ export default async function CataloguePage({ params }) {
 
   return (
     <main>
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-7">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7">
         <div className="pt-6 pb-2 text-sm text-ink-soft">
           <Link href="/" className="hover:text-orange">Accueil</Link> / <Link href="/catalogue" className="hover:text-orange">Catalogue</Link>
           {key && <> / <span className="text-ink">{titre}</span></>}
@@ -55,7 +55,7 @@ export default async function CataloguePage({ params }) {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-16">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
         <div className="grid lg:grid-cols-[268px_1fr] gap-8 items-start">
           <CatalogueFilters />
 
@@ -83,7 +83,7 @@ export default async function CataloguePage({ params }) {
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-20">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-20">
         <div className="rounded-[24px] bg-charcoal text-white p-9 flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
           <div>
             <h3 className="font-display font-bold text-2xl">Un projet d&apos;aménagement complet ?</h3>

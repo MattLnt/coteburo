@@ -7,7 +7,7 @@ export default function ProjectTypes() {
   ];
 
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pb-4">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {TYPES.map((t) => (
           <div key={t.title} className="group flex items-center gap-3.5 rounded-2xl border border-line bg-surface p-5 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(33,36,40,0.08)] hover:border-transparent transition">

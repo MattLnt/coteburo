@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 py-14 lg:py-20">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 py-14 lg:py-20">
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
         {/* Texte */}
         <div>
