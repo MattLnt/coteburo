@@ -1,10 +1,10 @@
 import Hero from "@/components/Hero";
 import CategoryBar from "@/components/CategoryBar";
-import ProjectTypes from "@/components/ProjectTypes";
-import Categories from "@/components/Categories";
+import BestSellers from "@/components/BestSellers";
+import ProductSelection from "@/components/ProductSelection";
+import PromoBand from "@/components/PromoBand";
 import TrustStrip from "@/components/TrustStrip";
 import Steps from "@/components/Steps";
-import Featured from "@/components/Featured";
 import Brands from "@/components/Brands";
 import Realisations from "@/components/Realisations";
 import Reviews from "@/components/Reviews";
@@ -12,14 +12,14 @@ import CtaBand from "@/components/CtaBand";
 
 export default function Home() {
   return (
-    <main>
+    <main className="flex flex-col gap-20 sm:gap-28">
       <Hero />
       <CategoryBar />
-      <ProjectTypes />
-      <Categories />
+      <BestSellers />
+      <ProductSelection />
+      <PromoBand />
       <TrustStrip />
       <Steps />
-      <Featured />
       <Brands />
       <Realisations />
       <Reviews />

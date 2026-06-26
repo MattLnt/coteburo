@@ -11,24 +11,24 @@ const CATS = [
 
 export default function CategoryBar() {
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ paddingTop: 8, paddingBottom: 24 }}>
-      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 22 }}>
+    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 w-full">
+      <div className="flex items-end justify-between gap-4 mb-7">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Le catalogue</p>
-          <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl" style={{ marginTop: 6 }}>Parcourez nos catégories</h2>
+          <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mt-1.5">Parcourez nos catégories</h2>
         </div>
-        <Link href="/catalogue" className="text-orange font-semibold whitespace-nowrap hover:text-orange-dark transition" style={{ fontSize: 15 }}>Tout le catalogue →</Link>
+        <Link href="/catalogue" className="text-orange font-semibold whitespace-nowrap text-[15px] hover:text-orange-dark transition">Tout le catalogue →</Link>
       </div>
 
-      <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 6 }}>
+      <div className="flex gap-5 overflow-x-auto pb-1.5">
         {CATS.map((c) => (
-          <Link key={c.href} href={c.href} className="group" style={{ flex: "0 0 auto", width: 178, textAlign: "center" }}>
-            <div className="bg-surface border border-line group-hover:border-orange group-hover:bg-orange-tint transition" style={{ width: 178, height: 158, borderRadius: 20, display: "grid", placeItems: "center", boxShadow: "0 1px 4px rgba(33,36,40,0.06)" }}>
+          <Link key={c.href} href={c.href} className="group shrink-0 grow basis-0 min-w-[150px] text-center">
+            <div className="w-full h-[158px] rounded-[20px] grid place-items-center bg-surface border border-line shadow-[0_1px_4px_rgba(33,36,40,0.06)] group-hover:border-orange group-hover:bg-orange-tint transition">
               <span className="text-charcoal group-hover:text-orange-dark transition">
                 <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{c.icon}</svg>
               </span>
             </div>
-            <p className="text-ink group-hover:text-orange font-semibold transition" style={{ marginTop: 12, fontSize: 14 }}>{c.label}</p>
+            <p className="text-ink group-hover:text-orange font-semibold mt-3.5 text-sm transition">{c.label}</p>
           </Link>
         ))}
       </div>

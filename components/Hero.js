@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pt-8 pb-12 lg:pt-10 lg:pb-16">
+    <section className="mx-auto max-w-[1240px] px-5 sm:px-7 pt-8 w-full">
       <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
 
         {/* Grande carte gauche */}

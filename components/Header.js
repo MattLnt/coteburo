@@ -4,98 +4,192 @@ import Image from "next/image";
 import Link from "next/link";
 
 const NAV = [
-  { label: "Notre société", href: "/a-propos" },
-  { label: "Services", href: "/services" },
-  { label: "Catalogue", href: "/catalogue" },
-  { label: "Réalisations", href: "/realisations" },
-  { label: "Conseils", href: "/conseils" },
-  { label: "Contact", href: "/contact" },
+  {
+    label: "Sièges", href: "/catalogue/sieges",
+    sub: ["Sièges ergonomiques", "Fauteuils de direction", "Chaises de réunion", "Chaises visiteur", "Tabourets & assis-debout"],
+    featured: { name: "Fauteuil ergonomique Atlas", price: "dès 263 € HT", image: "https://images.unsplash.com/photo-1750306957077-b74e45fe1819?auto=format&fit=crop&w=600&q=80" },
+  },
+  {
+    label: "Bureaux", href: "/catalogue/bureaux",
+    sub: ["Bureaux individuels", "Bureaux de direction", "Bureaux bench", "Bureaux assis-debout", "Bureaux d'angle"],
+    featured: { name: "Bureau assis-debout Élévation", price: "dès 498 € HT", image: "https://images.unsplash.com/photo-1746021535489-00edc5efb203?auto=format&fit=crop&w=600&q=80" },
+  },
+  {
+    label: "Tables", href: "/catalogue/tables",
+    sub: ["Tables de réunion", "Tables hautes", "Tables basses", "Tables de collectivité"],
+    featured: { name: "Table de réunion Ovale", price: "dès 690 € HT", image: "https://images.unsplash.com/photo-1716703435453-a7733d600d68?auto=format&fit=crop&w=600&q=80" },
+  },
+  {
+    label: "Rangements", href: "/catalogue/rangements",
+    sub: ["Armoires", "Caissons", "Bibliothèques", "Casiers & vestiaires"],
+    featured: { name: "Caisson mobile Trio", price: "dès 189 € HT", image: "https://images.unsplash.com/photo-1746021535490-cd4d7fe7ab2a?auto=format&fit=crop&w=600&q=80" },
+  },
+  {
+    label: "Acoustique", href: "/catalogue/acoustique",
+    sub: ["Cabines acoustiques", "Panneaux muraux", "Cloisons & séparateurs", "Alcôves"],
+    featured: { name: "Cabine acoustique Quiet", price: "dès 3 290 € HT", image: "https://images.unsplash.com/photo-1716703435453-a7733d600d68?auto=format&fit=crop&w=600&q=80" },
+  },
+  {
+    label: "Accueil", href: "/catalogue/accueil",
+    sub: ["Banques d'accueil", "Fauteuils & canapés", "Chaises salle d'attente", "Tables basses"],
+    featured: { name: "Banque d'accueil Lounge", price: "sur devis", image: "https://images.unsplash.com/photo-1746021535489-00edc5efb203?auto=format&fit=crop&w=600&q=80" },
+  },
+];
+
+const CORP = [
+  ["Notre société", "/a-propos"],
+  ["Services", "/services"],
+  ["Réalisations", "/realisations"],
+  ["Conseils", "/conseils"],
+  ["Contact", "/contact"],
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);          // menu mobile
+  const [active, setActive] = useState(null);        // catégorie survolée (mega-menu)
+  const [content, setContent] = useState(NAV[0]);    // contenu affiché (pour le fondu)
+  const [mobileCat, setMobileCat] = useState(null);  // accordéon mobile
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => (document.body.style.overflow = "");
   }, [open]);
 
+  const enter = (cat) => { setContent(cat); setActive(cat.label); };
+
   return (
     <header className="sticky top-0 z-50">
-      <div className="bg-charcoal text-[#cdd1d6] text-[13px]">
-        <div className="mx-auto max-w-[1240px] px-5 sm:px-7 h-9 flex items-center justify-between gap-4">
-          <p className="truncate"><span className="text-orange">●</span> Showroom Aix-en-Provence — 645 rue Mayor de Montricher</p>
-          <div className="hidden sm:flex items-center gap-4 shrink-0">
-            <a href="tel:0620391390" className="hover:text-white transition">06 20 39 13 90</a>
-            <Link href="/contact" className="hover:text-white transition">Nous écrire</Link>
+      {/* Barre utilitaire */}
+      <div className="bg-charcoal text-[#cdd1d6]" style={{ fontSize: 13 }}>
+        <div className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ height: 38, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+          <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <span className="text-orange">●</span> Showroom Aix-en-Provence — 645 rue Mayor de Montricher
+          </p>
+          <div className="hidden md:flex" style={{ alignItems: "center", gap: 18, flexShrink: 0 }}>
+            {CORP.map(([l, h]) => (
+              <Link key={h} href={h} className="hover:text-white transition">{l}</Link>
+            ))}
+            <a href="tel:0620391390" className="text-white font-semibold">06 20 39 13 90</a>
           </div>
         </div>
       </div>
 
-      <div className="bg-bg/85 backdrop-blur border-b border-line">
-        <div className="mx-auto max-w-[1240px] px-5 sm:px-7 h-[72px] flex items-center gap-5">
-          <Link href="/" className="shrink-0" aria-label="Côté BURO — accueil">
+      {/* Barre principale */}
+      <div className="bg-bg/90 backdrop-blur border-b border-line">
+        <div className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ height: 78, display: "flex", alignItems: "center", gap: 24 }}>
+          <Link href="/" aria-label="Côté BURO — accueil" style={{ flexShrink: 0 }}>
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority />
           </Link>
 
-          <div className="hidden lg:flex flex-1 max-w-[420px] items-center gap-2 bg-surface border border-line rounded-full px-4 py-2.5 text-ink-soft">
+          <div className="hidden lg:flex bg-surface border border-line text-ink-soft" style={{ flex: 1, maxWidth: 440, alignItems: "center", gap: 10, borderRadius: 999, padding: "11px 18px" }}>
             <SearchIcon />
-            <input className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-ink-soft" placeholder="Rechercher un siège, un bureau, une marque…" />
+            <input className="text-ink placeholder:text-ink-soft" style={{ width: "100%", background: "transparent", border: 0, outline: 0, fontSize: 14 }} placeholder="Rechercher un siège, un bureau, une marque…" />
           </div>
 
-          <nav className="hidden md:flex items-center gap-6 ml-auto text-[13px] font-semibold">
+          <nav className="hidden md:flex" style={{ alignItems: "center", gap: 24, marginLeft: "auto", fontSize: 13, fontWeight: 600 }}>
             <Action href="/compte" label="Compte"><UserIcon /></Action>
             <Action href="/contact" label="Devis"><QuoteIcon /></Action>
-            <Link href="/panier" className="relative flex flex-col items-center gap-0.5 text-ink hover:text-orange transition">
-              <span className="absolute -top-1.5 -right-2 grid h-4 min-w-4 place-items-center rounded-full bg-orange px-1 text-[10px] font-bold text-white">2</span>
+            <Link href="/panier" className="text-ink hover:text-orange transition" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+              <span className="bg-orange text-white" style={{ position: "absolute", top: -6, right: -8, minWidth: 16, height: 16, borderRadius: 8, display: "grid", placeItems: "center", fontSize: 10, fontWeight: 700, padding: "0 3px" }}>2</span>
               <CartIcon /><span>Panier</span>
             </Link>
           </nav>
 
-          <button onClick={() => setOpen(true)} className="ml-auto md:hidden grid place-items-center h-10 w-10 -mr-2 text-ink" aria-label="Ouvrir le menu">
+          <button onClick={() => setOpen(true)} className="md:hidden text-ink" style={{ marginLeft: "auto", display: "grid", placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Ouvrir le menu">
             <BurgerIcon />
           </button>
         </div>
 
-        <nav className="hidden md:block border-t border-line/60">
-          <div className="mx-auto max-w-[1240px] px-5 sm:px-7 h-[50px] flex items-center gap-1.5 overflow-x-auto">
-            {NAV.map((c) => (
-              <Link key={c.href} href={c.href} className="whitespace-nowrap rounded-lg px-3.5 py-2 text-sm font-semibold text-ink hover:bg-surface-2 hover:text-orange transition">{c.label}</Link>
+        {/* Barre catégories + méga-menu (desktop) */}
+        <div className="hidden lg:block border-t border-line/60" onMouseLeave={() => setActive(null)} style={{ position: "relative" }}>
+          <div className="mx-auto max-w-[1240px] px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
+            {NAV.map((cat) => (
+              <Link key={cat.href} href={cat.href} onMouseEnter={() => enter(cat)}
+                className={`transition ${active === cat.label ? "text-orange" : "text-ink hover:text-orange"}`}
+                style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 8, fontSize: 15, fontWeight: 600, whiteSpace: "nowrap" }}>
+                {cat.label}
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ transform: active === cat.label ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
+              </Link>
             ))}
-            <Link href="/contact" className="ml-auto whitespace-nowrap rounded-full bg-orange text-white px-4 py-2 text-sm font-semibold hover:bg-orange-dark transition">Demander un devis →</Link>
+            <Link href="/contact" className="bg-orange text-white hover:bg-orange-dark transition" style={{ marginLeft: "auto", borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap" }}>
+              Demander un devis →
+            </Link>
           </div>
-        </nav>
+
+          {/* Panneau méga-menu */}
+          <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(8px)", pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease, transform .18s ease" }}>
+            <div className="mx-auto max-w-[1240px] px-5 sm:px-7">
+              <div className="bg-surface border border-line" style={{ marginTop: 8, borderRadius: 20, boxShadow: "0 30px 70px -25px rgba(33,36,40,0.28)", padding: 28, display: "grid", gridTemplateColumns: "1.7fr 1fr", gap: 32 }}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content.label}</p>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 24px" }}>
+                    {content.sub.map((s) => (
+                      <Link key={s} href={content.href} className="text-ink hover:text-orange transition" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14.5, fontWeight: 500 }}>
+                        <span className="text-orange" style={{ fontSize: 13 }}>›</span>{s}
+                      </Link>
+                    ))}
+                  </div>
+                  <Link href={content.href} className="text-orange hover:text-orange-dark font-semibold transition" style={{ display: "inline-block", marginTop: 22, fontSize: 14 }}>
+                    Voir tout {content.label.toLowerCase()} →
+                  </Link>
+                </div>
+
+                <Link href={content.href} className="group bg-surface-2" style={{ borderRadius: 16, overflow: "hidden", display: "block" }}>
+                  <div style={{ position: "relative", height: 150 }}>
+                    <Image src={content.featured.image} alt={content.featured.name} fill sizes="320px" className="object-cover transition duration-500 group-hover:scale-105" />
+                  </div>
+                  <div style={{ padding: "14px 16px 16px" }}>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-orange">Produit phare</p>
+                    <p className="font-display font-bold text-ink" style={{ fontSize: 16, marginTop: 4, lineHeight: 1.2 }}>{content.featured.name}</p>
+                    <p className="text-ink-soft" style={{ fontSize: 13, marginTop: 4 }}>{content.featured.price}</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className={`fixed inset-0 z-[60] md:hidden ${open ? "" : "pointer-events-none"}`}>
-        <div onClick={() => setOpen(false)} className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`} />
-        <div className={`absolute right-0 top-0 h-full w-[86%] max-w-sm bg-bg shadow-2xl transition-transform duration-300 flex flex-col ${open ? "translate-x-0" : "translate-x-full"}`}>
-          <div className="flex items-center justify-between px-5 h-[72px] border-b border-line">
+      {/* Menu mobile */}
+      <div className={`fixed inset-0 z-[70] lg:hidden ${open ? "" : "pointer-events-none"}`}>
+        <div onClick={() => setOpen(false)} className="transition-opacity duration-300" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", opacity: open ? 1 : 0 }} />
+        <div className="bg-bg transition-transform duration-300" style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "88%", maxWidth: 400, boxShadow: "-10px 0 40px rgba(0,0,0,.2)", display: "flex", flexDirection: "column", transform: open ? "translateX(0)" : "translateX(100%)" }}>
+          <div className="border-b border-line" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: 72 }}>
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={150} height={29} />
-            <button onClick={() => setOpen(false)} className="grid place-items-center h-10 w-10 -mr-2 text-ink" aria-label="Fermer le menu"><CloseIcon /></button>
+            <button onClick={() => setOpen(false)} className="text-ink" style={{ display: "grid", placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Fermer"><CloseIcon /></button>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-5 py-6">
-            <div className="flex items-center gap-2 bg-surface border border-line rounded-full px-4 py-3 text-ink-soft mb-6">
-              <SearchIcon />
-              <input className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-ink-soft" placeholder="Rechercher…" />
-            </div>
-
-            <nav className="flex flex-col">
-              {NAV.map((c) => (
-                <Link key={c.href} href={c.href} onClick={() => setOpen(false)} className="py-3 border-b border-line/70 text-[15px] font-semibold text-ink hover:text-orange transition">{c.label}</Link>
+          <div style={{ flex: 1, overflowY: "auto", padding: 20 }}>
+            <nav style={{ display: "flex", flexDirection: "column" }}>
+              {NAV.map((cat) => (
+                <div key={cat.href} className="border-b border-line/70">
+                  <button onClick={() => setMobileCat(mobileCat === cat.label ? null : cat.label)} className="text-ink" style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 0", fontSize: 15, fontWeight: 600 }}>
+                    {cat.label}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" style={{ transform: mobileCat === cat.label ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
+                  </button>
+                  {mobileCat === cat.label && (
+                    <div style={{ paddingBottom: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+                      {cat.sub.map((s) => (
+                        <Link key={s} href={cat.href} onClick={() => setOpen(false)} className="text-ink-soft hover:text-orange transition" style={{ fontSize: 14, paddingLeft: 4 }}>{s}</Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {CORP.map(([l, h]) => (
+                <Link key={h} href={h} onClick={() => setOpen(false)} className="text-ink hover:text-orange transition border-b border-line/70" style={{ padding: "13px 0", fontSize: 15, fontWeight: 600 }}>{l}</Link>
               ))}
             </nav>
 
-            <div className="grid grid-cols-3 gap-3 mt-6 text-[13px] font-semibold text-center">
-              <Link href="/compte" onClick={() => setOpen(false)} className="flex flex-col items-center gap-1.5 rounded-xl border border-line py-3 text-ink"><UserIcon />Compte</Link>
-              <Link href="/contact" onClick={() => setOpen(false)} className="flex flex-col items-center gap-1.5 rounded-xl border border-line py-3 text-ink"><QuoteIcon />Devis</Link>
-              <Link href="/panier" onClick={() => setOpen(false)} className="flex flex-col items-center gap-1.5 rounded-xl border border-line py-3 text-ink"><CartIcon />Panier</Link>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 22, fontSize: 13, fontWeight: 600 }}>
+              <MobileTile href="/compte" onClose={() => setOpen(false)} label="Compte"><UserIcon /></MobileTile>
+              <MobileTile href="/contact" onClose={() => setOpen(false)} label="Devis"><QuoteIcon /></MobileTile>
+              <MobileTile href="/panier" onClose={() => setOpen(false)} label="Panier"><CartIcon /></MobileTile>
             </div>
           </div>
 
-          <div className="px-5 py-5 border-t border-line">
-            <a href="tel:0620391390" className="block w-full text-center rounded-full bg-orange text-white font-semibold py-3 hover:bg-orange-dark transition">06 20 39 13 90</a>
+          <div className="border-t border-line" style={{ padding: 20 }}>
+            <a href="tel:0620391390" className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 600 }}>06 20 39 13 90</a>
           </div>
         </div>
       </div>
@@ -105,7 +199,16 @@ export default function Header() {
 
 function Action({ href, label, children }) {
   return (
-    <Link href={href} className="flex flex-col items-center gap-0.5 text-ink hover:text-orange transition">{children}<span>{label}</span></Link>
+    <Link href={href} className="text-ink hover:text-orange transition" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+      {children}<span>{label}</span>
+    </Link>
+  );
+}
+function MobileTile({ href, label, children, onClose }) {
+  return (
+    <Link href={href} onClick={onClose} className="text-ink border border-line" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, borderRadius: 12, padding: "12px 0" }}>
+      {children}{label}
+    </Link>
   );
 }
 
