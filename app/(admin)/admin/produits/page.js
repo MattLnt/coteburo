@@ -2,14 +2,33 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Icon } from "@/components/dashboard/Icon";
 import { ProduitsTable } from "./ProduitsTable";
+import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProduitsPage() {
-  const [produits, marques] = await Promise.all([
+  const [produitsRaw, marques, promosActives] = await Promise.all([
     prisma.produit.findMany({ include: { marque: { select: { nom: true } } }, orderBy: { designation: "asc" } }),
     prisma.marque.findMany({ orderBy: { nom: "asc" } }),
+    getPromotionsActives(),
   ]);
+
+  // On enrichit chaque produit avec son prix final (promo manuelle + campagnes)
+  const produits = produitsRaw.map((p) => {
+    const calc = appliquerPromotions(p, promosActives);
+    // Type de promo : "campagne" si une campagne active réduit le prix sous le prix de vente normal
+    const prixVenteNormal = p.prixVenteHT ?? p.prixPublicHT;
+    const promoManuelle = p.prixVenteHT != null && p.prixVenteHT < p.prixPublicHT;
+    const promoCampagne = calc.prixFinal < prixVenteNormal;
+    return {
+      ...p,
+      _prixFinal: calc.prixFinal,
+      _enPromo: calc.enPromo,
+      _promoPct: calc.promoPct,
+      _promoManuelle: promoManuelle,
+      _promoCampagne: promoCampagne,
+    };
+  });
 
   return (
     <>
@@ -23,7 +42,7 @@ export default async function ProduitsPage() {
         </Link>
       </div>
 
-      <ProduitsTable produits={produits} marques={marques} />
+      <ProduitsTable produits={JSON.parse(JSON.stringify(produits))} marques={marques} />
     </>
   );
 }

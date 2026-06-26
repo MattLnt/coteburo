@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import CatalogueFilters from "@/components/CatalogueFilters";
+import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 
 export const dynamic = "force-dynamic";
 
@@ -28,14 +29,17 @@ export default async function CataloguePage({ params }) {
   const key = slug?.[0];
   const titre = (key && CATS[key]) || "Tout le catalogue";
 
-  const produits = await prisma.produit.findMany({
-    where: {
-      publie: true,
-      ...(key && CATS[key] ? { categorie: key } : {}),
-    },
-    include: { marque: { select: { nom: true } } },
-    orderBy: { designation: "asc" },
-  });
+  const [produits, promosActives] = await Promise.all([
+    prisma.produit.findMany({
+      where: {
+        publie: true,
+        ...(key && CATS[key] ? { categorie: key } : {}),
+      },
+      include: { marque: { select: { nom: true } } },
+      orderBy: { designation: "asc" },
+    }),
+    getPromotionsActives(),
+  ]);
 
   return (
     <main>
@@ -74,7 +78,7 @@ export default async function CataloguePage({ params }) {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {produits.map((p) => {
-                  const enPromo = p.prixVenteHT != null && p.prixVenteHT < p.prixPublicHT;
+                  const { prixFinal, prixBase, enPromo, promoPct } = appliquerPromotions(p, promosActives);
                   return (
                     <ProductCard
                       key={p.codeRacine}
@@ -83,9 +87,9 @@ export default async function CataloguePage({ params }) {
                       name={p.designation}
                       attr={p.gamme}
                       images={p.images}
-                      price={fmt(p.prixVenteHT ?? p.prixPublicHT)}
-                      oldPrice={enPromo ? fmt(p.prixPublicHT) : undefined}
-                      promo={enPromo ? `-${Math.round((1 - p.prixVenteHT / p.prixPublicHT) * 100)}%` : undefined}
+                      price={fmt(prixFinal)}
+                      oldPrice={enPromo ? fmt(prixBase) : undefined}
+                      promo={enPromo ? `-${promoPct}%` : undefined}
                     />
                   );
                 })}

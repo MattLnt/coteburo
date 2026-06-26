@@ -5,6 +5,7 @@ import ProductGallery from "@/components/ProductGallery";
 import ProductBuy from "@/components/ProductBuy";
 import ProductCard from "@/components/ProductCard";
 import CtaBand from "@/components/CtaBand";
+import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 
 export const dynamic = "force-dynamic";
 
@@ -45,10 +46,10 @@ export default async function ProduitPage({ params }) {
   const p = await getProduit(decodeURIComponent(slug));
   if (!p) notFound();
 
-  const prix = p.prixVenteHT ?? p.prixPublicHT;
-  const enPromo = p.prixVenteHT != null && p.prixVenteHT < p.prixPublicHT;
-  const promoPct = enPromo ? Math.round((1 - p.prixVenteHT / p.prixPublicHT) * 100) : null;
-  const ttc = prix * 1.2;
+  const promosActives = await getPromotionsActives();
+  const { prixFinal, prixBase, enPromo, promoPct } = appliquerPromotions(p, promosActives);
+
+  const ttc = prixFinal * 1.2;
   const eco = p._ecoContribution || 0;
   const nbFinitions = p._count?.variantes || 0;
 
@@ -56,7 +57,7 @@ export default async function ProduitPage({ params }) {
   const catHref = p.categorie && CATS[p.categorie] ? `/catalogue/${p.categorie}` : "/catalogue";
   const images = p.images?.length ? p.images : [];
 
-  const related = await prisma.produit.findMany({
+  const relatedRaw = await prisma.produit.findMany({
     where: { publie: true, categorie: p.categorie, NOT: { codeRacine: p.codeRacine } },
     include: { marque: { select: { nom: true } } },
     take: 3,
@@ -96,9 +97,9 @@ export default async function ProduitPage({ params }) {
             <p className="text-sm text-ink-soft mt-2">{p.gamme}</p>
 
             <div className="flex items-end gap-3 mt-5 flex-wrap">
-              <span className="font-display font-bold text-3xl">{fmt(prix)}</span>
+              <span className="font-display font-bold text-3xl">{fmt(prixFinal)}</span>
               <span className="text-ink-soft">HT</span>
-              {enPromo && <><span className="text-ink-soft line-through">{fmt(p.prixPublicHT)}</span><span className="rounded-full bg-orange text-white text-xs font-bold px-2.5 py-1">-{promoPct}%</span></>}
+              {enPromo && <><span className="text-ink-soft line-through">{fmt(prixBase)}</span><span className="rounded-full bg-orange text-white text-xs font-bold px-2.5 py-1">-{promoPct}%</span></>}
             </div>
             <p className="text-[13px] text-ink-soft mt-1">{fmt(ttc)} TTC{eco > 0 ? ` · éco-participation ${fmt(eco)}` : ""}</p>
 
@@ -128,13 +129,13 @@ export default async function ProduitPage({ params }) {
         </div>
       </section>
 
-      {related.length > 0 && (
+      {relatedRaw.length > 0 && (
         <section>
           <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-14 border-t border-line">
             <h2 className="font-display font-bold text-2xl mb-6">Vous aimerez aussi</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {related.map((r) => {
-                const rPromo = r.prixVenteHT != null && r.prixVenteHT < r.prixPublicHT;
+              {relatedRaw.map((r) => {
+                const rp = appliquerPromotions(r, promosActives);
                 return (
                   <ProductCard
                     key={r.codeRacine}
@@ -143,9 +144,9 @@ export default async function ProduitPage({ params }) {
                     name={r.designation}
                     attr={r.gamme}
                     images={r.images}
-                    price={fmt(r.prixVenteHT ?? r.prixPublicHT)}
-                    oldPrice={rPromo ? fmt(r.prixPublicHT) : undefined}
-                    promo={rPromo ? `-${Math.round((1 - r.prixVenteHT / r.prixPublicHT) * 100)}%` : undefined}
+                    price={fmt(rp.prixFinal)}
+                    oldPrice={rp.enPromo ? fmt(rp.prixBase) : undefined}
+                    promo={rp.enPromo ? `-${rp.promoPct}%` : undefined}
                   />
                 );
               })}

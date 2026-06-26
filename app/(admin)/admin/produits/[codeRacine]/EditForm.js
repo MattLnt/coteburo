@@ -30,6 +30,8 @@ export function EditForm({ produit }) {
     prixVenteHT: produit.prixVenteHT ?? "",
     prixVerrouille: !!produit.prixVerrouille,
     publie: !!produit.publie,
+    bestSeller: !!produit.bestSeller,
+    enAvant: !!produit.enAvant,
     images: produit.images || [],
   });
   const [saving, setSaving] = useState(false);
@@ -128,6 +130,22 @@ export function EditForm({ produit }) {
             style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 10, background: "#f0661b", color: "#fff", border: "none", fontWeight: 600, fontSize: 14, cursor: saving ? "default" : "pointer", opacity: saving ? 0.6 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
             {saving ? "Enregistrement…" : saved ? "✓ Enregistré" : "Enregistrer"}
           </button>
+        </div>
+
+        {/* Mise en avant sur la home */}
+        <div style={card}>
+          <span style={labelStyle}>Mise en avant (page d'accueil)</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 12 }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", padding: "12px 14px", borderRadius: 10, border: "1px solid #f0ece4", background: "#faf8f4" }}>
+              <input type="checkbox" checked={form.bestSeller} onChange={(e) => set("bestSeller", e.target.checked)} style={{ width: 17, height: 17, accentColor: "#f0661b" }} />
+              <span style={{ fontSize: 13.5, color: "#23262a" }}>Meilleure vente</span>
+            </label>
+            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", padding: "12px 14px", borderRadius: 10, border: "1px solid #f0ece4", background: "#faf8f4" }}>
+              <input type="checkbox" checked={form.enAvant} onChange={(e) => set("enAvant", e.target.checked)} style={{ width: 17, height: 17, accentColor: "#f0661b" }} />
+              <span style={{ fontSize: 13.5, color: "#23262a" }}>Dans la sélection</span>
+            </label>
+          </div>
+          <p style={{ fontSize: 12, color: "#9aa0a8", margin: "12px 0 0" }}>Contrôle l'affichage du produit dans les sections de la page d'accueil.</p>
         </div>
 
         <div style={card}>

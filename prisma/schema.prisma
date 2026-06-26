@@ -11,6 +11,7 @@ model Marque {
   id        String    @id @default(cuid())
   nom       String    @unique
   slug      String    @unique
+  logoUrl   String?
   remise    Float     @default(0)   // 0.20 = -20% sur le tarif public
   actif     Boolean   @default(true)
   produits  Produit[]
@@ -34,6 +35,8 @@ model Produit {
   prixVarieSelonFinition Boolean    @default(false)
   prixVerrouille         Boolean    @default(false)
   publie                 Boolean    @default(false)
+  bestSeller             Boolean    @default(false)
+  enAvant                Boolean    @default(false)
   variantes              Variante[]
   createdAt              DateTime   @default(now())
   updatedAt              DateTime   @updatedAt
@@ -106,4 +109,26 @@ model User {
   nom       String?
   role      String   @default("ADMIN")
   createdAt DateTime @default(now())
+}
+
+model Promotion {
+  id          String   @id @default(cuid())
+  nom         String
+  typeRemise  String   @default("pourcentage")  // "pourcentage" ou "montant"
+  valeur      Float                              // 20 (=20%) ou 50 (=50€)
+  dateDebut   DateTime?
+  dateFin     DateTime?
+  actif       Boolean  @default(true)
+  categories  String[] @default([])              // ["sieges", "bureaux"...]
+  produits    PromotionProduit[]
+  createdAt   DateTime @default(now())
+}
+
+model PromotionProduit {
+  promotion    Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  promotionId  String
+  codeRacine   String
+
+  @@id([promotionId, codeRacine])
+  @@index([codeRacine])
 }
