@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { getReglagesPublic, formatTel } from "@/lib/reglages";
 
-export default function CtaBand() {
+export default async function CtaBand() {
+  const reglages = await getReglagesPublic();
+  const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
+  const telLink = "tel:" + tel.replace(/\s/g, "");
+
   return (
     <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
       <div className="relative overflow-hidden rounded-3xl bg-charcoal px-6 py-14 sm:px-12 sm:py-16 text-center">
@@ -13,7 +18,7 @@ export default function CtaBand() {
           <p className="text-[#c4c9d0] text-[15px] mt-4">Nos experts vous accompagnent sur l'aménagement de vos bureaux — d'un poste isolé à plusieurs centaines de m².</p>
           <div className="flex flex-wrap justify-center gap-3 mt-8">
             <Link href="/contact" className="bg-orange text-white font-semibold rounded-full px-7 py-3.5 hover:bg-orange-dark transition">Demander un devis →</Link>
-            <a href="tel:0620391390" className="text-white font-semibold rounded-full px-7 py-3.5 border border-white/25 hover:bg-white/10 transition">06 20 39 13 90</a>
+            <a href={telLink} className="text-white font-semibold rounded-full px-7 py-3.5 border border-white/25 hover:bg-white/10 transition">{tel}</a>
           </div>
         </div>
       </div>

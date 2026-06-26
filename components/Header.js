@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { formatTel } from "@/lib/reglages";
 
 const NAV = [
   {
@@ -44,11 +45,16 @@ const CORP = [
   ["Contact", "/contact"],
 ];
 
-export default function Header() {
-  const [open, setOpen] = useState(false);          // menu mobile
-  const [active, setActive] = useState(null);        // catégorie survolée (mega-menu)
-  const [content, setContent] = useState(NAV[0]);    // contenu affiché (pour le fondu)
-  const [mobileCat, setMobileCat] = useState(null);  // accordéon mobile
+export default function Header({ reglages = {} }) {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(null);
+  const [content, setContent] = useState(NAV[0]);
+  const [mobileCat, setMobileCat] = useState(null);
+
+  const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
+  const telLink = "tel:" + tel.replace(/\s/g, "");
+  const bandeauActif = reglages.bandeauActif;
+  const bandeauTexte = reglages.bandeauTexte || "Showroom Aix-en-Provence — 645 rue Mayor de Montricher";
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -63,13 +69,13 @@ export default function Header() {
       <div className="bg-charcoal text-[#cdd1d6]" style={{ fontSize: 13 }}>
         <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 38, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
           <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            <span className="text-orange">●</span> Showroom Aix-en-Provence — 645 rue Mayor de Montricher
+            {bandeauActif ? <><span className="text-orange">●</span> {bandeauTexte}</> : <><span className="text-orange">●</span> Showroom Aix-en-Provence — 645 rue Mayor de Montricher</>}
           </p>
           <div className="hidden md:flex" style={{ alignItems: "center", gap: 18, flexShrink: 0 }}>
             {CORP.map(([l, h]) => (
               <Link key={h} href={h} className="hover:text-white transition">{l}</Link>
             ))}
-            <a href="tel:0620391390" className="text-white font-semibold">06 20 39 13 90</a>
+            <a href={telLink} className="text-white font-semibold">{tel}</a>
           </div>
         </div>
       </div>
@@ -189,7 +195,7 @@ export default function Header() {
           </div>
 
           <div className="border-t border-line" style={{ padding: 20 }}>
-            <a href="tel:0620391390" className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 600 }}>06 20 39 13 90</a>
+            <a href={telLink} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 600 }}>{tel}</a>
           </div>
         </div>
       </div>

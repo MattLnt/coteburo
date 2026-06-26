@@ -16,13 +16,21 @@ const CATS = {
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
 async function getProduit(slug) {
-  return prisma.produit.findFirst({
+  const p = await prisma.produit.findFirst({
     where: { publie: true, OR: [{ slug }, { codeRacine: slug }] },
     include: {
       marque: { select: { nom: true } },
-      variantes: { select: { codeArticle: true, finition: true, ecoContribution: true } },
+      _count: { select: { variantes: true } },
     },
   });
+  if (!p) return null;
+
+  const ecoVar = await prisma.variante.findFirst({
+    where: { codeRacine: p.codeRacine, ecoContribution: { gt: 0 } },
+    select: { ecoContribution: true },
+  });
+
+  return { ...p, _ecoContribution: ecoVar?.ecoContribution || 0 };
 }
 
 export async function generateMetadata({ params }) {
@@ -41,8 +49,8 @@ export default async function ProduitPage({ params }) {
   const enPromo = p.prixVenteHT != null && p.prixVenteHT < p.prixPublicHT;
   const promoPct = enPromo ? Math.round((1 - p.prixVenteHT / p.prixPublicHT) * 100) : null;
   const ttc = prix * 1.2;
-  const eco = p.variantes.find((v) => v.ecoContribution > 0)?.ecoContribution || 0;
-  const finitions = [...new Set(p.variantes.map((v) => v.finition).filter(Boolean))];
+  const eco = p._ecoContribution || 0;
+  const nbFinitions = p._count?.variantes || 0;
 
   const catLabel = (p.categorie && CATS[p.categorie]) || "Catalogue";
   const catHref = p.categorie && CATS[p.categorie] ? `/catalogue/${p.categorie}` : "/catalogue";
@@ -60,7 +68,7 @@ export default async function ProduitPage({ params }) {
     ["Gamme", p.gamme],
     ["Catégorie", catLabel],
     ["Référence", p.codeRacine],
-    finitions.length ? ["Finitions disponibles", `${finitions.length}`] : null,
+    nbFinitions ? ["Finitions disponibles", `${nbFinitions}`] : null,
     ["Garantie", "7 ans"],
   ].filter(Boolean);
 

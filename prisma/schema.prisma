@@ -25,12 +25,12 @@ model Produit {
   designation            String
   slug                   String?    @unique
   descriptionWeb         String?
-  categorie              String?    // sieges, bureaux, tables, rangements, acoustique, accueil
-  imageUrl               String?                    // image principale (= images[0])
-  images                 String[]   @default([])    // galerie d'images (URLs Cloudinary)
-  prixPublicHT           Float                      // tarif public catalogue (référence fournisseur)
-  prixAchatHT            Float?                     // prix d'achat Côté BURO (prix commerçant)
-  prixVenteHT            Float?                     // prix de revente affiché sur le site
+  categorie              String?
+  imageUrl               String?
+  images                 String[]   @default([])
+  prixPublicHT           Float
+  prixAchatHT            Float?
+  prixVenteHT            Float?
   prixVarieSelonFinition Boolean    @default(false)
   prixVerrouille         Boolean    @default(false)
   publie                 Boolean    @default(false)
@@ -50,7 +50,7 @@ model Variante {
   ean             String?
   poids           Float?
   prixPublicHT    Float
-  prixAchatHT     Float?                          // prix d'achat fournisseur de la variante
+  prixAchatHT     Float?
   ecoContribution Float    @default(0)
   prixVenteHT     Float?
   prixVerrouille  Boolean  @default(false)
@@ -60,8 +60,29 @@ model Variante {
 
 model Reglages {
   id            Int      @id @default(1)
-  tva           Float    @default(0.20)   // 20 %
-  remiseGlobale Float    @default(0.20)   // -20 % par défaut
+  tva           Float    @default(0.20)
+  remiseGlobale Float    @default(0.20)
+
+  // Coordonnées
+  telephone     String?
+  email         String?
+  adresse       String?
+  horaires      String?
+
+  // Livraison
+  zoneLivraison String?
+  delaiLivraison String?
+  francoPort    Float?
+
+  // Bandeau d'annonce
+  bandeauActif  Boolean  @default(false)
+  bandeauTexte  String?
+
+  // Réseaux sociaux
+  instagram     String?
+  facebook      String?
+  linkedin      String?
+
   updatedAt     DateTime @updatedAt
 }
 

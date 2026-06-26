@@ -1,4 +1,5 @@
 import ContactForm from "@/components/ContactForm";
+import { getReglagesPublic, formatTel } from "@/lib/reglages";
 
 export const metadata = {
   title: "Contact",
@@ -7,13 +8,24 @@ export const metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const reglages = await getReglagesPublic();
+
+  const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
+  const telLink = "tel:" + tel.replace(/\s/g, "");
+  const email = reglages.email || "coteburo@orange.fr";
+  const adresse = reglages.adresse || "TECH'INDUS — Bât D, Porte 8\n645 rue Mayor de Montricher\n13290 Aix-en-Provence";
+  const horaires = reglages.horaires || "Du lundi au vendredi\n9h – 18h";
+
   const INFOS = [
-    { label: "Showroom", value: "TECH'INDUS — Bât D, Porte 8\n645 rue Mayor de Montricher\n13290 Aix-en-Provence", icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
-    { label: "Téléphone", value: "06 20 39 13 90", href: "tel:0620391390", icon: (<path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z" />) },
-    { label: "Email", value: "coteburo@orange.fr", href: "mailto:coteburo@orange.fr", icon: (<><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>) },
-    { label: "Horaires", value: "Du lundi au vendredi\n9h – 18h", icon: (<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>) },
+    { label: "Showroom", value: adresse, icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
+    { label: "Téléphone", value: tel, href: telLink, icon: (<path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z" />) },
+    { label: "Email", value: email, href: `mailto:${email}`, icon: (<><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>) },
+    { label: "Horaires", value: horaires, icon: (<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>) },
   ];
+
+  // Adresse sur une ligne pour l'URL Google Maps
+  const adresseMap = encodeURIComponent(adresse.replace(/\n/g, " "));
 
   return (
     <main>
@@ -45,7 +57,7 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-4 rounded-2xl overflow-hidden border border-line aspect-[16/10]">
-              <iframe title="Plan d'accès Côté BURO" src="https://www.google.com/maps?q=645%20rue%20Mayor%20de%20Montricher%2013290%20Aix-en-Provence&output=embed" className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+              <iframe title="Plan d'accès Côté BURO" src={`https://www.google.com/maps?q=${adresseMap}&output=embed`} className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
 
