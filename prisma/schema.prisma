@@ -26,7 +26,8 @@ model Produit {
   slug                   String?    @unique
   descriptionWeb         String?
   categorie              String?    // sieges, bureaux, tables, rangements, acoustique, accueil
-  imageUrl               String?
+  imageUrl               String?                    // image principale (= images[0])
+  images                 String[]   @default([])    // galerie d'images (URLs Cloudinary)
   prixPublicHT           Float                      // tarif public catalogue (référence fournisseur)
   prixAchatHT            Float?                     // prix d'achat Côté BURO (prix commerçant)
   prixVenteHT            Float?                     // prix de revente affiché sur le site
