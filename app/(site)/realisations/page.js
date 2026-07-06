@@ -1,5 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 import CtaBand from "@/components/CtaBand";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Réalisations",
@@ -8,15 +12,11 @@ export const metadata = {
   alternates: { canonical: "/realisations" },
 };
 
-export default function RealisationsPage() {
-  const ITEMS = [
-    { sector: "Cabinet médical", title: "Sophia Santé", client: "Centre de consultations · 320 m²", image: "https://images.unsplash.com/photo-1746021535489-00edc5efb203?auto=format&fit=crop&w=900&q=80" },
-    { sector: "Open space", title: "Provence Avocats", client: "Cabinet d'avocats · 18 postes", image: "https://images.unsplash.com/photo-1716703435453-a7733d600d68?auto=format&fit=crop&w=900&q=80" },
-    { sector: "Domaine viticole", title: "Château Mistral", client: "Bureaux & accueil · 240 m²", image: "https://images.unsplash.com/photo-1746021535490-cd4d7fe7ab2a?auto=format&fit=crop&w=900&q=80" },
-    { sector: "Coworking", title: "La Ruche Aixoise", client: "Espace coworking · 40 postes", image: "https://images.unsplash.com/photo-1716703435453-a7733d600d68?auto=format&fit=crop&w=900&q=80" },
-    { sector: "Siège social", title: "Groupe Calanques", client: "Réaménagement complet · 600 m²", image: "https://images.unsplash.com/photo-1746021535490-cd4d7fe7ab2a?auto=format&fit=crop&w=900&q=80" },
-    { sector: "Agence", title: "Méditerranée Immobilier", client: "Accueil & bureaux · 180 m²", image: "https://images.unsplash.com/photo-1746021535489-00edc5efb203?auto=format&fit=crop&w=900&q=80" },
-  ];
+export default async function RealisationsPage() {
+  const realisations = await prisma.realisation.findMany({
+    where: { publie: true },
+    orderBy: [{ ordre: "asc" }, { createdAt: "desc" }],
+  });
 
   return (
     <main>
@@ -29,19 +29,32 @@ export default function RealisationsPage() {
       </section>
 
       <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {ITEMS.map((it) => (
-            <div key={it.title} className="group relative flex flex-col justify-end overflow-hidden rounded-[24px] border border-line aspect-[4/3.2]">
-              <Image src={it.image} alt={it.title} fill sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-b from-charcoal/5 via-charcoal/30 to-charcoal/85" />
-              <span className="absolute top-5 left-5 rounded-full bg-white/15 backdrop-blur px-3 py-1.5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-orange">{it.sector}</span>
-              <div className="relative p-6 text-white">
-                <h3 className="font-display font-bold text-[22px]">{it.title}</h3>
-                <p className="text-[13px] text-white/80 mt-1">{it.client}</p>
+        {realisations.length === 0 ? (
+          <div className="rounded-2xl border border-line bg-surface p-12 text-center">
+            <p className="text-ink-soft">Nos réalisations seront bientôt présentées ici.</p>
+            <Link href="/devis" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 hover:bg-orange-dark transition">Demander un devis →</Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {realisations.map((it) => (
+              <div key={it.id} className="group relative flex flex-col justify-end overflow-hidden rounded-[24px] border border-line aspect-[4/3.2]">
+                {it.imageUrl ? (
+                  <Image src={it.imageUrl} alt={it.titre} fill sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-105" />
+                ) : (
+                  <div className="absolute inset-0 bg-surface-2 grid place-items-center text-ink-soft/25">
+                    <svg width="70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.1"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.5-3.5L9 20" /></svg>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-b from-charcoal/5 via-charcoal/30 to-charcoal/85" />
+                {it.secteur && <span className="absolute top-5 left-5 rounded-full bg-white/15 backdrop-blur px-3 py-1.5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-orange">{it.secteur}</span>}
+                <div className="relative p-6 text-white">
+                  <h3 className="font-display font-bold text-[22px]">{it.titre}</h3>
+                  <p className="text-[13px] text-white/80 mt-1">{[it.client, it.surface].filter(Boolean).join(" · ")}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <CtaBand />
