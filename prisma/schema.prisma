@@ -95,6 +95,22 @@ model Realisation {
   createdAt DateTime @default(now())
 }
 
+model Article {
+  id          String   @id @default(cuid())
+  titre       String
+  slug        String   @unique
+  extrait     String?              // résumé court pour la liste du blog
+  contenu     String   @default("") // HTML riche (Tiptap)
+  imageUrl    String?              // image de couverture
+  categorie   String?              // ex : "Conseils", "Actualités", "Tendances"
+  auteur      String?
+  publie      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publie])
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -128,29 +144,24 @@ model PromotionProduit {
 
 model Commande {
   id              String          @id @default(cuid())
-  numero          String          @unique          // numéro lisible ex "CB-2026-0001"
-  statut          String          @default("en_attente") // en_attente, payee, en_preparation, expediee, livree, annulee
-  // Coordonnées client (invité autorisé)
+  numero          String          @unique
+  statut          String          @default("en_attente")
   email           String
   telephone       String?
   prenom          String
   nom             String
   societe         String?
-  // Adresse de livraison
   adresse         String
   complement      String?
   codePostal      String
   ville           String
   pays            String          @default("France")
-  // Montants (en centimes pour Stripe)
   totalHT         Float
   totalTVA        Float
   totalTTC        Float
-  // Paiement Stripe
   stripeSessionId String?
   stripePaymentId String?
   paye            Boolean         @default(false)
-  // Lien optionnel vers un compte client (si connecté)
   userId          String?
   lignes          LigneCommande[]
   createdAt       DateTime        @default(now())
