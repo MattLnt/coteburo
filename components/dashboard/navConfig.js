@@ -6,6 +6,12 @@ export const ADMIN_NAV = [
     ],
   },
   {
+    section: "Ventes",
+    items: [
+      { href: "/admin/commandes", label: "Commandes", short: "Commandes", icon: "box" },
+    ],
+  },
+  {
     section: "Catalogue",
     items: [
       { href: "/admin/produits", label: "Produits", short: "Produits", icon: "box" },
