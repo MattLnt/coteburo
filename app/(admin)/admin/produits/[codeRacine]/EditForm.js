@@ -6,15 +6,9 @@ import { FormSelect } from "@/components/dashboard/FormSelect";
 import { StatutBadge } from "@/components/dashboard/StatutBadge";
 import { ImageUploader } from "@/components/dashboard/ImageUploader";
 import { updateProduit } from "../actions";
+import { CATEGORIES, sousCategoriesDe } from "@/lib/categories";
 
-const CAT_OPTIONS = [
-  { value: "sieges", label: "Sièges & fauteuils" },
-  { value: "bureaux", label: "Bureaux" },
-  { value: "tables", label: "Tables de réunion" },
-  { value: "rangements", label: "Rangements" },
-  { value: "acoustique", label: "Acoustique" },
-  { value: "accueil", label: "Mobilier d'accueil" },
-];
+const CAT_OPTIONS = CATEGORIES.map((c) => ({ value: c.slug, label: c.label }));
 
 const labelStyle = { display: "block", fontSize: 11, fontWeight: 700, color: "#5c616a", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 };
 const inputStyle = { width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid #e8e3da", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" };
@@ -25,6 +19,7 @@ export function EditForm({ produit }) {
   const [form, setForm] = useState({
     designation: produit.designation || "",
     categorie: produit.categorie || "",
+    sousCategorie: produit.sousCategorie || "",
     descriptionWeb: produit.descriptionWeb || "",
     prixAchatHT: produit.prixAchatHT ?? "",
     prixVenteHT: produit.prixVenteHT ?? "",
@@ -38,6 +33,18 @@ export function EditForm({ produit }) {
   const [saved, setSaved] = useState(false);
 
   const set = (k, v) => { setForm((f) => ({ ...f, [k]: v })); setSaved(false); };
+
+  // Quand on change la catégorie, on réinitialise la sous-catégorie si elle n'appartient plus à la nouvelle catégorie
+  const changerCategorie = (v) => {
+    setForm((f) => {
+      const sousCatsValides = sousCategoriesDe(v).map((s) => s.slug);
+      const sousCategorie = sousCatsValides.includes(f.sousCategorie) ? f.sousCategorie : "";
+      return { ...f, categorie: v, sousCategorie };
+    });
+    setSaved(false);
+  };
+
+  const sousCatOptions = sousCategoriesDe(form.categorie).map((s) => ({ value: s.slug, label: s.label }));
 
   const achat = parseFloat(String(form.prixAchatHT).replace(",", ".")) || null;
   const vente = parseFloat(String(form.prixVenteHT).replace(",", ".")) || null;
@@ -66,8 +73,9 @@ export function EditForm({ produit }) {
             <input style={inputStyle} value={form.designation} onChange={(e) => set("designation", e.target.value)} />
           </div>
 
-          <div style={{ marginBottom: 18 }}>
-            <FormSelect label="Catégorie" value={form.categorie} onChange={(v) => set("categorie", v)} options={CAT_OPTIONS} placeholder="Choisir une catégorie" />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 18 }}>
+            <FormSelect label="Catégorie" value={form.categorie} onChange={changerCategorie} options={CAT_OPTIONS} placeholder="Choisir une catégorie" />
+            <FormSelect label="Sous-catégorie" value={form.sousCategorie} onChange={(v) => set("sousCategorie", v)} options={sousCatOptions} placeholder={form.categorie ? "Choisir une sous-catégorie" : "Choisir d'abord une catégorie"} />
           </div>
 
           <div>

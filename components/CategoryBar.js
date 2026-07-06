@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const CATS = [
-  { label: "Sièges & fauteuils", href: "/catalogue/sieges", icon: (<><path d="M7 11V6a2.5 2.5 0 0 1 2.5-2.5h5A2.5 2.5 0 0 1 17 6v5" /><path d="M5 11h14l-1.2 5H6.2z" /><path d="M12 16v4" /><path d="M8.5 22l3.5-3 3.5 3" /></>) },
+  { label: "Sièges", href: "/catalogue/sieges", icon: (<><path d="M7 11V6a2.5 2.5 0 0 1 2.5-2.5h5A2.5 2.5 0 0 1 17 6v5" /><path d="M5 11h14l-1.2 5H6.2z" /><path d="M12 16v4" /><path d="M8.5 22l3.5-3 3.5 3" /></>) },
   { label: "Bureaux", href: "/catalogue/bureaux", icon: (<><path d="M3 9h18" /><path d="M5 9v11M19 9v11" /><path d="M5 9l2-4.5h10L19 9" /><path d="M14 14h4" /></>) },
-  { label: "Tables de réunion", href: "/catalogue/tables", icon: (<><ellipse cx="12" cy="8" rx="8.5" ry="2.8" /><path d="M5 9.2v9M19 9.2v9M9.5 10v8.5M14.5 10v8.5" /></>) },
+  { label: "Tables", href: "/catalogue/tables", icon: (<><ellipse cx="12" cy="8" rx="8.5" ry="2.8" /><path d="M5 9.2v9M19 9.2v9M9.5 10v8.5M14.5 10v8.5" /></>) },
   { label: "Rangements", href: "/catalogue/rangements", icon: (<><rect x="6.5" y="3.5" width="11" height="17" rx="1.5" /><path d="M6.5 9.2h11M6.5 14.8h11" /><path d="M11 6.2h2M11 11.8h2M11 17.4h2" /></>) },
   { label: "Acoustique", href: "/catalogue/acoustique", icon: (<><path d="M6 20.5V11a6 6 0 0 1 12 0v9.5" /><path d="M6 20.5h12" /><path d="M9.5 20.5v-5.5h5v5.5" /></>) },
   { label: "Mobilier d'accueil", href: "/catalogue/accueil", icon: (<><path d="M5 11.5v-1.2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1.2" /><path d="M3.5 13.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v5h-17z" /><path d="M5.5 18.5v2M18.5 18.5v2" /></>) },

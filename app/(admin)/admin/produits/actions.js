@@ -16,6 +16,7 @@ export async function updateProduit(codeRacine, data) {
     data: {
       designation: data.designation?.trim() || undefined,
       categorie: data.categorie || null,
+      sousCategorie: data.sousCategorie || null,
       descriptionWeb: data.descriptionWeb?.trim() || null,
       prixAchatHT: toNum(data.prixAchatHT),
       prixVenteHT: toNum(data.prixVenteHT),

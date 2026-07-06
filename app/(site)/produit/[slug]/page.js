@@ -31,7 +31,14 @@ async function getProduit(slug) {
     select: { ecoContribution: true },
   });
 
-  return { ...p, _ecoContribution: ecoVar?.ecoContribution || 0 };
+  // Liste des finitions distinctes (pour le sélecteur en cascade)
+  const variantes = await prisma.variante.findMany({
+    where: { codeRacine: p.codeRacine },
+    select: { finition: true },
+  });
+  const finitions = [...new Set(variantes.map((v) => v.finition).filter(Boolean))];
+
+  return { ...p, _ecoContribution: ecoVar?.ecoContribution || 0, _finitions: finitions };
 }
 
 export async function generateMetadata({ params }) {
@@ -73,6 +80,16 @@ export default async function ProduitPage({ params }) {
     ["Garantie", "7 ans"],
   ].filter(Boolean);
 
+  // Données passées au composant d'ajout au panier
+  const produitPanier = {
+    codeRacine: p.codeRacine,
+    slug: p.slug || p.codeRacine,
+    designation: p.designation,
+    marque: p.marque?.nom || null,
+    image: images[0] || null,
+    prix: prixFinal,
+  };
+
   return (
     <main>
       <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-6 pb-4 text-sm text-ink-soft">
@@ -105,7 +122,7 @@ export default async function ProduitPage({ params }) {
 
             {p.descriptionWeb && <p className="text-ink-soft mt-5 leading-relaxed">{p.descriptionWeb}</p>}
 
-            <ProductBuy />
+            <ProductBuy produit={produitPanier} finitions={p._finitions} />
 
             <div className="grid grid-cols-3 gap-3 mt-7 text-center text-[12px]">
               <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Livraison</span><span className="text-ink-soft">& montage</span></div>

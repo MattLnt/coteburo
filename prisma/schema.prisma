@@ -26,12 +26,13 @@ model Produit {
   designation            String
   slug                   String?    @unique
   descriptionWeb         String?
-  categorie              String?
-  imageUrl               String?
-  images                 String[]   @default([])
-  prixPublicHT           Float
-  prixAchatHT            Float?
-  prixVenteHT            Float?
+  categorie              String?    // catégorie principale (accueil, bureaux, tables, sieges, rangements, acoustique)
+  sousCategorie          String?    // sous-catégorie (bureaux-direction, armoires, etc.)
+  imageUrl               String?                    // image principale (= images[0])
+  images                 String[]   @default([])    // galerie d'images (URLs Cloudinary)
+  prixPublicHT           Float                      // tarif public catalogue (référence fournisseur)
+  prixAchatHT            Float?                     // prix d'achat Côté BURO (prix commerçant)
+  prixVenteHT            Float?                     // prix de revente affiché sur le site
   prixVarieSelonFinition Boolean    @default(false)
   prixVerrouille         Boolean    @default(false)
   publie                 Boolean    @default(false)
@@ -43,6 +44,7 @@ model Produit {
 
   @@index([marqueId])
   @@index([categorie])
+  @@index([sousCategorie])
 }
 
 model Variante {
@@ -53,7 +55,7 @@ model Variante {
   ean             String?
   poids           Float?
   prixPublicHT    Float
-  prixAchatHT     Float?
+  prixAchatHT     Float?                          // prix d'achat fournisseur de la variante
   ecoContribution Float    @default(0)
   prixVenteHT     Float?
   prixVerrouille  Boolean  @default(false)
@@ -65,27 +67,18 @@ model Reglages {
   id            Int      @id @default(1)
   tva           Float    @default(0.20)
   remiseGlobale Float    @default(0.20)
-
-  // Coordonnées
   telephone     String?
   email         String?
   adresse       String?
   horaires      String?
-
-  // Livraison
   zoneLivraison String?
   delaiLivraison String?
   francoPort    Float?
-
-  // Bandeau d'annonce
   bandeauActif  Boolean  @default(false)
   bandeauTexte  String?
-
-  // Réseaux sociaux
   instagram     String?
   facebook      String?
   linkedin      String?
-
   updatedAt     DateTime @updatedAt
 }
 
@@ -112,22 +105,22 @@ model User {
 }
 
 model Promotion {
-  id          String   @id @default(cuid())
-  nom         String
-  typeRemise  String   @default("pourcentage")  // "pourcentage" ou "montant"
-  valeur      Float                              // 20 (=20%) ou 50 (=50€)
-  dateDebut   DateTime?
-  dateFin     DateTime?
-  actif       Boolean  @default(true)
-  categories  String[] @default([])              // ["sieges", "bureaux"...]
-  produits    PromotionProduit[]
-  createdAt   DateTime @default(now())
+  id         String              @id @default(cuid())
+  nom        String
+  typeRemise String              @default("pourcentage")
+  valeur     Float
+  dateDebut  DateTime?
+  dateFin    DateTime?
+  actif      Boolean             @default(true)
+  categories String[]            @default([])
+  produits   PromotionProduit[]
+  createdAt  DateTime            @default(now())
 }
 
 model PromotionProduit {
-  promotion    Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
-  promotionId  String
-  codeRacine   String
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  promotionId String
+  codeRacine  String
 
   @@id([promotionId, codeRacine])
   @@index([codeRacine])
