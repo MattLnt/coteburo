@@ -42,9 +42,9 @@ export default function Footer({ reglages = {} }) {
           ]} />
 
           <FooterCol title="Catalogue" links={[
-            ["Sièges & fauteuils", "/catalogue/sieges"],
+            ["Sièges", "/catalogue/sieges"],
             ["Bureaux", "/catalogue/bureaux"],
-            ["Tables de réunion", "/catalogue/tables"],
+            ["Tables", "/catalogue/tables"],
             ["Rangements", "/catalogue/rangements"],
             ["Acoustique", "/catalogue/acoustique"],
           ]} />
@@ -57,8 +57,20 @@ export default function Footer({ reglages = {} }) {
         </div>
 
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-[13px]">
-          <span>© {new Date().getFullYear()} Côté BURO — Tous droits réservés · Mentions légales · CGV</span>
-          <span>{horaires}</span>
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span>© {new Date().getFullYear()} Côté BURO — Tous droits réservés</span>
+            <span className="text-white/30">·</span>
+            <Link href="/mentions-legales" className="hover:text-orange transition">Mentions légales</Link>
+            <span className="text-white/30">·</span>
+            <Link href="/cgv" className="hover:text-orange transition">CGV</Link>
+            <span className="text-white/30">·</span>
+            <Link href="/confidentialite" className="hover:text-orange transition">Confidentialité</Link>
+          </span>
+          <span className="flex items-center gap-3">
+            {horaires}
+            <span className="text-white/20">·</span>
+            <Link href="/admin/login" className="text-white/40 hover:text-orange transition" title="Espace administration">Espace pro</Link>
+          </span>
         </div>
       </div>
     </footer>

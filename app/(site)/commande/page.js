@@ -26,6 +26,7 @@ export default function CommandePage() {
   const [numero, setNumero] = useState("");
   const [etape, setEtape] = useState("infos"); // "infos" | "paiement"
   const [hydrated, setHydrated] = useState(false);
+  const [cgvAcceptees, setCgvAcceptees] = useState(false);
 
   // Restaure les infos saisies depuis sessionStorage au chargement
   useEffect(() => {
@@ -44,10 +45,9 @@ export default function CommandePage() {
 
   // Interception du bouton "précédent" : si on est en paiement, revenir à l'étape infos
   useEffect(() => {
-    const onPop = (e) => {
+    const onPop = () => {
       if (etape === "paiement") {
         setEtape("infos");
-        // On re-pousse un état pour rester sur la page commande
         window.history.pushState({ etape: "infos" }, "");
       }
     };
@@ -71,6 +71,7 @@ export default function CommandePage() {
 
   const handleContinuer = async () => {
     setErreurGlobale("");
+    if (!cgvAcceptees) { setErreurGlobale("Merci d'accepter les conditions générales de vente."); return; }
     if (!valider()) { setErreurGlobale("Merci de remplir tous les champs obligatoires."); return; }
     setEnvoi(true);
     try {
@@ -84,7 +85,6 @@ export default function CommandePage() {
         setClientSecret(data.clientSecret);
         setNumero(data.numero);
         setEtape("paiement");
-        // Pousse une entrée d'historique pour intercepter le "précédent"
         window.history.pushState({ etape: "paiement" }, "");
       } else {
         setErreurGlobale(data.error || "Une erreur est survenue. Réessayez.");
@@ -242,9 +242,17 @@ export default function CommandePage() {
           {erreurGlobale && <p className="text-sm text-orange-dark bg-orange-tint rounded-lg px-3 py-2 mt-4">{erreurGlobale}</p>}
 
           {!enPaiement && (
-            <button onClick={handleContinuer} disabled={envoi} className="w-full rounded-full bg-orange text-white font-semibold px-6 py-3.5 mt-5 hover:bg-orange-dark transition disabled:opacity-60 flex items-center justify-center gap-2">
-              {envoi ? "Préparation du paiement…" : "Continuer vers le paiement →"}
-            </button>
+            <>
+              <label className="flex items-start gap-2.5 mt-5 cursor-pointer">
+                <input type="checkbox" checked={cgvAcceptees} onChange={(e) => { setCgvAcceptees(e.target.checked); setErreurGlobale(""); }} className="mt-0.5 w-4 h-4 accent-orange shrink-0" />
+                <span className="text-[12.5px] text-ink-soft leading-snug">
+                  J&apos;ai lu et j&apos;accepte les <a href="/cgv" target="_blank" className="text-orange hover:text-orange-dark font-medium underline">conditions générales de vente</a> et la <a href="/confidentialite" target="_blank" className="text-orange hover:text-orange-dark font-medium underline">politique de confidentialité</a>.
+                </span>
+              </label>
+              <button onClick={handleContinuer} disabled={envoi || !cgvAcceptees} className="w-full rounded-full bg-orange text-white font-semibold px-6 py-3.5 mt-4 hover:bg-orange-dark transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                {envoi ? "Préparation du paiement…" : "Continuer vers le paiement →"}
+              </button>
+            </>
           )}
         </aside>
       </div>
