@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import FavoriButton from "@/components/FavoriButton";
 
-export default function ProductCard({ href = "/catalogue", brand, name, attr, price, oldPrice, promo, image, images }) {
-  // Normalise en tableau d'images (priorité à `images`, sinon `image` seul)
+export default function ProductCard({ href = "/catalogue", codeRacine, brand, name, attr, price, oldPrice, promo, image, images, favori = false, connecte = false }) {
   const gallery = (Array.isArray(images) && images.length > 0 ? images : image ? [image] : []);
   const [idx, setIdx] = useState(0);
   const hasMultiple = gallery.length > 1;
@@ -26,9 +26,11 @@ export default function ProductCard({ href = "/catalogue", brand, name, attr, pr
         {promo && (
           <span className="absolute top-3 left-3 z-20 bg-orange text-white text-[11px] font-bold tracking-wide px-2.5 py-1.5 rounded-full">{promo}</span>
         )}
-        <span className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full grid place-items-center bg-white/90 border border-line text-ink-soft group-hover:text-orange transition">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10z" /></svg>
-        </span>
+        {codeRacine && (
+          <div className="absolute top-3 right-3 z-20">
+            <FavoriButton codeRacine={codeRacine} initial={favori} connecte={connecte} variant="float" />
+          </div>
+        )}
 
         {gallery.length > 0 ? (
           <img src={gallery[idx]} alt={name} className="absolute inset-0 w-full h-full object-cover transition duration-300 group-hover:scale-105" />

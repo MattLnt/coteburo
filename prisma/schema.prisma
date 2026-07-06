@@ -185,3 +185,13 @@ model LigneCommande {
 
   @@index([commandeId])
 }
+
+model Favori {
+  id         String   @id @default(cuid())
+  userId     String
+  codeRacine String
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, codeRacine])
+  @@index([userId])
+}

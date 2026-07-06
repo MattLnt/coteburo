@@ -6,17 +6,18 @@ import { CATEGORIES, CAT_LABEL, SOUSCAT_LABEL, sousCategoriesDe } from "@/lib/ca
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
-export default function CatalogueContent({ produits, categorieInitiale = "", sousCategorieInitiale = "" }) {
+export default function CatalogueContent({ produits, categorieInitiale = "", sousCategorieInitiale = "", favorisCodes = [], connecte = false }) {
   const [categorie, setCategorie] = useState(categorieInitiale);
   const [sousCategorie, setSousCategorie] = useState(sousCategorieInitiale);
   const [tri, setTri] = useState("nom");
   const [prixMax, setPrixMax] = useState("");
 
+  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
   const sousCats = categorie ? sousCategoriesDe(categorie) : [];
 
   const choisirCategorie = (slug) => {
     setCategorie(slug === categorie ? "" : slug);
-    setSousCategorie(""); // reset sous-cat quand on change de catégorie
+    setSousCategorie("");
   };
 
   const filtered = useMemo(() => {
@@ -63,7 +64,7 @@ export default function CatalogueContent({ produits, categorieInitiale = "", sou
             </div>
           </div>
 
-          {/* Sous-catégories (si une catégorie est choisie) */}
+          {/* Sous-catégories */}
           {sousCats.length > 0 && (
             <div className="mb-6">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft mb-3">Sous-catégorie</p>
@@ -116,6 +117,9 @@ export default function CatalogueContent({ produits, categorieInitiale = "", sou
               <ProductCard
                 key={p.codeRacine}
                 href={`/produit/${p.slug || p.codeRacine}`}
+                codeRacine={p.codeRacine}
+                favori={favSet.has(p.codeRacine)}
+                connecte={connecte}
                 brand={p.brand}
                 name={p.designation}
                 attr={p.gamme}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import CatalogueContent from "@/components/CatalogueContent";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 import { CAT_LABEL, SOUSCAT_LABEL, SOUSCAT_PARENT } from "@/lib/categories";
@@ -27,14 +28,21 @@ export default async function CataloguePage({ params }) {
 
   const titre = sousCatValide ? SOUSCAT_LABEL[sousCatValide] : catValide ? CAT_LABEL[catValide] : "Tout le catalogue";
 
-  const [produitsRaw, promosActives] = await Promise.all([
+  const session = await auth();
+
+  const [produitsRaw, promosActives, favoris] = await Promise.all([
     prisma.produit.findMany({
       where: { publie: true },
       include: { marque: { select: { nom: true } } },
       orderBy: { designation: "asc" },
     }),
     getPromotionsActives(),
+    session?.user?.id
+      ? prisma.favori.findMany({ where: { userId: session.user.id }, select: { codeRacine: true } })
+      : Promise.resolve([]),
   ]);
+
+  const favorisCodes = favoris.map((f) => f.codeRacine);
 
   // Enrichissement prix/promo côté serveur
   const produits = produitsRaw.map((p) => {
@@ -75,6 +83,8 @@ export default async function CataloguePage({ params }) {
           produits={produits}
           categorieInitiale={catValide}
           sousCategorieInitiale={sousCatValide}
+          favorisCodes={favorisCodes}
+          connecte={!!session?.user}
         />
       </div>
 
@@ -84,7 +94,7 @@ export default async function CataloguePage({ params }) {
             <h3 className="font-display font-bold text-2xl">Un projet d&apos;aménagement complet ?</h3>
             <p className="text-[#bfc4cb] mt-1.5">Au-delà de la boutique, nos experts vous accompagnent sur devis avec plan 3D, livraison et montage.</p>
           </div>
-          <Link href="/contact" className="shrink-0 inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3.5 hover:bg-orange-dark transition">Demander un devis →</Link>
+          <Link href="/devis" className="shrink-0 inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3.5 hover:bg-orange-dark transition">Demander un devis →</Link>
         </div>
       </section>
     </main>
