@@ -38,6 +38,7 @@ export default function Footer({ reglages = {} }) {
             ["Services", "/services"],
             ["Réalisations", "/realisations"],
             ["Conseils", "/conseils"],
+            ["Suivi de commande", "/suivi"],
             ["Contact", "/contact"],
           ]} />
 
