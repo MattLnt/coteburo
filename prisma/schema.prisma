@@ -12,7 +12,7 @@ model Marque {
   nom       String    @unique
   slug      String    @unique
   logoUrl   String?
-  remise    Float     @default(0)   // 0.20 = -20% sur le tarif public
+  remise    Float     @default(0)
   actif     Boolean   @default(true)
   produits  Produit[]
   createdAt DateTime  @default(now())
@@ -26,13 +26,13 @@ model Produit {
   designation            String
   slug                   String?    @unique
   descriptionWeb         String?
-  categorie              String?    // catégorie principale (accueil, bureaux, tables, sieges, rangements, acoustique)
-  sousCategorie          String?    // sous-catégorie (bureaux-direction, armoires, etc.)
-  imageUrl               String?                    // image principale (= images[0])
-  images                 String[]   @default([])    // galerie d'images (URLs Cloudinary)
-  prixPublicHT           Float                      // tarif public catalogue (référence fournisseur)
-  prixAchatHT            Float?                     // prix d'achat Côté BURO (prix commerçant)
-  prixVenteHT            Float?                     // prix de revente affiché sur le site
+  categorie              String?
+  sousCategorie          String?
+  imageUrl               String?
+  images                 String[]   @default([])
+  prixPublicHT           Float
+  prixAchatHT            Float?
+  prixVenteHT            Float?
   prixVarieSelonFinition Boolean    @default(false)
   prixVerrouille         Boolean    @default(false)
   publie                 Boolean    @default(false)
@@ -55,7 +55,7 @@ model Variante {
   ean             String?
   poids           Float?
   prixPublicHT    Float
-  prixAchatHT     Float?                          // prix d'achat fournisseur de la variante
+  prixAchatHT     Float?
   ecoContribution Float    @default(0)
   prixVenteHT     Float?
   prixVerrouille  Boolean  @default(false)
@@ -124,4 +124,53 @@ model PromotionProduit {
 
   @@id([promotionId, codeRacine])
   @@index([codeRacine])
+}
+
+model Commande {
+  id              String          @id @default(cuid())
+  numero          String          @unique          // numéro lisible ex "CB-2026-0001"
+  statut          String          @default("en_attente") // en_attente, payee, en_preparation, expediee, livree, annulee
+  // Coordonnées client (invité autorisé)
+  email           String
+  telephone       String?
+  prenom          String
+  nom             String
+  societe         String?
+  // Adresse de livraison
+  adresse         String
+  complement      String?
+  codePostal      String
+  ville           String
+  pays            String          @default("France")
+  // Montants (en centimes pour Stripe)
+  totalHT         Float
+  totalTVA        Float
+  totalTTC        Float
+  // Paiement Stripe
+  stripeSessionId String?
+  stripePaymentId String?
+  paye            Boolean         @default(false)
+  // Lien optionnel vers un compte client (si connecté)
+  userId          String?
+  lignes          LigneCommande[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([email])
+  @@index([statut])
+}
+
+model LigneCommande {
+  id          String   @id @default(cuid())
+  commande    Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+  commandeId  String
+  codeRacine  String
+  designation String
+  marque      String?
+  finition    String?
+  prixHT      Float
+  quantite    Int
+  imageUrl    String?
+
+  @@index([commandeId])
 }
