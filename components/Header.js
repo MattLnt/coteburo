@@ -5,6 +5,7 @@ import Link from "next/link";
 import { formatTel } from "@/lib/reglages";
 import { useCart } from "@/components/cart/CartContext";
 import { CATEGORIES } from "@/lib/categories";
+import SearchBar from "@/components/SearchBar";
 
 const CORP = [
   ["Notre société", "/a-propos"],
@@ -64,7 +65,7 @@ export default function Header({ reglages = {} }) {
           .cb-corp { display: flex; }
         }
         @media (min-width: 1024px) {
-          .cb-search { display: flex; }
+          .cb-search { display: block; }
           .cb-nav-desktop { display: flex; }
           .cb-catbar { display: block; }
           .cb-burger { display: none; }
@@ -93,9 +94,8 @@ export default function Header({ reglages = {} }) {
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority />
           </Link>
 
-          <div className="cb-search bg-surface border border-line text-ink-soft" style={{ flex: 1, maxWidth: 440, alignItems: "center", gap: 10, borderRadius: 999, padding: "11px 18px" }}>
-            <SearchIcon />
-            <input className="text-ink placeholder:text-ink-soft" style={{ width: "100%", background: "transparent", border: 0, outline: 0, fontSize: 14 }} placeholder="Rechercher un siège, un bureau, une marque…" />
+          <div className="cb-search" style={{ flex: 1, maxWidth: 440 }}>
+            <SearchBar variant="desktop" />
           </div>
 
           <nav className="cb-nav-desktop" style={{ alignItems: "center", gap: 24, marginLeft: "auto", fontSize: 13, fontWeight: 600 }}>
@@ -179,6 +179,11 @@ export default function Header({ reglages = {} }) {
           </div>
 
           <div style={{ flex: 1, overflowY: "auto", padding: 20 }}>
+            {/* Recherche mobile */}
+            <div style={{ marginBottom: 18 }}>
+              <SearchBar variant="mobile" />
+            </div>
+
             <nav style={{ display: "flex", flexDirection: "column" }}>
               {CATEGORIES.map((cat) => (
                 <div key={cat.slug} className="border-b border-line/70">
@@ -235,7 +240,6 @@ function MobileTile({ href, label, children, onClose }) {
   );
 }
 
-function SearchIcon() { return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>; }
 function UserIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>; }
 function CartIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>; }
 function BurgerIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }

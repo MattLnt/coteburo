@@ -1,8 +1,8 @@
 "use client";
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import { CATEGORIES, CAT_LABEL, SOUSCAT_LABEL, sousCategoriesDe } from "@/lib/categories";
+import SelectTri from "@/components/SelectTri";
+import { CATEGORIES, sousCategoriesDe } from "@/lib/categories";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -98,12 +98,15 @@ export default function CatalogueContent({ produits, categorieInitiale = "", sou
       <div>
         <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
           <p className="text-sm text-ink-soft"><b className="text-ink">{filtered.length}</b> produit{filtered.length > 1 ? "s" : ""}</p>
-          <select value={tri} onChange={(e) => setTri(e.target.value)}
-            className="rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-medium outline-none focus:border-orange cursor-pointer">
-            <option value="nom">Trier : Nom</option>
-            <option value="prix-asc">Prix croissant</option>
-            <option value="prix-desc">Prix décroissant</option>
-          </select>
+          <SelectTri
+            value={tri}
+            onChange={setTri}
+            options={[
+              { value: "nom", label: "Trier : Nom" },
+              { value: "prix-asc", label: "Prix croissant" },
+              { value: "prix-desc", label: "Prix décroissant" },
+            ]}
+          />
         </div>
 
         {filtered.length === 0 ? (
