@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import ProductSelectionFilters from "@/components/ProductSelectionFilters";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
+import { getFavorisContext } from "@/lib/favoris";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
 export default async function ProductSelection() {
-  const [produits, promosActives] = await Promise.all([
+  const [produits, promosActives, favCtx] = await Promise.all([
     prisma.produit.findMany({
       where: { publie: true, enAvant: true },
       include: { marque: { select: { nom: true } } },
@@ -13,6 +14,7 @@ export default async function ProductSelection() {
       take: 16,
     }),
     getPromotionsActives(),
+    getFavorisContext(),
   ]);
 
   if (produits.length === 0) return null;
@@ -33,5 +35,5 @@ export default async function ProductSelection() {
     };
   });
 
-  return <ProductSelectionFilters produits={formatted} />;
+  return <ProductSelectionFilters produits={formatted} favorisCodes={favCtx.favorisCodes} connecte={favCtx.connecte} />;
 }

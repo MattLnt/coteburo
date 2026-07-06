@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import BestSellersCarousel from "@/components/BestSellersCarousel";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
+import { getFavorisContext } from "@/lib/favoris";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
 export default async function BestSellers() {
-  const [produits, promosActives] = await Promise.all([
+  const [produits, promosActives, favCtx] = await Promise.all([
     prisma.produit.findMany({
       where: { publie: true, bestSeller: true },
       include: { marque: { select: { nom: true } } },
@@ -13,9 +14,9 @@ export default async function BestSellers() {
       take: 10,
     }),
     getPromotionsActives(),
+    getFavorisContext(),
   ]);
 
-  // Si aucun best-seller défini, on n'affiche pas la section
   if (produits.length === 0) return null;
 
   const formatted = produits.map((p) => {
@@ -33,5 +34,5 @@ export default async function BestSellers() {
     };
   });
 
-  return <BestSellersCarousel produits={formatted} />;
+  return <BestSellersCarousel produits={formatted} favorisCodes={favCtx.favorisCodes} connecte={favCtx.connecte} />;
 }

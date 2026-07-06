@@ -1,9 +1,10 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
 
-export default function BestSellersCarousel({ produits }) {
+export default function BestSellersCarousel({ produits, favorisCodes = [], connecte = false }) {
   const track = useRef(null);
+  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
   const scroll = (dir) => track.current?.scrollBy({ left: dir * 320, behavior: "smooth" });
 
   return (
@@ -25,9 +26,12 @@ export default function BestSellersCarousel({ produits }) {
 
       <div ref={track} className="flex gap-5 overflow-x-auto pb-1.5 [scrollbar-width:none] [scroll-snap-type:x_mandatory]">
         {produits.map((p) => (
-          <div key={p.codeRacine} className="shrink-0 w-[270px] [scroll-snap-align:start]">
+          <div key={p.codeRacine} className="shrink-0 w-[300px] [scroll-snap-align:start]">
             <ProductCard
               href={`/produit/${p.slug || p.codeRacine}`}
+              codeRacine={p.codeRacine}
+              favori={favSet.has(p.codeRacine)}
+              connecte={connecte}
               brand={p.brand}
               name={p.name}
               attr={p.attr}

@@ -4,8 +4,10 @@ import { prisma } from "@/lib/prisma";
 import ProductGallery from "@/components/ProductGallery";
 import ProductBuy from "@/components/ProductBuy";
 import ProductCard from "@/components/ProductCard";
+import FavoriButton from "@/components/FavoriButton";
 import CtaBand from "@/components/CtaBand";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
+import { getFavorisContext } from "@/lib/favoris";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +33,6 @@ async function getProduit(slug) {
     select: { ecoContribution: true },
   });
 
-  // Liste des finitions distinctes (pour le sélecteur en cascade)
   const variantes = await prisma.variante.findMany({
     where: { codeRacine: p.codeRacine },
     select: { finition: true },
@@ -53,7 +54,12 @@ export default async function ProduitPage({ params }) {
   const p = await getProduit(decodeURIComponent(slug));
   if (!p) notFound();
 
-  const promosActives = await getPromotionsActives();
+  const [promosActives, favCtx] = await Promise.all([
+    getPromotionsActives(),
+    getFavorisContext(),
+  ]);
+  const favSet = new Set(favCtx.favorisCodes);
+
   const { prixFinal, prixBase, enPromo, promoPct } = appliquerPromotions(p, promosActives);
 
   const ttc = prixFinal * 1.2;
@@ -80,7 +86,6 @@ export default async function ProduitPage({ params }) {
     ["Garantie", "7 ans"],
   ].filter(Boolean);
 
-  // Données passées au composant d'ajout au panier
   const produitPanier = {
     codeRacine: p.codeRacine,
     slug: p.slug || p.codeRacine,
@@ -124,6 +129,11 @@ export default async function ProduitPage({ params }) {
 
             <ProductBuy produit={produitPanier} finitions={p._finitions} />
 
+            {/* Bouton favori */}
+            <div className="mt-4">
+              <FavoriButton codeRacine={p.codeRacine} initial={favSet.has(p.codeRacine)} connecte={favCtx.connecte} variant="text" />
+            </div>
+
             <div className="grid grid-cols-3 gap-3 mt-7 text-center text-[12px]">
               <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Livraison</span><span className="text-ink-soft">& montage</span></div>
               <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Garantie 7 ans</span><span className="text-ink-soft">offerte</span></div>
@@ -157,6 +167,9 @@ export default async function ProduitPage({ params }) {
                   <ProductCard
                     key={r.codeRacine}
                     href={`/produit/${r.slug || r.codeRacine}`}
+                    codeRacine={r.codeRacine}
+                    favori={favSet.has(r.codeRacine)}
+                    connecte={favCtx.connecte}
                     brand={r.marque?.nom}
                     name={r.designation}
                     attr={r.gamme}

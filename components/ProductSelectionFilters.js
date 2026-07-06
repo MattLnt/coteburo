@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
 
 const FILTERS = [
@@ -12,11 +12,11 @@ const FILTERS = [
   { key: "accueil", label: "Accueil" },
 ];
 
-export default function ProductSelectionFilters({ produits }) {
+export default function ProductSelectionFilters({ produits, favorisCodes = [], connecte = false }) {
   const [active, setActive] = useState("tous");
+  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
   const shown = active === "tous" ? produits : produits.filter((p) => p.cat === active);
 
-  // On masque les filtres qui n'ont aucun produit (sauf "Tout")
   const filtresVisibles = FILTERS.filter((f) => f.key === "tous" || produits.some((p) => p.cat === f.key));
 
   return (
@@ -39,11 +39,14 @@ export default function ProductSelectionFilters({ produits }) {
           })}
         </div>
 
-        <div className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]">
+        <div className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(270px,1fr))]">
           {shown.map((p) => (
             <ProductCard
               key={p.codeRacine}
               href={`/produit/${p.slug || p.codeRacine}`}
+              codeRacine={p.codeRacine}
+              favori={favSet.has(p.codeRacine)}
+              connecte={connecte}
               brand={p.brand}
               name={p.name}
               attr={p.attr}

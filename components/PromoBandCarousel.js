@@ -1,11 +1,12 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 
-export default function PromoBandCarousel({ promos }) {
+export default function PromoBandCarousel({ promos, favorisCodes = [], connecte = false }) {
   const [start, setStart] = useState(0);
   const pause = useRef(false);
+  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
   const n = promos.length;
 
   const next = () => setStart((s) => (s + 1) % n);
@@ -51,6 +52,9 @@ export default function PromoBandCarousel({ promos }) {
               <ProductCard
                 key={`${start}-${i}-${p.codeRacine}`}
                 href={`/produit/${p.slug || p.codeRacine}`}
+                codeRacine={p.codeRacine}
+                favori={favSet.has(p.codeRacine)}
+                connecte={connecte}
                 brand={p.brand}
                 name={p.name}
                 attr={p.attr}
