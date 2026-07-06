@@ -14,7 +14,6 @@ const CORP = [
   ["Contact", "/contact"],
 ];
 
-// Icône par catégorie (réutilise le style du CategoryBar)
 const CAT_ICON = {
   accueil: (<><path d="M5 11.5v-1.2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1.2" /><path d="M3.5 13.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v5h-17z" /><path d="M5.5 18.5v2M18.5 18.5v2" /></>),
   bureaux: (<><path d="M3 9h18" /><path d="M5 9v11M19 9v11" /><path d="M5 9l2-4.5h10L19 9" /><path d="M14 14h4" /></>),
@@ -54,13 +53,31 @@ export default function Header({ reglages = {} }) {
 
   return (
     <header className="sticky top-0 z-50">
+      {/* Media queries explicites (indépendantes de Tailwind) */}
+      <style>{`
+        .cb-corp { display: none; }
+        .cb-search { display: none; }
+        .cb-nav-desktop { display: none; }
+        .cb-catbar { display: none; }
+        .cb-burger { display: grid; margin-left: auto; }
+        @media (min-width: 768px) {
+          .cb-corp { display: flex; }
+        }
+        @media (min-width: 1024px) {
+          .cb-search { display: flex; }
+          .cb-nav-desktop { display: flex; }
+          .cb-catbar { display: block; }
+          .cb-burger { display: none; }
+        }
+      `}</style>
+
       {/* Barre utilitaire */}
       <div className="bg-charcoal text-[#cdd1d6]" style={{ fontSize: 13 }}>
         <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 38, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
           <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             <span className="text-orange">●</span> {bandeauActif ? bandeauTexte : "Showroom Aix-en-Provence — 645 rue Mayor de Montricher"}
           </p>
-          <div className="hidden md:flex" style={{ alignItems: "center", gap: 18, flexShrink: 0 }}>
+          <div className="cb-corp" style={{ alignItems: "center", gap: 18, flexShrink: 0 }}>
             {CORP.map(([l, h]) => (
               <Link key={h} href={h} className="hover:text-white transition">{l}</Link>
             ))}
@@ -76,27 +93,26 @@ export default function Header({ reglages = {} }) {
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority />
           </Link>
 
-          <div className="hidden lg:flex bg-surface border border-line text-ink-soft" style={{ flex: 1, maxWidth: 440, alignItems: "center", gap: 10, borderRadius: 999, padding: "11px 18px" }}>
+          <div className="cb-search bg-surface border border-line text-ink-soft" style={{ flex: 1, maxWidth: 440, alignItems: "center", gap: 10, borderRadius: 999, padding: "11px 18px" }}>
             <SearchIcon />
             <input className="text-ink placeholder:text-ink-soft" style={{ width: "100%", background: "transparent", border: 0, outline: 0, fontSize: 14 }} placeholder="Rechercher un siège, un bureau, une marque…" />
           </div>
 
-          <nav className="hidden md:flex" style={{ alignItems: "center", gap: 24, marginLeft: "auto", fontSize: 13, fontWeight: 600 }}>
+          <nav className="cb-nav-desktop" style={{ alignItems: "center", gap: 24, marginLeft: "auto", fontSize: 13, fontWeight: 600 }}>
             <Action href="/compte" label="Compte"><UserIcon /></Action>
-            <Action href="/contact" label="Devis"><QuoteIcon /></Action>
             <Link href="/panier" className="text-ink hover:text-orange transition" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
               {count > 0 && <span className="bg-orange text-white" style={{ position: "absolute", top: -6, right: -8, minWidth: 16, height: 16, borderRadius: 8, display: "grid", placeItems: "center", fontSize: 10, fontWeight: 700, padding: "0 3px" }}>{count}</span>}
               <CartIcon /><span>Panier</span>
             </Link>
           </nav>
 
-          <button onClick={() => setOpen(true)} className="md:hidden text-ink" style={{ marginLeft: "auto", display: "grid", placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Ouvrir le menu">
+          <button onClick={() => setOpen(true)} className="cb-burger text-ink" style={{ placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Ouvrir le menu">
             <BurgerIcon />
           </button>
         </div>
 
         {/* Barre catégories + méga-menu (desktop) */}
-        <div className="hidden lg:block border-t border-line/60" onMouseLeave={() => setActive(null)} style={{ position: "relative" }}>
+        <div className="cb-catbar border-t border-line/60" onMouseLeave={() => setActive(null)} style={{ position: "relative" }}>
           <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
             {CATEGORIES.map((cat) => (
               <Link key={cat.slug} href={`/catalogue/${cat.slug}`} onMouseEnter={() => enter(cat)}
@@ -106,7 +122,7 @@ export default function Header({ reglages = {} }) {
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ transform: active === cat.slug ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
               </Link>
             ))}
-            <Link href="/contact" className="bg-orange text-white hover:bg-orange-dark transition" style={{ marginLeft: "auto", borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap" }}>
+            <Link href="/devis" className="bg-orange text-white hover:bg-orange-dark transition" style={{ marginLeft: "auto", borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap" }}>
               Demander un devis →
             </Link>
           </div>
@@ -115,7 +131,6 @@ export default function Header({ reglages = {} }) {
           <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(8px)", pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease, transform .18s ease" }}>
             <div className="mx-auto max-w-[1400px] px-5 sm:px-7">
               <div className="bg-surface border border-line" style={{ marginTop: 8, borderRadius: 22, boxShadow: "0 30px 70px -25px rgba(33,36,40,0.32)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
-                {/* Colonne sous-catégories en cartes */}
                 <div style={{ padding: "8px 8px 8px 12px" }}>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content.label}</p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -135,7 +150,6 @@ export default function Header({ reglages = {} }) {
                   </Link>
                 </div>
 
-                {/* Encart vitrine catégorie */}
                 <Link href={`/catalogue/${content.slug}`} className="group" style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(150deg, #23262a 0%, #3a2820 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 24, minHeight: 220 }}>
                   <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "radial-gradient(circle, rgba(240,102,27,0.35), transparent 70%)" }} />
                   <span style={{ position: "relative", width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.08)", display: "grid", placeItems: "center", border: "1px solid rgba(255,255,255,0.12)" }}>
@@ -156,7 +170,7 @@ export default function Header({ reglages = {} }) {
       </div>
 
       {/* Menu mobile */}
-      <div className={`fixed inset-0 z-[70] lg:hidden ${open ? "" : "pointer-events-none"}`}>
+      <div className={`fixed inset-0 z-[70] ${open ? "" : "pointer-events-none"}`} style={{ display: open ? "block" : undefined }}>
         <div onClick={() => setOpen(false)} className="transition-opacity duration-300" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", opacity: open ? 1 : 0 }} />
         <div className="bg-bg transition-transform duration-300" style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "88%", maxWidth: 400, boxShadow: "-10px 0 40px rgba(0,0,0,.2)", display: "flex", flexDirection: "column", transform: open ? "translateX(0)" : "translateX(100%)" }}>
           <div className="border-b border-line" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: 72 }}>
@@ -187,9 +201,12 @@ export default function Header({ reglages = {} }) {
               ))}
             </nav>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 22, fontSize: 13, fontWeight: 600 }}>
+            <Link href="/devis" onClick={() => setOpen(false)} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 13, fontWeight: 700, marginTop: 20 }}>
+              Demander un devis →
+            </Link>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16, fontSize: 13, fontWeight: 600 }}>
               <MobileTile href="/compte" onClose={() => setOpen(false)} label="Compte"><UserIcon /></MobileTile>
-              <MobileTile href="/contact" onClose={() => setOpen(false)} label="Devis"><QuoteIcon /></MobileTile>
               <MobileTile href="/panier" onClose={() => setOpen(false)} label="Panier"><CartIcon /></MobileTile>
             </div>
           </div>
@@ -220,7 +237,6 @@ function MobileTile({ href, label, children, onClose }) {
 
 function SearchIcon() { return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>; }
 function UserIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>; }
-function QuoteIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 4h11l-1.5 9h-12L4 2H2" /><path d="M6.5 13 5 18h13" /><circle cx="8" cy="21" r="1.4" /><circle cx="17" cy="21" r="1.4" /></svg>; }
 function CartIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>; }
 function BurgerIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
 function CloseIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>; }
