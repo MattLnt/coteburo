@@ -8,21 +8,87 @@ datasource db {
 }
 
 model Marque {
-  id        String    @id @default(cuid())
-  nom       String    @unique
-  slug      String    @unique
+  id        String     @id @default(cuid())
+  nom       String     @unique
+  slug      String     @unique
   logoUrl   String?
-  remise    Float     @default(0)
-  actif     Boolean   @default(true)
+  remise    Float      @default(0)
+  actif     Boolean    @default(true)
   produits  Produit[]
-  createdAt DateTime  @default(now())
+  gammes    Gamme[]
+  categories Categorie[]
+  createdAt DateTime   @default(now())
+}
+
+model Categorie {
+  id        String   @id @default(cuid())
+  nom       String
+  slug      String
+  ordre     Int      @default(0)
+  marque    Marque   @relation(fields: [marqueId], references: [id], onDelete: Cascade)
+  marqueId  String
+  gammes    Gamme[]
+  createdAt DateTime @default(now())
+
+  @@unique([marqueId, slug])
+  @@index([marqueId])
+}
+
+model Gamme {
+  id             String          @id @default(cuid())
+  nom            String
+  slug           String          @unique
+  descriptif     String?         // texte de présentation (comme le descriptif Buronomic)
+  descriptionTech String?        // descriptif technique (optionnel)
+  imageUrl       String?         // image principale (vignette)
+  images         String[]        @default([]) // galerie "Médias"
+  marque         Marque          @relation(fields: [marqueId], references: [id], onDelete: Cascade)
+  marqueId       String
+  categorie      Categorie       @relation(fields: [categorieId], references: [id])
+  categorieId    String
+  produits       Produit[]       // les codes racines rattachés
+  groupesFinition GroupeFinition[]
+  publie         Boolean         @default(false)
+  bestSeller     Boolean         @default(false)
+  enAvant        Boolean         @default(false)
+  ordre          Int             @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([marqueId])
+  @@index([categorieId])
+}
+
+model GroupeFinition {
+  id        String     @id @default(cuid())
+  nom       String     // ex : "Dos tissu Step Mélange", "Poignées"
+  ordre     Int        @default(0)
+  gamme     Gamme      @relation(fields: [gammeId], references: [id], onDelete: Cascade)
+  gammeId   String
+  finitions Finition[]
+
+  @@index([gammeId])
+}
+
+model Finition {
+  id        String         @id @default(cuid())
+  nom       String         // ex : "Chêne fil", "Orange"
+  imageUrl  String?        // pastille uploadée (image de texture/couleur)
+  couleur   String?        // couleur hex de secours si pas d'image
+  ordre     Int            @default(0)
+  groupe    GroupeFinition @relation(fields: [groupeId], references: [id], onDelete: Cascade)
+  groupeId  String
+
+  @@index([groupeId])
 }
 
 model Produit {
   codeRacine             String     @id
   marque                 Marque     @relation(fields: [marqueId], references: [id])
   marqueId               String
-  gamme                  String
+  gammeRef               Gamme?     @relation(fields: [gammeId], references: [id])
+  gammeId                String?
+  gamme                  String     // ancien champ texte, conservé pour transition
   designation            String
   slug                   String?    @unique
   descriptionWeb         String?
@@ -43,6 +109,7 @@ model Produit {
   updatedAt              DateTime   @updatedAt
 
   @@index([marqueId])
+  @@index([gammeId])
   @@index([categorie])
   @@index([sousCategorie])
 }
@@ -99,10 +166,10 @@ model Article {
   id          String   @id @default(cuid())
   titre       String
   slug        String   @unique
-  extrait     String?              // résumé court pour la liste du blog
-  contenu     String   @default("") // HTML riche (Tiptap)
-  imageUrl    String?              // image de couverture
-  categorie   String?              // ex : "Conseils", "Actualités", "Tendances"
+  extrait     String?
+  contenu     String   @default("")
+  imageUrl    String?
+  categorie   String?
   auteur      String?
   publie      Boolean  @default(false)
   createdAt   DateTime @default(now())
