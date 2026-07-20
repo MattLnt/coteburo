@@ -8,145 +8,163 @@ datasource db {
 }
 
 model Marque {
-  id        String     @id @default(cuid())
-  nom       String     @unique
-  slug      String     @unique
-  logoUrl   String?
-  remise    Float      @default(0)
-  actif     Boolean    @default(true)
-  produits  Produit[]
-  gammes    Gamme[]
+  id         String      @id @default(cuid())
+  nom        String      @unique
+  slug       String      @unique
+  remise     Float       @default(0)
+  actif      Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  logoUrl    String?
   categories Categorie[]
-  createdAt DateTime   @default(now())
+  gammes     Gamme[]
+  produits   Produit[]
 }
 
 model Categorie {
-  id        String   @id @default(cuid())
-  nom       String
-  slug      String
-  ordre     Int      @default(0)
-  marque    Marque   @relation(fields: [marqueId], references: [id], onDelete: Cascade)
-  marqueId  String
-  gammes    Gamme[]
-  createdAt DateTime @default(now())
+  id             String           @id @default(cuid())
+  nom            String
+  slug           String
+  ordre          Int              @default(0)
+  marqueId       String
+  createdAt      DateTime         @default(now())
+  margePct       Float?
+  marque         Marque           @relation(fields: [marqueId], references: [id], onDelete: Cascade)
+  sousCategories SousCategorie[]
+  gammes         Gamme[]          @relation("GammeCategories")
+  vitrines       ProduitVitrine[] @relation("VitrineCategories")
 
   @@unique([marqueId, slug])
   @@index([marqueId])
 }
 
 model Gamme {
-  id             String          @id @default(cuid())
-  nom            String
-  slug           String          @unique
-  descriptif     String?         // texte de présentation (comme le descriptif Buronomic)
-  descriptionTech String?        // descriptif technique (optionnel)
-  imageUrl       String?         // image principale (vignette)
-  images         String[]        @default([]) // galerie "Médias"
-  marque         Marque          @relation(fields: [marqueId], references: [id], onDelete: Cascade)
-  marqueId       String
-  categorie      Categorie       @relation(fields: [categorieId], references: [id])
-  categorieId    String
-  produits       Produit[]       // les codes racines rattachés
+  id              String           @id @default(cuid())
+  nom             String
+  slug            String           @unique
+  descriptif      String?
+  descriptionTech String?
+  imageUrl        String?
+  images          String[]         @default([])
+  marqueId        String
+  publie          Boolean          @default(false)
+  bestSeller      Boolean          @default(false)
+  enAvant         Boolean          @default(false)
+  ordre           Int              @default(0)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  venteSurDevis   Boolean          @default(false)
+  marque          Marque           @relation(fields: [marqueId], references: [id], onDelete: Cascade)
   groupesFinition GroupeFinition[]
-  publie         Boolean         @default(false)
-  bestSeller     Boolean         @default(false)
-  enAvant        Boolean         @default(false)
-  ordre          Int             @default(0)
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  produits        Produit[]
+  vitrines        ProduitVitrine[]
+  categories      Categorie[]      @relation("GammeCategories")
 
   @@index([marqueId])
-  @@index([categorieId])
 }
 
 model GroupeFinition {
-  id        String     @id @default(cuid())
-  nom       String     // ex : "Dos tissu Step Mélange", "Poignées"
-  ordre     Int        @default(0)
-  gamme     Gamme      @relation(fields: [gammeId], references: [id], onDelete: Cascade)
-  gammeId   String
+  id        String          @id @default(cuid())
+  nom       String
+  ordre     Int             @default(0)
+  gammeId   String?
+  vitrineId String?
   finitions Finition[]
+  gamme     Gamme?          @relation(fields: [gammeId], references: [id], onDelete: Cascade)
+  vitrine   ProduitVitrine? @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
 
   @@index([gammeId])
+  @@index([vitrineId])
 }
 
 model Finition {
-  id        String         @id @default(cuid())
-  nom       String         // ex : "Chêne fil", "Orange"
-  imageUrl  String?        // pastille uploadée (image de texture/couleur)
-  couleur   String?        // couleur hex de secours si pas d'image
-  ordre     Int            @default(0)
-  groupe    GroupeFinition @relation(fields: [groupeId], references: [id], onDelete: Cascade)
-  groupeId  String
+  id       String         @id @default(cuid())
+  nom      String
+  imageUrl String?
+  couleur  String?
+  ordre    Int            @default(0)
+  groupeId String
+  groupe   GroupeFinition @relation(fields: [groupeId], references: [id], onDelete: Cascade)
 
   @@index([groupeId])
 }
 
 model Produit {
-  codeRacine             String     @id
-  marque                 Marque     @relation(fields: [marqueId], references: [id])
+  codeRacine             String          @id
   marqueId               String
-  gammeRef               Gamme?     @relation(fields: [gammeId], references: [id])
-  gammeId                String?
-  gamme                  String     // ancien champ texte, conservé pour transition
+  gamme                  String
   designation            String
-  slug                   String?    @unique
+  slug                   String?         @unique
   descriptionWeb         String?
   categorie              String?
-  sousCategorie          String?
   imageUrl               String?
-  images                 String[]   @default([])
   prixPublicHT           Float
-  prixAchatHT            Float?
   prixVenteHT            Float?
-  prixVarieSelonFinition Boolean    @default(false)
-  prixVerrouille         Boolean    @default(false)
-  publie                 Boolean    @default(false)
-  bestSeller             Boolean    @default(false)
-  enAvant                Boolean    @default(false)
+  prixVarieSelonFinition Boolean         @default(false)
+  prixVerrouille         Boolean         @default(false)
+  publie                 Boolean         @default(false)
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+  prixAchatHT            Float?
+  images                 String[]        @default([])
+  bestSeller             Boolean         @default(false)
+  enAvant                Boolean         @default(false)
+  sousCategorie          String?
+  gammeId                String?
+  vitrineId              String?
+  hauteur                Int?
+  longueur               Int?
+  options                String[]        @default([])
+  pied                   String?
+  plateau                String?
+  profondeur             String?
+  gammeRef               Gamme?          @relation(fields: [gammeId], references: [id])
+  marque                 Marque          @relation(fields: [marqueId], references: [id])
+  vitrine                ProduitVitrine? @relation(fields: [vitrineId], references: [id])
   variantes              Variante[]
-  createdAt              DateTime   @default(now())
-  updatedAt              DateTime   @updatedAt
 
   @@index([marqueId])
   @@index([gammeId])
   @@index([categorie])
   @@index([sousCategorie])
+  @@index([hauteur])
+  @@index([longueur])
+  @@index([vitrineId])
 }
 
 model Variante {
-  codeArticle     String   @id
-  produit         Produit  @relation(fields: [codeRacine], references: [codeRacine], onDelete: Cascade)
+  codeArticle     String  @id
   codeRacine      String
   finition        String?
   ean             String?
   poids           Float?
   prixPublicHT    Float
-  prixAchatHT     Float?
-  ecoContribution Float    @default(0)
+  ecoContribution Float   @default(0)
   prixVenteHT     Float?
-  prixVerrouille  Boolean  @default(false)
+  prixVerrouille  Boolean @default(false)
+  prixAchatHT     Float?
+  produit         Produit @relation(fields: [codeRacine], references: [codeRacine], onDelete: Cascade)
 
   @@index([codeRacine])
 }
 
 model Reglages {
-  id            Int      @id @default(1)
-  tva           Float    @default(0.20)
-  remiseGlobale Float    @default(0.20)
-  telephone     String?
-  email         String?
-  adresse       String?
-  horaires      String?
-  zoneLivraison String?
+  id             Int      @id @default(1)
+  tva            Float    @default(0.20)
+  remiseGlobale  Float    @default(0.20)
+  updatedAt      DateTime @updatedAt
+  adresse        String?
+  bandeauActif   Boolean  @default(false)
+  bandeauTexte   String?
   delaiLivraison String?
-  francoPort    Float?
-  bandeauActif  Boolean  @default(false)
-  bandeauTexte  String?
-  instagram     String?
-  facebook      String?
-  linkedin      String?
-  updatedAt     DateTime @updatedAt
+  email          String?
+  facebook       String?
+  francoPort     Float?
+  horaires       String?
+  instagram      String?
+  linkedin       String?
+  telephone      String?
+  zoneLivraison  String?
+  margeGlobale   Float    @default(0.30)
 }
 
 model Realisation {
@@ -163,17 +181,17 @@ model Realisation {
 }
 
 model Article {
-  id          String   @id @default(cuid())
-  titre       String
-  slug        String   @unique
-  extrait     String?
-  contenu     String   @default("")
-  imageUrl    String?
-  categorie   String?
-  auteur      String?
-  publie      Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  titre     String
+  slug      String   @unique
+  extrait   String?
+  contenu   String   @default("")
+  imageUrl  String?
+  categorie String?
+  auteur    String?
+  publie    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([publie])
 }
@@ -188,22 +206,22 @@ model User {
 }
 
 model Promotion {
-  id         String              @id @default(cuid())
+  id         String             @id @default(cuid())
   nom        String
-  typeRemise String              @default("pourcentage")
+  typeRemise String             @default("pourcentage")
   valeur     Float
   dateDebut  DateTime?
   dateFin    DateTime?
-  actif      Boolean             @default(true)
-  categories String[]            @default([])
+  actif      Boolean            @default(true)
+  categories String[]           @default([])
+  createdAt  DateTime           @default(now())
   produits   PromotionProduit[]
-  createdAt  DateTime            @default(now())
 }
 
 model PromotionProduit {
-  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
   promotionId String
   codeRacine  String
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
 
   @@id([promotionId, codeRacine])
   @@index([codeRacine])
@@ -230,9 +248,9 @@ model Commande {
   stripePaymentId String?
   paye            Boolean         @default(false)
   userId          String?
-  lignes          LigneCommande[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+  lignes          LigneCommande[]
 
   @@index([email])
   @@index([statut])
@@ -240,7 +258,6 @@ model Commande {
 
 model LigneCommande {
   id          String   @id @default(cuid())
-  commande    Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
   commandeId  String
   codeRacine  String
   designation String
@@ -249,6 +266,7 @@ model LigneCommande {
   prixHT      Float
   quantite    Int
   imageUrl    String?
+  commande    Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
 
   @@index([commandeId])
 }
@@ -261,4 +279,46 @@ model Favori {
 
   @@unique([userId, codeRacine])
   @@index([userId])
+}
+
+model ProduitVitrine {
+  id                  String           @id
+  nom                 String
+  slug                String
+  descriptif          String?
+  imageUrl            String?
+  images              String[]         @default([])
+  ordre               Int              @default(0)
+  publie              Boolean          @default(true)
+  gammeId             String
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime
+  venteSurDevis       Boolean          @default(true)
+  prixAPartir         Float?
+  sectionsDevis       Json?
+  optionsInformatives Json?
+  axesDeclinaisons    Json?
+  declinaisons        Json?
+  groupesFinition     GroupeFinition[]
+  produits            Produit[]
+  gamme               Gamme            @relation(fields: [gammeId], references: [id], onDelete: Cascade)
+  categories          Categorie[]      @relation("VitrineCategories")
+  sousCategories      SousCategorie[]  @relation("VitrineSousCategories")
+
+  @@unique([gammeId, slug])
+  @@index([gammeId])
+}
+
+model SousCategorie {
+  id          String           @id
+  nom         String
+  slug        String
+  ordre       Int              @default(0)
+  categorieId String
+  createdAt   DateTime         @default(now())
+  categorie   Categorie        @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+  vitrines    ProduitVitrine[] @relation("VitrineSousCategories")
+
+  @@unique([categorieId, slug])
+  @@index([categorieId])
 }
