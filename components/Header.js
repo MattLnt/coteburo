@@ -156,62 +156,66 @@ export default function Header({ reglages = {}, categories = [] }) {
           </button>
         </div>
 
-        <div className="cb-catbar border-t border-line/60" onMouseLeave={() => setActive(null)} style={{ position: "relative" }}>
-          <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
-            {categories.map((cat) => (
-              <Link key={cat.slug} href={`/catalogue?categorie=${cat.slug}`} onMouseEnter={() => enter(cat)}
-                className={`transition ${active === cat.slug ? "text-orange" : "text-ink hover:text-orange"}`}
-                style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 8, fontSize: 15, fontWeight: 600, whiteSpace: "nowrap" }}>
-                {cat.nom}
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ transform: active === cat.slug ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
+        {/* Barre catégories + méga-menu — la zone de survol (onMouseLeave) est resserrée
+            sur la largeur visible du contenu (1400px), pas toute la largeur de l'écran. */}
+        <div className="cb-catbar border-t border-line/60" style={{ position: "relative" }}>
+          <div className="mx-auto max-w-[1400px] relative" onMouseLeave={() => setActive(null)}>
+            <div className="px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
+              {categories.map((cat) => (
+                <Link key={cat.slug} href={`/catalogue?categorie=${cat.slug}`} onMouseEnter={() => enter(cat)}
+                  className={`transition ${active === cat.slug ? "text-orange" : "text-ink hover:text-orange"}`}
+                  style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 8, fontSize: 15, fontWeight: 600, whiteSpace: "nowrap" }}>
+                  {cat.nom}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ transform: active === cat.slug ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
+                </Link>
+              ))}
+              <Link href="/devis" className="bg-orange text-white hover:bg-orange-dark transition" style={{ marginLeft: "auto", borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap" }}>
+                Demander un devis →
               </Link>
-            ))}
-            <Link href="/devis" className="bg-orange text-white hover:bg-orange-dark transition" style={{ marginLeft: "auto", borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap" }}>
-              Demander un devis →
-            </Link>
-          </div>
+            </div>
 
-          <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(8px)", pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease, transform .18s ease" }}>
-            <div className="mx-auto max-w-[1400px] px-5 sm:px-7">
-              <div className="bg-surface border border-line" style={{ marginTop: 8, borderRadius: 22, boxShadow: "0 30px 70px -25px rgba(33,36,40,0.32)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
-                <div style={{ padding: "8px 8px 8px 12px" }}>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content?.nom}</p>
+            <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(8px)", pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease, transform .18s ease" }}>
+              <div className="px-5 sm:px-7">
+                <div className="bg-surface border border-line" style={{ marginTop: 8, borderRadius: 22, boxShadow: "0 30px 70px -25px rgba(33,36,40,0.32)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
+                  <div style={{ padding: "8px 8px 8px 12px" }}>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content?.nom}</p>
 
-                  {sousCatContent.length > 0 ? (
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                      {sousCatContent.map((s) => (
-                        <Link key={s.slug} href={`/catalogue?categorie=${content.slug}&sousCategorie=${s.slug}`} className="group" style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, border: "1px solid transparent", transition: "all .16s" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = "#fce6d6"; e.currentTarget.style.borderColor = "rgba(240,102,27,0.25)"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent"; }}>
-                          <span className="bg-surface-2 group-hover:bg-white transition" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "grid", placeItems: "center" }}>
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(content)}</svg>
-                          </span>
-                          <span className="text-ink group-hover:text-orange-dark transition" style={{ fontSize: 14.5, fontWeight: 600, lineHeight: 1.25 }}>{s.nom}</span>
-                        </Link>
-                      ))}
+                    {sousCatContent.length > 0 ? (
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                        {sousCatContent.map((s) => (
+                          <Link key={s.slug} href={`/catalogue?categorie=${content.slug}&sousCategorie=${s.slug}`} className="group" style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, border: "1px solid transparent", transition: "all .16s" }}
+                            onMouseEnter={(e) => { e.currentTarget.style.background = "#fce6d6"; e.currentTarget.style.borderColor = "rgba(240,102,27,0.25)"; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent"; }}>
+                            <span className="bg-surface-2 group-hover:bg-white transition" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "grid", placeItems: "center" }}>
+                              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(content)}</svg>
+                            </span>
+                            <span className="text-ink group-hover:text-orange-dark transition" style={{ fontSize: 14.5, fontWeight: 600, lineHeight: 1.25 }}>{s.nom}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <p style={{ fontSize: 13.5, color: "#9aa0a8", padding: "10px 12px" }}>Nouveautés à venir dans cette catégorie.</p>
+                    )}
+
+                    <Link href={`/catalogue?categorie=${content?.slug}`} className="text-orange hover:text-orange-dark font-semibold transition" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 18, marginLeft: 4, fontSize: 14 }}>
+                      Voir tout {content?.nom?.toLowerCase()} →
+                    </Link>
+                  </div>
+
+                  <Link href={`/catalogue?categorie=${content?.slug}`} className="group" style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(150deg, #23262a 0%, #3a2820 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 24, minHeight: 220 }}>
+                    <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "radial-gradient(circle, rgba(240,102,27,0.35), transparent 70%)" }} />
+                    <span style={{ position: "relative", width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.08)", display: "grid", placeItems: "center", border: "1px solid rgba(255,255,255,0.12)" }}>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(content)}</svg>
+                    </span>
+                    <div style={{ position: "relative" }}>
+                      <p className="font-display font-bold text-white" style={{ fontSize: 20, lineHeight: 1.15 }}>{content?.nom}</p>
+                      <p style={{ color: "#bfc4cb", fontSize: 13.5, marginTop: 6, lineHeight: 1.4 }}>{CAT_ACCROCHE[content?.slug] || "Découvrez notre sélection."}</p>
+                      <span className="group-hover:gap-2.5 transition-all" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, color: "#f0661b", fontSize: 13.5, fontWeight: 700 }}>
+                        Explorer la collection →
+                      </span>
                     </div>
-                  ) : (
-                    <p style={{ fontSize: 13.5, color: "#9aa0a8", padding: "10px 12px" }}>Nouveautés à venir dans cette catégorie.</p>
-                  )}
-
-                  <Link href={`/catalogue?categorie=${content?.slug}`} className="text-orange hover:text-orange-dark font-semibold transition" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 18, marginLeft: 4, fontSize: 14 }}>
-                    Voir tout {content?.nom?.toLowerCase()} →
                   </Link>
                 </div>
-
-                <Link href={`/catalogue?categorie=${content?.slug}`} className="group" style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(150deg, #23262a 0%, #3a2820 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 24, minHeight: 220 }}>
-                  <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "radial-gradient(circle, rgba(240,102,27,0.35), transparent 70%)" }} />
-                  <span style={{ position: "relative", width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.08)", display: "grid", placeItems: "center", border: "1px solid rgba(255,255,255,0.12)" }}>
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(content)}</svg>
-                  </span>
-                  <div style={{ position: "relative" }}>
-                    <p className="font-display font-bold text-white" style={{ fontSize: 20, lineHeight: 1.15 }}>{content?.nom}</p>
-                    <p style={{ color: "#bfc4cb", fontSize: 13.5, marginTop: 6, lineHeight: 1.4 }}>{CAT_ACCROCHE[content?.slug] || "Découvrez notre sélection."}</p>
-                    <span className="group-hover:gap-2.5 transition-all" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, color: "#f0661b", fontSize: 13.5, fontWeight: 700 }}>
-                      Explorer la collection →
-                    </span>
-                  </div>
-                </Link>
               </div>
             </div>
           </div>
@@ -314,4 +318,3 @@ function CartIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fil
 function DevisIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M9 13h6M9 17h4" /></svg>; }
 function BurgerIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
 function CloseIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>; }
-
