@@ -156,8 +156,8 @@ export default function Header({ reglages = {}, categories = [] }) {
           </button>
         </div>
 
-        {/* Barre catégories + méga-menu — la zone de survol (onMouseLeave) est resserrée
-            sur la largeur visible du contenu (1400px), pas toute la largeur de l'écran. */}
+        {/* Barre catégories + méga-menu — zone de survol resserrée sur 1400px,
+            panneau collé sans décalage, même couleur crème que le header. */}
         <div className="cb-catbar border-t border-line/60" style={{ position: "relative" }}>
           <div className="mx-auto max-w-[1400px] relative" onMouseLeave={() => setActive(null)}>
             <div className="px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
@@ -174,9 +174,9 @@ export default function Header({ reglages = {}, categories = [] }) {
               </Link>
             </div>
 
-            <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, transform: active ? "translateY(0)" : "translateY(8px)", pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease, transform .18s ease" }}>
+            <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease" }}>
               <div className="px-5 sm:px-7">
-                <div className="bg-surface border border-line" style={{ marginTop: 8, borderRadius: 22, boxShadow: "0 30px 70px -25px rgba(33,36,40,0.32)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
+                <div className="bg-bg/95 backdrop-blur border border-line border-t-0" style={{ borderRadius: "0 0 22px 22px", boxShadow: "0 20px 50px -25px rgba(33,36,40,0.28)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
                   <div style={{ padding: "8px 8px 8px 12px" }}>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content?.nom}</p>
 
