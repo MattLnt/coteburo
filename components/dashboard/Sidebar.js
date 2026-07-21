@@ -7,6 +7,10 @@ export function Sidebar({ items, societe, email, collapsed }) {
   const pathname = usePathname();
   const width = collapsed ? 76 : 260;
 
+  // Une page produit vit techniquement sous /admin/architecture/[id]/carte/[vitrineId] —
+  // mais dans le menu, elle doit allumer "Produits", jamais "Gammes".
+  const surPageProduit = pathname.includes("/carte/");
+
   return (
     <aside
       style={{
@@ -16,7 +20,39 @@ export function Sidebar({ items, societe, email, collapsed }) {
       }}
       className="bm-sidebar"
     >
-      <style>{`@media (max-width: 768px){ .bm-sidebar { display: none !important; } }`}</style>
+      <style>{`
+        @media (max-width: 768px){ .bm-sidebar { display: none !important; } }
+
+        /* Scrollbar premium : invisible par défaut, visible finement au survol, sans flèches */
+        .bm-nav {
+          scrollbar-width: thin;
+          scrollbar-color: transparent transparent;
+        }
+        .bm-nav:hover {
+          scrollbar-color: rgba(255,255,255,0.18) transparent;
+        }
+        .bm-nav::-webkit-scrollbar {
+          width: 6px;
+        }
+        .bm-nav::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .bm-nav::-webkit-scrollbar-thumb {
+          background: transparent;
+          border-radius: 10px;
+        }
+        .bm-nav:hover::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.18);
+        }
+        .bm-nav::-webkit-scrollbar-thumb:hover {
+          background: rgba(255,255,255,0.32);
+        }
+        .bm-nav::-webkit-scrollbar-button {
+          display: none;
+          height: 0;
+          width: 0;
+        }
+      `}</style>
 
       {/* Logo */}
       <div style={{ height: 70, display: "flex", alignItems: "center", gap: 10, padding: collapsed ? "0 0 0 26px" : "0 22px", borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
@@ -29,7 +65,7 @@ export function Sidebar({ items, societe, email, collapsed }) {
       </div>
 
       {/* Navigation */}
-      <nav style={{ flex: 1, overflowY: "auto", padding: "16px 12px" }}>
+      <nav className="bm-nav" style={{ flex: 1, overflowY: "auto", padding: "16px 12px" }}>
         {items.map((group) => (
           <div key={group.section} style={{ marginBottom: 18 }}>
             {!collapsed && (
@@ -39,7 +75,12 @@ export function Sidebar({ items, societe, email, collapsed }) {
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {group.items.map((item) => {
-                const active = pathname === item.href || (item.href !== "/admin" && item.href !== "/" && pathname.startsWith(item.href));
+                let active;
+                if (surPageProduit) {
+                  active = item.href === "/admin/produits";
+                } else {
+                  active = pathname === item.href || (item.href !== "/admin" && item.href !== "/" && pathname.startsWith(item.href));
+                }
                 return (
                   <Link
                     key={item.href}

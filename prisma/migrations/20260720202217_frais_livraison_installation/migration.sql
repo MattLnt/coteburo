@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Commande" ADD COLUMN     "avecInstallation" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "fraisInstallation" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "fraisLivraison" DOUBLE PRECISION NOT NULL DEFAULT 0;

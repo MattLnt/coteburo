@@ -1,11 +1,14 @@
 import { Icon } from "@/components/dashboard/Icon";
-import { getReglages } from "./actions";
+import { getReglages, getPaliersInstallation } from "./actions";
 import { ReglagesForm } from "./ReglagesForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function ReglagesPage() {
-  const reglages = await getReglages();
+  const [reglages, paliers] = await Promise.all([
+    getReglages(),
+    getPaliersInstallation(),
+  ]);
 
   return (
     <>
@@ -19,7 +22,7 @@ export default async function ReglagesPage() {
         </div>
       </div>
 
-      <ReglagesForm reglages={JSON.parse(JSON.stringify(reglages))} />
+      <ReglagesForm reglages={JSON.parse(JSON.stringify(reglages))} paliersInitiaux={JSON.parse(JSON.stringify(paliers))} />
     </>
   );
 }

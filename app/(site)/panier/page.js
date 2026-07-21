@@ -1,7 +1,9 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/components/cart/CartContext";
+import { urlProduit } from "@/lib/catalogue";
 
 const fmt = (n) => `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -9,7 +11,25 @@ export default function PanierPage() {
   const { items, totalHT, updateQuantite, removeItem, loaded } = useCart();
 
   const tva = totalHT * 0.2;
-  const totalTTC = totalHT + tva;
+  const totalTTCProduits = totalHT + tva;
+
+  const [frais, setFrais] = useState(null); // { fraisLivraison, seuilLivraisonGratuite }
+  const [chargementFrais, setChargementFrais] = useState(true);
+
+  useEffect(() => {
+    if (!loaded || items.length === 0) return;
+    setChargementFrais(true);
+    fetch(`/api/frais?totalTTC=${totalTTCProduits.toFixed(2)}`)
+      .then((r) => r.json())
+      .then((data) => { if (!data.error) setFrais(data); })
+      .catch(() => {})
+      .finally(() => setChargementFrais(false));
+  }, [loaded, items.length, totalTTCProduits]);
+
+  const fraisLivraison = frais?.fraisLivraison ?? 0;
+  const seuilLivraisonGratuite = frais?.seuilLivraisonGratuite ?? 500;
+  const resteAvantGratuit = seuilLivraisonGratuite - totalTTCProduits;
+  const totalTTCFinal = totalTTCProduits + fraisLivraison;
 
   // Évite le flash "panier vide" avant chargement du localStorage
   if (!loaded) {
@@ -48,45 +68,48 @@ export default function PanierPage() {
       <div className="grid lg:grid-cols-[1fr_380px] gap-8 items-start">
         {/* Liste des articles */}
         <div className="flex flex-col gap-4">
-          {items.map((it) => (
-            <div key={it.id} className="flex gap-4 sm:gap-5 rounded-2xl border border-line bg-surface p-4 sm:p-5">
-              {/* Image */}
-              <Link href={`/produit/${it.slug}`} className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-surface-2 grid place-items-center">
-                {it.image ? (
-                  <Image src={it.image} alt={it.designation} width={112} height={112} className="w-full h-full object-cover" />
-                ) : (
-                  <svg width="40%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-ink-soft/40"><path d="M7 11V6a2.5 2.5 0 0 1 2.5-2.5h5A2.5 2.5 0 0 1 17 6v5" /><path d="M5 11h14l-1.2 5H6.2z" /><path d="M12 16v4" /></svg>
-                )}
-              </Link>
+          {items.map((it) => {
+            const href = urlProduit({ categorieSlug: it.categorieSlug, sousCategorieSlug: it.sousCategorieSlug, slug: it.slug });
+            return (
+              <div key={it.id} className="flex gap-4 sm:gap-5 rounded-2xl border border-line bg-surface p-4 sm:p-5">
+                {/* Image */}
+                <Link href={href} className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-surface-2 grid place-items-center">
+                  {it.image ? (
+                    <Image src={it.image} alt={it.designation} width={112} height={112} className="w-full h-full object-cover" />
+                  ) : (
+                    <svg width="40%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-ink-soft/40"><path d="M7 11V6a2.5 2.5 0 0 1 2.5-2.5h5A2.5 2.5 0 0 1 17 6v5" /><path d="M5 11h14l-1.2 5H6.2z" /><path d="M12 16v4" /></svg>
+                  )}
+                </Link>
 
-              {/* Infos */}
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between gap-3">
-                  <div className="min-w-0">
-                    {it.marque && <p className="text-[11px] font-bold uppercase tracking-wide text-orange">{it.marque}</p>}
-                    <Link href={`/produit/${it.slug}`} className="font-semibold text-ink hover:text-orange transition line-clamp-2 leading-snug">{it.designation}</Link>
-                    {it.finition && <p className="text-[12.5px] text-ink-soft mt-1">{it.finition}</p>}
+                {/* Infos */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between gap-3">
+                    <div className="min-w-0">
+                      {it.marque && <p className="text-[11px] font-bold uppercase tracking-wide text-orange">{it.marque}</p>}
+                      <Link href={href} className="font-semibold text-ink hover:text-orange transition line-clamp-2 leading-snug">{it.designation}</Link>
+                      {it.finition && <p className="text-[12.5px] text-ink-soft mt-1">{it.finition}</p>}
+                    </div>
+                    <button onClick={() => removeItem(it.id)} aria-label="Retirer" className="shrink-0 h-8 w-8 grid place-items-center rounded-lg text-ink-soft hover:text-orange hover:bg-surface-2 transition">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" /></svg>
+                    </button>
                   </div>
-                  <button onClick={() => removeItem(it.id)} aria-label="Retirer" className="shrink-0 h-8 w-8 grid place-items-center rounded-lg text-ink-soft hover:text-orange hover:bg-surface-2 transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" /></svg>
-                  </button>
-                </div>
 
-                {/* Quantité + prix */}
-                <div className="flex items-end justify-between gap-3 mt-3">
-                  <div className="flex items-center rounded-full border border-line">
-                    <button onClick={() => updateQuantite(it.id, it.quantite - 1)} className="h-9 w-9 grid place-items-center text-lg hover:text-orange disabled:opacity-30" disabled={it.quantite <= 1}>−</button>
-                    <span className="w-9 text-center font-semibold text-sm">{it.quantite}</span>
-                    <button onClick={() => updateQuantite(it.id, it.quantite + 1)} className="h-9 w-9 grid place-items-center text-lg hover:text-orange">+</button>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-display font-bold text-ink">{fmt(it.prix * it.quantite)} <span className="text-[12px] font-normal text-ink-soft">HT</span></p>
-                    {it.quantite > 1 && <p className="text-[12px] text-ink-soft">{fmt(it.prix)} l'unité</p>}
+                  {/* Quantité + prix */}
+                  <div className="flex items-end justify-between gap-3 mt-3">
+                    <div className="flex items-center rounded-full border border-line">
+                      <button onClick={() => updateQuantite(it.id, it.quantite - 1)} className="h-9 w-9 grid place-items-center text-lg hover:text-orange disabled:opacity-30" disabled={it.quantite <= 1}>−</button>
+                      <span className="w-9 text-center font-semibold text-sm">{it.quantite}</span>
+                      <button onClick={() => updateQuantite(it.id, it.quantite + 1)} className="h-9 w-9 grid place-items-center text-lg hover:text-orange">+</button>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-display font-bold text-ink">{fmt(it.prix * it.quantite)} <span className="text-[12px] font-normal text-ink-soft">HT</span></p>
+                      {it.quantite > 1 && <p className="text-[12px] text-ink-soft">{fmt(it.prix)} l'unité</p>}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           <Link href="/catalogue" className="text-orange font-semibold hover:text-orange-dark transition mt-1 inline-flex items-center gap-2">← Continuer mes achats</Link>
         </div>
@@ -105,14 +128,26 @@ export default function PanierPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-ink-soft">Livraison</span>
-              <span className="text-ink-soft">Calculée à l'étape suivante</span>
+              {chargementFrais ? (
+                <span className="text-ink-soft">Calcul en cours…</span>
+              ) : fraisLivraison === 0 ? (
+                <span className="font-semibold text-[#1f7a52]">Offerte</span>
+              ) : (
+                <span className="font-semibold">{fmt(fraisLivraison)}</span>
+              )}
             </div>
             <div className="h-px bg-line my-2" />
             <div className="flex justify-between items-center">
               <span className="font-display font-bold text-lg">Total TTC</span>
-              <span className="font-display font-bold text-lg text-orange">{fmt(totalTTC)}</span>
+              <span className="font-display font-bold text-lg text-orange">{fmt(totalTTCFinal)}</span>
             </div>
           </div>
+
+          {!chargementFrais && fraisLivraison > 0 && resteAvantGratuit > 0 && (
+            <p className="text-[12.5px] text-orange-dark bg-orange-tint rounded-xl px-3.5 py-2.5 mt-4 leading-relaxed">
+              Plus que <strong>{fmt(resteAvantGratuit)}</strong> d'achat pour bénéficier de la livraison offerte !
+            </p>
+          )}
 
           <Link href="/commande" className="block text-center rounded-full bg-orange text-white font-semibold px-6 py-3.5 mt-6 hover:bg-orange-dark transition">Passer la commande →</Link>
           <Link href="/contact" className="block text-center rounded-full border border-line font-semibold px-6 py-3 mt-3 hover:bg-ink hover:text-white transition">Demander un devis</Link>

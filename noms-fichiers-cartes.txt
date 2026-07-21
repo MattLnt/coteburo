@@ -1,0 +1,313 @@
+NOMS DE FICHIERS A UTILISER (format : gamme_carte_1.jpg, _2.jpg pour plusieurs angles)
+======================================================================
+
+## Alto  (alto)
+  [ ] Bac Metal A Crochet / Pied & Panneau 25
+      -> alto_bac-metal-a-crochet-pied-panneau-25_1.jpg
+  [ ] Caisson Mobile Slim Mela 2 Tiroirs Poignee Profile
+      -> alto_caisson-mobile-slim-mela-2-tiroirs-poignee-profile_1.jpg
+  [ ] Caisson Suspendu Duo - Tiroirs / 2 Pieds
+      -> alto_caisson-suspendu-duo-tiroirs-2-pieds_1.jpg
+  [ ] Caisson Suspendu Solo - Tiroirs / 2 Pieds
+      -> alto_caisson-suspendu-solo-tiroirs-2-pieds_1.jpg
+  [ ] Extension / Retour
+      -> alto_extension-retour_1.jpg
+  [ ] Goulotte Metal Double
+      -> alto_goulotte-metal-double_1.jpg
+  [ ] Goulotte Metal Simple
+      -> alto_goulotte-metal-simple_1.jpg
+  [ ] Kit 2 Supports Accessoires Sac / Casques
+      -> alto_kit-2-supports-accessoires-sac-casques_1.jpg
+  [ ] Kit Fixation Par Vis + Support A Poser / Separateur Lateral Duo Intermediaire - Pied Arche A
+      -> alto_kit-fixation-par-vis-support-a-poser-separateur-lateral-duo-intermediaire-pied-arche-a_1.jpg
+  [ ] Multiposte Coulissant
+      -> alto_multiposte-coulissant_1.jpg
+  [ ] Multiposte Fixe
+      -> alto_multiposte-fixe_1.jpg
+  [ ] Plan Droit
+      -> alto_plan-droit_1.jpg
+  [ ] Plan Manager
+      -> alto_plan-manager_1.jpg
+  [ ] Rangement
+      -> alto_rangement_1.jpg
+  [ ] Tablette Extension
+      -> alto_tablette-extension_1.jpg
+  [ ] Vdf Suspendu
+      -> alto_vdf-suspendu_1.jpg
+
+## Alto Reunion  (alto-reunion)
+  [ ] Table Carree
+      -> alto-reunion_table-carree_1.jpg
+  [ ] Table Rectangle
+      -> alto-reunion_table-rectangle_1.jpg
+  [ ] Tac Double P148 X
+      -> alto-reunion_tac-double-p148-x_1.jpg
+
+## Alto Rh  (alto-rh)
+  [ ] Caisson Suspendu Duo - Tiroirs / Bureau Multiposte Pied Reglable Elec 2 Moteurs H63/128
+      -> alto-rh_caisson-suspendu-duo-tiroirs-bureau-multiposte-pied-reglable-elec-2-moteurs-h63-128_1.jpg
+  [ ] Multiposte
+      -> alto-rh_multiposte_1.jpg
+  [ ] Plan Droit
+      -> alto-rh_plan-droit_1.jpg
+  [ ] Plan Manager
+      -> alto-rh_plan-manager_1.jpg
+  [ ] Rangement Suspendu 2 Portes Battantes / Bureau Multiposte Pied Reglable Elec 2 Moteurs H63/128
+      -> alto-rh_rangement-suspendu-2-portes-battantes-bureau-multiposte-pied-reglable-elec-2-moteurs-h63-128_1.jpg
+  [ ] Table Rectangle
+      -> alto-rh_table-rectangle_1.jpg
+
+## Alto Tables Basses  (alto-tables-basses)
+  [ ] Table Basse Berlingot 70 X 70 / 3 Pieds
+      -> alto-tables-basses_table-basse-berlingot-70-x-70-3-pieds_1.jpg
+
+## Astro  (astro)
+  [ ] Extension / Retour
+      -> astro_extension-retour_1.jpg
+  [ ] Multiposte
+      -> astro_multiposte_1.jpg
+  [ ] Plan Compact
+      -> astro_plan-compact_1.jpg
+  [ ] Plan Droit
+      -> astro_plan-droit_1.jpg
+
+## Astro Direction  (astro-direction)
+  [ ] Bureau Droit
+      -> astro-direction_bureau-droit_1.jpg
+  [ ] Plan Droit
+      -> astro-direction_plan-droit_1.jpg
+  [ ] Vdf Suspendu
+      -> astro-direction_vdf-suspendu_1.jpg
+
+## Astrolite Haute  (astrolite-haute)
+  [ ] Table Haute
+      -> astrolite-haute_table-haute_1.jpg
+  [ ] Table Haute Mobile
+      -> astrolite-haute_table-haute-mobile_1.jpg
+
+## Astrolite Rh  (astrolite-rh)
+  [ ] Extension / Retour
+      -> astrolite-rh_extension-retour_1.jpg
+  [ ] Plan Compact
+      -> astrolite-rh_plan-compact_1.jpg
+  [ ] Plan Droit
+      -> astrolite-rh_plan-droit_1.jpg
+
+## Bewall  (bewall)
+  [ ] Kit 2 Bases Metal A Poser / Separateur Lateral Tissu
+      -> bewall_kit-2-bases-metal-a-poser-separateur-lateral-tissu_1.jpg
+  [ ] Kit 2 Pinces - Ecran Bewall / Multiposte Coulissant
+      -> bewall_kit-2-pinces-ecran-bewall-multiposte-coulissant_1.jpg
+  [ ] Kit 2 Pinces - Ecran Bewall / Multiposte Fixe
+      -> bewall_kit-2-pinces-ecran-bewall-multiposte-fixe_1.jpg
+  [ ] Kit 2 Pinces - Ecran Bewall / Poste Individuel
+      -> bewall_kit-2-pinces-ecran-bewall-poste-individuel_1.jpg
+  [ ] Kit 2 Pinces - Ecran Lateral / Poste Solo Astro - Astrolite
+      -> bewall_kit-2-pinces-ecran-lateral-poste-solo-astro-astrolite_1.jpg
+  [ ] Kit 2 Pinces - Ecran Lateral / Poste Solo Partage - Dialogue
+      -> bewall_kit-2-pinces-ecran-lateral-poste-solo-partage-dialogue_1.jpg
+  [ ] Kit 2 Pinces - Ecran Lateral / Solo Envol - Essentiel - Retro
+      -> bewall_kit-2-pinces-ecran-lateral-solo-envol-essentiel-retro_1.jpg
+  [ ] Kit 4 Pinces - Ecran Lateral / Multiposte Astro - Astrolite
+      -> bewall_kit-4-pinces-ecran-lateral-multiposte-astro-astrolite_1.jpg
+  [ ] Kit 4 Pinces - Ecran Lateral / Multiposte Envol
+      -> bewall_kit-4-pinces-ecran-lateral-multiposte-envol_1.jpg
+  [ ] Kit 4 Pinces - Ecran Lateral / Multiposte Partage - Dialogue
+      -> bewall_kit-4-pinces-ecran-lateral-multiposte-partage-dialogue_1.jpg
+  [ ] Separateur / Voile De Fond Tissu
+      -> bewall_separateur-voile-de-fond-tissu_1.jpg
+  [ ] Separateur Frontal Tissu
+      -> bewall_separateur-frontal-tissu_1.jpg
+  [ ] Separateur Lateral Tissu
+      -> bewall_separateur-lateral-tissu_1.jpg
+  [ ] Separateur Tissu
+      -> bewall_separateur-tissu_1.jpg
+
+## Bewall Cloisons  (bewall-cloisons)
+  [ ] Cloison Fixe Droite
+      -> bewall-cloisons_cloison-fixe-droite_1.jpg
+  [ ] Cloison Fixe Incline
+      -> bewall-cloisons_cloison-fixe-incline_1.jpg
+  [ ] Cloison Mobile Droite
+      -> bewall-cloisons_cloison-mobile-droite_1.jpg
+  [ ] Cloison Mobile Incline
+      -> bewall-cloisons_cloison-mobile-incline_1.jpg
+  [ ] Kit 2 Pieces De Liaison 180 / 2 Cloisons Cote A Cote
+      -> bewall-cloisons_kit-2-pieces-de-liaison-180-2-cloisons-cote-a-cote_1.jpg
+  [ ] Kit 2 Pieces De Liaison 90 / 2 Cloisons En Angle
+      -> bewall-cloisons_kit-2-pieces-de-liaison-90-2-cloisons-en-angle_1.jpg
+
+## Bewall Wood  (bewall-wood)
+  [ ] Separateur Frontal Melamine
+      -> bewall-wood_separateur-frontal-melamine_1.jpg
+  [ ] Separateur Lateral Melamine P70 X H40 - A Poser
+      -> bewall-wood_separateur-lateral-melamine-p70-x-h40-a-poser_1.jpg
+  [ ] Separateur Lateral Melamine P80 X H40 - A Poser
+      -> bewall-wood_separateur-lateral-melamine-p80-x-h40-a-poser_1.jpg
+
+## Classif  (classif)
+  [ ] Armoire A Rideau
+      -> classif_armoire-a-rideau_1.jpg
+  [ ] Chassis Telescopique Ds
+      -> classif_chassis-telescopique-ds_1.jpg
+  [ ] Top
+      -> classif_top_1.jpg
+
+## Cohesion  (cohesion)
+  [ ] Kit 2 Platines De Liaison / Table Cowkg
+      -> cohesion_kit-2-platines-de-liaison-table-cowkg_1.jpg
+  [ ] Table Cowkg
+      -> cohesion_table-cowkg_1.jpg
+
+## Comfort  (comfort)
+  [ ] Caisson Hauteur Bureau Mela 3 Tiroirs 1ds P60 + Top
+      -> comfort_caisson-hauteur-bureau-mela-3-tiroirs-1ds-p60-top_1.jpg
+  [ ] Caisson Hauteur Bureau Mela 3 Tiroirs 1ds P80 + Top
+      -> comfort_caisson-hauteur-bureau-mela-3-tiroirs-1ds-p80-top_1.jpg
+  [ ] Caisson Hauteur Bureau Mela 3 Tiroirs 1ds P80 + Top Box - Poignees Classique
+      -> comfort_caisson-hauteur-bureau-mela-3-tiroirs-1ds-p80-top-box-poignees-classique_1.jpg
+  [ ] Caisson Hauteur Bureau Mela 4 Tiroirs P60 + Top
+      -> comfort_caisson-hauteur-bureau-mela-4-tiroirs-p60-top_1.jpg
+  [ ] Caisson Hauteur Bureau Mela 4 Tiroirs P80 + Top
+      -> comfort_caisson-hauteur-bureau-mela-4-tiroirs-p80-top_1.jpg
+  [ ] Caisson Hauteur Bureau Mela 4 Tiroirs P80 + Top Box - Poignees Classique
+      -> comfort_caisson-hauteur-bureau-mela-4-tiroirs-p80-top-box-poignees-classique_1.jpg
+  [ ] Caisson Lateral Hauteur Bureau Mela 3 Tiroirs 1ds P80 + Top
+      -> comfort_caisson-lateral-hauteur-bureau-mela-3-tiroirs-1ds-p80-top_1.jpg
+  [ ] Caisson Lateral Hauteur Bureau Mela 4 Tiroirs P80 + Top
+      -> comfort_caisson-lateral-hauteur-bureau-mela-4-tiroirs-p80-top_1.jpg
+  [ ] Caisson Mobile Mela 2 Tiroirs 1ds - Poignees Classique
+      -> comfort_caisson-mobile-mela-2-tiroirs-1ds-poignees-classique_1.jpg
+  [ ] Caisson Mobile Mela 3 Tiroirs - Poignees Classique
+      -> comfort_caisson-mobile-mela-3-tiroirs-poignees-classique_1.jpg
+  [ ] Caisson Mobile Slim Mela 2 Tiroirs 1ds - Poignees Classique
+      -> comfort_caisson-mobile-slim-mela-2-tiroirs-1ds-poignees-classique_1.jpg
+  [ ] Caisson Retour Hauteur Bureau Mela 3 Tiroirs 1ds P60 + Top
+      -> comfort_caisson-retour-hauteur-bureau-mela-3-tiroirs-1ds-p60-top_1.jpg
+  [ ] Caisson Retour Hauteur Bureau Mela 4 Tiroirs P60 + Top
+      -> comfort_caisson-retour-hauteur-bureau-mela-4-tiroirs-p60-top_1.jpg
+  [ ] Coussin Assise Tissu
+      -> comfort_coussin-assise-tissu_1.jpg
+  [ ] Kit 4 Patins Rehausse H72 Vers H74
+      -> comfort_kit-4-patins-rehausse-h72-vers-h74_1.jpg
+
+## Envol One  (envol-one)
+  [ ] Plan Droit
+      -> envol-one_plan-droit_1.jpg
+  [ ] Tiroir Metal / Bureau Electrique
+      -> envol-one_tiroir-metal-bureau-electrique_1.jpg
+
+## Ergonomie  (ergonomie)
+  [ ] Bras Support 1 Ecran - Double Extension
+      -> ergonomie_bras-support-1-ecran-double-extension_1.jpg
+  [ ] Bras Support 1 Ecran - Simple Extension
+      -> ergonomie_bras-support-1-ecran-simple-extension_1.jpg
+  [ ] Bras Support 2 Ecrans - Simple Extension
+      -> ergonomie_bras-support-2-ecrans-simple-extension_1.jpg
+  [ ] Bras Support Ecran Double - 2 Bras Simple Extension
+      -> ergonomie_bras-support-ecran-double-2-bras-simple-extension_1.jpg
+  [ ] Lampe De Bureau 108 Leds Bras En 1 Piece Avec Base
+      -> ergonomie_lampe-de-bureau-108-leds-bras-en-1-piece-avec-base_1.jpg
+  [ ] Lampe De Bureau 49 Leds Bras 2 Elements Avec Base
+      -> ergonomie_lampe-de-bureau-49-leds-bras-2-elements-avec-base_1.jpg
+  [ ] Poignee Deplacement / Bras Support Ecran
+      -> ergonomie_poignee-deplacement-bras-support-ecran_1.jpg
+
+## Essentiel  (essentiel)
+  [ ] Kit 2 Enjoliveurs Metal / Pied Metal L
+      -> essentiel_kit-2-enjoliveurs-metal-pied-metal-l_1.jpg
+  [ ] Plan Compact
+      -> essentiel_plan-compact_1.jpg
+  [ ] Plan Droit
+      -> essentiel_plan-droit_1.jpg
+
+## Fifty-fifty  (fifty-fifty)
+  [ ] Comptoir Accueil Compact
+      -> fifty-fifty_comptoir-accueil-compact_1.jpg
+
+## Galet  (galet)
+  [ ] Table Basse Galet
+      -> galet_table-basse-galet_1.jpg
+
+## Partage  (partage)
+  [ ] Multiposte
+      -> partage_multiposte_1.jpg
+  [ ] Plan Compact
+      -> partage_plan-compact_1.jpg
+  [ ] Plan Droit
+      -> partage_plan-droit_1.jpg
+
+## Prestige Reunion  (prestige-reunion)
+  [ ] Extension Table
+      -> prestige-reunion_extension-table_1.jpg
+  [ ] Table
+      -> prestige-reunion_table_1.jpg
+
+## Quietude  (quietude)
+  [ ] Alcove
+      -> quietude_alcove_1.jpg
+  [ ] Armoire Porte Coulissante
+      -> quietude_armoire-porte-coulissante_1.jpg
+  [ ] Bibliotheque Ouverte
+      -> quietude_bibliotheque-ouverte_1.jpg
+  [ ] Bibliotheque Portes Basses
+      -> quietude_bibliotheque-portes-basses_1.jpg
+  [ ] Chassis Telescopique - Dossiers Ds / Rangement
+      -> quietude_chassis-telescopique-dossiers-ds-rangement_1.jpg
+  [ ] Colonne
+      -> quietude_colonne_1.jpg
+  [ ] Combinaison
+      -> quietude_combinaison_1.jpg
+  [ ] Dos Armoire Tissu
+      -> quietude_dos-armoire-tissu_1.jpg
+  [ ] Kit 2 Poignees Classiques
+      -> quietude_kit-2-poignees-classiques_1.jpg
+  [ ] Kit 2 Poignees Design
+      -> quietude_kit-2-poignees-design_1.jpg
+  [ ] Kit 2 Portes Battantes
+      -> quietude_kit-2-portes-battantes_1.jpg
+  [ ] Kit Anti-basculement / Rangement Avec Chassis Ds
+      -> quietude_kit-anti-basculement-rangement-avec-chassis-ds_1.jpg
+  [ ] Rangement Ouvert
+      -> quietude_rangement-ouvert_1.jpg
+  [ ] Rangement Portes Battantes
+      -> quietude_rangement-portes-battantes_1.jpg
+  [ ] Tablette Melamine
+      -> quietude_tablette-melamine_1.jpg
+  [ ] Tablette Metal - Dossier Ds / Rangement
+      -> quietude_tablette-metal-dossier-ds-rangement_1.jpg
+  [ ] Tablette Metal Ds
+      -> quietude_tablette-metal-ds_1.jpg
+  [ ] Top
+      -> quietude_top_1.jpg
+  [ ] Top Rangement
+      -> quietude_top-rangement_1.jpg
+
+## Rencontre  (rencontre)
+  [ ] Table Polyvalente
+      -> rencontre_table-polyvalente_1.jpg
+  [ ] Table Polyvalente Demi-lune
+      -> rencontre_table-polyvalente-demi-lune_1.jpg
+
+## Retro  (retro)
+  [ ] Plan Compact
+      -> retro_plan-compact_1.jpg
+  [ ] Plan Droit
+      -> retro_plan-droit_1.jpg
+
+## Solution Abattante  (solution-abattante)
+  [ ] Demi-lune Abattante
+      -> solution-abattante_demi-lune-abattante_1.jpg
+  [ ] Table Abattante
+      -> solution-abattante_table-abattante_1.jpg
+
+## Stricto Direction  (stricto-direction)
+  [ ] Bloc Rangement 1 Porte A Encastrer / Meuble De Service
+      -> stricto-direction_bloc-rangement-1-porte-a-encastrer-meuble-de-service_1.jpg
+  [ ] Extension / Retour
+      -> stricto-direction_extension-retour_1.jpg
+  [ ] Plan Droit
+      -> stricto-direction_plan-droit_1.jpg
+
+======================================================================
+Total cartes : 128

@@ -1,4 +1,5 @@
 import DevisForm from "@/components/DevisForm";
+import DevisPanier from "@/components/DevisPanier";
 
 export const metadata = {
   title: "Demander un devis",
@@ -24,12 +25,15 @@ export default function DevisPage() {
         </p>
       </section>
 
-      {/* Formulaire (gauche) + étapes (droite) */}
+      {/* Panier de devis (si présent) + Formulaire + étapes */}
       <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-20">
         <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6 items-start">
-          <DevisForm />
+          <div className="flex flex-col gap-6">
+            <DevisPanier />
+            <DevisForm />
+          </div>
 
-          <div className="flex flex-col gap-5 lg:sticky lg:top-24">
+          <div className="flex flex-col gap-5 lg:sticky lg:top-[180px]">
             {/* Comment ça marche */}
             <div className="rounded-[24px] border border-line bg-surface p-7">
               <h2 className="font-display font-bold text-xl mb-5">Comment ça marche</h2>

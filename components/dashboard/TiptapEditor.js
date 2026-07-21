@@ -33,7 +33,7 @@ export default function TiptapEditor({ value, onChange }) {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ heading: { levels: [2, 3] } }),
+      StarterKit.configure({ heading: { levels: [2, 3] }, link: false }),
       Image.configure({ HTMLAttributes: { style: "border-radius:12px;max-width:100%;height:auto;margin:16px 0;" } }),
       Link.configure({ openOnClick: false, HTMLAttributes: { style: "color:#f0661b;text-decoration:underline;" } }),
     ],

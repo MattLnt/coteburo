@@ -38,6 +38,8 @@ export function CartProvider({ children }) {
         id,
         codeRacine: produit.codeRacine,
         slug: produit.slug || produit.codeRacine,
+        categorieSlug: produit.categorieSlug || null,        // nécessaire pour reconstruire l'URL produit
+        sousCategorieSlug: produit.sousCategorieSlug || null,
         designation: produit.designation,
         marque: produit.marque,
         image: produit.image || null,

@@ -15,7 +15,22 @@ export async function getRealisations() {
 }
 
 export async function getRealisation(id) {
-  return prisma.realisation.findUnique({ where: { id } });
+  const r = await prisma.realisation.findUnique({
+    where: { id },
+    include: { produitsLies: { select: { id: true, nom: true, imageUrl: true } } },
+  });
+  if (!r) return null;
+  return { ...r, carnetChantier: Array.isArray(r.carnetChantier) ? r.carnetChantier : [] };
+}
+
+// Liste légère de tous les produits publiés, pour le sélecteur "Produits liés" dans l'admin
+export async function getProduitsPourLiaison() {
+  const vitrines = await prisma.produitVitrine.findMany({
+    where: { publie: true, gamme: { publie: true } },
+    orderBy: { nom: "asc" },
+    select: { id: true, nom: true, imageUrl: true, gamme: { select: { nom: true } } },
+  });
+  return vitrines.map((v) => ({ id: v.id, nom: v.nom, imageUrl: v.imageUrl, gammeNom: v.gamme.nom }));
 }
 
 export async function createRealisation(data) {
@@ -43,7 +58,7 @@ export async function createRealisation(data) {
   return { ok: true, id: r.id };
 }
 
-export async function updateRealisation(id, data) {
+export async function updateRealisationInfos(id, data) {
   await prisma.realisation.update({
     where: { id },
     data: {
@@ -56,6 +71,33 @@ export async function updateRealisation(id, data) {
     },
   });
   revalidatePath("/admin/realisations");
+  revalidatePath("/realisations");
+  return { ok: true };
+}
+
+// Sauvegarde unique pour tout le contenu détaillé (récit, citation, galerie, avant/après, carnet, produits liés)
+export async function sauverRealisationComplete(id, data) {
+  const {
+    recit, citationTexte, citationAuteur, citationPoste,
+    galerie, avantImageUrl, apresImageUrl, carnetChantier, produitsLiesIds,
+  } = data;
+
+  await prisma.realisation.update({
+    where: { id },
+    data: {
+      recit: recit || null,
+      citationTexte: citationTexte || null,
+      citationAuteur: citationAuteur || null,
+      citationPoste: citationPoste || null,
+      galerie: Array.isArray(galerie) ? galerie : [],
+      avantImageUrl: avantImageUrl || null,
+      apresImageUrl: apresImageUrl || null,
+      carnetChantier: Array.isArray(carnetChantier) ? carnetChantier : [],
+      produitsLies: { set: (produitsLiesIds || []).map((pid) => ({ id: pid })) },
+    },
+  });
+  revalidatePath("/admin/realisations");
+  revalidatePath(`/admin/realisations/${id}`);
   revalidatePath("/realisations");
   return { ok: true };
 }

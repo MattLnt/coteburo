@@ -39,7 +39,7 @@ export default function SearchBar({ variant = "desktop" }) {
     if (q.trim().length >= 2) { setOuvert(false); router.push(`/recherche?q=${encodeURIComponent(q.trim())}`); }
   };
 
-  const goToProduit = (slug) => { setOuvert(false); setQ(""); router.push(`/produit/${slug}`); };
+  const goToProduit = (href) => { setOuvert(false); setQ(""); router.push(href); };
 
   return (
     <div ref={boxRef} className="relative w-full">
@@ -53,7 +53,7 @@ export default function SearchBar({ variant = "desktop" }) {
           className="w-full bg-transparent border-0 outline-0 text-sm text-ink placeholder:text-ink-soft"
         />
         {q && (
-          <button type="button" onClick={() => { setQ(""); setResultats([]); }} className="text-ink-soft hover:text-orange shrink-0 grid place-items-center w-5 h-5 rounded-full hover:bg-orange-tint transition" aria-label="Effacer">
+          <button type="button" onClick={() => { setQ(""); setResultats([]); }} className="cursor-pointer text-ink-soft hover:text-orange shrink-0 grid place-items-center w-5 h-5 rounded-full hover:bg-orange-tint transition" aria-label="Effacer">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M18 6 6 18M6 6l12 12" /></svg>
           </button>
         )}
@@ -86,7 +86,7 @@ export default function SearchBar({ variant = "desktop" }) {
               {/* Résultats */}
               <div className="max-h-[400px] overflow-y-auto px-2 pb-2">
                 {resultats.map((p) => (
-                  <button key={p.codeRacine} onClick={() => goToProduit(p.slug)} className="group w-full flex items-center gap-4 p-2.5 rounded-2xl hover:bg-orange-tint/60 transition text-left">
+                  <button key={p.id} onClick={() => goToProduit(p.href)} className="cursor-pointer group w-full flex items-center gap-4 p-2.5 rounded-2xl hover:bg-orange-tint/60 transition text-left">
                     <div className="w-14 h-14 rounded-xl bg-white border border-line overflow-hidden shrink-0 grid place-items-center group-hover:border-orange/40 transition">
                       {p.image ? <img src={p.image} alt="" className="w-full h-full object-cover" /> : <svg width="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" className="text-ink-soft/30"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.5-3.5L9 20" /></svg>}
                     </div>
@@ -97,7 +97,7 @@ export default function SearchBar({ variant = "desktop" }) {
                     </div>
                     <div className="text-right shrink-0 pr-1">
                       <p className="text-[14px] font-display font-bold text-ink whitespace-nowrap">{p.price}</p>
-                      <p className="text-[10px] text-ink-soft">HT{p.promo ? "" : ""}</p>
+                      {p.price !== "Sur devis" && <p className="text-[10px] text-ink-soft">HT</p>}
                       {p.promo && <span className="inline-block mt-1 rounded-full bg-orange text-white text-[10px] font-bold px-2 py-0.5">{p.promo}</span>}
                     </div>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-ink-soft/0 group-hover:text-orange shrink-0 -ml-1 group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6" /></svg>
@@ -106,7 +106,7 @@ export default function SearchBar({ variant = "desktop" }) {
               </div>
 
               {/* Pied charcoal premium */}
-              <button onClick={submit} className="w-full flex items-center justify-center gap-2 px-5 py-4 bg-charcoal text-white font-semibold text-sm hover:bg-[#2d3035] transition">
+              <button onClick={submit} className="cursor-pointer w-full flex items-center justify-center gap-2 px-5 py-4 bg-charcoal text-white font-semibold text-sm hover:bg-[#2d3035] transition">
                 Voir tous les résultats
                 <span className="rounded-full bg-orange text-white text-[11px] font-bold px-2 py-0.5">{total}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14M13 6l6 6-6 6" /></svg>

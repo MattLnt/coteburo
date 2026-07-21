@@ -1,0 +1,377 @@
+[
+  {
+    "cat": "BANQUES ACCUEILS",
+    "gamme": "FIFTY-FIFTY",
+    "n": 28
+  },
+  {
+    "cat": "BANQUES ACCUEILS",
+    "gamme": "FIFTY-FULL",
+    "n": 951
+  },
+  {
+    "cat": "BANQUES ACCUEILS",
+    "gamme": "GUEST",
+    "n": 132
+  },
+  {
+    "cat": "BUREAUX CLASSIQUES",
+    "gamme": "ESSENTIEL",
+    "n": 273
+  },
+  {
+    "cat": "BUREAUX CLASSIQUES",
+    "gamme": "EXTENSIONS",
+    "n": 108
+  },
+  {
+    "cat": "BUREAUX CLASSIQUES",
+    "gamme": "RETRO",
+    "n": 117
+  },
+  {
+    "cat": "BUREAUX COLLABORATIFS",
+    "gamme": "ALTO",
+    "n": 1392
+  },
+  {
+    "cat": "BUREAUX COLLABORATIFS",
+    "gamme": "ASTRO",
+    "n": 5316
+  },
+  {
+    "cat": "BUREAUX COLLABORATIFS",
+    "gamme": "ASTROLITE",
+    "n": 6094
+  },
+  {
+    "cat": "BUREAUX COLLABORATIFS",
+    "gamme": "ASTROLITE MOBILE",
+    "n": 294
+  },
+  {
+    "cat": "BUREAUX COLLABORATIFS",
+    "gamme": "DIALOGUE",
+    "n": 244
+  },
+  {
+    "cat": "BUREAUX COLLABORATIFS",
+    "gamme": "PARTAGE",
+    "n": 5358
+  },
+  {
+    "cat": "BUREAUX DIRECTION",
+    "gamme": "ASTRO DIRECTION",
+    "n": 246
+  },
+  {
+    "cat": "BUREAUX DIRECTION",
+    "gamme": "COURTOISIE",
+    "n": 30
+  },
+  {
+    "cat": "BUREAUX DIRECTION",
+    "gamme": "ENVOL MANAGER",
+    "n": 972
+  },
+  {
+    "cat": "BUREAUX DIRECTION",
+    "gamme": "PRESTIGE",
+    "n": 20
+  },
+  {
+    "cat": "BUREAUX DIRECTION",
+    "gamme": "STRICTO DIRECTION",
+    "n": 177
+  },
+  {
+    "cat": "BUREAUX ERGONOMIQUES",
+    "gamme": "ALTO RH",
+    "n": 232
+  },
+  {
+    "cat": "BUREAUX ERGONOMIQUES",
+    "gamme": "ASTROLITE RH",
+    "n": 357
+  },
+  {
+    "cat": "BUREAUX ERGONOMIQUES",
+    "gamme": "ENVOL CLASSIC",
+    "n": 253
+  },
+  {
+    "cat": "BUREAUX ERGONOMIQUES",
+    "gamme": "ENVOL EVO",
+    "n": 781
+  },
+  {
+    "cat": "BUREAUX ERGONOMIQUES",
+    "gamme": "ENVOL ONE",
+    "n": 253
+  },
+  {
+    "cat": "BUREAUX ERGONOMIQUES",
+    "gamme": "ESSENTIEL RH",
+    "n": 198
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "ALTO",
+    "n": 107
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "BEWALL",
+    "n": 435
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "BEWALL WOOD",
+    "n": 18
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "CONNECTIQUE",
+    "n": 21
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "COURTOISIE",
+    "n": 219
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "ELECTRIFICATION",
+    "n": 56
+  },
+  {
+    "cat": "COMPLEMENTS & ACCESSOIRES",
+    "gamme": "ERGONOMIE",
+    "n": 17
+  },
+  {
+    "cat": "COWORKING",
+    "gamme": "ALTO COWORKING",
+    "n": 160
+  },
+  {
+    "cat": "COWORKING",
+    "gamme": "ASTROLITE HAUTE",
+    "n": 96
+  },
+  {
+    "cat": "COWORKING",
+    "gamme": "COHESION",
+    "n": 81
+  },
+  {
+    "cat": "COWORKING",
+    "gamme": "COHESION HAUTE",
+    "n": 80
+  },
+  {
+    "cat": "COWORKING",
+    "gamme": "DETENTE",
+    "n": 36
+  },
+  {
+    "cat": "COWORKING",
+    "gamme": "VISIO HUB",
+    "n": 129
+  },
+  {
+    "cat": "DIRECTION",
+    "gamme": "ASTRO DIRECTION",
+    "n": 864
+  },
+  {
+    "cat": "ESPACE CONFIDENTIALITE",
+    "gamme": "ALTO ASSISE CONFIDENTIELLE",
+    "n": 2210
+  },
+  {
+    "cat": "ESPACE CONFIDENTIALITE",
+    "gamme": "BEWALL CLOISONS",
+    "n": 544
+  },
+  {
+    "cat": "ESPACE CONFIDENTIALITE",
+    "gamme": "CALME",
+    "n": 210
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "ALTO BIBLIOTHEQUE",
+    "n": 165
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "ALTO RANGEMENT",
+    "n": 252
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "CLASSIF",
+    "n": 109
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "COMFORT",
+    "n": 3127
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "CONNECTIQUE",
+    "n": 1
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "EKO",
+    "n": 1550
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "OPTIMAX EVO",
+    "n": 397
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "PAISIBLE",
+    "n": 31
+  },
+  {
+    "cat": "RANGEMENTS",
+    "gamme": "QUIETUDE",
+    "n": 4045
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "ALTO REUNION",
+    "n": 802
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "ASTRO REUNION",
+    "n": 525
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "ASTROLITE REUNION",
+    "n": 252
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "DIALOGUE REUNION",
+    "n": 16
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "EUREKA",
+    "n": 648
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "PARTAGE REUNION",
+    "n": 168
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "PRESTIGE REUNION",
+    "n": 10
+  },
+  {
+    "cat": "REUNION",
+    "gamme": "SOLUTION ABATTANTE",
+    "n": 40
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "ALTO ASSISE",
+    "n": 312
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "ARA",
+    "n": 165
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "COCCINELLE",
+    "n": 4
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "COLIBRI",
+    "n": 8
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "DETENTE",
+    "n": 7
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "ELYTRE",
+    "n": 13
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "JIMINY",
+    "n": 24
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "LIBELLULE",
+    "n": 1
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "NAMI",
+    "n": 2
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "PAPILLON",
+    "n": 3
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "PAPILLON COLOR",
+    "n": 25
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "PRATIQUE",
+    "n": 2
+  },
+  {
+    "cat": "SIEGES",
+    "gamme": "YUMI",
+    "n": 2
+  },
+  {
+    "cat": "TABLES BASSES",
+    "gamme": "ALTO",
+    "n": 10
+  },
+  {
+    "cat": "TABLES BASSES",
+    "gamme": "GALET",
+    "n": 10
+  },
+  {
+    "cat": "TABLES DE REUNION",
+    "gamme": "ENSEMBLE",
+    "n": 359
+  },
+  {
+    "cat": "TABLES DE REUNION",
+    "gamme": "RENCONTRE",
+    "n": 135
+  },
+  {
+    "cat": "TABLES DE REUNION",
+    "gamme": "SOLUTION PLIANTE",
+    "n": 31
+  }
+]

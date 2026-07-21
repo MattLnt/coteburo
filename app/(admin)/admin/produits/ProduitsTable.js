@@ -2,86 +2,88 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/dashboard/Icon";
-import { StatutBadge } from "@/components/dashboard/StatutBadge";
 import { FormSelect } from "@/components/dashboard/FormSelect";
-import { CATEGORIES, CAT_LABEL, SOUSCAT_LABEL } from "@/lib/categories";
+import NouveauProduitModal from "./NouveauProduitModal";
 
 const euro = (v) => (v == null ? "—" : `${v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
-export function ProduitsTable({ produits, marques }) {
+export function ProduitsTable({ lignes, gammes }) {
   const [q, setQ] = useState("");
-  const [categorie, setCategorie] = useState("");
-  const [statut, setStatut] = useState("");
-  const [tri, setTri] = useState("designation-asc");
+  const [mode, setMode] = useState("");
+  const [tri, setTri] = useState("nom-asc");
+  const [modalOuverte, setModalOuverte] = useState(false);
 
-  const catOptions = [
-    { value: "", label: "Toutes les catégories" },
-    ...CATEGORIES.map((c) => ({ value: c.slug, label: c.label })),
-  ];
-  const statutOptions = [
-    { value: "", label: "Tous les statuts" },
-    { value: "publie", label: "Publiés" },
-    { value: "brouillon", label: "Brouillons" },
-    { value: "promo", label: "En promotion" },
-    { value: "sans-souscat", label: "Sous-catégorie manquante" },
-    { value: "non-classe", label: "Non classés" },
+  const modeOptions = [
+    { value: "", label: "Tous les modes" },
+    { value: "boutique", label: "Boutique (avec prix)" },
+    { value: "boutique-vide", label: "Boutique — à compléter" },
+    { value: "devis", label: "Sur devis" },
   ];
   const triOptions = [
-    { value: "designation-asc", label: "Nom (A → Z)" },
-    { value: "designation-desc", label: "Nom (Z → A)" },
-    { value: "prix-asc", label: "Prix vente croissant" },
-    { value: "prix-desc", label: "Prix vente décroissant" },
-    { value: "recent", label: "Plus récents" },
+    { value: "nom-asc", label: "Nom (A → Z)" },
+    { value: "nom-desc", label: "Nom (Z → A)" },
+    { value: "prix-asc", label: "Prix croissant" },
+    { value: "prix-desc", label: "Prix décroissant" },
+    { value: "gamme", label: "Par gamme" },
   ];
 
   const filtered = useMemo(() => {
-    let list = [...produits];
+    let list = [...lignes];
     const term = q.trim().toLowerCase();
     if (term) {
-      list = list.filter((p) =>
-        p.designation?.toLowerCase().includes(term) ||
-        p.codeRacine?.toLowerCase().includes(term) ||
-        p.gamme?.toLowerCase().includes(term)
+      list = list.filter((l) =>
+        l.nom?.toLowerCase().includes(term) ||
+        l.sousLibelle?.toLowerCase().includes(term) ||
+        l.gammeNom?.toLowerCase().includes(term)
       );
     }
-    if (categorie) list = list.filter((p) => p.categorie === categorie);
-    if (statut === "publie") list = list.filter((p) => p.publie);
-    if (statut === "brouillon") list = list.filter((p) => !p.publie);
-    if (statut === "promo") list = list.filter((p) => p._enPromo);
-    if (statut === "sans-souscat") list = list.filter((p) => p.categorie && !p.sousCategorie);
-    if (statut === "non-classe") list = list.filter((p) => !p.categorie);
+    if (mode) list = list.filter((l) => l.mode === mode);
 
     switch (tri) {
-      case "designation-asc": list.sort((a, b) => (a.designation || "").localeCompare(b.designation || "")); break;
-      case "designation-desc": list.sort((a, b) => (b.designation || "").localeCompare(a.designation || "")); break;
-      case "prix-asc": list.sort((a, b) => (a._prixFinal ?? a.prixPublicHT) - (b._prixFinal ?? b.prixPublicHT)); break;
-      case "prix-desc": list.sort((a, b) => (b._prixFinal ?? b.prixPublicHT) - (a._prixFinal ?? a.prixPublicHT)); break;
-      case "recent": list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); break;
+      case "nom-asc": list.sort((a, b) => a.nom.localeCompare(b.nom)); break;
+      case "nom-desc": list.sort((a, b) => b.nom.localeCompare(a.nom)); break;
+      case "prix-asc": list.sort((a, b) => (a.prix ?? Infinity) - (b.prix ?? Infinity)); break;
+      case "prix-desc": list.sort((a, b) => (b.prix ?? -Infinity) - (a.prix ?? -Infinity)); break;
+      case "gamme": list.sort((a, b) => a.gammeNom.localeCompare(b.gammeNom) || a.nom.localeCompare(b.nom)); break;
     }
     return list;
-  }, [produits, q, categorie, statut, tri]);
+  }, [lignes, q, mode, tri]);
 
-  const resetFiltres = () => { setQ(""); setCategorie(""); setStatut(""); setTri("designation-asc"); };
+  const resetFiltres = () => { setQ(""); setMode(""); setTri("nom-asc"); };
 
   const th = { textAlign: "left", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9aa0a8", padding: "18px 18px 14px", whiteSpace: "nowrap" };
   const td = { padding: "16px 18px", fontSize: 13.5, color: "#23262a", borderTop: "1px solid #f2efe9", verticalAlign: "middle" };
   const tdNum = { ...td, textAlign: "right", whiteSpace: "nowrap" };
 
+  const badgeMode = (l) => {
+    if (l.mode === "boutique") return <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#e8f6f0", color: "#1f7a52" }}>Boutique</span>;
+    if (l.mode === "boutique-vide") return <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#fef4ee", color: "#b45528" }}>À compléter</span>;
+    return <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#eef1f6", color: "#3a6ea5" }}>Sur devis</span>;
+  };
+
   return (
     <div>
-      {/* Barre de filtres */}
+      {/* Bouton nouveau produit */}
+      <div style={{ marginBottom: 18 }}>
+        <button onClick={() => setModalOuverte(true)}
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 20px", borderRadius: 11, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 700, boxShadow: "0 6px 16px -6px rgba(240,102,27,0.5)" }}>
+          <Icon name="plus" size={17} />
+          Nouveau produit
+        </button>
+      </div>
+
+      {/* Filtres */}
       <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, padding: 18, marginBottom: 18 }}>
         <div style={{ position: "relative", marginBottom: 14 }}>
           <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "#9aa0a8" }}><Icon name="search" size={18} /></span>
           <input
             value={q} onChange={(e) => setQ(e.target.value)}
-            placeholder="Rechercher par nom, code ou gamme…"
+            placeholder="Rechercher par nom ou gamme…"
             style={{ width: "100%", padding: "11px 14px 11px 42px", borderRadius: 10, border: "1.5px solid #e8e3da", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" }}
           />
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
-          <FormSelect value={categorie} onChange={setCategorie} options={catOptions} />
-          <FormSelect value={statut} onChange={setStatut} options={statutOptions} />
+          <FormSelect value={mode} onChange={setMode} options={modeOptions} />
           <FormSelect value={tri} onChange={setTri} options={triOptions} />
         </div>
       </div>
@@ -89,10 +91,10 @@ export function ProduitsTable({ produits, marques }) {
       {/* Compteur + reset */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, padding: "0 4px" }}>
         <p style={{ fontSize: 13, color: "#5c616a", margin: 0 }}>
-          <strong style={{ color: "#23262a" }}>{filtered.length}</strong> produit{filtered.length > 1 ? "s" : ""}
-          {filtered.length !== produits.length && <span style={{ color: "#9aa0a8" }}> sur {produits.length}</span>}
+          <strong style={{ color: "#23262a" }}>{filtered.length}</strong> ligne{filtered.length > 1 ? "s" : ""}
+          {filtered.length !== lignes.length && <span style={{ color: "#9aa0a8" }}> sur {lignes.length}</span>}
         </p>
-        {(q || categorie || statut) && (
+        {(q || mode) && (
           <button onClick={resetFiltres} style={{ fontSize: 13, color: "#d9551a", fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>Réinitialiser</button>
         )}
       </div>
@@ -104,61 +106,49 @@ export function ProduitsTable({ produits, marques }) {
             <thead>
               <tr>
                 <th style={th}>Produit</th>
-                <th style={th}>Catégorie</th>
-                <th style={{ ...th, textAlign: "right" }}>Prix vente HT</th>
+                <th style={th}>Gamme</th>
+                <th style={{ ...th, textAlign: "right" }}>Prix HT</th>
+                <th style={{ ...th, textAlign: "center" }}>Mode</th>
                 <th style={{ ...th, textAlign: "center" }}>Statut</th>
                 <th style={{ ...th, textAlign: "right" }}></th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((p) => {
-                const prixFinal = p._prixFinal ?? p.prixPublicHT;
-                const prixVenteNormal = p.prixVenteHT ?? p.prixPublicHT;
-                return (
-                  <tr key={p.codeRacine}>
-                    <td style={{ ...td, maxWidth: 380 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontWeight: 600 }}>{p.designation}</span>
-                        {p._promoCampagne && (
-                          <span style={{ fontSize: 10.5, fontWeight: 700, color: "#fff", background: "#7c3aed", padding: "2px 7px", borderRadius: 999, letterSpacing: "0.03em", whiteSpace: "nowrap" }}>CAMPAGNE</span>
-                        )}
-                        {p._promoManuelle && !p._promoCampagne && (
-                          <span style={{ fontSize: 10.5, fontWeight: 700, color: "#fff", background: "#f0661b", padding: "2px 7px", borderRadius: 999, letterSpacing: "0.03em", whiteSpace: "nowrap" }}>PROMO</span>
+              {filtered.map((l) => (
+                <tr key={l.key}>
+                  <td style={{ ...td, maxWidth: 380 }}>
+                    <div style={{ fontWeight: 600 }}>{l.nom}</div>
+                    {l.sousLibelle && <div style={{ fontSize: 12, color: "#9aa0a8", marginTop: 3 }}>{l.sousLibelle}</div>}
+                  </td>
+                  <td style={td}>
+                    <div>{l.gammeNom}</div>
+                    {l.categorieNom ? (
+                      <div style={{ fontSize: 12, marginTop: 3 }}>
+                        <span style={{ color: "#5c616a", fontWeight: 600 }}>{l.categorieNom}</span>
+                        {l.sousCategorieNom && (
+                          <span style={{ color: "#b0aca2" }}> › {l.sousCategorieNom}</span>
                         )}
                       </div>
-                      <div style={{ fontSize: 12, color: "#9aa0a8", marginTop: 3 }}>{p.codeRacine} · {p.gamme}</div>
-                    </td>
-                    <td style={{ ...td }}>
-                      {p.categorie ? (
-                        <div>
-                          <div style={{ fontWeight: 600, color: "#23262a" }}>{CAT_LABEL[p.categorie] || p.categorie}</div>
-                          <div style={{ fontSize: 12, color: p.sousCategorie ? "#9aa0a8" : "#e0851b", marginTop: 2 }}>
-                            {p.sousCategorie ? (SOUSCAT_LABEL[p.sousCategorie] || p.sousCategorie) : "⚠ sous-catégorie manquante"}
-                          </div>
-                        </div>
-                      ) : (
-                        <span style={{ color: "#c4c0b6" }}>Non classé</span>
-                      )}
-                    </td>
-                    <td style={tdNum}>
-                      {p._enPromo ? (
-                        <div>
-                          <div style={{ fontSize: 11.5, color: "#9aa0a8", textDecoration: "line-through" }}>{euro(prixVenteNormal)}</div>
-                          <div style={{ fontWeight: 700, color: "#d9551a" }}>{euro(prixFinal)} <span style={{ fontSize: 11, fontWeight: 600 }}>−{p._promoPct}%</span></div>
-                        </div>
-                      ) : (
-                        <span style={{ fontWeight: 600 }}>{euro(prixFinal)}</span>
-                      )}
-                    </td>
-                    <td style={{ ...td, textAlign: "center" }}><StatutBadge publie={p.publie} /></td>
-                    <td style={{ ...td, textAlign: "right" }}>
-                      <Link href={`/admin/produits/${encodeURIComponent(p.codeRacine)}`} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 9, border: "1px solid #e8e3da", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>
-                        <Icon name="edit" size={14} /> Éditer
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
+                    ) : (
+                      <div style={{ fontSize: 12, color: "#d9551a", marginTop: 3, fontWeight: 600 }}>⚠ Sans catégorie</div>
+                    )}
+                  </td>
+                  <td style={tdNum}>
+                    {l.prix != null ? <span style={{ fontWeight: 600 }}>{euro(l.prix)}</span> : <span style={{ color: "#c4c0b6" }}>—</span>}
+                  </td>
+                  <td style={{ ...td, textAlign: "center" }}>{badgeMode(l)}</td>
+                  <td style={{ ...td, textAlign: "center" }}>
+                    <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: l.publie ? "#e8f6f0" : "#f0ece4", color: l.publie ? "#1f7a52" : "#5c616a" }}>
+                      {l.publie ? "Publié" : "Brouillon"}
+                    </span>
+                  </td>
+                  <td style={{ ...td, textAlign: "right" }}>
+                    <Link href={`/admin/architecture/${l.gammeId}/carte/${l.carteId}`} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 9, border: "1px solid #e8e3da", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>
+                      <Icon name="edit" size={14} /> Éditer
+                    </Link>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -166,11 +156,13 @@ export function ProduitsTable({ produits, marques }) {
         {filtered.length === 0 && (
           <div style={{ padding: "48px 24px", textAlign: "center" }}>
             <p style={{ fontSize: 14, color: "#5c616a", margin: 0 }}>
-              {produits.length === 0 ? "Aucun produit dans le catalogue pour l'instant." : "Aucun produit ne correspond à ces filtres."}
+              {lignes.length === 0 ? "Aucun produit dans le catalogue pour l'instant." : "Aucune ligne ne correspond à ces filtres."}
             </p>
           </div>
         )}
       </div>
+
+      <NouveauProduitModal open={modalOuverte} onClose={() => setModalOuverte(false)} gammes={gammes} />
     </div>
   );
 }

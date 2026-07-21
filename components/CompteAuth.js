@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { inscrireClient } from "@/app/(compte)/compte/actions";
+import ModalMotDePasseOublie from "@/components/ModalMotDePasseOublie";
 
 const CRITERES = [
   { cle: "longueur", label: "9 caractères min.", test: (p) => p.length >= 9 },
@@ -26,6 +27,7 @@ export default function CompteAuth({ mode }) {
   const [erreur, setErreur] = useState("");
   const [envoi, setEnvoi] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
+  const [mdpOublieOuvert, setMdpOublieOuvert] = useState(false);
 
   const set = (k, v) => { setForm((f) => ({ ...f, [k]: v })); setErreur(""); };
   const pwdValide = CRITERES.every((c) => c.test(form.password));
@@ -146,7 +148,12 @@ export default function CompteAuth({ mode }) {
 
             {/* Mot de passe avec œil */}
             <div>
-              <label className="block text-[11.5px] font-bold uppercase tracking-wide text-ink-soft mb-2">Mot de passe</label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-[11.5px] font-bold uppercase tracking-wide text-ink-soft">Mot de passe</label>
+                {!inscription && (
+                  <button type="button" onClick={() => setMdpOublieOuvert(true)} className="text-[12px] font-semibold text-orange hover:text-orange-dark transition">Mot de passe oublié ?</button>
+                )}
+              </div>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-soft"><LockIcon /></span>
                 <input
@@ -208,6 +215,8 @@ export default function CompteAuth({ mode }) {
           </p>
         </div>
       </div>
+
+      <ModalMotDePasseOublie open={mdpOublieOuvert} onClose={() => setMdpOublieOuvert(false)} />
     </div>
   );
 }

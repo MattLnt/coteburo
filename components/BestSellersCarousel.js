@@ -2,9 +2,10 @@
 import { useRef, useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
 
-export default function BestSellersCarousel({ produits, favorisCodes = [], connecte = false }) {
+export default function BestSellersCarousel({ produits, favorisCodes = [], favorisVitrines = [], connecte = false }) {
   const track = useRef(null);
-  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
+  const favSetCodes = useMemo(() => new Set(favorisCodes), [favorisCodes]);
+  const favSetVitrines = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
   const scroll = (dir) => track.current?.scrollBy({ left: dir * 320, behavior: "smooth" });
 
   return (
@@ -26,11 +27,12 @@ export default function BestSellersCarousel({ produits, favorisCodes = [], conne
 
       <div ref={track} className="flex gap-5 overflow-x-auto pb-1.5 [scrollbar-width:none] [scroll-snap-type:x_mandatory]">
         {produits.map((p) => (
-          <div key={p.codeRacine} className="shrink-0 w-[300px] [scroll-snap-align:start]">
+          <div key={p.id} className="shrink-0 w-[300px] [scroll-snap-align:start]">
             <ProductCard
-              href={`/produit/${p.slug || p.codeRacine}`}
-              codeRacine={p.codeRacine}
-              favori={favSet.has(p.codeRacine)}
+              href={p.href}
+              codeRacine={p.estNouveau ? undefined : p.codeRacine}
+              vitrineId={p.estNouveau ? p.codeRacine : undefined}
+              favori={p.estNouveau ? favSetVitrines.has(p.codeRacine) : favSetCodes.has(p.codeRacine)}
               connecte={connecte}
               brand={p.brand}
               name={p.name}

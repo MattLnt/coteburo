@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @source "../app";
 @source "../components";
 
@@ -48,6 +49,10 @@
     outline: 2px solid var(--color-orange);
     outline-offset: 2px;
   }
+}
+
+.prose li::marker {
+  color: var(--color-orange);
 }
 
 @keyframes float {

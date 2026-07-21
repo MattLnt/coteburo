@@ -3,7 +3,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toggleFavori } from "@/app/(compte)/compte/favoris/actions";
 
-export default function FavoriButton({ codeRacine, initial = false, connecte = true, variant = "float" }) {
+export default function FavoriButton({ codeRacine, vitrineId, initial = false, connecte = true, variant = "float" }) {
   const router = useRouter();
   const [favori, setFavori] = useState(initial);
   const [isPending, startTransition] = useTransition();
@@ -21,7 +21,7 @@ export default function FavoriButton({ codeRacine, initial = false, connecte = t
     // Optimistic UI
     setFavori((v) => !v);
     startTransition(async () => {
-      const res = await toggleFavori(codeRacine);
+      const res = await toggleFavori({ codeRacine, vitrineId });
       if (res?.error) setFavori((v) => !v); // rollback en cas d'erreur
       else if (typeof res?.favori === "boolean") setFavori(res.favori);
     });

@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import FavoriButton from "@/components/FavoriButton";
 
-export default function ProductCard({ href = "/catalogue", codeRacine, brand, name, attr, price, oldPrice, promo, image, images, favori = false, connecte = false }) {
+export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId, brand, name, attr, price, oldPrice, promo, image, images, favori = false, connecte = false }) {
   const gallery = (Array.isArray(images) && images.length > 0 ? images : image ? [image] : []);
   const [idx, setIdx] = useState(0);
   const hasMultiple = gallery.length > 1;
@@ -26,9 +26,9 @@ export default function ProductCard({ href = "/catalogue", codeRacine, brand, na
         {promo && (
           <span className="absolute top-3 left-3 z-20 bg-orange text-white text-[11px] font-bold tracking-wide px-2.5 py-1.5 rounded-full">{promo}</span>
         )}
-        {codeRacine && (
+        {(codeRacine || vitrineId) && (
           <div className="absolute top-3 right-3 z-20">
-            <FavoriButton codeRacine={codeRacine} initial={favori} connecte={connecte} variant="float" />
+            <FavoriButton codeRacine={codeRacine} vitrineId={vitrineId} initial={favori} connecte={connecte} variant="float" />
           </div>
         )}
 

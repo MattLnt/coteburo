@@ -1,10 +1,11 @@
 "use client";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Icon } from "@/components/dashboard/Icon";
 import { ImageUploader } from "@/components/dashboard/ImageUploader";
 import { StatutBadge } from "@/components/dashboard/StatutBadge";
-import { createRealisation, updateRealisation, deleteRealisation, toggleRealisationPublie } from "./actions";
+import { createRealisation, updateRealisationInfos, deleteRealisation, toggleRealisationPublie } from "./actions";
 
 const card = { background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, padding: 22 };
 const labelStyle = { display: "block", fontSize: 11, fontWeight: 700, color: "#5c616a", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 };
@@ -26,7 +27,7 @@ function RealisationForm({ realisation, onDone, onCancel }) {
   const save = async () => {
     if (!form.titre.trim()) return;
     setSaving(true);
-    if (realisation) await updateRealisation(realisation.id, form);
+    if (realisation) await updateRealisationInfos(realisation.id, form);
     else await createRealisation(form);
     setSaving(false);
     router.refresh();
@@ -36,7 +37,7 @@ function RealisationForm({ realisation, onDone, onCancel }) {
   return (
     <div style={card}>
       <h3 style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, color: "#23262a", margin: "0 0 18px" }}>
-        {realisation ? "Modifier la réalisation" : "Nouvelle réalisation"}
+        {realisation ? "Modifier les infos de base" : "Nouvelle réalisation"}
       </h3>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 20 }}>
@@ -71,6 +72,12 @@ function RealisationForm({ realisation, onDone, onCancel }) {
         </div>
       </div>
 
+      {!realisation && (
+        <p style={{ fontSize: 12.5, color: "#9aa0a8", margin: "16px 0 0" }}>
+          Une fois créée, vous pourrez ajouter le récit, la galerie, l'avant/après et les produits liés depuis sa page dédiée.
+        </p>
+      )}
+
       <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
         <button onClick={save} disabled={saving || !form.titre.trim()} style={{ padding: "11px 20px", borderRadius: 10, background: "#f0661b", color: "#fff", border: "none", fontWeight: 600, fontSize: 14, cursor: saving ? "default" : "pointer", opacity: saving || !form.titre.trim() ? 0.6 : 1 }}>
           {saving ? "Enregistrement…" : realisation ? "Enregistrer" : "Créer la réalisation"}
@@ -86,7 +93,7 @@ function RealisationForm({ realisation, onDone, onCancel }) {
 export function RealisationsManager({ realisations }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [mode, setMode] = useState(null); // null | "new" | id en cours d'édition
+  const [mode, setMode] = useState(null); // null | "new" | "infos:" + id
 
   const supprimer = (id) => {
     if (!confirm("Supprimer cette réalisation ?")) return;
@@ -114,7 +121,7 @@ export function RealisationsManager({ realisations }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
         {realisations.map((r) => (
-          mode === r.id ? (
+          mode === `infos:${r.id}` ? (
             <div key={r.id} style={{ gridColumn: "1 / -1" }}>
               <RealisationForm realisation={r} onDone={() => setMode(null)} onCancel={() => setMode(null)} />
             </div>
@@ -134,8 +141,11 @@ export function RealisationsManager({ realisations }) {
                   {[r.client, r.secteur, r.surface].filter(Boolean).join(" · ") || "—"}
                 </p>
                 <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
-                  <button onClick={() => setMode(r.id)} style={{ flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "8px 12px", borderRadius: 9, border: "1px solid #e8e3da", background: "#fff", color: "#23262a", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-                    <Icon name="edit" size={14} /> Éditer
+                  <Link href={`/admin/realisations/${r.id}`} style={{ flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "8px 12px", borderRadius: 9, border: "1px solid #f0661b", background: "#fef4ee", color: "#d9551a", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                    <Icon name="edit" size={14} /> Contenu complet
+                  </Link>
+                  <button onClick={() => setMode(`infos:${r.id}`)} title="Modifier les infos de base" style={{ padding: "8px 11px", borderRadius: 9, border: "1px solid #e8e3da", background: "#fff", color: "#5c616a", cursor: "pointer" }}>
+                    <Icon name="settings" size={15} />
                   </button>
                   <button onClick={() => togglePublie(r.id, r.publie)} disabled={isPending} title={r.publie ? "Dépublier" : "Publier"} style={{ padding: "8px 11px", borderRadius: 9, border: "1px solid #e8e3da", background: "#fff", color: r.publie ? "#1f7a52" : "#9aa0a8", cursor: "pointer" }}>
                     <Icon name="eye" size={15} />

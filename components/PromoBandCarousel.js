@@ -3,10 +3,11 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 
-export default function PromoBandCarousel({ promos, favorisCodes = [], connecte = false }) {
+export default function PromoBandCarousel({ promos, favorisCodes = [], favorisVitrines = [], connecte = false }) {
   const [start, setStart] = useState(0);
   const pause = useRef(false);
-  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
+  const favSetCodes = useMemo(() => new Set(favorisCodes), [favorisCodes]);
+  const favSetVitrines = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
   const n = promos.length;
 
   const next = () => setStart((s) => (s + 1) % n);
@@ -50,10 +51,11 @@ export default function PromoBandCarousel({ promos, favorisCodes = [], connecte 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
             {visible.map((p, i) => (
               <ProductCard
-                key={`${start}-${i}-${p.codeRacine}`}
-                href={`/produit/${p.slug || p.codeRacine}`}
-                codeRacine={p.codeRacine}
-                favori={favSet.has(p.codeRacine)}
+                key={`${start}-${i}-${p.id}`}
+                href={p.href}
+                codeRacine={p.estNouveau ? undefined : p.codeRacine}
+                vitrineId={p.estNouveau ? p.codeRacine : undefined}
+                favori={p.estNouveau ? favSetVitrines.has(p.codeRacine) : favSetCodes.has(p.codeRacine)}
                 connecte={connecte}
                 brand={p.brand}
                 name={p.name}

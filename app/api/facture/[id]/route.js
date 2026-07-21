@@ -12,7 +12,13 @@ export async function GET(req, { params }) {
   if (!session?.user) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
   const c = await prisma.commande.findUnique({ where: { id }, include: { lignes: true } });
-  if (!c || c.email.toLowerCase() !== session.user.email.toLowerCase()) {
+  if (!c) return NextResponse.json({ error: "Introuvable" }, { status: 404 });
+
+  // Un admin peut télécharger la facture de n'importe quel client.
+  // Un client normal ne peut télécharger que ses propres factures (email de la commande = email de son compte).
+  const estProprietaire = c.email.toLowerCase() === session.user.email.toLowerCase();
+  const estAdmin = session.user.role === "ADMIN";
+  if (!estProprietaire && !estAdmin) {
     return NextResponse.json({ error: "Introuvable" }, { status: 404 });
   }
 
