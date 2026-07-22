@@ -98,7 +98,7 @@ export default function Header({ reglages = {}, categories = [] }) {
         </div>
       </div>
 
-      <div className="bg-bg/90 backdrop-blur border-b border-line">
+      <div className="bg-bg border-b border-line">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 78, display: "flex", alignItems: "center", gap: 24 }}>
           <Link href="/" aria-label="Côté BURO — accueil" style={{ flexShrink: 0 }}>
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority />
@@ -176,7 +176,7 @@ export default function Header({ reglages = {}, categories = [] }) {
 
             <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 60, opacity: active ? 1 : 0, pointerEvents: active ? "auto" : "none", transition: "opacity .18s ease" }}>
               <div className="px-5 sm:px-7">
-                <div className="bg-bg/95 backdrop-blur border border-line border-t-0" style={{ borderRadius: "0 0 22px 22px", boxShadow: "0 20px 50px -25px rgba(33,36,40,0.28)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
+                <div className="bg-bg border border-line border-t-0" style={{ borderRadius: "0 0 22px 22px", boxShadow: "0 20px 50px -25px rgba(33,36,40,0.28)", padding: 20, display: "grid", gridTemplateColumns: "1fr 300px", gap: 20, overflow: "hidden" }}>
                   <div style={{ padding: "8px 8px 8px 12px" }}>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange" style={{ marginBottom: 16 }}>{content?.nom}</p>
 
