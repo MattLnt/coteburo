@@ -4,8 +4,19 @@ import { useState, useEffect, useRef } from "react";
 export default function CatalogueFilters({ filtres, valeurs, onFiltresChange }) {
   const [prixMin, setPrixMin] = useState(valeurs.prixMin ?? "");
   const [prixMax, setPrixMax] = useState(valeurs.prixMax ?? "");
+
+  // Dimensions
+  const [largeurMin, setLargeurMin] = useState(valeurs.largeurMin ?? "");
+  const [largeurMax, setLargeurMax] = useState(valeurs.largeurMax ?? "");
+  const [hauteurMin, setHauteurMin] = useState(valeurs.hauteurMin ?? "");
+  const [hauteurMax, setHauteurMax] = useState(valeurs.hauteurMax ?? "");
+  const [profondeurMin, setProfondeurMin] = useState(valeurs.profondeurMin ?? "");
+  const [profondeurMax, setProfondeurMax] = useState(valeurs.profondeurMax ?? "");
+
   const debounce = useRef(null);
   const premierRendu = useRef(true);
+  const debounceDim = useRef(null);
+  const premierRenduDim = useRef(true);
 
   const toggleCategorie = (slug) => {
     if (valeurs.categorieSlug === slug) onFiltresChange({ categorieSlug: null, sousCategorieSlug: null });
@@ -31,12 +42,44 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prixMin, prixMax]);
 
+  // Applique les dimensions automatiquement, même logique
+  useEffect(() => {
+    if (premierRenduDim.current) { premierRenduDim.current = false; return; }
+    clearTimeout(debounceDim.current);
+    debounceDim.current = setTimeout(() => {
+      onFiltresChange({
+        largeurMin: largeurMin || null, largeurMax: largeurMax || null,
+        hauteurMin: hauteurMin || null, hauteurMax: hauteurMax || null,
+        profondeurMin: profondeurMin || null, profondeurMax: profondeurMax || null,
+      });
+    }, 400);
+    return () => clearTimeout(debounceDim.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax]);
+
   const reinitialiser = () => {
     setPrixMin(""); setPrixMax("");
-    onFiltresChange({ categorieSlug: null, sousCategorieSlug: null, marqueSlug: null, prixMin: null, prixMax: null });
+    setLargeurMin(""); setLargeurMax("");
+    setHauteurMin(""); setHauteurMax("");
+    setProfondeurMin(""); setProfondeurMax("");
+    onFiltresChange({
+      categorieSlug: null, sousCategorieSlug: null, marqueSlug: null, prixMin: null, prixMax: null,
+      largeurMin: null, largeurMax: null, hauteurMin: null, hauteurMax: null, profondeurMin: null, profondeurMax: null,
+    });
   };
 
-  const actif = valeurs.categorieSlug || valeurs.sousCategorieSlug || valeurs.marqueSlug || valeurs.prixMin || valeurs.prixMax;
+  const actif = valeurs.categorieSlug || valeurs.sousCategorieSlug || valeurs.marqueSlug
+    || valeurs.prixMin || valeurs.prixMax
+    || valeurs.largeurMin || valeurs.largeurMax || valeurs.hauteurMin || valeurs.hauteurMax || valeurs.profondeurMin || valeurs.profondeurMax;
+
+  const dim = filtres.dimensions || {};
+  const aDimensions = ["largeur", "hauteur", "profondeur"].some((k) => dim[k]?.max != null);
+
+  const lignesDim = [
+    ["Largeur", dim.largeur, largeurMin, setLargeurMin, largeurMax, setLargeurMax],
+    ["Hauteur", dim.hauteur, hauteurMin, setHauteurMin, hauteurMax, setHauteurMax],
+    ["Profondeur", dim.profondeur, profondeurMin, setProfondeurMin, profondeurMax, setProfondeurMax],
+  ];
 
   return (
     <aside className="hidden lg:block rounded-[24px] border border-line bg-surface px-5 pb-4">
@@ -85,6 +128,33 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange }) 
             className="w-full rounded-lg border border-line px-2.5 py-2 text-[13px] outline-none focus:border-orange" />
         </div>
       </Group>
+
+      {/* Dimensions (cm) — s'appliquent automatiquement */}
+      {aDimensions && (
+        <Group title="Dimensions (cm)">
+          <div className="flex flex-col gap-3 pt-1">
+            {lignesDim.map(([label, bornes, vMin, sMin, vMax, sMax]) => (
+              (bornes?.max != null) && (
+                <div key={label}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[13px] font-semibold text-ink">{label}</span>
+                    {bornes?.min != null && bornes?.max != null && (
+                      <span className="text-[11px] text-ink-soft">{bornes.min}–{bornes.max}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input type="number" value={vMin} onChange={(e) => sMin(e.target.value)} placeholder="Min"
+                      className="w-full rounded-lg border border-line px-2.5 py-2 text-[13px] outline-none focus:border-orange" />
+                    <span className="text-ink-soft text-[13px]">—</span>
+                    <input type="number" value={vMax} onChange={(e) => sMax(e.target.value)} placeholder="Max"
+                      className="w-full rounded-lg border border-line px-2.5 py-2 text-[13px] outline-none focus:border-orange" />
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        </Group>
+      )}
 
       {/* Coloris — visuel seul, pas de donnée pour l'instant */}
       <Group title="Coloris" last disabled>

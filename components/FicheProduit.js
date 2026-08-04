@@ -175,21 +175,35 @@ export default function FicheProduit({ data }) {
   const peutAjouter = !!referenceFinale && finitionsOK;
   const peutDemanderDevis = finitionsOK;
 
+  // Construit l'objet transmis au panier — le type dépend explicitement de quel système
+  // a résolu ce produit, pour que la route de paiement sache où revérifier le prix ensuite.
   const ajouterPanier = () => {
     if (!peutAjouter) return;
-    addItem(
-      {
-        codeRacine: referenceFinale.codeRacine,
-        slug: carte.slug,
-        categorieSlug: carte.categorieSlug || null,
-        sousCategorieSlug: carte.sousCategorieSlug || null,
-        designation: referenceFinale.designation,
-        marque: "Buronomic",
-        image: images[0] || null,
-        prix: prixAffiche,
-      },
-      libelleConfig() || null, qte
-    );
+    const itemPourPanier = produitFinal
+      ? {
+          type: "ancien",
+          codeRacine: produitFinal.codeRacine,
+          slug: carte.slug,
+          categorieSlug: carte.categorieSlug || null,
+          sousCategorieSlug: carte.sousCategorieSlug || null,
+          designation: produitFinal.designation,
+          marque: "Buronomic",
+          image: images[0] || null,
+          prix: prixAffiche,
+        }
+      : {
+          type: "nouveau",
+          vitrineId: carte.id,
+          declinaisonId: declinaisonFinale.id,
+          slug: carte.slug,
+          categorieSlug: carte.categorieSlug || null,
+          sousCategorieSlug: carte.sousCategorieSlug || null,
+          designation: carte.nom,
+          marque: "Buronomic",
+          image: images[0] || null,
+          prix: prixAffiche,
+        };
+    addItem(itemPourPanier, libelleConfig() || null, qte);
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
   };
   const ajouterAuDevis = () => {

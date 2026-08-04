@@ -7,6 +7,9 @@ import {
   creerSousCategorie, renommerSousCategorie, supprimerSousCategorie,
 } from "./actionsCategories";
 
+// Tri alphabétique français, insensible aux accents et à la casse.
+const parNom = (a, b) => (a.nom || "").localeCompare(b.nom || "", "fr", { sensitivity: "base" });
+
 export default function CategoriesManager({ categories }) {
   const router = useRouter();
   const [depliees, setDepliees] = useState(() => new Set());
@@ -15,6 +18,11 @@ export default function CategoriesManager({ categories }) {
   const [isPending, startTransition] = useTransition();
   const [confirmationSuppr, setConfirmationSuppr] = useState(null); // { type: "cat"|"sous", id, nom }
   const [erreurSuppr, setErreurSuppr] = useState("");
+
+  // Catégories triées alphabétiquement, et sous-catégories de chacune triées aussi.
+  const categoriesTriees = [...categories]
+    .map((c) => ({ ...c, sousCategories: [...(c.sousCategories || [])].sort(parNom) }))
+    .sort(parNom);
 
   const toggleDeplier = (id) => {
     setDepliees((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
@@ -62,7 +70,7 @@ export default function CategoriesManager({ categories }) {
 
       {/* Liste des catégories */}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {categories.map((cat) => (
+        {categoriesTriees.map((cat) => (
           <CategorieBloc
             key={cat.id}
             categorie={cat}
@@ -77,7 +85,7 @@ export default function CategoriesManager({ categories }) {
             isPending={isPending}
           />
         ))}
-        {categories.length === 0 && (
+        {categoriesTriees.length === 0 && (
           <div style={{ ...card, padding: 40, textAlign: "center", color: "#9aa0a8", fontSize: 14 }}>Aucune catégorie pour l'instant.</div>
         )}
       </div>

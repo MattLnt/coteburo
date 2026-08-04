@@ -7,7 +7,7 @@ import TiptapEditor from "@/components/dashboard/TiptapEditor";
 import { sauverInfosGamme } from "./actions";
 import OngletCartes from "./OngletCartes";
 
-export default function GammeEditForm({ gamme, categoriesMarque }) {
+export default function GammeEditForm({ gamme, categoriesMarque, marques = [] }) {
   const [onglet, setOnglet] = useState("infos");
 
   const tabs = [
@@ -44,16 +44,17 @@ export default function GammeEditForm({ gamme, categoriesMarque }) {
         ))}
       </div>
 
-      {onglet === "infos" && <OngletInfos gamme={gamme} />}
+      {onglet === "infos" && <OngletInfos gamme={gamme} marques={marques} />}
       {onglet === "cartes" && <OngletCartes gammeId={gamme.id} gammeDevis={gamme.venteSurDevis} />}
     </div>
   );
 }
 
 /* ─────────── Onglet INFOS ─────────── */
-function OngletInfos({ gamme }) {
+function OngletInfos({ gamme, marques = [] }) {
   const router = useRouter();
   const [nom, setNom] = useState(gamme.nom);
+  const [marqueId, setMarqueId] = useState(gamme.marqueId || "");
   const [descriptif, setDescriptif] = useState(gamme.descriptif || "");
   const [descriptionTech, setDescriptionTech] = useState(gamme.descriptionTech || "");
   const [imagePrincipale, setImagePrincipale] = useState(gamme.imageUrl ? [gamme.imageUrl] : []);
@@ -61,11 +62,13 @@ function OngletInfos({ gamme }) {
   const [isPending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
 
+  const marqueNom = marques.find((m) => m.id === marqueId)?.nom || gamme.marqueNom;
+
   const enregistrer = () => {
     setSaved(false);
     startTransition(async () => {
       await sauverInfosGamme(gamme.id, {
-        nom, descriptif, descriptionTech,
+        nom, marqueId, descriptif, descriptionTech,
         imageUrl: imagePrincipale[0] || null, images: galerie,
       });
       setSaved(true);
@@ -85,6 +88,27 @@ function OngletInfos({ gamme }) {
           <label style={label}>Nom de la gamme</label>
           <input value={nom} onChange={(e) => { setNom(e.target.value); setSaved(false); }} style={{ ...input, fontWeight: 600 }} />
         </div>
+
+        {/* ── Marque ── */}
+        {marques.length > 1 && (
+          <div style={card}>
+            <label style={label}>Marque</label>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+              {marques.map((m) => {
+                const actif = m.id === marqueId;
+                return (
+                  <button key={m.id} type="button" onClick={() => { setMarqueId(m.id); setSaved(false); }}
+                    style={{ padding: "12px 20px", borderRadius: 13, cursor: "pointer", fontSize: 14.5, fontWeight: 600,
+                      border: "1.5px solid " + (actif ? "#f0661b" : "#ece8e0"),
+                      background: actif ? "#fce6d6" : "#fff",
+                      color: actif ? "#d9551a" : "#5c616a" }}>
+                    {m.nom}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div style={card}>
           <label style={label}>Image principale (vignette de la gamme)</label>
@@ -137,7 +161,7 @@ function OngletInfos({ gamme }) {
           <h2 style={{ position: "relative", fontSize: 26, fontWeight: 800, color: "#fff", margin: "0 0 6px", minHeight: 34, letterSpacing: "-0.01em" }}>
             {nom.trim() || "Nom de la gamme"}
           </h2>
-          <p style={{ position: "relative", fontSize: 13, color: "#9aa0a8", margin: "0 0 20px" }}>{gamme.marqueNom}</p>
+          <p style={{ position: "relative", fontSize: 13, color: "#9aa0a8", margin: "0 0 20px" }}>{marqueNom}</p>
 
           <div style={{ position: "relative", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
             {[

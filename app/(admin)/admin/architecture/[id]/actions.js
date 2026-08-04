@@ -21,9 +21,16 @@ export async function getGammeEdition(id) {
   });
   if (!gamme) return null;
 
+  // Catégories triées par ORDRE ALPHABÉTIQUE (nom).
   const categoriesMarque = await prisma.categorie.findMany({
     where: { marqueId: gamme.marqueId },
-    orderBy: { ordre: "asc" },
+    orderBy: { nom: "asc" },
+    select: { id: true, nom: true },
+  });
+
+  // Toutes les marques, pour le sélecteur d'édition
+  const marques = await prisma.marque.findMany({
+    orderBy: { nom: "asc" },
     select: { id: true, nom: true },
   });
 
@@ -38,6 +45,7 @@ export async function getGammeEdition(id) {
       images: gamme.images || [],
       publie: gamme.publie,
       venteSurDevis: gamme.venteSurDevis,
+      marqueId: gamme.marqueId,
       marqueNom: gamme.marque?.nom || "",
       categorieIds: gamme.categories.map((c) => c.id),
       nbProduits: gamme._count.produits,
@@ -45,6 +53,7 @@ export async function getGammeEdition(id) {
       nbGroupesFinition: gamme._count.groupesFinition,
     },
     categoriesMarque,
+    marques,
   };
 }
 
@@ -52,7 +61,7 @@ export async function getGammeEdition(id) {
 // catégorie qui compte pour l'URL est celle du produit, et le mode de vente se choisit
 // désormais à la création de chaque produit, pas au niveau de la gamme entière).
 export async function sauverInfosGamme(id, data) {
-  const { nom, descriptif, descriptionTech, imageUrl, images } = data;
+  const { nom, descriptif, descriptionTech, imageUrl, images, marqueId } = data;
   await prisma.gamme.update({
     where: { id },
     data: {
@@ -61,6 +70,8 @@ export async function sauverInfosGamme(id, data) {
       descriptionTech: descriptionTech ?? null,
       imageUrl: imageUrl ?? null,
       images: Array.isArray(images) ? images : [],
+      // Ne réécrit la marque que si elle est fournie (évite de casser un appel sans marque)
+      ...(marqueId ? { marqueId } : {}),
     },
   });
   revalidatePath("/admin/architecture");

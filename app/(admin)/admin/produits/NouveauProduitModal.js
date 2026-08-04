@@ -15,13 +15,15 @@ export default function NouveauProduitModal({ open, onClose, gammes }) {
   // Tous les hooks doivent s'exécuter avant tout retour conditionnel
   const gammesFiltrees = useMemo(() => {
     const terme = rechercheGamme.trim().toLowerCase();
-    if (!terme) return gammes.slice(0, 8);
+    if (terme.length < 3) return [];
     return gammes.filter((g) => g.nom.toLowerCase().includes(terme)).slice(0, 8);
   }, [rechercheGamme, gammes]);
 
   if (!open) return null;
 
-  const gammeExisteExactement = gammes.some((g) => g.nom.toLowerCase() === rechercheGamme.trim().toLowerCase());
+  const termeGamme = rechercheGamme.trim();
+  const rechercheActive = termeGamme.length >= 3;
+  const gammeExisteExactement = gammes.some((g) => g.nom.toLowerCase() === termeGamme.toLowerCase());
   const gammeSelectionnee = gammes.find((g) => g.id === gammeSelectionneeId) || null;
 
   const choisirGamme = (g) => {
@@ -90,7 +92,12 @@ export default function NouveauProduitModal({ open, onClose, gammes }) {
                 placeholder="Rechercher ou créer une gamme…"
                 style={inputStyle}
               />
-              {rechercheGamme.trim() && (
+              {!rechercheActive && termeGamme.length > 0 && (
+                <p style={{ marginTop: 8, fontSize: 12.5, color: "#9aa0a8" }}>
+                  Tape au moins 3 lettres pour rechercher une gamme…
+                </p>
+              )}
+              {rechercheActive && (
                 <div style={{ marginTop: 8, border: "1px solid #ece8e0", borderRadius: 12, overflow: "hidden" }}>
                   {gammesFiltrees.map((g) => (
                     <button key={g.id} onClick={() => choisirGamme(g)}
@@ -98,10 +105,15 @@ export default function NouveauProduitModal({ open, onClose, gammes }) {
                       {g.nom}
                     </button>
                   ))}
+                  {gammesFiltrees.length === 0 && !gammeExisteExactement && (
+                    <p style={{ padding: "11px 16px", fontSize: 13, color: "#9aa0a8", margin: 0 }}>
+                      Aucune gamme existante ne correspond.
+                    </p>
+                  )}
                   {!gammeExisteExactement && (
-                    <button onClick={() => choisirGamme({ id: null, nom: rechercheGamme.trim() })}
+                    <button onClick={() => choisirGamme({ id: null, nom: termeGamme })}
                       style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", textAlign: "left", padding: "11px 16px", fontSize: 14, fontWeight: 600, color: "#f0661b", background: "#fef4ee", border: "none", cursor: "pointer" }}>
-                      + Créer « {rechercheGamme.trim()} »
+                      + Créer « {termeGamme} »
                     </button>
                   )}
                 </div>

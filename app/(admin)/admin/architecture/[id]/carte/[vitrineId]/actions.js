@@ -2,6 +2,14 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+function slugify(s) {
+  return s
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export async function getCarteEdition(vitrineId) {
   const vitrine = await prisma.produitVitrine.findUnique({
     where: { id: vitrineId },
@@ -26,11 +34,22 @@ export async function getCarteEdition(vitrineId) {
   const prixMiniAuto = prixListe.length ? Math.min(...prixListe) : null;
   const surDevisEffectif = vitrine.gamme.venteSurDevis || vitrine.venteSurDevis;
 
+  // Catégories GLOBALES (toutes marques confondues) : la taxonomie catégorie > sous-catégorie
+  // est commune à tout le catalogue. On ne filtre PLUS par la marque de la gamme — sinon les
+  // produits d'une marque sans catégorie propre (ex. OfficePro, Sokoa) n'auraient aucune
+  // catégorie à sélectionner et se retrouveraient sans URL publique valide.
   const categories = await prisma.categorie.findMany({
-    where: { marqueId: vitrine.gamme.marqueId },
-    orderBy: { ordre: "asc" },
-    include: { sousCategories: { orderBy: { ordre: "asc" }, select: { id: true, nom: true, slug: true } } },
+    orderBy: { nom: "asc" },
+    include: { sousCategories: { orderBy: { nom: "asc" }, select: { id: true, nom: true, slug: true } } },
   });
+
+  // Marge globale définie dans les Réglages admin — utilisée pour calculer le prix de
+  // vente à partir du prix tarif fournisseur, ligne par ligne dans l'onglet Prix.
+  const reglages = await prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true } });
+  const margeGlobale = reglages?.margeGlobale ?? 0.3;
+
+  const categorieIds = vitrine.categories.map((c) => c.id);
+  const sousCategorieIds = vitrine.sousCategories.map((s) => s.id);
 
   return {
     id: vitrine.id,
@@ -51,11 +70,33 @@ export async function getCarteEdition(vitrineId) {
     axesDeclinaisons: Array.isArray(vitrine.axesDeclinaisons) ? vitrine.axesDeclinaisons : [],
     declinaisons: Array.isArray(vitrine.declinaisons) ? vitrine.declinaisons : [],
     prixAPartir: vitrine.prixAPartir ?? null,
+    sansDeclinaisons: !!vitrine.sansDeclinaisons,
+    prixUnitaireTarifHT: vitrine.prixUnitaireTarifHT ?? "",
+    prixUnitaireHT: vitrine.prixUnitaireHT ?? "",
+    prixUnitaireVerrouille: !!vitrine.prixUnitaireVerrouille,
+    referenceUnitaire: vitrine.referenceUnitaire ?? "",
+    optionsAdditionnelles: vitrine.optionsAdditionnelles ?? [],
+    largeurMin: vitrine.largeurMin ?? "",
+    largeurMax: vitrine.largeurMax ?? "",
+    hauteurMin: vitrine.hauteurMin ?? "",
+    hauteurMax: vitrine.hauteurMax ?? "",
+    profondeurMin: vitrine.profondeurMin ?? "",
+    profondeurMax: vitrine.profondeurMax ?? "",
     prixMiniAuto,
+    margeGlobale,
     gammeId: vitrine.gamme.id,
     gammeNom: vitrine.gamme.nom,
-    categorieId: vitrine.categories[0]?.id || null,
-    sousCategorieId: vitrine.sousCategories[0]?.id || null,
+    // Sélection multiple + catégorie/sous-catégorie principale (celles qui font l'URL)
+    categorieIds,
+    sousCategorieIds,
+    categoriePrincipaleId:
+      vitrine.categoriePrincipaleId && categorieIds.includes(vitrine.categoriePrincipaleId)
+        ? vitrine.categoriePrincipaleId
+        : (categorieIds[0] || null),
+    sousCategoriePrincipaleId:
+      vitrine.sousCategoriePrincipaleId && sousCategorieIds.includes(vitrine.sousCategoriePrincipaleId)
+        ? vitrine.sousCategoriePrincipaleId
+        : (sousCategorieIds[0] || null),
     categoriesDisponibles: categories.map((c) => ({
       id: c.id, nom: c.nom,
       sousCategories: c.sousCategories,
@@ -75,10 +116,12 @@ export async function sauverCarteComplete(vitrineId, data) {
   const {
     nom, descriptif, imageUrl, images,
     sectionsDevis, prixAPartir,
+    sansDeclinaisons, prixUnitaireTarifHT, prixUnitaireHT, prixUnitaireVerrouille, referenceUnitaire, optionsAdditionnelles,
+    largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax,
     axesDeclinaisons, declinaisons,
-    categorieId, sousCategorieId,
+    categorieIds, sousCategorieIds, categoriePrincipaleId, sousCategoriePrincipaleId,
     bestSeller, promoPct, promoDebut, promoFin,
-    venteSurDevis,
+    venteSurDevis, publie,
   } = data;
 
   const toNum = (v) => {
@@ -86,7 +129,18 @@ export async function sauverCarteComplete(vitrineId, data) {
     const n = parseFloat(String(v).replace(",", "."));
     return Number.isNaN(n) ? null : n;
   };
+  const toEntier = (v) => {
+    if (v === "" || v == null) return null;
+    const n = parseInt(String(v), 10);
+    return Number.isNaN(n) ? null : n;
+  };
   const toDate = (v) => (v ? new Date(v + "T00:00:00") : null);
+
+  const catIds = Array.isArray(categorieIds) ? categorieIds : [];
+  const sousCatIds = Array.isArray(sousCategorieIds) ? sousCategorieIds : [];
+  // Les principales doivent faire partie des sélections ; sinon on prend la première (ou rien).
+  const principaleId = catIds.includes(categoriePrincipaleId) ? categoriePrincipaleId : (catIds[0] || null);
+  const sousPrincipaleId = sousCatIds.includes(sousCategoriePrincipaleId) ? sousCategoriePrincipaleId : (sousCatIds[0] || null);
 
   const v = await prisma.produitVitrine.update({
     where: { id: vitrineId },
@@ -97,22 +151,97 @@ export async function sauverCarteComplete(vitrineId, data) {
       images: Array.isArray(images) ? images : [],
       sectionsDevis: Array.isArray(sectionsDevis) ? sectionsDevis : [],
       prixAPartir: toNum(prixAPartir),
+      sansDeclinaisons: !!sansDeclinaisons,
+      prixUnitaireTarifHT: toNum(prixUnitaireTarifHT),
+      prixUnitaireHT: toNum(prixUnitaireHT),
+      prixUnitaireVerrouille: !!prixUnitaireVerrouille,
+      referenceUnitaire: (referenceUnitaire ?? "").trim() || null,
+      optionsAdditionnelles: Array.isArray(optionsAdditionnelles)
+        ? optionsAdditionnelles
+            .filter((o) => o && (o.nom || "").trim())
+            .map((o) => ({
+              id: o.id || undefined,
+              nom: (o.nom || "").trim(),
+              prixHT: o.prixHT === "" || o.prixHT == null ? null : Number(o.prixHT),
+              reference: (o.reference || "").trim() || null,
+              images: Array.isArray(o.images) ? o.images : [],
+            }))
+        : [],
+      largeurMin: toEntier(largeurMin),
+      largeurMax: toEntier(largeurMax),
+      hauteurMin: toEntier(hauteurMin),
+      hauteurMax: toEntier(hauteurMax),
+      profondeurMin: toEntier(profondeurMin),
+      profondeurMax: toEntier(profondeurMax),
       axesDeclinaisons: Array.isArray(axesDeclinaisons) ? axesDeclinaisons : [],
       declinaisons: Array.isArray(declinaisons) ? declinaisons : [],
-      categories: { set: categorieId ? [{ id: categorieId }] : [] },
-      sousCategories: { set: sousCategorieId ? [{ id: sousCategorieId }] : [] },
+      categories: { set: catIds.map((id) => ({ id })) },
+      sousCategories: { set: sousCatIds.map((id) => ({ id })) },
+      categoriePrincipaleId: principaleId,
+      sousCategoriePrincipaleId: sousPrincipaleId,
       bestSeller: !!bestSeller,
       promoPct: toNum(promoPct),
       promoDebut: toDate(promoDebut),
       promoFin: toDate(promoFin),
       venteSurDevis: !!venteSurDevis,
+      publie: !!publie,
     },
     select: { gammeId: true },
   });
 
   revalidatePath(`/admin/architecture/${v.gammeId}`);
   revalidatePath(`/admin/architecture/${v.gammeId}/carte/${vitrineId}`);
+  revalidatePath("/admin/produits");
   return { ok: true };
+}
+
+// ─────────── Changement de gamme d'un produit déjà créé ───────────
+export async function getGammesPourRecherche() {
+  return prisma.gamme.findMany({
+    orderBy: { nom: "asc" },
+    select: { id: true, nom: true },
+  });
+}
+
+export async function changerGammeProduit(vitrineId, { gammeId, nouvelleGammeNom }) {
+  let gammeIdFinal = gammeId || null;
+
+  if (!gammeIdFinal) {
+    const nomPropre = (nouvelleGammeNom || "").trim();
+    if (!nomPropre) return { ok: false, error: "Choisis une gamme existante ou indique le nom d'une nouvelle gamme." };
+
+    const marque = (await prisma.marque.findFirst({ where: { slug: "buronomic" } })) || (await prisma.marque.findFirst());
+    if (!marque) return { ok: false, error: "Aucune marque trouvée en base." };
+
+    const slug = slugify(nomPropre);
+    const existante = await prisma.gamme.findUnique({ where: { slug } });
+    if (existante) {
+      gammeIdFinal = existante.id;
+    } else {
+      const nouvelle = await prisma.gamme.create({
+        data: { nom: nomPropre, slug, marqueId: marque.id, publie: true, venteSurDevis: false },
+      });
+      gammeIdFinal = nouvelle.id;
+    }
+  }
+
+  const vitrine = await prisma.produitVitrine.findUnique({ where: { id: vitrineId }, select: { slug: true, gammeId: true } });
+  if (!vitrine) return { ok: false, error: "Produit introuvable." };
+  if (vitrine.gammeId === gammeIdFinal) return { ok: true, gammeId: gammeIdFinal };
+
+  let slugFinal = vitrine.slug;
+  let i = 1;
+  while (await prisma.produitVitrine.findUnique({ where: { gammeId_slug: { gammeId: gammeIdFinal, slug: slugFinal } } })) {
+    slugFinal = `${vitrine.slug}-${i++}`;
+  }
+
+  await prisma.produitVitrine.update({ where: { id: vitrineId }, data: { gammeId: gammeIdFinal, slug: slugFinal } });
+
+  revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+  revalidatePath(`/admin/architecture/${gammeIdFinal}`);
+  revalidatePath(`/admin/architecture/${gammeIdFinal}/carte/${vitrineId}`);
+  revalidatePath("/admin/produits");
+  return { ok: true, gammeId: gammeIdFinal };
 }
 
 /* ─────────────── FINITIONS DU PRODUIT (rattachées à la vitrine, pas à la gamme) ─────────────── */

@@ -17,7 +17,8 @@ export default function GammesManager({ gammes: gammesInit }) {
       if (recherche.trim()) {
         const q = recherche.toLowerCase();
         const dansCategories = (g.categories || []).some((c) => c.toLowerCase().includes(q));
-        if (!g.nom.toLowerCase().includes(q) && !dansCategories) return false;
+        const dansMarque = (g.marque || "").toLowerCase().includes(q);
+        if (!g.nom.toLowerCase().includes(q) && !dansCategories && !dansMarque) return false;
       }
       return true;
     });
@@ -50,7 +51,7 @@ export default function GammesManager({ gammes: gammesInit }) {
           <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "#9aa0a8" }}>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
           </span>
-          <input value={recherche} onChange={(e) => setRecherche(e.target.value)} placeholder="Rechercher une gamme…"
+          <input value={recherche} onChange={(e) => setRecherche(e.target.value)} placeholder="Rechercher une gamme, une marque…"
             style={{ width: "100%", padding: "11px 14px 11px 40px", borderRadius: 12, border: "1px solid #ece8e0", background: "#fff", fontSize: 14, outline: "none" }} />
         </div>
         <div style={{ display: "flex", gap: 6, background: "#f0ece4", padding: 4, borderRadius: 12 }}>
@@ -70,6 +71,7 @@ export default function GammesManager({ gammes: gammesInit }) {
           <thead style={{ background: "#faf8f4" }}>
             <tr>
               <th style={thStyle}>Gamme</th>
+              <th style={thStyle}>Marque</th>
               <th style={thStyle}>Catégorie(s)</th>
               <th style={{ ...thStyle, textAlign: "center" }}>Cartes</th>
               <th style={{ ...thStyle, textAlign: "center" }}>Produits</th>
@@ -91,6 +93,11 @@ export default function GammesManager({ gammes: gammesInit }) {
                       {!g.aDescriptif && <span style={{ fontSize: 11, color: "#d9861a" }}>descriptif manquant</span>}
                     </div>
                   </div>
+                </td>
+                <td style={cellStyle}>
+                  {g.marque
+                    ? <span style={{ display: "inline-block", padding: "4px 11px", borderRadius: 999, fontSize: 12, fontWeight: 600, background: "#23262a", color: "#fff", whiteSpace: "nowrap" }}>{g.marque}</span>
+                    : <span style={{ color: "#c4c0b8", fontSize: 12 }}>—</span>}
                 </td>
                 <td style={cellStyle}>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>

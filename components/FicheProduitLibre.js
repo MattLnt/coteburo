@@ -15,11 +15,7 @@ export default function FicheProduitLibre({ data }) {
   const axes = carte.axesDeclinaisons || [];
   const declinaisons = carte.declinaisons || [];
   const images = carte.images?.length ? carte.images : [];
-
-  const finitionsAVoter = useMemo(
-    () => [...(groupesFinition || []), ...((carte.finitionsProduit) || [])],
-    [groupesFinition, carte.finitionsProduit]
-  );
+  const optionsDispo = (carte.optionsAdditionnelles || []).filter((o) => o && o.nom && o.prixHT != null);
 
   const [historique, setHistorique] = useState([]); // [{axeId, nom, valeur}]
   const [reponses, setReponses] = useState({});
@@ -29,6 +25,44 @@ export default function FicheProduitLibre({ data }) {
   const [qte, setQte] = useState(1);
   const [ajoute, setAjoute] = useState(false);
   const [ajouteDevis, setAjouteDevis] = useState(false);
+  const [optionsSel, setOptionsSel] = useState({}); // { [id]: quantité }
+  const [lightbox, setLightbox] = useState(null);   // { option, index } ou null
+
+  const toggleOption = (id) =>
+    setOptionsSel((s) => { const n = { ...s }; if (n[id]) delete n[id]; else n[id] = 1; return n; });
+  const setQteOption = (id, q) =>
+    setOptionsSel((s) => ({ ...s, [id]: Math.max(1, q) }));
+  const totalOptions = optionsDispo.reduce((t, o) => t + (optionsSel[o.id] ? Number(o.prixHT) * optionsSel[o.id] : 0), 0);
+
+  // Groupes de finitions rattachés aux valeurs d'axe choisies (finitionsParValeur).
+  // Ils n'apparaissent que lorsque la valeur correspondante est sélectionnée.
+  const groupesValeur = useMemo(() => {
+    const out = [];
+    for (const a of axes) {
+      const val = reponses[a.id];
+      const fins = val && a.finitionsParValeur ? a.finitionsParValeur[val] : null;
+      if (fins && fins.length) {
+        out.push({
+          id: `axe:${a.id}:${val}`,
+          nom: `${a.nom} — ${val}`,
+          finitions: fins.map((f, i) => ({ id: f.id || `${a.id}:${val}:${i}`, nom: f.nom, couleur: f.couleur || null, imageUrl: f.imageUrl || null })),
+        });
+      }
+    }
+    return out;
+  }, [axes, reponses]);
+
+  const finitionsAVoter = useMemo(() => {
+    const groupes = [...(groupesFinition || []), ...((carte.finitionsProduit) || []), ...groupesValeur];
+    // respecte l'ordre défini en admin : tri par `ordre` si présent, sinon ordre du tableau (stable)
+    return groupes.map((g) => ({
+      ...g,
+      finitions: [...(g.finitions || [])]
+        .map((f, i) => ({ f, i }))
+        .sort((a, b) => ((a.f.ordre ?? a.i) - (b.f.ordre ?? b.i)))
+        .map((x) => x.f),
+    }));
+  }, [groupesFinition, carte.finitionsProduit, groupesValeur]);
 
   const dejaTraites = useMemo(() => new Set(historique.map((h) => h.axeId)), [historique]);
 
@@ -55,6 +89,12 @@ export default function FicheProduitLibre({ data }) {
     setHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
     setReponses((r) => ({ ...r, [axeId]: valeur }));
     setPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
+    // si on change une valeur qui portait des finitions, on nettoie l'ancienne sélection liée
+    setFinitionsSel((f) => {
+      const n = { ...f };
+      Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${axeId}:`)) delete n[k]; });
+      return n;
+    });
   };
 
   const choisirFinition = (groupeId, finitionId) => {
@@ -67,6 +107,7 @@ export default function FicheProduitLibre({ data }) {
       const last = h[h.length - 1];
       setReponses((r) => { const n = { ...r }; delete n[last.axeId]; return n; });
       setPrefValeurs((p) => { const n = { ...p }; delete n[last.axeId]; return n; });
+      setFinitionsSel((f) => { const n = { ...f }; Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${last.axeId}:`)) delete n[k]; }); return n; });
       return h.slice(0, -1);
     });
   };
@@ -91,9 +132,12 @@ export default function FicheProduitLibre({ data }) {
 
   const ajouterPanier = () => {
     if (!peutAjouter) return;
-    addItem(
+    // Ligne du produit principal — système "nouveau" (vitrine + déclinaison), vérifié en base au paiement.
+    const parentId = addItem(
       {
-        codeRacine: declinaisonFinale.id,
+        type: "nouveau",
+        vitrineId: carte.id,
+        declinaisonId: declinaisonFinale.id,
         slug: carte.slug,
         categorieSlug: carte.categorieSlug || null,
         sousCategorieSlug: carte.sousCategorieSlug || null,
@@ -104,6 +148,29 @@ export default function FicheProduitLibre({ data }) {
       },
       libelleDeclinaison() || null, qte
     );
+    // Chaque option cochée = une ligne rattachée au produit parent (affichée indentée dessous).
+    // On transporte vitrineId + optionId pour que le serveur retrouve son vrai prix en base.
+    optionsDispo.forEach((o) => {
+      const q = optionsSel[o.id];
+      if (!q) return;
+      addItem(
+        {
+          codeRacine: o.reference || `opt-${o.id}`,   // pour l'unicité de la ligne panier
+          vitrineId: carte.id,
+          optionId: o.id,
+          reference: o.reference || null,
+          slug: carte.slug,
+          categorieSlug: carte.categorieSlug || null,
+          sousCategorieSlug: carte.sousCategorieSlug || null,
+          designation: o.nom,
+          marque: "Buronomic",
+          image: (o.images && o.images[0]) || null,
+          prix: Number(o.prixHT),
+          parentId,
+        },
+        null, q
+      );
+    });
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
   };
   const ajouterAuDevisAussi = () => {
@@ -118,79 +185,147 @@ export default function FicheProduitLibre({ data }) {
   const peutReculer = historique.length > 0;
 
   return (
-    <div className="grid lg:grid-cols-2 gap-10 items-start">
-      <div className="lg:sticky lg:top-6">
-        <GalerieProduit images={images} alt={carte.nom} />
-      </div>
-
-      <div>
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange">{gammeNom}</p>
-        <h1 className="font-display font-bold text-3xl sm:text-4xl mt-2">{carte.nom}</h1>
-
-        <div className="flex items-end gap-3 mt-5">
-          {!declinaisonFinale && <span className="text-ink-soft text-[15px] mb-1">à partir de</span>}
-          <span className="font-display font-bold text-3xl">{fmt(prixHT)}</span>
-          <span className="text-ink-soft mb-1">HT</span>
-          {ttc != null && <span className="text-[13px] text-ink-soft mb-1.5">· {fmt(ttc)} TTC</span>}
+    <div>
+      <div className="grid lg:grid-cols-2 gap-10 items-start">
+        <div className="lg:sticky lg:top-6">
+          <GalerieProduit images={images} alt={carte.nom} />
         </div>
 
-        <div className="mt-4">
-          <FavoriButton vitrineId={carte.id} initial={!!favori} connecte={!!connecte} variant="text" />
-        </div>
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange">{gammeNom}</p>
+          <h1 className="font-display font-bold text-3xl sm:text-4xl mt-2">{carte.nom}</h1>
 
-        {carte.descriptif && (
-          <div className="text-ink-soft mt-4 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: carte.descriptif }} />
-        )}
-
-        {finitionsAVoter.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-line">
-            {finitionsAVoter.map((g) => {
-              const selectionneeId = finitionsSel[g.id];
-              return (
-                <div key={g.id} className="mb-5 last:mb-0">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="font-semibold text-ink text-[14px]">{g.nom}</p>
-                    {!selectionneeId && <span className="text-[11.5px] text-orange-dark font-medium">À choisir</span>}
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    {g.finitions.map((f) => {
-                      const actif = selectionneeId === f.id;
-                      return (
-                        <button key={f.id} onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5">
-                          <span className={`rounded-full border-2 overflow-hidden transition block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 44, height: 44, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
-                            {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
-                          </span>
-                          <span className={`text-[11px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+          <div className="flex items-end gap-3 mt-5">
+            {!declinaisonFinale && <span className="text-ink-soft text-[15px] mb-1">à partir de</span>}
+            <span className="font-display font-bold text-3xl">{fmt(prixHT)}</span>
+            <span className="text-ink-soft mb-1">HT</span>
+            {ttc != null && <span className="text-[13px] text-ink-soft mb-1.5">· {fmt(ttc)} TTC</span>}
           </div>
-        )}
 
-        <div className={finitionsAVoter.length > 0 ? "mt-7" : "mt-6 pt-6 border-t border-line"}>
-          {phase === "config" && etapeCourante && (
-            <div>
-              <p className="font-semibold text-ink text-[16px] mb-3.5">{etapeCourante.axe.nom}</p>
-              <div className="flex flex-wrap gap-2">
-                {etapeCourante.valeurs.map((v) => {
-                  const actif = prefValeurs[etapeCourante.axe.id] === v;
+          <div className="mt-4">
+            <FavoriButton vitrineId={carte.id} initial={!!favori} connecte={!!connecte} variant="text" />
+          </div>
+
+          {carte.descriptif && (
+            <div className="text-ink-soft mt-4 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: carte.descriptif }} />
+          )}
+
+          {finitionsAVoter.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-line">
+              {finitionsAVoter.map((g) => {
+                const selectionneeId = finitionsSel[g.id];
+                return (
+                  <div key={g.id} className="mb-5 last:mb-0">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="font-semibold text-ink text-[14px]">{g.nom}</p>
+                      {!selectionneeId && <span className="text-[11.5px] text-orange-dark font-medium">À choisir</span>}
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      {g.finitions.map((f) => {
+                        const actif = selectionneeId === f.id;
+                        return (
+                          <button key={f.id} onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5">
+                            <span className={`rounded-full border-2 overflow-hidden transition block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 44, height: 44, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                              {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                            </span>
+                            <span className={`text-[11px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+
+
+
+
+
+
+          <div className={finitionsAVoter.length > 0 ? "mt-7" : "mt-6 pt-6 border-t border-line"}>
+            {phase === "config" && etapeCourante && (
+              <div>
+                <p className="font-semibold text-ink text-[16px] mb-3.5">{etapeCourante.axe.nom}</p>
+                <div className="flex flex-wrap gap-2">
+                  {(() => {
+                    const ordre = etapeCourante.axe.valeurs || [];
+                    const rang = (v) => { const i = ordre.indexOf(v); return i === -1 ? 9999 : i; };
+                    return [...etapeCourante.valeurs].sort((a, b) => rang(a) - rang(b)).map((v) => {
+                      const actif = prefValeurs[etapeCourante.axe.id] === v;
+                      return (
+                        <button key={v} onClick={() => choisirValeur(etapeCourante.axe.id, etapeCourante.axe.nom, v)} className={gros(actif)}>{v}</button>
+                      );
+                    });
+                  })()}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {phase !== "recap" && (
+            <div className="mt-6">
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: etapeTotalNum }).map((_, i) => (
+                  <div key={i} className={`h-[5px] flex-1 rounded-full transition-all duration-300 ${i < etapeActuelleNum ? "bg-orange" : "bg-line"}`} />
+                ))}
+              </div>
+              <p className="text-[11.5px] text-ink-soft mt-2 text-right">Étape {etapeActuelleNum} sur {etapeTotalNum}</p>
+            </div>
+          )}
+
+          {peutReculer && (
+            <div className="mt-6">
+              <button onClick={reculer} className="text-[14px] font-semibold text-ink-soft hover:text-ink">← Retour</button>
+            </div>
+          )}
+
+          {optionsDispo.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-line">
+              <p className="font-semibold text-ink text-[16px] mb-1">Options / Accessoires</p>
+              <p className="text-[12.5px] text-ink-soft mb-4">Ajoutez des accessoires. Chaque option s'ajoute au panier avec sa propre référence.</p>
+              <div className="flex flex-col gap-2.5">
+                {optionsDispo.map((o) => {
+                  const sel = !!optionsSel[o.id];
+                  const q = optionsSel[o.id] || 1;
+                  const img = (o.images && o.images[0]) || null;
+                  const multi = (o.images || []).length > 1;
                   return (
-                    <button key={v} onClick={() => choisirValeur(etapeCourante.axe.id, etapeCourante.axe.nom, v)} className={gros(actif)}>{v}</button>
+                    <div key={o.id} className={`flex items-center gap-3 p-3 rounded-xl border transition ${sel ? "border-orange bg-orange-tint" : "border-line"}`}>
+                      <input type="checkbox" checked={sel} onChange={() => toggleOption(o.id)} style={{ width: 18, height: 18, accentColor: "#f0661b", cursor: "pointer" }} />
+                      <button type="button" onClick={() => img && setLightbox({ option: o, index: 0 })} className="relative w-[54px] h-[54px] rounded-lg overflow-hidden shrink-0 bg-surface-2" style={{ cursor: img ? "zoom-in" : "default" }}>
+                        {img ? <img src={img} alt={o.nom} className="w-full h-full object-cover" /> : null}
+                        {multi && <span className="absolute bottom-0.5 right-0.5 bg-charcoal/80 text-white text-[10px] font-bold px-1.5 rounded">{o.images.length}</span>}
+                      </button>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[14px] font-semibold text-ink">{o.nom}</p>
+                        {o.reference && <p className="text-[12px] text-ink-soft">Réf. {o.reference}</p>}
+                      </div>
+                      {sel && (
+                        <div className="flex items-center gap-1.5">
+                          <button type="button" onClick={() => setQteOption(o.id, q - 1)} className="w-7 h-7 rounded-lg border border-line bg-surface-2 grid place-items-center">−</button>
+                          <span className="w-5 text-center text-[14px] font-bold">{q}</span>
+                          <button type="button" onClick={() => setQteOption(o.id, q + 1)} className="w-7 h-7 rounded-lg border border-line bg-surface-2 grid place-items-center">+</button>
+                        </div>
+                      )}
+                      <span className="text-[14px] font-bold text-orange-dark whitespace-nowrap min-w-[80px] text-right">+ {fmt(Number(o.prixHT) * (sel ? q : 1))}</span>
+                    </div>
                   );
                 })}
               </div>
+              {totalOptions > 0 && (
+                <p className="text-[13px] text-ink-soft mt-3 text-right">Total options : <span className="font-bold text-ink">+ {fmt(totalOptions)}</span></p>
+              )}
             </div>
           )}
 
           {phase === "recap" && (
-            <div>
+            <div className="mt-6">
               <p className="font-semibold text-ink text-[16px] mb-3.5">Votre configuration</p>
               {declinaisonFinale ? (
-                <div className="rounded-2xl border border-line divide-y divide-line overflow-hidden mb-5">
+                <div className="rounded-2xl border border-line divide-y divide-line overflow-hidden">
                   <div className="px-4 py-3 text-[13.5px] flex justify-between gap-4">
                     <span className="text-ink-soft">Modèle</span>
                     <span className="text-ink font-medium text-right">{carte.nom}</span>
@@ -215,14 +350,25 @@ export default function FicheProduitLibre({ data }) {
                       </div>
                     ) : null;
                   })}
+                  {optionsDispo.filter((o) => optionsSel[o.id]).map((o) => (
+                    <div key={o.id} className="px-4 py-3 text-[13.5px] flex justify-between gap-4">
+                      <span className="text-ink-soft">Option · {o.nom}{optionsSel[o.id] > 1 ? ` ×${optionsSel[o.id]}` : ""}</span>
+                      <span className="text-ink font-medium">+ {fmt(Number(o.prixHT) * optionsSel[o.id])}</span>
+                    </div>
+                  ))}
                   <div className="px-4 py-3 flex justify-between items-center bg-surface-2/40">
-                    <span className="text-ink-soft text-[13.5px]">Prix unitaire HT</span>
-                    <span className="font-display font-bold text-lg">{fmt(prixHT)}</span>
+                    <span className="text-ink-soft text-[13.5px]">{totalOptions > 0 ? "Total HT" : "Prix unitaire HT"}</span>
+                    <span className="font-display font-bold text-lg">{fmt((prixHT != null ? prixHT * qte : 0) + totalOptions)}</span>
                   </div>
                 </div>
               ) : (
-                <p className="text-[13px] text-ink-soft bg-surface-2 rounded-xl px-4 py-3 mb-4">Configuration incomplète — revenez en arrière.</p>
+                <p className="text-[13px] text-ink-soft bg-surface-2 rounded-xl px-4 py-3">Configuration incomplète — revenez en arrière.</p>
               )}
+            </div>
+          )}
+
+          {phase === "recap" && (
+            <div className="mt-5">
               {!finitionsOK && (
                 <p className="text-[13px] text-orange-dark bg-orange-tint rounded-xl px-4 py-3 mb-4">Choisissez une finition dans chaque catégorie ci-dessus avant de continuer.</p>
               )}
@@ -243,31 +389,52 @@ export default function FicheProduitLibre({ data }) {
               </div>
             </div>
           )}
-        </div>
 
-        {phase !== "recap" && (
-          <div className="mt-6">
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: etapeTotalNum }).map((_, i) => (
-                <div key={i} className={`h-[5px] flex-1 rounded-full transition-all duration-300 ${i < etapeActuelleNum ? "bg-orange" : "bg-line"}`} />
-              ))}
-            </div>
-            <p className="text-[11.5px] text-ink-soft mt-2 text-right">Étape {etapeActuelleNum} sur {etapeTotalNum}</p>
+          <div className="grid grid-cols-3 gap-3 mt-8 text-center text-[12px]">
+            <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Livraison</span><span className="text-ink-soft">& montage</span></div>
+            <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Garantie 7 ans</span><span className="text-ink-soft">offerte</span></div>
+            <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Conseil 3D</span><span className="text-ink-soft">sur devis</span></div>
           </div>
-        )}
-
-        {peutReculer && (
-          <div className="mt-6">
-            <button onClick={reculer} className="text-[14px] font-semibold text-ink-soft hover:text-ink">← Retour</button>
-          </div>
-        )}
-
-        <div className="grid grid-cols-3 gap-3 mt-8 text-center text-[12px]">
-          <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Livraison</span><span className="text-ink-soft">& montage</span></div>
-          <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Garantie 7 ans</span><span className="text-ink-soft">offerte</span></div>
-          <div className="rounded-xl border border-line py-3 px-2"><span className="block font-display font-bold text-ink text-[13px]">Conseil 3D</span><span className="text-ink-soft">sur devis</span></div>
         </div>
       </div>
+
+      {carte.sectionsDevis?.length > 0 && (
+        <div className="mt-14 pt-14 border-t border-line">
+          {carte.sectionsDevis.map((s) => (
+            <div key={s.id} className="mb-10 last:mb-0">
+              {s.titre && <h2 className="font-display font-bold text-2xl mb-4">{s.titre}</h2>}
+              {s.contenu && <div className="prose prose-sm max-w-none text-ink-soft leading-relaxed" dangerouslySetInnerHTML={{ __html: s.contenu }} />}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {lightbox && (
+        <div onClick={() => setLightbox(null)} className="fixed inset-0 z-[200] flex items-center justify-center p-6" style={{ background: "rgba(33,38,42,0.72)", backdropFilter: "blur(2px)" }}>
+          <div onClick={(e) => e.stopPropagation()} className="text-center">
+            <div className="relative inline-block">
+              {(lightbox.option.images || []).length > 1 && (
+                <>
+                  <button onClick={() => setLightbox((l) => ({ ...l, index: (l.index - 1 + l.option.images.length) % l.option.images.length }))} className="absolute -left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white grid place-items-center text-charcoal">‹</button>
+                  <button onClick={() => setLightbox((l) => ({ ...l, index: (l.index + 1) % l.option.images.length }))} className="absolute -right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white grid place-items-center text-charcoal">›</button>
+                </>
+              )}
+              <img src={lightbox.option.images[lightbox.index]} alt={lightbox.option.nom} className="max-w-[70vw] max-h-[70vh] rounded-2xl border-4 border-white object-contain" />
+            </div>
+            <p className="text-white text-[14px] font-semibold mt-3">{lightbox.option.nom}{(lightbox.option.images || []).length > 1 ? ` (${lightbox.index + 1}/${lightbox.option.images.length})` : ""}</p>
+            {(lightbox.option.images || []).length > 1 && (
+              <div className="flex gap-1.5 justify-center mt-2">
+                {lightbox.option.images.map((im, k) => (
+                  <button key={k} onClick={() => setLightbox((l) => ({ ...l, index: k }))} className="w-9 h-9 rounded-lg overflow-hidden" style={{ border: k === lightbox.index ? "2px solid #f0661b" : "2px solid transparent" }}>
+                    <img src={im} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+            <p className="text-[12px] text-white/70 mt-2">Cliquer à l'extérieur pour fermer</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

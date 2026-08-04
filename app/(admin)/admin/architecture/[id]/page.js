@@ -15,5 +15,11 @@ export default async function GammeEditPage({ params }) {
   const data = await getGammeEdition(id);
   if (!data) notFound();
 
-  return <GammeEditForm gamme={data.gamme} categoriesMarque={data.categoriesMarque} />;
+  return (
+    <GammeEditForm
+      gamme={data.gamme}
+      categoriesMarque={data.categoriesMarque}
+      marques={data.marques}
+    />
+  );
 }

@@ -1,35 +1,55 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "@/components/dashboard/ImageUploader";
 import TiptapEditor from "@/components/dashboard/TiptapEditor";
 import SelecteurOptions from "@/components/dashboard/SelecteurOptions";
 import SectionsDescriptives from "./SectionsDescriptives";
 import DeclinaisonsBoutique from "./DeclinaisonsBoutique";
+import OptionsAdditionnelles from "./OptionsAdditionnelles";
 import FinitionsProduit from "./FinitionsProduit";
 import PrixProduit from "./PrixProduit";
-import { sauverCarteComplete } from "./actions";
+import { sauverCarteComplete, changerGammeProduit, getGammesPourRecherche } from "./actions";
 
 export default function CarteEditForm({ carte }) {
   const router = useRouter();
 
   const [nom, setNom] = useState(carte.nom);
   const [descriptif, setDescriptif] = useState(carte.descriptif || "");
-  // Une seule liste de photos — la première sert automatiquement de vignette partout
-  // (catalogue, recherche, carrousels), les suivantes forment la galerie de la fiche produit.
   const [galerie, setGalerie] = useState(
     carte.images?.length ? carte.images : (carte.imageUrl ? [carte.imageUrl] : [])
   );
-  const [categorieId, setCategorieId] = useState(carte.categorieId || "");
-  const [sousCategorieId, setSousCategorieId] = useState(carte.sousCategorieId || "");
+  const [categorieIds, setCategorieIds] = useState(carte.categorieIds || []);
+  const [sousCategorieIds, setSousCategorieIds] = useState(carte.sousCategorieIds || []);
+  const [categoriePrincipaleId, setCategoriePrincipaleId] = useState(
+    carte.categoriePrincipaleId || (carte.categorieIds || [])[0] || ""
+  );
+  const [sousCategoriePrincipaleId, setSousCategoriePrincipaleId] = useState(
+    carte.sousCategoriePrincipaleId || (carte.sousCategorieIds || [])[0] || ""
+  );
   const [bestSeller, setBestSeller] = useState(!!carte.bestSeller);
   const [promoPct, setPromoPct] = useState(carte.promoPct ?? "");
   const [promoDebut, setPromoDebut] = useState(carte.promoDebut || "");
   const [promoFin, setPromoFin] = useState(carte.promoFin || "");
   const [venteSurDevis, setVenteSurDevis] = useState(!!carte.venteSurDevis);
+  const [publie, setPublie] = useState(!!carte.publie);
 
   const [sectionsDevis, setSectionsDevis] = useState(carte.sectionsDevis || []);
   const [prixAPartir, setPrixAPartir] = useState(carte.prixAPartir ?? "");
+
+  const [sansDeclinaisons, setSansDeclinaisons] = useState(!!carte.sansDeclinaisons);
+  const [prixUnitaireTarifHT, setPrixUnitaireTarifHT] = useState(carte.prixUnitaireTarifHT ?? "");
+  const [prixUnitaireHT, setPrixUnitaireHT] = useState(carte.prixUnitaireHT ?? "");
+  const [prixUnitaireVerrouille, setPrixUnitaireVerrouille] = useState(!!carte.prixUnitaireVerrouille);
+  const [referenceUnitaire, setReferenceUnitaire] = useState(carte.referenceUnitaire ?? "");
+  const [optionsAdditionnelles, setOptionsAdditionnelles] = useState(carte.optionsAdditionnelles ?? []);
+
+  const [largeurMin, setLargeurMin] = useState(carte.largeurMin ?? "");
+  const [largeurMax, setLargeurMax] = useState(carte.largeurMax ?? "");
+  const [hauteurMin, setHauteurMin] = useState(carte.hauteurMin ?? "");
+  const [hauteurMax, setHauteurMax] = useState(carte.hauteurMax ?? "");
+  const [profondeurMin, setProfondeurMin] = useState(carte.profondeurMin ?? "");
+  const [profondeurMax, setProfondeurMax] = useState(carte.profondeurMax ?? "");
 
   const [axesDeclinaisons, setAxesDeclinaisons] = useState(carte.axesDeclinaisons || []);
   const [declinaisonsLignes, setDeclinaisonsLignes] = useState(carte.declinaisons || []);
@@ -38,23 +58,77 @@ export default function CarteEditForm({ carte }) {
   const [saved, setSaved] = useState(false);
   const [onglet, setOnglet] = useState("infos");
 
-  // Reflète le choix en temps réel — sauf si la gamme force le devis, auquel cas rien ne peut le contourner
   const surDevis = carte.gammeForceDevis || venteSurDevis;
   const utiliseAncienSysteme = (carte.produits || []).length > 0;
 
-  const categorieChoisie = carte.categoriesDisponibles.find((c) => c.id === categorieId);
-  const sousCategoriesDispo = categorieChoisie?.sousCategories || [];
+  // Catégories choisies (multiple) + sous-catégories disponibles = union des sous-cats des catégories cochées
+  const categoriesChoisies = carte.categoriesDisponibles.filter((c) => categorieIds.includes(c.id));
+  const sousCategoriesDispo = [];
+  const vus = new Set();
+  for (const c of categoriesChoisies) {
+    for (const s of c.sousCategories) {
+      if (!vus.has(s.id)) { vus.add(s.id); sousCategoriesDispo.push(s); }
+    }
+  }
+  const sousCategoriesChoisies = sousCategoriesDispo.filter((s) => sousCategorieIds.includes(s.id));
 
   const nbSectionsDevis = sectionsDevis.length;
   const nbAxes = axesDeclinaisons.length;
   const nbDeclinaisons = declinaisonsLignes.length;
-  const nbPrixRemplis = declinaisonsLignes.filter((l) => l.prixVenteHT !== "" && l.prixVenteHT != null).length;
+  // Une ligne a un prix "rempli" si : verrouillée avec un prix de vente, OU un prix fournisseur (mode Auto).
+  const prixLigneRempli = (l) => {
+    const vente = Number(l.prixVenteHT);
+    const tarif = Number(l.prixTarifHT);
+    if (l.prixVerrouille) return !Number.isNaN(vente) && vente > 0;
+    return (!Number.isNaN(tarif) && tarif > 0) || (!Number.isNaN(vente) && vente > 0);
+  };
+  const nbPrixRemplis = declinaisonsLignes.filter(prixLigneRempli).length;
+  const nbOptions = (optionsAdditionnelles || []).length;
+
+  // Prix unique effectif (pour le récap) : verrouillé → prix vente saisi ; sinon fournisseur × marge.
+  const prixUniqueEffectif = (() => {
+    const marge = carte.margeGlobale ?? 0.3;
+    const vente = Number(prixUnitaireHT);
+    if (prixUnitaireVerrouille && !Number.isNaN(vente) && vente > 0) return vente;
+    const tarif = Number(prixUnitaireTarifHT);
+    if (!Number.isNaN(tarif) && tarif > 0) return Math.round(tarif * (1 + marge) * 100) / 100;
+    if (!Number.isNaN(vente) && vente > 0) return vente;
+    return null;
+  })();
 
   const dirty = () => setSaved(false);
 
-  const changerCategorie = (id) => {
-    setCategorieId(id);
-    setSousCategorieId(""); // reset : les sous-catégories dépendent de la catégorie
+  const toggleCategorie = (id) => {
+    const next = categorieIds.includes(id) ? categorieIds.filter((x) => x !== id) : [...categorieIds, id];
+    setCategorieIds(next);
+    // Retire les sous-catégories qui ne sont plus rattachées à une catégorie cochée
+    const dispo = new Set(
+      carte.categoriesDisponibles
+        .filter((c) => next.includes(c.id))
+        .flatMap((c) => c.sousCategories.map((s) => s.id))
+    );
+    const nextSous = sousCategorieIds.filter((sid) => dispo.has(sid));
+    setSousCategorieIds(nextSous);
+    // Maintient des principales valides (celles qui font l'URL)
+    setCategoriePrincipaleId((prev) => (next.length === 0 ? "" : (!next.includes(prev) ? next[0] : prev)));
+    setSousCategoriePrincipaleId((prev) => (nextSous.length === 0 ? "" : (!nextSous.includes(prev) ? nextSous[0] : prev)));
+    dirty();
+  };
+
+  const toggleSousCategorie = (id) => {
+    const next = sousCategorieIds.includes(id) ? sousCategorieIds.filter((x) => x !== id) : [...sousCategorieIds, id];
+    setSousCategorieIds(next);
+    setSousCategoriePrincipaleId((prev) => (next.length === 0 ? "" : (!next.includes(prev) ? next[0] : prev)));
+    dirty();
+  };
+
+  const choisirPrincipale = (id) => {
+    setCategoriePrincipaleId(id);
+    dirty();
+  };
+
+  const choisirSousPrincipale = (id) => {
+    setSousCategoriePrincipaleId(id);
     dirty();
   };
 
@@ -74,15 +148,30 @@ export default function CarteEditForm({ carte }) {
         images: galerie,
         sectionsDevis,
         prixAPartir,
+        sansDeclinaisons,
+        prixUnitaireTarifHT: prixUnitaireTarifHT === "" ? null : Number(prixUnitaireTarifHT),
+        prixUnitaireHT: prixUnitaireHT === "" ? null : Number(prixUnitaireHT),
+        prixUnitaireVerrouille,
+        referenceUnitaire,
+        optionsAdditionnelles,
+        largeurMin: largeurMin === "" ? null : Number(largeurMin),
+        largeurMax: largeurMax === "" ? null : Number(largeurMax),
+        hauteurMin: hauteurMin === "" ? null : Number(hauteurMin),
+        hauteurMax: hauteurMax === "" ? null : Number(hauteurMax),
+        profondeurMin: profondeurMin === "" ? null : Number(profondeurMin),
+        profondeurMax: profondeurMax === "" ? null : Number(profondeurMax),
         axesDeclinaisons,
         declinaisons: declinaisonsLignes,
-        categorieId: categorieId || null,
-        sousCategorieId: sousCategorieId || null,
+        categorieIds,
+        sousCategorieIds,
+        categoriePrincipaleId,
+        sousCategoriePrincipaleId,
         bestSeller,
         promoPct,
         promoDebut,
         promoFin,
         venteSurDevis,
+        publie,
       });
       setSaved(true);
       router.refresh();
@@ -93,9 +182,10 @@ export default function CarteEditForm({ carte }) {
     ["infos", `Nom & description${nom && descriptif ? " ✓" : ""}`],
     ["galerie", `Photos${galerie.length > 0 ? ` (${galerie.length})` : ""}`],
     ["technique", `Descriptif technique${nbSectionsDevis > 0 ? ` (${nbSectionsDevis})` : ""}`],
-    ["declinaisons", `Déclinaisons${nbDeclinaisons > 0 ? ` (${nbDeclinaisons})` : ""}`],
+    ["declinaisons", sansDeclinaisons ? "Déclinaisons" : `Déclinaisons${nbDeclinaisons > 0 ? ` (${nbDeclinaisons})` : ""}`],
     ["finitions", "Finitions"],
-    ["prix", surDevis ? "Prix" : `Prix${nbDeclinaisons > 0 ? ` (${nbPrixRemplis}/${nbDeclinaisons})` : ""}`],
+    ["options", `Options${nbOptions > 0 ? ` (${nbOptions})` : ""}`],
+    ["prix", surDevis ? "Prix" : (sansDeclinaisons ? `Prix${(prixUnitaireHT !== "" && prixUnitaireHT != null) || (prixUnitaireTarifHT !== "" && prixUnitaireTarifHT != null) ? " ✓" : ""}` : `Prix${nbDeclinaisons > 0 ? ` (${nbPrixRemplis}/${nbDeclinaisons})` : ""}`)],
   ];
   if (!surDevis && utiliseAncienSysteme) tabs.push(["ancien", "Ancien sélecteur"]);
 
@@ -111,6 +201,10 @@ export default function CarteEditForm({ carte }) {
     opacity: desactive ? 0.6 : 1,
   });
 
+  const etoile = (rempli) => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill={rempli ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+  );
+
   const ligneRecap = (lbl, ok, texte) => (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 13 }}>
       <span style={{ color: "#9aa0a8" }}>{lbl}</span>
@@ -125,6 +219,11 @@ export default function CarteEditForm({ carte }) {
     </div>
   );
 
+  const nomsCategories = categoriesChoisies.map((c) => c.nom).join(", ");
+  const nomsSousCategories = sousCategoriesChoisies.map((s) => s.nom).join(", ");
+  const nomPrincipale = categoriesChoisies.find((c) => c.id === categoriePrincipaleId)?.nom || "";
+  const nomSousPrincipale = sousCategoriesChoisies.find((s) => s.id === sousCategoriePrincipaleId)?.nom || "";
+
   return (
     <div>
       {/* En-tête */}
@@ -133,6 +232,22 @@ export default function CarteEditForm({ carte }) {
           <h1 style={{ fontSize: 30, fontWeight: 800, color: "#23262a", margin: 0, letterSpacing: "-0.02em" }}>{carte.nom}</h1>
           <p style={{ color: "#5c616a", marginTop: 8, fontSize: 14 }}>Produit de la gamme {carte.gammeNom}</p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => { setPublie((p) => !p); dirty(); }}
+          style={{
+            padding: "9px 18px", borderRadius: 999, fontSize: 13, fontWeight: 700, cursor: "pointer",
+            border: "1.5px solid " + (publie ? "#1f7a52" : "#ece8e0"),
+            background: publie ? "#e8f6f0" : "#f0ece4",
+            color: publie ? "#1f7a52" : "#5c616a",
+            display: "inline-flex", alignItems: "center", gap: 7,
+          }}
+        >
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: publie ? "#1f7a52" : "#9aa0a8", flexShrink: 0 }} />
+          {publie ? "Publié" : "Brouillon"}
+        </button>
+
         <span style={{ padding: "6px 14px", borderRadius: 999, fontSize: 12.5, fontWeight: 600,
           background: surDevis ? "#fef4ee" : "#e8f6f0", color: surDevis ? "#b45528" : "#1f7a52" }}>
           {surDevis ? "Sur devis" : "Boutique (checkout)"}
@@ -148,6 +263,12 @@ export default function CarteEditForm({ carte }) {
           </span>
         )}
       </div>
+
+      {!publie && (
+        <div style={{ background: "#fef4ee", border: "1px solid #f7d9c6", borderRadius: 12, padding: "12px 16px", marginBottom: 20, fontSize: 13, color: "#b45528" }}>
+          ⓘ Ce produit est en <strong>brouillon</strong> — il n'apparaît nulle part sur le site public tant qu'il n'est pas publié. Clique sur le badge « Brouillon » ci-dessus, puis « Enregistrer ».
+        </div>
+      )}
 
       {/* Barre d'onglets */}
       <div style={{ display: "flex", gap: 4, background: "#f0ece4", padding: 4, borderRadius: 12, marginBottom: 20, width: "fit-content", flexWrap: "wrap" }}>
@@ -172,14 +293,16 @@ export default function CarteEditForm({ carte }) {
                   style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1.5px solid #ece8e0", background: "#faf8f4", fontSize: 16, fontWeight: 600, color: "#23262a", outline: "none" }} />
               </div>
 
+              <SelecteurGammeProduit vitrineId={carte.id} gammeNomActuelle={carte.gammeNom} />
+
               <div>
-                <label style={label}>Catégorie</label>
-                <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>Détermine l'URL du produit — jamais la gamme.</p>
+                <label style={label}>Catégorie(s)</label>
+                <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>Plusieurs possibles — le produit apparaît dans chacune.</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                   {carte.categoriesDisponibles.map((c) => {
-                    const actif = c.id === categorieId;
+                    const actif = categorieIds.includes(c.id);
                     return (
-                      <button key={c.id} type="button" onClick={() => changerCategorie(c.id)} style={pastille(actif)}>
+                      <button key={c.id} type="button" onClick={() => toggleCategorie(c.id)} style={pastille(actif)}>
                         {actif && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>}
                         {c.nom}
                       </button>
@@ -188,27 +311,59 @@ export default function CarteEditForm({ carte }) {
                 </div>
               </div>
 
-              {categorieId && (
+              {categorieIds.length > 0 && (
                 <div>
-                  <label style={label}>Sous-catégorie</label>
-                  <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>Optionnelle.</p>
+                  <label style={label}>Catégorie principale (URL)</label>
+                  <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>C'est elle qui détermine le début de l'adresse du produit.</p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                    <button type="button" onClick={() => { setSousCategorieId(""); dirty(); }} style={pastille(!sousCategorieId)}>
-                      {!sousCategorieId && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>}
-                      Aucune
-                    </button>
-                    {sousCategoriesDispo.map((s) => {
-                      const actif = s.id === sousCategorieId;
+                    {categoriesChoisies.map((c) => {
+                      const actif = c.id === categoriePrincipaleId;
                       return (
-                        <button key={s.id} type="button" onClick={() => { setSousCategorieId(s.id); dirty(); }} style={pastille(actif)}>
+                        <button key={c.id} type="button" onClick={() => choisirPrincipale(c.id)} style={pastille(actif)}>
+                          {etoile(actif)}
+                          {c.nom}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {categorieIds.length > 0 && (
+                <div>
+                  <label style={label}>Sous-catégorie(s)</label>
+                  <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>Optionnelles — plusieurs possibles.</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                    {sousCategoriesDispo.map((s) => {
+                      const actif = sousCategorieIds.includes(s.id);
+                      return (
+                        <button key={s.id} type="button" onClick={() => toggleSousCategorie(s.id)} style={pastille(actif)}>
                           {actif && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>}
                           {s.nom}
                         </button>
                       );
                     })}
                     {sousCategoriesDispo.length === 0 && (
-                      <span style={{ fontSize: 13, color: "#9aa0a8", fontStyle: "italic" }}>Aucune sous-catégorie pour cette catégorie.</span>
+                      <span style={{ fontSize: 13, color: "#9aa0a8", fontStyle: "italic" }}>Aucune sous-catégorie pour ces catégories.</span>
                     )}
+                  </div>
+                </div>
+              )}
+
+              {sousCategorieIds.length > 0 && (
+                <div>
+                  <label style={label}>Sous-catégorie principale (URL)</label>
+                  <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>C'est elle qui apparaît dans l'adresse du produit (segment après la catégorie).</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                    {sousCategoriesChoisies.map((s) => {
+                      const actif = s.id === sousCategoriePrincipaleId;
+                      return (
+                        <button key={s.id} type="button" onClick={() => choisirSousPrincipale(s.id)} style={pastille(actif)}>
+                          {etoile(actif)}
+                          {s.nom}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -224,6 +379,31 @@ export default function CarteEditForm({ carte }) {
                     </span>
                   </span>
                 </label>
+              </div>
+
+              <div>
+                <label style={label}>Dimensions (cm) — pour les filtres du catalogue</label>
+                <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>
+                  Renseigne les bornes de chaque dimension. Pour une taille unique, mets la même valeur en min et max (ex. largeur 100 → 100). Laisse vide si non pertinent.
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+                  {[
+                    ["Largeur", largeurMin, setLargeurMin, largeurMax, setLargeurMax],
+                    ["Hauteur", hauteurMin, setHauteurMin, hauteurMax, setHauteurMax],
+                    ["Profondeur", profondeurMin, setProfondeurMin, profondeurMax, setProfondeurMax],
+                  ].map(([lbl, vMin, sMin, vMax, sMax]) => (
+                    <div key={lbl}>
+                      <span style={{ fontSize: 12.5, fontWeight: 600, color: "#5c616a", display: "block", marginBottom: 6 }}>{lbl}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <input type="number" value={vMin} onChange={(e) => { sMin(e.target.value); dirty(); }} placeholder="min"
+                          style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #ece8e0", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" }} />
+                        <span style={{ color: "#9aa0a8", fontSize: 13 }}>–</span>
+                        <input type="number" value={vMax} onChange={(e) => { sMax(e.target.value); dirty(); }} placeholder="max"
+                          style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #ece8e0", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div>
@@ -253,11 +433,22 @@ export default function CarteEditForm({ carte }) {
               lignes={declinaisonsLignes}
               onChangeAxes={(a) => { setAxesDeclinaisons(a); dirty(); }}
               onChangeLignes={(l) => { setDeclinaisonsLignes(l); dirty(); }}
+              sansDeclinaisons={sansDeclinaisons}
+              onChangeSansDeclinaisons={(v) => { setSansDeclinaisons(v); dirty(); }}
+              referenceUnitaire={referenceUnitaire}
+              onChangeReferenceUnitaire={(v) => { setReferenceUnitaire(v); dirty(); }}
             />
           )}
 
           {onglet === "finitions" && (
             <FinitionsProduit vitrineId={carte.id} />
+          )}
+
+          {onglet === "options" && (
+            <OptionsAdditionnelles
+              options={optionsAdditionnelles}
+              onChange={(o) => { setOptionsAdditionnelles(o); dirty(); }}
+            />
           )}
 
           {onglet === "prix" && (
@@ -276,6 +467,14 @@ export default function CarteEditForm({ carte }) {
               promoDebut={promoDebut}
               promoFin={promoFin}
               onChangePromo={changerPromo}
+              margeGlobale={carte.margeGlobale}
+              sansDeclinaisons={sansDeclinaisons}
+              prixUnitaireTarifHT={prixUnitaireTarifHT}
+              onChangePrixUnitaireTarif={(v) => { setPrixUnitaireTarifHT(v); dirty(); }}
+              prixUnitaireHT={prixUnitaireHT}
+              onChangePrixUnitaire={(v) => { setPrixUnitaireHT(v); dirty(); }}
+              prixUnitaireVerrouille={prixUnitaireVerrouille}
+              onChangePrixUnitaireVerrouille={(v) => { setPrixUnitaireVerrouille(v); dirty(); }}
             />
           )}
 
@@ -301,52 +500,38 @@ export default function CarteEditForm({ carte }) {
           <div style={{ background: "linear-gradient(150deg, #23262a 0%, #33261f 100%)", borderRadius: 20, padding: 26, position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: -40, right: -40, width: 180, height: 180, borderRadius: "50%", background: "radial-gradient(circle, rgba(240,102,27,0.28), transparent 70%)" }} />
 
-            <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", borderRadius: 14, overflow: "hidden", marginBottom: 14, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)" }}>
-              {galerie[0] ? (
-                <img src={galerie[0]} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              ) : (
-                <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center" }}>
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4c525a" strokeWidth="1.6"><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="9" cy="9" r="1.8" /><path d="m21 15-5-5-11 11" /></svg>
-                </div>
-              )}
-            </div>
-
-            {galerie.length > 1 && (
-              <div style={{ position: "relative", display: "flex", gap: 6, marginBottom: 18, overflowX: "auto", paddingBottom: 2 }}>
-                {galerie.slice(1, 7).map((img, i) => (
-                  <div key={i} style={{ width: 44, height: 44, borderRadius: 9, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.14)" }}>
-                    <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  </div>
-                ))}
-                {galerie.length > 7 && (
-                  <div style={{ width: 44, height: 44, borderRadius: 9, flexShrink: 0, background: "rgba(255,255,255,0.08)", display: "grid", placeItems: "center", fontSize: 11.5, color: "#9aa0a8", fontWeight: 700 }}>
-                    +{galerie.length - 7}
-                  </div>
-                )}
-              </div>
-            )}
-
             <p style={{ position: "relative", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#f0661b", margin: "0 0 10px" }}>Récapitulatif</p>
             <h2 style={{ position: "relative", fontSize: 22, fontWeight: 800, color: "#fff", margin: "0 0 18px", letterSpacing: "-0.01em" }}>{nom.trim() || "Nom du produit"}</h2>
 
             <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 11, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 16 }}>
+              {ligneRecap("Statut", publie, publie ? "Publié" : "Brouillon")}
               {ligneRecap("Mode", true, surDevis ? "Sur devis" : "Boutique")}
               {ligneRecap("Best-seller", bestSeller, bestSeller ? "Oui" : "Non")}
               {ligneRecap("Promotion", !!promoPct, promoPct ? `-${promoPct}%` : "Aucune")}
-              {ligneRecap("Catégorie", !!categorieId, categorieChoisie?.nom || "Non définie")}
-              {sousCategorieId && ligneRecap("Sous-catégorie", true, sousCategoriesDispo.find((s) => s.id === sousCategorieId)?.nom || "")}
+              {ligneRecap("Catégorie(s)", categorieIds.length > 0, nomsCategories || "Non définie")}
+              {categorieIds.length > 0 && ligneRecap("Catégorie URL", !!categoriePrincipaleId, nomPrincipale || "—")}
+              {sousCategorieIds.length > 0 && ligneRecap("Sous-catégorie(s)", true, nomsSousCategories)}
+              {sousCategorieIds.length > 0 && ligneRecap("Sous-catégorie URL", !!sousCategoriePrincipaleId, nomSousPrincipale || "—")}
               {ligneRecap("Photos", galerie.length > 0, galerie.length > 0 ? `${galerie.length} photo${galerie.length > 1 ? "s" : ""}` : "Aucune")}
               {ligneRecap("Descriptif court", !!descriptif, descriptif ? "Rempli" : "Vide")}
               {ligneRecap("Descriptif technique", nbSectionsDevis > 0, nbSectionsDevis > 0 ? `${nbSectionsDevis} section${nbSectionsDevis > 1 ? "s" : ""}` : "Vide")}
-              {ligneRecap("Axes de choix", nbAxes > 0, nbAxes > 0 ? `${nbAxes} axe${nbAxes > 1 ? "s" : ""}` : "Aucun")}
-              {ligneRecap("Déclinaisons", nbDeclinaisons > 0, nbDeclinaisons > 0 ? `${nbDeclinaisons} ligne${nbDeclinaisons > 1 ? "s" : ""}` : "Vide")}
+              {sansDeclinaisons ? (
+                ligneRecap("Type", true, "Prix unique")
+              ) : (
+                <>
+                  {ligneRecap("Axes de choix", nbAxes > 0, nbAxes > 0 ? `${nbAxes} axe${nbAxes > 1 ? "s" : ""}` : "Aucun")}
+                  {ligneRecap("Déclinaisons", nbDeclinaisons > 0, nbDeclinaisons > 0 ? `${nbDeclinaisons} ligne${nbDeclinaisons > 1 ? "s" : ""}` : "Vide")}
+                </>
+              )}
               {surDevis
-                ? ligneRecap("Prix à partir de", !!prixAPartir, prixAPartir ? `${prixAPartir} €` : "Non défini")
-                : ligneRecap("Prix", nbDeclinaisons > 0 && nbPrixRemplis === nbDeclinaisons, nbDeclinaisons === 0 ? "Aucune combinaison" : `${nbPrixRemplis}/${nbDeclinaisons} rempli${nbPrixRemplis > 1 ? "s" : ""}`)}
+                ? ligneRecap("Prix", true, prixAPartir ? `Sur devis (dès ${Number(prixAPartir).toLocaleString("fr-FR")} €)` : "Sur devis")
+                : sansDeclinaisons
+                  ? ligneRecap("Prix", prixUniqueEffectif != null, prixUniqueEffectif != null ? `${prixUniqueEffectif.toLocaleString("fr-FR")} €` : "Non défini")
+                  : ligneRecap("Prix", nbDeclinaisons > 0 && nbPrixRemplis === nbDeclinaisons, nbDeclinaisons === 0 ? "Aucune combinaison" : `${nbPrixRemplis}/${nbDeclinaisons} rempli${nbPrixRemplis > 1 ? "s" : ""}`)}
             </div>
           </div>
 
-          {!categorieId && (
+          {categorieIds.length === 0 && (
             <p style={{ fontSize: 12.5, color: "#b45528", marginTop: 14, lineHeight: 1.6, padding: "10px 14px", background: "#fef4ee", borderRadius: 10 }}>
               ⚠ Sans catégorie, ce produit n'aura pas d'URL publique valide.
             </p>
@@ -357,6 +542,79 @@ export default function CarteEditForm({ carte }) {
           </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+// ─────────── Sélecteur de gamme — recherche + création à la volée, redirige vers la nouvelle URL ───────────
+function SelecteurGammeProduit({ vitrineId, gammeNomActuelle }) {
+  const router = useRouter();
+  const [gammes, setGammes] = useState([]);
+  const [edition, setEdition] = useState(false);
+  const [recherche, setRecherche] = useState("");
+  const [erreur, setErreur] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (edition && gammes.length === 0) {
+      getGammesPourRecherche().then(setGammes);
+    }
+  }, [edition, gammes.length]);
+
+  const gammesFiltrees = gammes.filter((g) => g.nom.toLowerCase().includes(recherche.trim().toLowerCase())).slice(0, 8);
+  const gammeExisteExactement = gammes.some((g) => g.nom.toLowerCase() === recherche.trim().toLowerCase());
+
+  const choisir = (gammeId, nouvelleGammeNom) => {
+    setErreur("");
+    startTransition(async () => {
+      const res = await changerGammeProduit(vitrineId, { gammeId, nouvelleGammeNom });
+      if (!res.ok) { setErreur(res.error || "Une erreur est survenue."); return; }
+      router.push(`/admin/architecture/${res.gammeId}/carte/${vitrineId}`);
+      router.refresh();
+    });
+  };
+
+  const label = { display: "block", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#5c616a", marginBottom: 10 };
+  const inputStyle = { width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #ece8e0", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" };
+
+  return (
+    <div>
+      <label style={label}>Gamme</label>
+      {!edition ? (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 16px", borderRadius: 12, background: "#faf8f4", border: "1.5px solid #ece8e0" }}>
+          <span style={{ fontSize: 14.5, fontWeight: 600, color: "#23262a" }}>{gammeNomActuelle}</span>
+          <button type="button" onClick={() => setEdition(true)} style={{ fontSize: 12.5, fontWeight: 600, color: "#f0661b", background: "none", border: "none", cursor: "pointer" }}>Changer</button>
+        </div>
+      ) : (
+        <div>
+          <input
+            value={recherche}
+            onChange={(e) => setRecherche(e.target.value)}
+            placeholder="Rechercher ou créer une gamme…"
+            style={inputStyle}
+            autoFocus
+          />
+          {recherche.trim() && (
+            <div style={{ marginTop: 8, border: "1px solid #ece8e0", borderRadius: 12, overflow: "hidden" }}>
+              {gammesFiltrees.map((g) => (
+                <button key={g.id} type="button" onClick={() => choisir(g.id, null)} disabled={isPending}
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "11px 16px", fontSize: 14, color: "#23262a", background: "#fff", border: "none", borderBottom: "1px solid #f2efe9", cursor: "pointer" }}>
+                  {g.nom}
+                </button>
+              ))}
+              {!gammeExisteExactement && (
+                <button type="button" onClick={() => choisir(null, recherche.trim())} disabled={isPending}
+                  style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", textAlign: "left", padding: "11px 16px", fontSize: 14, fontWeight: 600, color: "#f0661b", background: "#fef4ee", border: "none", cursor: "pointer" }}>
+                  + Créer « {recherche.trim()} »
+                </button>
+              )}
+            </div>
+          )}
+          <button type="button" onClick={() => { setEdition(false); setRecherche(""); setErreur(""); }} style={{ fontSize: 12.5, color: "#9aa0a8", background: "none", border: "none", cursor: "pointer", marginTop: 8 }}>Annuler</button>
+        </div>
+      )}
+      {erreur && <p style={{ fontSize: 12.5, color: "#b45528", marginTop: 8 }}>{erreur}</p>}
+      <p style={{ fontSize: 12, color: "#9aa0a8", margin: "10px 0 0" }}>Changer la gamme redirige automatiquement vers la nouvelle page du produit.</p>
     </div>
   );
 }

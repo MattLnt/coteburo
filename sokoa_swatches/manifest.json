@@ -1,0 +1,1154 @@
+[
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 066",
+  "nom": "Rouille",
+  "fichier": "B066.jpeg",
+  "label": "B 066 — Rouille"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 378",
+  "nom": "Magenta",
+  "fichier": "B378.jpeg",
+  "label": "B 378 — Magenta"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 007",
+  "nom": "Turquoise",
+  "fichier": "B007.jpeg",
+  "label": "B 007 — Turquoise"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 188",
+  "nom": "Vert pistache",
+  "fichier": "B188.jpeg",
+  "label": "B 188 — Vert pistache"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 094",
+  "nom": "Gris",
+  "fichier": "B094.png",
+  "label": "B 094 — Gris"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 081",
+  "nom": "Gris moyen",
+  "fichier": "B081.jpeg",
+  "label": "B 081 — Gris moyen"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 079",
+  "nom": "Rouge Pur",
+  "fichier": "B079.jpeg",
+  "label": "B 079 — Rouge Pur"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 500",
+  "nom": "Violet",
+  "fichier": "B500.jpeg",
+  "label": "B 500 — Violet"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 082",
+  "nom": "Bleu roy",
+  "fichier": "B082.jpeg",
+  "label": "B 082 — Bleu roy"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 160",
+  "nom": "Vert canard",
+  "fichier": "B160.jpeg",
+  "label": "B 160 — Vert canard"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 703",
+  "nom": "Vert bouteille",
+  "fichier": "B703.jpeg",
+  "label": "B 703 — Vert bouteille"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 172",
+  "nom": "Gris anthracite",
+  "fichier": "B172.jpeg",
+  "label": "B 172 — Gris anthracite"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 244",
+  "nom": "Rouge duo",
+  "fichier": "B244.jpeg",
+  "label": "B 244 — Rouge duo"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 289",
+  "nom": "Gris duo",
+  "fichier": "B289.png",
+  "label": "B 289 — Gris duo"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 268",
+  "nom": "Bleu duo",
+  "fichier": "B268.jpeg",
+  "label": "B 268 — Bleu duo"
+ },
+ {
+  "categorie": "B",
+  "collection": "X-Trevira",
+  "code": "B 009",
+  "nom": "Noir",
+  "fichier": "B009.jpeg",
+  "label": "B 009 — Noir"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUL",
+  "nom": "Lin",
+  "fichier": "CUL.jpeg",
+  "label": "CUL — Lin"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUR",
+  "nom": "Rose",
+  "fichier": "CUR.jpeg",
+  "label": "CUR — Rose"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUH",
+  "nom": "Horizon",
+  "fichier": "CUH.jpeg",
+  "label": "CUH — Horizon"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUE",
+  "nom": "Eau",
+  "fichier": "CUE.jpeg",
+  "label": "CUE — Eau"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUB",
+  "nom": "Béton",
+  "fichier": "CUB.jpeg",
+  "label": "CUB — Béton"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUM",
+  "nom": "Moka",
+  "fichier": "CUM.jpeg",
+  "label": "CUM — Moka"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUF",
+  "nom": "Framboise",
+  "fichier": "CUF.jpeg",
+  "label": "CUF — Framboise"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CU2",
+  "nom": "Nuit",
+  "fichier": "CU2.jpeg",
+  "label": "CU2 — Nuit"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUS",
+  "nom": "Sapin",
+  "fichier": "CUS.jpeg",
+  "label": "CUS — Sapin"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CUC",
+  "nom": "Cendre",
+  "fichier": "CUC.jpeg",
+  "label": "CUC — Cendre"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Cura",
+  "code": "CU3",
+  "nom": "Noir",
+  "fichier": "CU3.jpeg",
+  "label": "CU3 — Noir"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFT",
+  "nom": "Terre cuite",
+  "fichier": "EFT.png",
+  "label": "EFT — Terre cuite"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFS",
+  "nom": "Seigle",
+  "fichier": "EFS.jpeg",
+  "label": "EFS — Seigle"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFR",
+  "nom": "Rose",
+  "fichier": "EFR.jpeg",
+  "label": "EFR — Rose"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFA",
+  "nom": "Azur",
+  "fichier": "EFA.png",
+  "label": "EFA — Azur"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFJ",
+  "nom": "Jade",
+  "fichier": "EFJ.png",
+  "label": "EFJ — Jade"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFC",
+  "nom": "Charbon",
+  "fichier": "EFC.png",
+  "label": "EFC — Charbon"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFM",
+  "nom": "Moka",
+  "fichier": "EFM.png",
+  "label": "EFM — Moka"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFB",
+  "nom": "Béton",
+  "fichier": "EFB.jpeg",
+  "label": "EFB — Béton"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFG",
+  "nom": "Groseille",
+  "fichier": "EFG.jpeg",
+  "label": "EFG — Groseille"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EF2",
+  "nom": "Nuit",
+  "fichier": "EF2.jpeg",
+  "label": "EF2 — Nuit"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EFV",
+  "nom": "Canard",
+  "fichier": "EFV.jpeg",
+  "label": "EFV — Canard"
+ },
+ {
+  "categorie": "B+",
+  "collection": "Eden Free",
+  "code": "EF3",
+  "nom": "Noir",
+  "fichier": "EF3.jpeg",
+  "label": "EF3 — Noir"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "80M",
+  "nom": "Mirabelle",
+  "fichier": "80M.jpeg",
+  "label": "80M — Mirabelle"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8CT",
+  "nom": "Citrouille",
+  "fichier": "8CT.jpeg",
+  "label": "8CT — Citrouille"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8G1",
+  "nom": "Gris pierre",
+  "fichier": "8G1.jpeg",
+  "label": "8G1 — Gris pierre"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8A1",
+  "nom": "Aigue marine",
+  "fichier": "8A1.jpeg",
+  "label": "8A1 — Aigue marine"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "80S",
+  "nom": "Gris souris",
+  "fichier": "80S.png",
+  "label": "80S — Gris souris"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8TE",
+  "nom": "Terre",
+  "fichier": "8TE.jpeg",
+  "label": "8TE — Terre"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "80G",
+  "nom": "Groseille",
+  "fichier": "80G.jpeg",
+  "label": "80G — Groseille"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8TH",
+  "nom": "Menthe",
+  "fichier": "8TH.jpeg",
+  "label": "8TH — Menthe"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8PT",
+  "nom": "Pétrole",
+  "fichier": "8PT.jpeg",
+  "label": "8PT — Pétrole"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "80C",
+  "nom": "Chocolat",
+  "fichier": "80C.jpeg",
+  "label": "80C — Chocolat"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8SE",
+  "nom": "Seigle",
+  "fichier": "8SE.jpeg",
+  "label": "8SE — Seigle"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8QU",
+  "nom": "Quetsche",
+  "fichier": "8QU.jpeg",
+  "label": "8QU — Quetsche"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "8VE",
+  "nom": "Vert",
+  "fichier": "8VE.jpeg",
+  "label": "8VE — Vert"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "80N",
+  "nom": "Bleu nuit",
+  "fichier": "80N.jpeg",
+  "label": "80N — Bleu nuit"
+ },
+ {
+  "categorie": "C",
+  "collection": "Ginkgo",
+  "code": "80A",
+  "nom": "Anthracite",
+  "fichier": "80A.jpeg",
+  "label": "80A — Anthracite"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NMJ",
+  "nom": "Tournesol",
+  "fichier": "NMJ.jpeg",
+  "label": "NMJ — Tournesol"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NM0",
+  "nom": "Origan",
+  "fichier": "NM0.jpeg",
+  "label": "NM0 — Origan"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NMG",
+  "nom": "Gris",
+  "fichier": "NMG.jpeg",
+  "label": "NMG — Gris"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NML",
+  "nom": "Lin",
+  "fichier": "NML.jpeg",
+  "label": "NML — Lin"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NMA",
+  "nom": "Amande",
+  "fichier": "NMA.jpeg",
+  "label": "NMA — Amande"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NMV",
+  "nom": "Jungle",
+  "fichier": "NMV.jpeg",
+  "label": "NMV — Jungle"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NMN",
+  "nom": "Lie de vin",
+  "fichier": "NMN.jpeg",
+  "label": "NMN — Lie de vin"
+ },
+ {
+  "categorie": "C",
+  "collection": "Noma",
+  "code": "NMS",
+  "nom": "Gris souris",
+  "fichier": "NMS.jpeg",
+  "label": "NMS — Gris souris"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "AR0",
+  "nom": "Rouge",
+  "fichier": "AR0.jpeg",
+  "label": "AR0 — Rouge"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "AVA",
+  "nom": "Vert amande",
+  "fichier": "AVA.jpeg",
+  "label": "AVA — Vert amande"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "AGS",
+  "nom": "Gris",
+  "fichier": "AGS.jpeg",
+  "label": "AGS — Gris"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "AGR",
+  "nom": "Gris moyen",
+  "fichier": "AGR.jpeg",
+  "label": "AGR — Gris moyen"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "ATE",
+  "nom": "Terre",
+  "fichier": "ATE.jpeg",
+  "label": "ATE — Terre"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "AVC",
+  "nom": "Chlorophylle",
+  "fichier": "AVC.jpeg",
+  "label": "AVC — Chlorophylle"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "ABL",
+  "nom": "Bleu roy",
+  "fichier": "ABL.jpeg",
+  "label": "ABL — Bleu roy"
+ },
+ {
+  "categorie": "C",
+  "collection": "Atlantic",
+  "code": "AN0",
+  "nom": "Noir",
+  "fichier": "AN0.jpeg",
+  "label": "AN0 — Noir"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMJ",
+  "nom": "Moutarde",
+  "fichier": "SMJ.jpeg",
+  "label": "SMJ — Moutarde"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SME",
+  "nom": "Eau",
+  "fichier": "SME.jpeg",
+  "label": "SME — Eau"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMP",
+  "nom": "Paprika",
+  "fichier": "SMP.jpeg",
+  "label": "SMP — Paprika"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMS",
+  "nom": "Sépia",
+  "fichier": "SMS.jpeg",
+  "label": "SMS — Sépia"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMB",
+  "nom": "Béton",
+  "fichier": "SMB.jpeg",
+  "label": "SMB — Béton"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMT",
+  "nom": "Tilleul",
+  "fichier": "SMT.jpeg",
+  "label": "SMT — Tilleul"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMH",
+  "nom": "Horizon",
+  "fichier": "SMH.jpeg",
+  "label": "SMH — Horizon"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SM5",
+  "nom": "Grenat",
+  "fichier": "SM5.jpeg",
+  "label": "SM5 — Grenat"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMA",
+  "nom": "Avoine",
+  "fichier": "SMA.jpeg",
+  "label": "SMA — Avoine"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMC",
+  "nom": "Cendre",
+  "fichier": "SMC.jpeg",
+  "label": "SMC — Cendre"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMV",
+  "nom": "Vert",
+  "fichier": "SMV.jpeg",
+  "label": "SMV — Vert"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMN",
+  "nom": "Nuit",
+  "fichier": "SMN.jpeg",
+  "label": "SMN — Nuit"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SM1",
+  "nom": "Terracotta",
+  "fichier": "SM1.jpeg",
+  "label": "SM1 — Terracotta"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SM4",
+  "nom": "Chocolat",
+  "fichier": "SM4.jpeg",
+  "label": "SM4 — Chocolat"
+ },
+ {
+  "categorie": "C",
+  "collection": "Step Mélange",
+  "code": "SMG",
+  "nom": "Gris foncé",
+  "fichier": "SMG.jpeg",
+  "label": "SMG — Gris foncé"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLV",
+  "nom": "Vert",
+  "fichier": "BLV.jpeg",
+  "label": "BLV — Vert"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLJ",
+  "nom": "Jaune",
+  "fichier": "BLJ.jpeg",
+  "label": "BLJ — Jaune"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLC",
+  "nom": "Corail",
+  "fichier": "BLC.jpeg",
+  "label": "BLC — Corail"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLG",
+  "nom": "Gris",
+  "fichier": "BLG.jpeg",
+  "label": "BLG — Gris"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLT",
+  "nom": "Terracotta",
+  "fichier": "BLT.jpeg",
+  "label": "BLT — Terracotta"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLZ",
+  "nom": "Bronze",
+  "fichier": "BLZ.jpeg",
+  "label": "BLZ — Bronze"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLX",
+  "nom": "Bordeaux",
+  "fichier": "BLX.jpeg",
+  "label": "BLX — Bordeaux"
+ },
+ {
+  "categorie": "C",
+  "collection": "Blend",
+  "code": "BLN",
+  "nom": "Nuit",
+  "fichier": "BLN.jpeg",
+  "label": "BLN — Nuit"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLL",
+  "nom": "Tilleul",
+  "fichier": "NLL.jpeg",
+  "label": "NLL — Tilleul"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLJ",
+  "nom": "Jaune",
+  "fichier": "NLJ.jpeg",
+  "label": "NLJ — Jaune"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLR",
+  "nom": "Rouge",
+  "fichier": "NLR.jpeg",
+  "label": "NLR — Rouge"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLB",
+  "nom": "Tempête",
+  "fichier": "NLB.jpeg",
+  "label": "NLB — Tempête"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLC",
+  "nom": "Crème",
+  "fichier": "NLC.jpeg",
+  "label": "NLC — Crème"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLG",
+  "nom": "Gris",
+  "fichier": "NLG.jpeg",
+  "label": "NLG — Gris"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLT",
+  "nom": "Terre",
+  "fichier": "NLT.jpeg",
+  "label": "NLT — Terre"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLZ",
+  "nom": "Bronze",
+  "fichier": "NLZ.jpeg",
+  "label": "NLZ — Bronze"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLF",
+  "nom": "Framboise",
+  "fichier": "NLF.jpeg",
+  "label": "NLF — Framboise"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLM",
+  "nom": "Marine",
+  "fichier": "NLM.jpeg",
+  "label": "NLM — Marine"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLS",
+  "nom": "Sable",
+  "fichier": "NLS.jpeg",
+  "label": "NLS — Sable"
+ },
+ {
+  "categorie": "C",
+  "collection": "Natural Linen",
+  "code": "NLN",
+  "nom": "Charbon",
+  "fichier": "NLN.jpeg",
+  "label": "NLN — Charbon"
+ },
+ {
+  "categorie": "C",
+  "collection": "Spazio",
+  "code": "SPJ",
+  "nom": "Jaune",
+  "fichier": "SPJ.jpeg",
+  "label": "SPJ — Jaune"
+ },
+ {
+  "categorie": "C",
+  "collection": "Spazio",
+  "code": "SPL",
+  "nom": "Blanc",
+  "fichier": "SPL.jpeg",
+  "label": "SPL — Blanc"
+ },
+ {
+  "categorie": "C",
+  "collection": "Spazio",
+  "code": "SPV",
+  "nom": "Canard",
+  "fichier": "SPV.jpeg",
+  "label": "SPV — Canard"
+ },
+ {
+  "categorie": "C",
+  "collection": "Spazio",
+  "code": "SPG",
+  "nom": "Orange",
+  "fichier": "SPG.jpeg",
+  "label": "SPG — Orange"
+ },
+ {
+  "categorie": "C",
+  "collection": "Spazio",
+  "code": "SPT",
+  "nom": "Taupe",
+  "fichier": "SPT.jpeg",
+  "label": "SPT — Taupe"
+ },
+ {
+  "categorie": "C",
+  "collection": "Spazio",
+  "code": "SPR",
+  "nom": "Rose",
+  "fichier": "SPR.jpeg",
+  "label": "SPR — Rose"
+ },
+ {
+  "categorie": "C",
+  "collection": "Bouclé F.R.",
+  "code": "BCC",
+  "nom": "Crème",
+  "fichier": "BCC.jpeg",
+  "label": "BCC — Crème"
+ },
+ {
+  "categorie": "C",
+  "collection": "Bouclé F.R.",
+  "code": "BCT",
+  "nom": "Taupe",
+  "fichier": "BCT.jpeg",
+  "label": "BCT — Taupe"
+ },
+ {
+  "categorie": "C",
+  "collection": "Bouclé F.R.",
+  "code": "BCM",
+  "nom": "Noisette",
+  "fichier": "BCM.jpeg",
+  "label": "BCM — Noisette"
+ },
+ {
+  "categorie": "C",
+  "collection": "Bouclé F.R.",
+  "code": "BCJ",
+  "nom": "Jaune",
+  "fichier": "BCJ.jpeg",
+  "label": "BCJ — Jaune"
+ },
+ {
+  "categorie": "C",
+  "collection": "Bouclé F.R.",
+  "code": "BCB",
+  "nom": "Brique",
+  "fichier": "BCB.jpeg",
+  "label": "BCB — Brique"
+ },
+ {
+  "categorie": "C",
+  "collection": "Bouclé F.R.",
+  "code": "BCV",
+  "nom": "Olive",
+  "fichier": "BCV.jpeg",
+  "label": "BCV — Olive"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLB",
+  "nom": "Bambou",
+  "fichier": "SLB.jpeg",
+  "label": "SLB — Bambou"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLR",
+  "nom": "Rose poudré",
+  "fichier": "SLR.jpeg",
+  "label": "SLR — Rose poudré"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLV",
+  "nom": "Eau",
+  "fichier": "SLV.jpeg",
+  "label": "SLV — Eau"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLG",
+  "nom": "Gris",
+  "fichier": "SLG.jpeg",
+  "label": "SLG — Gris"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "24N",
+  "nom": "Noir (Nylon)",
+  "fichier": "24N.jpeg",
+  "label": "24N — Noir (Nylon)"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLC",
+  "nom": "Citrouille",
+  "fichier": "SLC.jpeg",
+  "label": "SLC — Citrouille"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLF",
+  "nom": "Framboise",
+  "fichier": "SLF.jpeg",
+  "label": "SLF — Framboise"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLP",
+  "nom": "Pétrole",
+  "fichier": "SLP.jpeg",
+  "label": "SLP — Pétrole"
+ },
+ {
+  "categorie": "D",
+  "collection": "Select+24N",
+  "code": "SLN",
+  "nom": "Noir",
+  "fichier": "SLN.jpeg",
+  "label": "SLN — Noir"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRB",
+  "nom": "Blanc gris",
+  "fichier": "GRB.jpeg",
+  "label": "GRB — Blanc gris"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRG",
+  "nom": "Gris",
+  "fichier": "GRG.jpeg",
+  "label": "GRG — Gris"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRL",
+  "nom": "Lin",
+  "fichier": "GRL.jpeg",
+  "label": "GRL — Lin"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRJ",
+  "nom": "Jaune",
+  "fichier": "GRJ.jpeg",
+  "label": "GRJ — Jaune"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRC",
+  "nom": "Corail",
+  "fichier": "GRC.jpeg",
+  "label": "GRC — Corail"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRT",
+  "nom": "Terracotta",
+  "fichier": "GRT.jpeg",
+  "label": "GRT — Terracotta"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRV",
+  "nom": "Vert",
+  "fichier": "GRV.jpeg",
+  "label": "GRV — Vert"
+ },
+ {
+  "categorie": "D",
+  "collection": "Grain",
+  "code": "GRN",
+  "nom": "Nuit",
+  "fichier": "GRN.jpeg",
+  "label": "GRN — Nuit"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTC",
+  "nom": "Crème",
+  "fichier": "VTC.png",
+  "label": "VTC — Crème"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTP",
+  "nom": "Paprika",
+  "fichier": "VTP.jpeg",
+  "label": "VTP — Paprika"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTR",
+  "nom": "Rose",
+  "fichier": "VTR.jpeg",
+  "label": "VTR — Rose"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTB",
+  "nom": "Ciel",
+  "fichier": "VTB.jpeg",
+  "label": "VTB — Ciel"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTG",
+  "nom": "Gris",
+  "fichier": "VTG.png",
+  "label": "VTG — Gris"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTL",
+  "nom": "Lin",
+  "fichier": "VTL.jpeg",
+  "label": "VTL — Lin"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTT",
+  "nom": "Taupe",
+  "fichier": "VTT.jpeg",
+  "label": "VTT — Taupe"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTF",
+  "nom": "Framboise",
+  "fichier": "VTF.jpeg",
+  "label": "VTF — Framboise"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTV",
+  "nom": "Canard",
+  "fichier": "VTV.jpeg",
+  "label": "VTV — Canard"
+ },
+ {
+  "categorie": "D",
+  "collection": "Silvertex B1",
+  "code": "VTN",
+  "nom": "Charbon",
+  "fichier": "VTN.png",
+  "label": "VTN — Charbon"
+ }
+]

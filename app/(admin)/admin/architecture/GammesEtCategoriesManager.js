@@ -2,9 +2,13 @@
 import { useState } from "react";
 import GammesManager from "./GammesManager";
 import CategoriesManager from "./CategoriesManager";
+import FinitionsManager from "./FinitionsManager";
 
-export default function GammesEtCategoriesManager({ gammes, categories }) {
-  const [onglet, setOnglet] = useState("gammes"); // "gammes" | "categories"
+export default function GammesEtCategoriesManager({ gammes, categories, finitions }) {
+  const [onglet, setOnglet] = useState("gammes"); // "gammes" | "categories" | "finitions"
+
+  const nbFinitions = (finitions?.palettes || []).reduce((n, p) => n + (p.finitions?.length || 0), 0)
+    + (finitions?.orphelines || []).length;
 
   return (
     <div>
@@ -12,6 +16,7 @@ export default function GammesEtCategoriesManager({ gammes, categories }) {
         {[
           ["gammes", `Gammes (${gammes.length})`],
           ["categories", `Catégories (${categories.length})`],
+          ["finitions", `Finitions (${nbFinitions})`],
         ].map(([val, lbl]) => (
           <button key={val} onClick={() => setOnglet(val)}
             style={{ padding: "9px 20px", borderRadius: 9, border: "none", cursor: "pointer", fontSize: 13.5, fontWeight: 600,
@@ -22,7 +27,11 @@ export default function GammesEtCategoriesManager({ gammes, categories }) {
         ))}
       </div>
 
-      {onglet === "gammes" ? <GammesManager gammes={gammes} /> : <CategoriesManager categories={categories} />}
+      {onglet === "gammes" && <GammesManager gammes={gammes} />}
+      {onglet === "categories" && <CategoriesManager categories={categories} />}
+      {onglet === "finitions" && (
+        <FinitionsManager palettes={finitions?.palettes || []} orphelines={finitions?.orphelines || []} />
+      )}
     </div>
   );
 }

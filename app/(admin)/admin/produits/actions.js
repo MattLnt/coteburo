@@ -20,7 +20,7 @@ export async function getGammesPourRecherche() {
 
 // Crée un produit directement, sans étape séparée — réutilise une gamme existante
 // (gammeId fourni) ou en crée une nouvelle à la volée (nouvelleGammeNom fourni).
-// Le mode de vente est désormais choisi ici, produit par produit — plus au niveau de la gamme.
+// Le mode de vente est choisi ici, produit par produit — plus au niveau de la gamme.
 export async function creerProduitRapide({ nomProduit, gammeId, nouvelleGammeNom, venteSurDevis }) {
   const nomProduitPropre = (nomProduit || "").trim();
   if (!nomProduitPropre) return { ok: false, error: "Le nom du produit est obligatoire." };
@@ -38,11 +38,10 @@ export async function creerProduitRapide({ nomProduit, gammeId, nouvelleGammeNom
     const gammeExistante = await prisma.gamme.findUnique({ where: { slug: slugGamme } });
 
     if (gammeExistante) {
-      // Une gamme avec ce nom existe déjà — on la réutilise plutôt que d'échouer
       gammeIdFinal = gammeExistante.id;
     } else {
       const nouvelleGamme = await prisma.gamme.create({
-        data: { nom: nomGammePropre, slug: slugGamme, marqueId: marque.id, publie: false, venteSurDevis: false },
+        data: { nom: nomGammePropre, slug: slugGamme, marqueId: marque.id, publie: true, venteSurDevis: false },
       });
       gammeIdFinal = nouvelleGamme.id;
     }
@@ -75,4 +74,41 @@ export async function creerProduitRapide({ nomProduit, gammeId, nouvelleGammeNom
   revalidatePath("/admin/produits");
   revalidatePath(`/admin/architecture/${gammeIdFinal}`);
   return { ok: true, id: vitrine.id, gammeId: gammeIdFinal };
+}
+
+// Supprime une ligne du tableau /admin/produits — soit une seule combinaison
+// (mode "boutique" avec declinaisonId), soit le produit entier (sur devis, ou
+// boutique sans déclinaisons — dans ce cas il n'y a qu'une seule ligne possible).
+export async function supprimerLigneProduit({ mode, carteId, declinaisonId }) {
+  if (mode === "boutique" && declinaisonId) {
+    const vitrine = await prisma.produitVitrine.findUnique({ where: { id: carteId }, select: { declinaisons: true, gammeId: true } });
+    if (!vitrine) return { ok: false, error: "Produit introuvable." };
+    const declinaisons = Array.isArray(vitrine.declinaisons) ? vitrine.declinaisons : [];
+    const nouvelles = declinaisons.filter((d) => d.id !== declinaisonId);
+    await prisma.produitVitrine.update({ where: { id: carteId }, data: { declinaisons: nouvelles } });
+    revalidatePath("/admin/produits");
+    revalidatePath(`/admin/architecture/${vitrine.gammeId}/carte/${carteId}`);
+    return { ok: true };
+  }
+
+  const vitrine = await prisma.produitVitrine.findUnique({ where: { id: carteId }, select: { gammeId: true } });
+  if (!vitrine) return { ok: false, error: "Produit introuvable." };
+  await prisma.produit.updateMany({ where: { vitrineId: carteId }, data: { vitrineId: null } });
+  await prisma.produitVitrine.delete({ where: { id: carteId } });
+  revalidatePath("/admin/produits");
+  revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+  return { ok: true };
+}
+
+// Bascule publié/brouillon directement depuis la liste — sans ouvrir la fiche complète.
+export async function toggleProduitPublie(carteId, publie) {
+  const vitrine = await prisma.produitVitrine.update({
+    where: { id: carteId },
+    data: { publie: !!publie },
+    select: { gammeId: true },
+  });
+  revalidatePath("/admin/produits");
+  revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+  revalidatePath(`/admin/architecture/${vitrine.gammeId}/carte/${carteId}`);
+  return { ok: true };
 }

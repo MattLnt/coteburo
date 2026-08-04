@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 import { calculerTousLesFrais } from "@/lib/frais";
+import { prixVenteEffectif } from "@/lib/prixDeclinaison";
 
 // Génère un numéro de commande lisible : CB-2026-0001
 async function genererNumero() {
@@ -23,6 +24,16 @@ function motDePasseValide(mdp) {
   return true;
 }
 
+// Même logique de promo que celle affichée dans l'admin (PrixProduit.js) — un pourcentage
+// n'est actif que si la date du jour est dans la période choisie (ou si aucune date n'est fixée).
+function prixApresPromoVitrine(vitrine, prixBase) {
+  if (!vitrine.promoPct) return prixBase;
+  const now = new Date();
+  if (vitrine.promoDebut && new Date(vitrine.promoDebut) > now) return prixBase;
+  if (vitrine.promoFin && new Date(vitrine.promoFin) < now) return prixBase;
+  return prixBase * (1 - vitrine.promoPct / 100);
+}
+
 export async function POST(req) {
   try {
     const { client, items, avecInstallation, creerCompte, motDePasse } = await req.json();
@@ -37,8 +48,6 @@ export async function POST(req) {
     const email = client.email.trim().toLowerCase();
 
     // ── Détermine l'utilisateur à rattacher — TOUJOURS décidé côté serveur ──
-    // Cas 1 : déjà connecté -> on utilise la vraie session, jamais un id envoyé par le client.
-    // Cas 2 : demande de création de compte -> créé ici même, sur le serveur, avec mot de passe validé.
     const session = await auth();
     let userId = session?.user?.id || null;
     let compteNouvellementCree = false;
@@ -61,35 +70,99 @@ export async function POST(req) {
         userId = nouveauCompte.id;
         compteNouvellementCree = true;
       }
-      // Si un compte existe déjà avec cet email, on ne le duplique pas et on ne le rattache pas
-      // non plus sans le mot de passe du propriétaire — la commande part en simple invité,
-      // le paiement n'est jamais bloqué pour ça.
     }
 
-    // On recharge les vrais prix depuis la base (jamais confiance au client)
-    const codes = [...new Set(items.map((it) => it.codeRacine))];
-    const produits = await prisma.produit.findMany({
-      where: { codeRacine: { in: codes }, publie: true },
-      include: { marque: { select: { nom: true } } },
-    });
+    // ── Recharge les vrais prix depuis la base — jamais confiance au client.
+    // Trois cas : l'ancien système (Produit, par codeRacine), le nouveau (ProduitVitrine
+    // + déclinaisons, par vitrineId + declinaisonId), et les options (optionsAdditionnelles). ──
+    const itemsAnciens = items.filter((it) => it.type !== "nouveau" && !it.optionId);
+    const itemsNouveaux = items.filter((it) => it.type === "nouveau");
+
+    const codes = [...new Set(itemsAnciens.map((it) => it.codeRacine))];
+    const produitsAnciens = codes.length > 0
+      ? await prisma.produit.findMany({ where: { codeRacine: { in: codes }, publie: true }, include: { marque: { select: { nom: true } } } })
+      : [];
+    const produitsAnciensMap = Object.fromEntries(produitsAnciens.map((p) => [p.codeRacine, p]));
+
+    // Toutes les fiches concernées : produits "nouveau" ET produits parents des options.
+    const vitrineIds = [...new Set(items.filter((it) => it.vitrineId).map((it) => it.vitrineId))];
+    const vitrines = vitrineIds.length > 0
+      ? await prisma.produitVitrine.findMany({
+          where: { id: { in: vitrineIds }, publie: true },
+          include: { gamme: { include: { marque: { select: { nom: true } } } } },
+        })
+      : [];
+    const vitrinesMap = Object.fromEntries(vitrines.map((v) => [v.id, v]));
+
+    // Marge globale actuelle — pour recalculer le vrai prix de vente des déclinaisons
+    // non verrouillées, exactement comme sur la fiche produit publique.
+    const reglagesPrix = await prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true } });
+    const margeGlobale = reglagesPrix?.margeGlobale ?? 0.3;
+
     const promosActives = await getPromotionsActives();
-    const produitsMap = Object.fromEntries(produits.map((p) => [p.codeRacine, p]));
 
     const lignes = [];
     for (const it of items) {
-      const p = produitsMap[it.codeRacine];
-      if (!p) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
-      const { prixFinal } = appliquerPromotions(p, promosActives);
       const quantite = Math.max(1, parseInt(it.quantite) || 1);
-      lignes.push({
-        codeRacine: p.codeRacine,
-        designation: p.designation,
-        marque: p.marque?.nom || null,
-        finition: it.finition || null,
-        prixHT: prixFinal,
-        quantite,
-        imageUrl: p.images?.[0] || null,
-      });
+
+      // ── Option additionnelle : prix vérifié depuis optionsAdditionnelles de la fiche parente ──
+      if (it.optionId) {
+        const v = vitrinesMap[it.vitrineId];
+        if (!v) return NextResponse.json({ error: `Option indisponible : ${it.designation}` }, { status: 400 });
+        const options = Array.isArray(v.optionsAdditionnelles) ? v.optionsAdditionnelles : [];
+        const opt = options.find((o) => o && o.id === it.optionId);
+        if (!opt) return NextResponse.json({ error: `Cette option n'est plus disponible : ${it.designation}` }, { status: 400 });
+        const prixOpt = Number(opt.prixHT);
+        if (!prixOpt || prixOpt <= 0) return NextResponse.json({ error: `Prix indisponible pour l'option : ${it.designation}` }, { status: 400 });
+        lignes.push({
+          codeRacine: null,
+          referenceFournisseur: opt.reference || null,
+          designation: `${opt.nom} (option)`,
+          marque: v.gamme?.marque?.nom || null,
+          finition: null,
+          prixHT: prixOpt,
+          quantite,
+          imageUrl: (opt.images && opt.images[0]) || null,
+        });
+        continue;
+      }
+
+      if (it.type === "nouveau") {
+        const v = vitrinesMap[it.vitrineId];
+        if (!v) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
+
+        const declinaisons = Array.isArray(v.declinaisons) ? v.declinaisons : [];
+        const decl = declinaisons.find((d) => d.id === it.declinaisonId);
+        if (!decl) return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
+
+        const prixBase = prixVenteEffectif(decl, margeGlobale);
+        if (!prixBase || prixBase <= 0) return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
+
+        lignes.push({
+          codeRacine: null,
+          referenceFournisseur: decl.referenceFournisseur || null,
+          designation: v.nom,
+          marque: v.gamme?.marque?.nom || null,
+          finition: it.finition || null,
+          prixHT: prixApresPromoVitrine(v, prixBase),
+          quantite,
+          imageUrl: v.imageUrl || null,
+        });
+      } else {
+        const p = produitsAnciensMap[it.codeRacine];
+        if (!p) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
+        const { prixFinal } = appliquerPromotions(p, promosActives);
+        lignes.push({
+          codeRacine: p.codeRacine,
+          referenceFournisseur: p.codeRacine,
+          designation: p.designation,
+          marque: p.marque?.nom || null,
+          finition: it.finition || null,
+          prixHT: prixFinal,
+          quantite,
+          imageUrl: p.images?.[0] || null,
+        });
+      }
     }
 
     const totalHT = lignes.reduce((s, l) => s + l.prixHT * l.quantite, 0);
@@ -140,7 +213,6 @@ export async function POST(req) {
       payment_method_types: ["card"],
     });
 
-    // On stocke l'id du PaymentIntent sur la commande
     await prisma.commande.update({
       where: { id: commande.id },
       data: { stripePaymentId: paymentIntent.id },

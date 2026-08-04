@@ -10,6 +10,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@imgly/background-removal": "^1.7.0",
     "@prisma/client": "^6.19.3",
     "@react-pdf/renderer": "^4.5.1",
     "@stripe/react-stripe-js": "^6.7.0",
@@ -20,6 +21,7 @@
     "@tiptap/react": "^3.27.1",
     "@tiptap/starter-kit": "^3.27.1",
     "bcryptjs": "^3.0.3",
+    "browser-image-compression": "^2.0.2",
     "cloudinary": "^2.10.0",
     "dotenv": "^17.4.2",
     "next": "16.2.9",
