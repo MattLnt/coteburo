@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Icon } from "@/components/dashboard/Icon";
 import { FormSelect } from "@/components/dashboard/FormSelect";
 import NouveauProduitModal from "./NouveauProduitModal";
-import { supprimerLigneProduit, toggleProduitPublie } from "./actions";
+import { supprimerLigneProduit, toggleProduitPublie, renommerProduit } from "./actions";
 
 const euro = (v) => (v == null ? "—" : `${v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 // Affiche une valeur unique, ou une fourchette min–max si les déclinaisons varient.
@@ -26,6 +26,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
   const [aSupprimer, setASupprimer] = useState(null);
   const [isPending, startTransition] = useTransition();
   const [enCoursToggle, setEnCoursToggle] = useState(null);
+  const [edition, setEdition] = useState(null); // { carteId, valeur } — renommage en cours
 
   const modeOptions = [
     { value: "", label: "Tous les modes" },
@@ -117,6 +118,60 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
   }, [filtered, tri]);
 
   const resetFiltres = () => { setQ(""); setMode(""); setStatut(""); setTri("nom-asc"); };
+
+  // ── Renommage inline ──
+  const sauverNom = () => {
+    if (!edition) return;
+    const { carteId, valeur } = edition;
+    const nettoye = (valeur || "").trim();
+    setEdition(null);
+    if (!nettoye) return;
+    const actuel = lignes.find((l) => l.carteId === carteId)?.nom;
+    if (nettoye === actuel) return;
+    // optimiste : on met à jour toutes les lignes de ce produit
+    setLignes((ls) => ls.map((l) => (l.carteId === carteId ? { ...l, nom: nettoye } : l)));
+    startTransition(async () => {
+      const res = await renommerProduit(carteId, nettoye);
+      if (!res?.ok) {
+        setLignes((ls) => ls.map((l) => (l.carteId === carteId ? { ...l, nom: actuel } : l)));
+      }
+    });
+  };
+
+  // Fonction (pas un composant) — appelée inline pour que le champ reste le même
+  // élément entre deux rendus, sinon le curseur saute à la fin à chaque frappe.
+  const renderNom = (carteId, nom) => {
+    if (edition?.carteId === carteId) {
+      return (
+        <input
+          autoFocus
+          value={edition.valeur}
+          onChange={(e) => setEdition({ carteId, valeur: e.target.value })}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") { e.preventDefault(); sauverNom(); }
+            if (e.key === "Escape") { e.preventDefault(); setEdition(null); }
+          }}
+          onBlur={sauverNom}
+          style={{ fontWeight: 600, fontSize: 13.5, padding: "5px 9px", borderRadius: 7, border: "1.5px solid #f0661b", background: "#fff", color: "#23262a", outline: "none", width: "100%", maxWidth: 320, boxSizing: "border-box" }}
+        />
+      );
+    }
+    return (
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, maxWidth: "100%" }}>
+        <span style={{ fontWeight: 600 }}>{nom}</span>
+        <button
+          type="button"
+          onClick={() => setEdition({ carteId, valeur: nom })}
+          title="Renommer"
+          style={{ flexShrink: 0, opacity: 0.45, background: "none", border: "none", cursor: "pointer", padding: 2, display: "inline-flex", color: "#9aa0a8" }}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.45)}
+        >
+          <Icon name="edit" size={13} />
+        </button>
+      </div>
+    );
+  };
 
   const confirmerSuppression = () => {
     if (!aSupprimer) return;
@@ -292,7 +347,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
               {vue === "produits" && produitsAffiches.map((p) => (
                 <tr key={p.key}>
                   <td style={{ ...td, maxWidth: 380 }}>
-                    <div style={{ fontWeight: 600 }}>{p.nom}</div>
+                    {renderNom(p.carteId, p.nom)}
                     <div style={{ fontSize: 12, color: "#9aa0a8", marginTop: 3 }}>
                       {p.mode === "devis"
                         ? "Sur devis"
@@ -332,7 +387,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
               {vue === "declinaisons" && declinaisonsAffichees.map((l) => (
                 <tr key={l.key}>
                   <td style={{ ...td, maxWidth: 380 }}>
-                    <div style={{ fontWeight: 600 }}>{l.nom}</div>
+                    {renderNom(l.carteId, l.nom)}
                     {l.sousLibelle && <div style={{ fontSize: 12, color: "#9aa0a8", marginTop: 3 }}>{l.sousLibelle}</div>}
                     {l.reference && (
                       <div style={{ fontSize: 11.5, color: "#5c616a", marginTop: 3, fontFamily: "monospace", fontWeight: 700 }}>Réf. {l.reference}</div>
