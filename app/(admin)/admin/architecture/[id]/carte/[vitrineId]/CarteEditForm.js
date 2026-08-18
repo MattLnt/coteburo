@@ -57,6 +57,7 @@ export default function CarteEditForm({ carte }) {
   const [isPending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
   const [onglet, setOnglet] = useState("infos");
+  const [erreurSave, setErreurSave] = useState("");
 
   const surDevis = carte.gammeForceDevis || venteSurDevis;
   const utiliseAncienSysteme = (carte.produits || []).length > 0;
@@ -96,7 +97,7 @@ export default function CarteEditForm({ carte }) {
     return null;
   })();
 
-  const dirty = () => setSaved(false);
+  const dirty = () => { setSaved(false); setErreurSave(""); };
 
   const toggleCategorie = (id) => {
     const next = categorieIds.includes(id) ? categorieIds.filter((x) => x !== id) : [...categorieIds, id];
@@ -140,6 +141,16 @@ export default function CarteEditForm({ carte }) {
   };
 
   const enregistrerTout = () => {
+    // Validation : chaque option doit avoir un nom (sinon elle serait perdue à l'enregistrement).
+    const optionsSansNom = (optionsAdditionnelles || [])
+      .map((o, i) => ({ n: i + 1, nom: (o.nom || "").trim() }))
+      .filter((o) => !o.nom);
+    if (optionsSansNom.length > 0) {
+      setOnglet("options");
+      setErreurSave(`Chaque option doit avoir un nom — complète ou supprime l'option ${optionsSansNom.map((o) => o.n).join(", ")}.`);
+      return;
+    }
+    setErreurSave("");
     setSaved(false);
     startTransition(async () => {
       await sauverCarteComplete(carte.id, {
@@ -487,6 +498,7 @@ export default function CarteEditForm({ carte }) {
 
           {/* ── Bouton unique, toujours visible peu importe l'onglet ── */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 14, marginTop: 24, paddingTop: 20, borderTop: "1px solid #ece8e0" }}>
+            {erreurSave && <span style={{ fontSize: 13.5, color: "#b45528", fontWeight: 600 }}>⚠ {erreurSave}</span>}
             {saved && <span style={{ fontSize: 13.5, color: "#1f7a52", fontWeight: 600 }}>✓ Tout est enregistré</span>}
             <button onClick={enregistrerTout} disabled={isPending}
               style={{ padding: "15px 32px", borderRadius: 14, background: isPending ? "#c98a5f" : "#f0661b", color: "#fff", border: "none", cursor: isPending ? "default" : "pointer", fontSize: 15, fontWeight: 700, boxShadow: "0 8px 20px -6px rgba(240,102,27,0.5)" }}>

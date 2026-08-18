@@ -159,13 +159,37 @@ export async function sauverCarteComplete(vitrineId, data) {
       optionsAdditionnelles: Array.isArray(optionsAdditionnelles)
         ? optionsAdditionnelles
             .filter((o) => o && (o.nom || "").trim())
-            .map((o) => ({
-              id: o.id || undefined,
-              nom: (o.nom || "").trim(),
-              prixHT: o.prixHT === "" || o.prixHT == null ? null : Number(o.prixHT),
-              reference: (o.reference || "").trim() || null,
-              images: Array.isArray(o.images) ? o.images : [],
-            }))
+            .map((o) => {
+              const sansDecl = o.sansDeclinaisons ?? true;
+              const prixVente = toNum(o.prixVenteHT ?? o.prixHT);
+              return {
+                id: o.id || undefined,
+                nom: (o.nom || "").trim(),
+                description: (o.description || "").trim() || null,
+                images: Array.isArray(o.images) ? o.images : [],
+                sansDeclinaisons: !!sansDecl,
+                referenceUnitaire: (o.referenceUnitaire || "").trim() || null,
+                // Prix unique
+                prixTarifHT: toNum(o.prixTarifHT),
+                prixVenteHT: prixVente,
+                prixHT: prixVente,                 // compat ancien front
+                reference: (o.reference || "").trim() || null, // compat
+                // Déclinaisons (axes + finitions par valeur conservés tels quels)
+                axes: Array.isArray(o.axes) ? o.axes : [],
+                declinaisons: Array.isArray(o.declinaisons)
+                  ? o.declinaisons.map((d) => ({
+                      id: d.id,
+                      valeurs: d.valeurs || {},
+                      prixTarifHT: toNum(d.prixTarifHT),
+                      prixVenteHT: toNum(d.prixVenteHT),
+                      prixVerrouille: !!d.prixVerrouille,
+                      referenceFournisseur: (d.referenceFournisseur || "").trim() || null,
+                    }))
+                  : [],
+                // Finitions globales (coloris de l'option)
+                finitionsGlobales: Array.isArray(o.finitionsGlobales) ? o.finitionsGlobales : [],
+              };
+            })
         : [],
       largeurMin: toEntier(largeurMin),
       largeurMax: toEntier(largeurMax),

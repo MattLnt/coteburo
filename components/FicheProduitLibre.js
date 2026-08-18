@@ -8,6 +8,61 @@ import FavoriButton from "@/components/FavoriButton";
 
 const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
+// ─────────── Helpers option (déclinaisons + finitions) ───────────
+const estDeclOption = (o) => !(o.sansDeclinaisons ?? true) && (o.axes || []).length > 0;
+
+// Déclinaison de l'option correspondant aux valeurs choisies (toutes les valeurs requises)
+const declinaisonOption = (o, valeurs) => {
+  const axes = o.axes || [];
+  if (!axes.length || !axes.every((a) => valeurs?.[a.id])) return null;
+  return (o.declinaisons || []).find((d) => axes.every((a) => (d.valeurs || {})[a.id] === valeurs[a.id])) || null;
+};
+
+const prixOption = (o, cfg) => {
+  if (!estDeclOption(o)) {
+    const p = o.prixVenteHT ?? o.prixHT;
+    return p != null ? Number(p) : null;
+  }
+  const d = declinaisonOption(o, cfg?.valeurs || {});
+  return d && d.prixVenteHT != null ? Number(d.prixVenteHT) : null;
+};
+
+// Groupes de finitions applicables à une option : globales + celles liées aux valeurs choisies
+const groupesFinitionOption = (o, valeurs) => {
+  const g = [];
+  (o.finitionsGlobales || []).forEach((p, k) => {
+    if (p.finitions?.length) g.push({ id: `opt:${o.id}:pal:${p.paletteId || p.paletteNom || k}`, nom: p.paletteNom || "Coloris", finitions: p.finitions });
+  });
+  (o.axes || []).forEach((a) => {
+    const v = valeurs?.[a.id];
+    const fins = v && a.finitionsParValeur ? a.finitionsParValeur[v] : null;
+    if (fins?.length) g.push({ id: `opt:${o.id}:axe:${a.id}:${v}`, nom: `${a.nom} — ${v}`, finitions: fins });
+  });
+  return g;
+};
+
+const optionConfiguree = (o, cfg) => {
+  if (!cfg) return true;
+  if (estDeclOption(o)) {
+    const axes = o.axes || [];
+    if (!axes.every((a) => cfg.valeurs?.[a.id])) return false;
+    if (!declinaisonOption(o, cfg.valeurs)) return false;
+  }
+  const groupes = groupesFinitionOption(o, cfg.valeurs || {});
+  if (!groupes.every((gr) => cfg.finitions?.[gr.id])) return false;
+  return true;
+};
+
+const libelleOption = (o, cfg) => {
+  const parts = [];
+  (o.axes || []).forEach((a) => { if (cfg?.valeurs?.[a.id]) parts.push(cfg.valeurs[a.id]); });
+  groupesFinitionOption(o, cfg?.valeurs || {}).forEach((gr) => {
+    const f = gr.finitions.find((x) => (x.id || x.nom) === cfg?.finitions?.[gr.id]);
+    if (f) parts.push(f.nom);
+  });
+  return parts.join(" / ");
+};
+
 export default function FicheProduitLibre({ data }) {
   const { addItem } = useCart();
   const { addDevis } = useDevis();
@@ -15,7 +70,11 @@ export default function FicheProduitLibre({ data }) {
   const axes = carte.axesDeclinaisons || [];
   const declinaisons = carte.declinaisons || [];
   const images = carte.images?.length ? carte.images : [];
-  const optionsDispo = (carte.optionsAdditionnelles || []).filter((o) => o && o.nom && o.prixHT != null);
+  const optionsDispo = (carte.optionsAdditionnelles || []).filter((o) => {
+    if (!o || !o.nom) return false;
+    if (estDeclOption(o)) return (o.declinaisons || []).length > 0;
+    return (o.prixVenteHT ?? o.prixHT) != null;
+  });
 
   const [historique, setHistorique] = useState([]); // [{axeId, nom, valeur}]
   const [reponses, setReponses] = useState({});
@@ -25,17 +84,33 @@ export default function FicheProduitLibre({ data }) {
   const [qte, setQte] = useState(1);
   const [ajoute, setAjoute] = useState(false);
   const [ajouteDevis, setAjouteDevis] = useState(false);
-  const [optionsSel, setOptionsSel] = useState({}); // { [id]: quantité }
-  const [lightbox, setLightbox] = useState(null);   // { option, index } ou null
+  const [optionsCfg, setOptionsCfg] = useState({}); // { [id]: { qte, valeurs:{}, finitions:{} } }
+  const [lightbox, setLightbox] = useState(null); // { option, index } ou null
 
   const toggleOption = (id) =>
-    setOptionsSel((s) => { const n = { ...s }; if (n[id]) delete n[id]; else n[id] = 1; return n; });
+    setOptionsCfg((s) => { const n = { ...s }; if (n[id]) delete n[id]; else n[id] = { qte: 1, valeurs: {}, finitions: {} }; return n; });
   const setQteOption = (id, q) =>
-    setOptionsSel((s) => ({ ...s, [id]: Math.max(1, q) }));
-  const totalOptions = optionsDispo.reduce((t, o) => t + (optionsSel[o.id] ? Number(o.prixHT) * optionsSel[o.id] : 0), 0);
+    setOptionsCfg((s) => (s[id] ? { ...s, [id]: { ...s[id], qte: Math.max(1, q) } } : s));
+  const setValeurOption = (id, axeId, val) =>
+    setOptionsCfg((s) => {
+      const cur = s[id] || { qte: 1, valeurs: {}, finitions: {} };
+      const valeurs = { ...cur.valeurs, [axeId]: val };
+      const finitions = { ...cur.finitions };
+      Object.keys(finitions).forEach((k) => { if (k.startsWith(`opt:${id}:axe:${axeId}:`)) delete finitions[k]; });
+      return { ...s, [id]: { ...cur, valeurs, finitions } };
+    });
+  const setFinitionOption = (id, groupeId, finVal) =>
+    setOptionsCfg((s) => (s[id] ? { ...s, [id]: { ...s[id], finitions: { ...s[id].finitions, [groupeId]: finVal } } } : s));
 
-  // Groupes de finitions rattachés aux valeurs d'axe choisies (finitionsParValeur).
-  // Ils n'apparaissent que lorsque la valeur correspondante est sélectionnée.
+  const totalOptions = optionsDispo.reduce((t, o) => {
+    const cfg = optionsCfg[o.id];
+    if (!cfg) return t;
+    const p = prixOption(o, cfg);
+    return t + (p != null && optionConfiguree(o, cfg) ? p * cfg.qte : 0);
+  }, 0);
+  const optionsOK = optionsDispo.every((o) => !optionsCfg[o.id] || optionConfiguree(o, optionsCfg[o.id]));
+
+  // Groupes de finitions rattachés aux valeurs d'axe choisies (finitionsParValeur) du PRODUIT.
   const groupesValeur = useMemo(() => {
     const out = [];
     for (const a of axes) {
@@ -54,7 +129,6 @@ export default function FicheProduitLibre({ data }) {
 
   const finitionsAVoter = useMemo(() => {
     const groupes = [...(groupesFinition || []), ...((carte.finitionsProduit) || []), ...groupesValeur];
-    // respecte l'ordre défini en admin : tri par `ordre` si présent, sinon ordre du tableau (stable)
     return groupes.map((g) => ({
       ...g,
       finitions: [...(g.finitions || [])]
@@ -89,7 +163,6 @@ export default function FicheProduitLibre({ data }) {
     setHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
     setReponses((r) => ({ ...r, [axeId]: valeur }));
     setPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
-    // si on change une valeur qui portait des finitions, on nettoie l'ancienne sélection liée
     setFinitionsSel((f) => {
       const n = { ...f };
       Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${axeId}:`)) delete n[k]; });
@@ -128,11 +201,10 @@ export default function FicheProduitLibre({ data }) {
   };
 
   const finitionsOK = finitionsAVoter.length === 0 || finitionsAVoter.every((g) => finitionsSel[g.id]);
-  const peutAjouter = !!declinaisonFinale && finitionsOK;
+  const peutAjouter = !!declinaisonFinale && finitionsOK && optionsOK;
 
   const ajouterPanier = () => {
     if (!peutAjouter) return;
-    // Ligne du produit principal — système "nouveau" (vitrine + déclinaison), vérifié en base au paiement.
     const parentId = addItem(
       {
         type: "nouveau",
@@ -148,31 +220,38 @@ export default function FicheProduitLibre({ data }) {
       },
       libelleDeclinaison() || null, qte
     );
-    // Chaque option cochée = une ligne rattachée au produit parent (affichée indentée dessous).
-    // On transporte vitrineId + optionId pour que le serveur retrouve son vrai prix en base.
+    // Chaque option cochée = une ligne rattachée au produit parent.
+    // On transporte vitrineId + optionId (+ optionDeclinaisonId) pour vérif du prix en base au paiement.
     optionsDispo.forEach((o) => {
-      const q = optionsSel[o.id];
-      if (!q) return;
+      const cfg = optionsCfg[o.id];
+      if (!cfg) return;
+      const d = estDeclOption(o) ? declinaisonOption(o, cfg.valeurs) : null;
+      const prix = prixOption(o, cfg);
+      if (prix == null) return;
+      const ref = (d && d.referenceFournisseur) || o.reference || null;
+      const lbl = libelleOption(o, cfg);
       addItem(
         {
-          codeRacine: o.reference || `opt-${o.id}`,   // pour l'unicité de la ligne panier
+          codeRacine: `opt-${o.id}-${d ? d.id : "simple"}`,
           vitrineId: carte.id,
           optionId: o.id,
-          reference: o.reference || null,
+          optionDeclinaisonId: d ? d.id : null,
+          reference: ref,
           slug: carte.slug,
           categorieSlug: carte.categorieSlug || null,
           sousCategorieSlug: carte.sousCategorieSlug || null,
-          designation: o.nom,
+          designation: o.nom + (lbl ? ` — ${lbl}` : ""),
           marque: "Buronomic",
           image: (o.images && o.images[0]) || null,
-          prix: Number(o.prixHT),
+          prix,
           parentId,
         },
-        null, q
+        lbl || null, cfg.qte
       );
     });
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
   };
+
   const ajouterAuDevisAussi = () => {
     if (!declinaisonFinale || !finitionsOK) return;
     addDevis({ codeRacine: declinaisonFinale.id, gammeSlug, carteSlug: carte.slug, designation: carte.nom, gammeNom, image: images[0] || null, config: libelleDeclinaison() || null, prixIndicatif: prixHT }, qte);
@@ -239,12 +318,6 @@ export default function FicheProduitLibre({ data }) {
             </div>
           )}
 
-
-
-
-
-
-
           <div className={finitionsAVoter.length > 0 ? "mt-7" : "mt-6 pt-6 border-t border-line"}>
             {phase === "config" && etapeCourante && (
               <div>
@@ -287,33 +360,18 @@ export default function FicheProduitLibre({ data }) {
               <p className="font-semibold text-ink text-[16px] mb-1">Options / Accessoires</p>
               <p className="text-[12.5px] text-ink-soft mb-4">Ajoutez des accessoires. Chaque option s'ajoute au panier avec sa propre référence.</p>
               <div className="flex flex-col gap-2.5">
-                {optionsDispo.map((o) => {
-                  const sel = !!optionsSel[o.id];
-                  const q = optionsSel[o.id] || 1;
-                  const img = (o.images && o.images[0]) || null;
-                  const multi = (o.images || []).length > 1;
-                  return (
-                    <div key={o.id} className={`flex items-center gap-3 p-3 rounded-xl border transition ${sel ? "border-orange bg-orange-tint" : "border-line"}`}>
-                      <input type="checkbox" checked={sel} onChange={() => toggleOption(o.id)} style={{ width: 18, height: 18, accentColor: "#f0661b", cursor: "pointer" }} />
-                      <button type="button" onClick={() => img && setLightbox({ option: o, index: 0 })} className="relative w-[54px] h-[54px] rounded-lg overflow-hidden shrink-0 bg-surface-2" style={{ cursor: img ? "zoom-in" : "default" }}>
-                        {img ? <img src={img} alt={o.nom} className="w-full h-full object-cover" /> : null}
-                        {multi && <span className="absolute bottom-0.5 right-0.5 bg-charcoal/80 text-white text-[10px] font-bold px-1.5 rounded">{o.images.length}</span>}
-                      </button>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[14px] font-semibold text-ink">{o.nom}</p>
-                        {o.reference && <p className="text-[12px] text-ink-soft">Réf. {o.reference}</p>}
-                      </div>
-                      {sel && (
-                        <div className="flex items-center gap-1.5">
-                          <button type="button" onClick={() => setQteOption(o.id, q - 1)} className="w-7 h-7 rounded-lg border border-line bg-surface-2 grid place-items-center">−</button>
-                          <span className="w-5 text-center text-[14px] font-bold">{q}</span>
-                          <button type="button" onClick={() => setQteOption(o.id, q + 1)} className="w-7 h-7 rounded-lg border border-line bg-surface-2 grid place-items-center">+</button>
-                        </div>
-                      )}
-                      <span className="text-[14px] font-bold text-orange-dark whitespace-nowrap min-w-[80px] text-right">+ {fmt(Number(o.prixHT) * (sel ? q : 1))}</span>
-                    </div>
-                  );
-                })}
+                {optionsDispo.map((o) => (
+                  <OptionRow
+                    key={o.id}
+                    o={o}
+                    cfg={optionsCfg[o.id]}
+                    onToggle={toggleOption}
+                    onQte={setQteOption}
+                    onValeur={setValeurOption}
+                    onFinition={setFinitionOption}
+                    onZoom={setLightbox}
+                  />
+                ))}
               </div>
               {totalOptions > 0 && (
                 <p className="text-[13px] text-ink-soft mt-3 text-right">Total options : <span className="font-bold text-ink">+ {fmt(totalOptions)}</span></p>
@@ -350,12 +408,17 @@ export default function FicheProduitLibre({ data }) {
                       </div>
                     ) : null;
                   })}
-                  {optionsDispo.filter((o) => optionsSel[o.id]).map((o) => (
-                    <div key={o.id} className="px-4 py-3 text-[13.5px] flex justify-between gap-4">
-                      <span className="text-ink-soft">Option · {o.nom}{optionsSel[o.id] > 1 ? ` ×${optionsSel[o.id]}` : ""}</span>
-                      <span className="text-ink font-medium">+ {fmt(Number(o.prixHT) * optionsSel[o.id])}</span>
-                    </div>
-                  ))}
+                  {optionsDispo.filter((o) => optionsCfg[o.id]).map((o) => {
+                    const cfg = optionsCfg[o.id];
+                    const p = prixOption(o, cfg);
+                    const lbl = libelleOption(o, cfg);
+                    return (
+                      <div key={o.id} className="px-4 py-3 text-[13.5px] flex justify-between gap-4">
+                        <span className="text-ink-soft">Option · {o.nom}{lbl ? ` (${lbl})` : ""}{cfg.qte > 1 ? ` ×${cfg.qte}` : ""}</span>
+                        <span className="text-ink font-medium">+ {fmt((p || 0) * cfg.qte)}</span>
+                      </div>
+                    );
+                  })}
                   <div className="px-4 py-3 flex justify-between items-center bg-surface-2/40">
                     <span className="text-ink-soft text-[13.5px]">{totalOptions > 0 ? "Total HT" : "Prix unitaire HT"}</span>
                     <span className="font-display font-bold text-lg">{fmt((prixHT != null ? prixHT * qte : 0) + totalOptions)}</span>
@@ -371,6 +434,9 @@ export default function FicheProduitLibre({ data }) {
             <div className="mt-5">
               {!finitionsOK && (
                 <p className="text-[13px] text-orange-dark bg-orange-tint rounded-xl px-4 py-3 mb-4">Choisissez une finition dans chaque catégorie ci-dessus avant de continuer.</p>
+              )}
+              {!optionsOK && (
+                <p className="text-[13px] text-orange-dark bg-orange-tint rounded-xl px-4 py-3 mb-4">Terminez la configuration des options sélectionnées (déclinaison / finition).</p>
               )}
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center border border-line rounded-full overflow-hidden">
@@ -433,6 +499,91 @@ export default function FicheProduitLibre({ data }) {
             )}
             <p className="text-[12px] text-white/70 mt-2">Cliquer à l'extérieur pour fermer</p>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────── Une option configurable (déclinaison + finitions + quantité) ───────────
+function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
+  const sel = !!cfg;
+  const q = cfg?.qte || 1;
+  const img = (o.images && o.images[0]) || null;
+  const multi = (o.images || []).length > 1;
+  const decl = estDeclOption(o);
+  const prix = prixOption(o, cfg || { valeurs: {} });
+  const groupes = groupesFinitionOption(o, cfg?.valeurs || {});
+  const configuree = optionConfiguree(o, cfg);
+
+  const valeurBtn = (actif) => `px-3 py-1.5 rounded-lg border text-[12.5px] font-medium transition ${
+    actif ? "border-orange bg-orange-tint text-orange-dark" : "border-line text-ink hover:border-orange/50"}`;
+
+  return (
+    <div className={`p-3 rounded-xl border transition ${sel ? "border-orange bg-orange-tint" : "border-line"}`}>
+      <div className="flex items-center gap-3">
+        <input type="checkbox" checked={sel} onChange={() => onToggle(o.id)} style={{ width: 18, height: 18, accentColor: "#f0661b", cursor: "pointer" }} />
+        <button type="button" onClick={() => img && onZoom({ option: o, index: 0 })} className="relative w-[54px] h-[54px] rounded-lg overflow-hidden shrink-0 bg-surface-2" style={{ cursor: img ? "zoom-in" : "default" }}>
+          {img ? <img src={img} alt={o.nom} className="w-full h-full object-cover" /> : null}
+          {multi && <span className="absolute bottom-0.5 right-0.5 bg-charcoal/80 text-white text-[10px] font-bold px-1.5 rounded">{o.images.length}</span>}
+        </button>
+        <div className="flex-1 min-w-0">
+          <p className="text-[14px] font-semibold text-ink">{o.nom}</p>
+          {o.description && <p className="text-[12px] text-ink-soft leading-snug">{o.description}</p>}
+          {!decl && o.reference && <p className="text-[12px] text-ink-soft">Réf. {o.reference}</p>}
+        </div>
+        {sel && (
+          <div className="flex items-center gap-1.5">
+            <button type="button" onClick={() => onQte(o.id, q - 1)} className="w-7 h-7 rounded-lg border border-line bg-surface-2 grid place-items-center">−</button>
+            <span className="w-5 text-center text-[14px] font-bold">{q}</span>
+            <button type="button" onClick={() => onQte(o.id, q + 1)} className="w-7 h-7 rounded-lg border border-line bg-surface-2 grid place-items-center">+</button>
+          </div>
+        )}
+        <span className="text-[14px] font-bold text-orange-dark whitespace-nowrap min-w-[80px] text-right">
+          {decl && !configuree ? "à configurer" : `+ ${fmt((prix != null ? prix : 0) * (sel ? q : 1))}`}
+        </span>
+      </div>
+
+      {sel && decl && (
+        <div className="mt-3 pl-9 flex flex-col gap-3">
+          {(o.axes || []).map((a) => (
+            <div key={a.id}>
+              <p className="text-[12.5px] font-semibold text-ink mb-1.5">
+                {a.nom}{!cfg.valeurs?.[a.id] && <span className="text-orange-dark font-medium"> · à choisir</span>}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {(a.valeurs || []).map((v) => (
+                  <button key={v} type="button" onClick={() => onValeur(o.id, a.id, v)} className={valeurBtn(cfg.valeurs?.[a.id] === v)}>{v}</button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {sel && groupes.length > 0 && (
+        <div className="mt-3 pl-9 flex flex-col gap-3">
+          {groupes.map((gr) => (
+            <div key={gr.id}>
+              <p className="text-[12.5px] font-semibold text-ink mb-1.5">
+                {gr.nom}{!cfg.finitions?.[gr.id] && <span className="text-orange-dark font-medium"> · à choisir</span>}
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                {gr.finitions.map((f) => {
+                  const val = f.id || f.nom;
+                  const actif = cfg.finitions?.[gr.id] === val;
+                  return (
+                    <button key={val} type="button" onClick={() => onFinition(o.id, gr.id, val)} title={f.nom} className="flex flex-col items-center gap-1">
+                      <span className={`rounded-full border-2 overflow-hidden block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                        {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                      </span>
+                      <span className={`text-[10.5px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

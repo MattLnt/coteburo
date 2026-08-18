@@ -112,14 +112,30 @@ export async function POST(req) {
         const options = Array.isArray(v.optionsAdditionnelles) ? v.optionsAdditionnelles : [];
         const opt = options.find((o) => o && o.id === it.optionId);
         if (!opt) return NextResponse.json({ error: `Cette option n'est plus disponible : ${it.designation}` }, { status: 400 });
-        const prixOpt = Number(opt.prixHT);
+
+        // Deux cas : option à déclinaisons (prix par combinaison) ou prix unique.
+        const estDecl = !(opt.sansDeclinaisons ?? true) && Array.isArray(opt.axes) && opt.axes.length > 0;
+        let prixOpt = null;
+        let refOpt = opt.reference || null;
+
+        if (estDecl || it.optionDeclinaisonId) {
+          const decls = Array.isArray(opt.declinaisons) ? opt.declinaisons : [];
+          const d = decls.find((x) => x.id === it.optionDeclinaisonId);
+          if (!d) return NextResponse.json({ error: `Cette configuration d'option n'est plus disponible : ${it.designation}` }, { status: 400 });
+          prixOpt = Number(d.prixVenteHT);
+          refOpt = d.referenceFournisseur || opt.reference || null;
+        } else {
+          prixOpt = Number(opt.prixVenteHT ?? opt.prixHT);
+        }
+
         if (!prixOpt || prixOpt <= 0) return NextResponse.json({ error: `Prix indisponible pour l'option : ${it.designation}` }, { status: 400 });
+
         lignes.push({
           codeRacine: null,
-          referenceFournisseur: opt.reference || null,
+          referenceFournisseur: refOpt,
           designation: `${opt.nom} (option)`,
           marque: v.gamme?.marque?.nom || null,
-          finition: null,
+          finition: it.finition || null,
           prixHT: prixOpt,
           quantite,
           imageUrl: (opt.images && opt.images[0]) || null,
