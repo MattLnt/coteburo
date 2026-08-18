@@ -6,6 +6,7 @@ import { identifierAxesEtOptions, resoudreSelection, prochaineEtapeProduit, comp
 import { prochainAxe, compterAxesRestants, resoudreDeclinaison } from "@/lib/declinaisonsLibres";
 import GalerieProduit from "@/components/GalerieProduit";
 import FavoriButton from "@/components/FavoriButton";
+import { useOptionsAcheteur } from "@/components/OptionsAcheteur";
 
 const fmt0 = (n) => (n == null ? null : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`);
 const fmt2 = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
@@ -18,6 +19,13 @@ export default function FicheProduit({ data }) {
   const images = carte.images?.length ? carte.images : [];
   const axesDecl = carte.axesDeclinaisons || [];
   const declLignes = carte.declinaisons || [];
+
+  // Options / accessoires — logique partagée avec FicheProduitLibre (composant OptionsAcheteur)
+  const { optionsUI, totalOptions, optionsOK, ajouterOptions } = useOptionsAcheteur({
+    options: carte.optionsAdditionnelles,
+    carte,
+    addItem,
+  });
 
   const finitionsAVoter = useMemo(
     () => [...(groupesFinition || []), ...((carte.finitionsProduit) || [])],
@@ -172,7 +180,7 @@ export default function FicheProduit({ data }) {
   };
 
   const finitionsOK = finitionsAVoter.length === 0 || finitionsAVoter.every((g) => finitionsSel[g.id]);
-  const peutAjouter = !!referenceFinale && finitionsOK;
+  const peutAjouter = !!referenceFinale && finitionsOK && optionsOK;
   const peutDemanderDevis = finitionsOK;
 
   // Construit l'objet transmis au panier — le type dépend explicitement de quel système
@@ -203,7 +211,8 @@ export default function FicheProduit({ data }) {
           image: images[0] || null,
           prix: prixAffiche,
         };
-    addItem(itemPourPanier, libelleConfig() || null, qte);
+    const parentId = addItem(itemPourPanier, libelleConfig() || null, qte);
+    ajouterOptions(parentId);
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
   };
   const ajouterAuDevis = () => {
@@ -365,16 +374,22 @@ export default function FicheProduit({ data }) {
                     )}
                     {!surDevis && (
                       <div className="px-4 py-3 flex justify-between items-center bg-surface-2/40">
-                        <span className="text-ink-soft text-[13.5px]">Prix unitaire HT</span>
-                        <span className="font-display font-bold text-lg">{fmt2(prixAffiche)}</span>
+                        <span className="text-ink-soft text-[13.5px]">{totalOptions > 0 ? "Total HT" : "Prix unitaire HT"}</span>
+                        <span className="font-display font-bold text-lg">{fmt2((prixAffiche != null ? prixAffiche * qte : 0) + totalOptions)}</span>
                       </div>
                     )}
                   </div>
                 ) : (
                   <p className="text-[13px] text-ink-soft bg-surface-2 rounded-xl px-4 py-3 mb-4">Configuration incomplète — revenez en arrière.</p>
                 )}
+
+                {!surDevis && optionsUI}
+
                 {!finitionsOK && (
                   <p className="text-[13px] text-orange-dark bg-orange-tint rounded-xl px-4 py-3 mb-4">Choisissez une finition dans chaque catégorie ci-dessus avant de continuer.</p>
+                )}
+                {!optionsOK && (
+                  <p className="text-[13px] text-orange-dark bg-orange-tint rounded-xl px-4 py-3 mb-4">Terminez la configuration des options sélectionnées (déclinaison / finition).</p>
                 )}
                 <div className="flex items-center gap-3 flex-wrap">
                   <div className="flex items-center border border-line rounded-full overflow-hidden">
