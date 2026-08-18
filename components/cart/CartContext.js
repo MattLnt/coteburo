@@ -5,7 +5,7 @@ const CartContext = createContext(null);
 const STORAGE_KEY = "coteburo_panier";
 // Version du FORMAT des articles du panier. À incrémenter dès qu'on change leur structure
 // (nouveaux champs, options, etc.) → les paniers d'un autre format se vident tout seuls au chargement.
-const STORAGE_VERSION = 2;
+const STORAGE_VERSION = 3;
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
@@ -71,6 +71,7 @@ export function CartProvider({ children }) {
         estOption: !!produit.parentId,
         vitrineId: produit.vitrineId || null,  // produit "nouveau" ou option → id de la fiche produit
         optionId: produit.optionId || null,    // option → son id dans optionsAdditionnelles
+        optionDeclinaisonId: produit.optionDeclinaisonId || null, // option à déclinaisons → id de la combinaison choisie
         reference: produit.reference || null,  // référence fournisseur (option)
       };
       if (base.type === "nouveau") {
