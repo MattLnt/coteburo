@@ -187,7 +187,17 @@ export async function sauverCarteComplete(vitrineId, data) {
                     }))
                   : [],
                 // Finitions globales (coloris de l'option)
-                finitionsGlobales: Array.isArray(o.finitionsGlobales) ? o.finitionsGlobales : [],
+                groupesFinition: Array.isArray(o.groupesFinition)
+                  ? o.groupesFinition
+                      .filter((g) => g && ((g.nom || "").trim() || (g.finitions || []).length))
+                      .map((g) => ({
+                        id: g.id,
+                        nom: (g.nom || "").trim(),
+                        finitions: Array.isArray(g.finitions)
+                          ? g.finitions.map((f) => ({ id: f.id, nom: f.nom, couleur: f.couleur || null, imageUrl: f.imageUrl || null }))
+                          : [],
+                      }))
+                  : [],
               };
             })
         : [],

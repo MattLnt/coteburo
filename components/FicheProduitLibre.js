@@ -27,12 +27,14 @@ const prixOption = (o, cfg) => {
   return d && d.prixVenteHT != null ? Number(d.prixVenteHT) : null;
 };
 
-// Groupes de finitions applicables à une option : globales + celles liées aux valeurs choisies
+// Groupes de finitions applicables à une option : groupes nommés (Piètement, Plateau…) + ceux liés aux valeurs choisies
 const groupesFinitionOption = (o, valeurs) => {
   const g = [];
-  (o.finitionsGlobales || []).forEach((p, k) => {
-    if (p.finitions?.length) g.push({ id: `opt:${o.id}:pal:${p.paletteId || p.paletteNom || k}`, nom: p.paletteNom || "Coloris", finitions: p.finitions });
+  // Groupes de finitions nommés (ex : Piètement, Plateau) — toujours affichés
+  (o.groupesFinition || []).forEach((grp) => {
+    if (grp.finitions?.length) g.push({ id: `opt:${o.id}:grp:${grp.id}`, nom: grp.nom || "Coloris", finitions: grp.finitions });
   });
+  // Finitions liées à une valeur d'axe choisie (finitionsParValeur)
   (o.axes || []).forEach((a) => {
     const v = valeurs?.[a.id];
     const fins = v && a.finitionsParValeur ? a.finitionsParValeur[v] : null;

@@ -23,7 +23,7 @@ function genererCombinaisons(axes) {
   return combos;
 }
 
-export default function DeclinaisonsBoutique({ axes, lignes, onChangeAxes, onChangeLignes, sansDeclinaisons, onChangeSansDeclinaisons, referenceUnitaire, onChangeReferenceUnitaire }) {
+export default function DeclinaisonsBoutique({ axes, lignes, onChangeAxes, onChangeLignes, sansDeclinaisons, onChangeSansDeclinaisons, referenceUnitaire, onChangeReferenceUnitaire, masquerSwitch = false }) {
   const ajouterAxe = (nom) => {
     const nomPropre = nom.trim();
     if (!nomPropre) return;
@@ -143,7 +143,8 @@ export default function DeclinaisonsBoutique({ axes, lignes, onChangeAxes, onCha
 
   return (
     <div>
-      {/* ── Switch : ce produit a-t-il des déclinaisons ? ── */}
+      {/* ── Switch : ce produit a-t-il des déclinaisons ? (masqué quand piloté ailleurs, ex : options) ── */}
+      {!masquerSwitch && (
       <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, padding: 24, marginBottom: 20 }}>
         <label style={{ ...label, marginBottom: 10 }}>Ce produit a-t-il des déclinaisons ?</label>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -165,6 +166,7 @@ export default function DeclinaisonsBoutique({ axes, lignes, onChangeAxes, onCha
           </button>
         </div>
       </div>
+      )}
 
       {sansDeclinaisons ? (
         <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, padding: 24 }}>
