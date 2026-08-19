@@ -338,7 +338,7 @@ export async function getFinitionsProduit(vitrineId) {
     nom: g.nom,
     ordre: g.ordre,
     finitions: g.finitions.map((f) => ({
-      id: f.id, nom: f.nom, imageUrl: f.imageUrl || null, couleur: f.couleur || null, ordre: f.ordre,
+      id: f.id, nom: f.nom, imageUrl: f.imageUrl || null, couleur: f.couleur || null, paletteNom: f.paletteNom || null, ordre: f.ordre,
     })),
   }));
 }

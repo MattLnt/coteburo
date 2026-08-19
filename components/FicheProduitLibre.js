@@ -8,6 +8,22 @@ import FavoriButton from "@/components/FavoriButton";
 
 const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
+// Découpe les finitions d'un groupe en sous-blocs par palette d'origine,
+// en conservant l'ordre. Les finitions sans palette forment un bloc sans titre.
+function sousBlocsPalette(finitions) {
+  const blocs = [];
+  let courant = null;
+  (finitions || []).forEach((f) => {
+    const cle = f.paletteNom || "__sans__";
+    if (!courant || courant.cle !== cle) {
+      courant = { cle, nom: f.paletteNom || null, items: [] };
+      blocs.push(courant);
+    }
+    courant.items.push(f);
+  });
+  return blocs;
+}
+
 // ─────────── Helpers option (déclinaisons + finitions) ───────────
 const estDeclOption = (o) => !(o.sansDeclinaisons ?? true) && (o.axes || []).length > 0;
 
@@ -122,7 +138,7 @@ export default function FicheProduitLibre({ data }) {
         out.push({
           id: `axe:${a.id}:${val}`,
           nom: `${a.nom} — ${val}`,
-          finitions: fins.map((f, i) => ({ id: f.id || `${a.id}:${val}:${i}`, nom: f.nom, couleur: f.couleur || null, imageUrl: f.imageUrl || null })),
+          finitions: fins.map((f, i) => ({ id: f.id || `${a.id}:${val}:${i}`, nom: f.nom, couleur: f.couleur || null, imageUrl: f.imageUrl || null, paletteNom: f.paletteNom || null })),
         });
       }
     }
@@ -223,33 +239,54 @@ export default function FicheProduitLibre({ data }) {
       libelleDeclinaison() || null, qte
     );
     // Chaque option cochée = une ligne rattachée au produit parent.
-    // On transporte vitrineId + optionId (+ optionDeclinaisonId) pour vérif du prix en base au paiement.
     optionsDispo.forEach((o) => {
       const cfg = optionsCfg[o.id];
       if (!cfg) return;
       const d = estDeclOption(o) ? declinaisonOption(o, cfg.valeurs) : null;
       const prix = prixOption(o, cfg);
       if (prix == null) return;
-      const ref = (d && d.referenceFournisseur) || o.reference || null;
       const lbl = libelleOption(o, cfg);
-      addItem(
-        {
-          codeRacine: `opt-${o.id}-${d ? d.id : "simple"}`,
-          vitrineId: carte.id,
-          optionId: o.id,
-          optionDeclinaisonId: d ? d.id : null,
-          reference: ref,
-          slug: carte.slug,
-          categorieSlug: carte.categorieSlug || null,
-          sousCategorieSlug: carte.sousCategorieSlug || null,
-          designation: o.nom + (lbl ? ` — ${lbl}` : ""),
-          marque: "Buronomic",
-          image: (o.images && o.images[0]) || null,
-          prix,
-          parentId,
-        },
-        lbl || null, cfg.qte
-      );
+
+      if (o.estProduitLie) {
+        // Accessoire = vrai produit → ligne produit normale, prix revérifié en base au paiement.
+        addItem(
+          {
+            type: "nouveau",
+            vitrineId: o.vitrineId || o.id,
+            declinaisonId: d ? d.id : null,
+            slug: o.slug || carte.slug,
+            categorieSlug: o.categorieSlug || carte.categorieSlug || null,
+            sousCategorieSlug: o.sousCategorieSlug || carte.sousCategorieSlug || null,
+            designation: o.nom + (lbl ? ` — ${lbl}` : ""),
+            marque: "Buronomic",
+            image: (o.images && o.images[0]) || null,
+            prix,
+            parentId,
+          },
+          lbl || null, cfg.qte
+        );
+      } else {
+        // Ancienne option inline stockée dans optionsAdditionnelles du produit parent.
+        const ref = (d && d.referenceFournisseur) || o.reference || null;
+        addItem(
+          {
+            codeRacine: `opt-${o.id}-${d ? d.id : "simple"}`,
+            vitrineId: carte.id,
+            optionId: o.id,
+            optionDeclinaisonId: d ? d.id : null,
+            reference: ref,
+            slug: carte.slug,
+            categorieSlug: carte.categorieSlug || null,
+            sousCategorieSlug: carte.sousCategorieSlug || null,
+            designation: o.nom + (lbl ? ` — ${lbl}` : ""),
+            marque: "Buronomic",
+            image: (o.images && o.images[0]) || null,
+            prix,
+            parentId,
+          },
+          lbl || null, cfg.qte
+        );
+      }
     });
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
   };
@@ -268,7 +305,7 @@ export default function FicheProduitLibre({ data }) {
   return (
     <div>
       <div className="grid lg:grid-cols-2 gap-10 items-start">
-        <div className="lg:sticky lg:top-6">
+        <div className="lg:sticky lg:top-[260px]">
           <GalerieProduit images={images} alt={carte.nom} />
         </div>
 
@@ -295,25 +332,37 @@ export default function FicheProduitLibre({ data }) {
             <div className="mt-6 pt-6 border-t border-line">
               {finitionsAVoter.map((g) => {
                 const selectionneeId = finitionsSel[g.id];
+                const blocs = sousBlocsPalette(g.finitions);
                 return (
                   <div key={g.id} className="mb-5 last:mb-0">
                     <div className="flex items-center justify-between mb-3">
                       <p className="font-semibold text-ink text-[14px]">{g.nom}</p>
                       {!selectionneeId && <span className="text-[11.5px] text-orange-dark font-medium">À choisir</span>}
                     </div>
-                    <div className="flex flex-wrap gap-3">
-                      {g.finitions.map((f) => {
-                        const actif = selectionneeId === f.id;
-                        return (
-                          <button key={f.id} onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5">
-                            <span className={`rounded-full border-2 overflow-hidden transition block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 44, height: 44, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
-                              {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
-                            </span>
-                            <span className={`text-[11px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
+
+                    {blocs.map((bloc, bi) => (
+                      <div key={`${g.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-4" : ""}>
+                        {bloc.nom && (
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className="text-[11.5px] font-semibold text-ink-soft uppercase tracking-[0.06em]">{bloc.nom}</span>
+                            <span className="flex-1 h-px bg-line" />
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-3">
+                          {bloc.items.map((f) => {
+                            const actif = selectionneeId === f.id;
+                            return (
+                              <button key={f.id} type="button" onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5">
+                                <span className={`rounded-full border-2 overflow-hidden transition block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 44, height: 44, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                                  {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                                </span>
+                                <span className={`text-[11px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 );
               })}
@@ -376,7 +425,7 @@ export default function FicheProduitLibre({ data }) {
                 ))}
               </div>
               {totalOptions > 0 && (
-                <p className="text-[13px] text-ink-soft mt-3 text-right">Total options : <span className="font-bold text-ink">+ {fmt(totalOptions)}</span></p>
+                <p className="text-[13px] text-ink-soft mt-4 text-right">Total options : <span className="font-bold text-ink">+ {fmt(totalOptions)}</span></p>
               )}
             </div>
           )}
@@ -405,7 +454,7 @@ export default function FicheProduitLibre({ data }) {
                           <span className="rounded-full border border-line overflow-hidden inline-block" style={{ width: 16, height: 16, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
                             {f.imageUrl && <img src={f.imageUrl} alt="" className="w-full h-full object-cover rounded-full" />}
                           </span>
-                          {f.nom}
+                          {f.paletteNom ? `${f.paletteNom} — ${f.nom}` : f.nom}
                         </span>
                       </div>
                     ) : null;
@@ -565,27 +614,40 @@ function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
 
       {sel && groupes.length > 0 && (
         <div className="mt-3 pl-9 flex flex-col gap-3">
-          {groupes.map((gr) => (
-            <div key={gr.id}>
-              <p className="text-[12.5px] font-semibold text-ink mb-1.5">
-                {gr.nom}{!cfg.finitions?.[gr.id] && <span className="text-orange-dark font-medium"> · à choisir</span>}
-              </p>
-              <div className="flex flex-wrap gap-2.5">
-                {gr.finitions.map((f) => {
-                  const val = f.id || f.nom;
-                  const actif = cfg.finitions?.[gr.id] === val;
-                  return (
-                    <button key={val} type="button" onClick={() => onFinition(o.id, gr.id, val)} title={f.nom} className="flex flex-col items-center gap-1">
-                      <span className={`rounded-full border-2 overflow-hidden block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
-                        {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
-                      </span>
-                      <span className={`text-[10.5px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
-                    </button>
-                  );
-                })}
+          {groupes.map((gr) => {
+            const blocs = sousBlocsPalette(gr.finitions);
+            return (
+              <div key={gr.id}>
+                <p className="text-[12.5px] font-semibold text-ink mb-1.5">
+                  {gr.nom}{!cfg.finitions?.[gr.id] && <span className="text-orange-dark font-medium"> · à choisir</span>}
+                </p>
+                {blocs.map((bloc, bi) => (
+                  <div key={`${gr.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-3" : ""}>
+                    {bloc.nom && (
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-[10.5px] font-semibold text-ink-soft uppercase tracking-[0.06em]">{bloc.nom}</span>
+                        <span className="flex-1 h-px bg-line" />
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2.5">
+                      {bloc.items.map((f) => {
+                        const val = f.id || f.nom;
+                        const actif = cfg.finitions?.[gr.id] === val;
+                        return (
+                          <button key={val} type="button" onClick={() => onFinition(o.id, gr.id, val)} title={f.nom} className="flex flex-col items-center gap-1">
+                            <span className={`rounded-full border-2 overflow-hidden block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                              {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                            </span>
+                            <span className={`text-[10.5px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

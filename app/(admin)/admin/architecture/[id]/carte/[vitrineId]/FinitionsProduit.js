@@ -14,6 +14,7 @@ import {
 import { getFinitionsModeles, importerFinitionsVersProduit, importerFinitionsDansGroupe, reordonnerFinitionsProduit } from "../../../actionsFinitions";
 
 const HEX_VALIDE = /^#([0-9A-Fa-f]{6})$/;
+const SANS_PALETTE = "__sans__";
 
 const PALETTE = [
   { nom: "Noir", hex: "#1A1A1A" },
@@ -31,6 +32,23 @@ const PALETTE = [
   { nom: "Bleu marine", hex: "#1F3A5F" },
   { nom: "Bordeaux", hex: "#6D1F2B" },
 ];
+
+// Découpe les finitions d'une option en sous-listes par palette d'origine,
+// en conservant l'ordre global. Les finitions sans palette (saisies à la main
+// ou importées avant l'ajout du champ) forment un bloc à part, sans titre.
+function sousGroupesParPalette(finitions) {
+  const blocs = [];
+  let courant = null;
+  (finitions || []).forEach((f, indexGlobal) => {
+    const cle = f.paletteNom || SANS_PALETTE;
+    if (!courant || courant.cle !== cle) {
+      courant = { cle, nom: f.paletteNom || null, items: [] };
+      blocs.push(courant);
+    }
+    courant.items.push({ ...f, indexGlobal });
+  });
+  return blocs;
+}
 
 export default function FinitionsProduit({ vitrineId }) {
   const [groupes, setGroupes] = useState(null);
@@ -102,6 +120,8 @@ export default function FinitionsProduit({ vitrineId }) {
     startTransition(async () => { await majFinitionImageProduit(finId, { imageUrl: null, couleur: hex }); });
   };
 
+  // Déplacement sur l'index GLOBAL de l'option — un coloris peut ainsi passer
+  // d'un sous-groupe de palette à l'autre si tu le déplaces au-delà de la frontière.
   const deplacerFinition = (groupeId, index, dir) => {
     const groupe = groupes.find((g) => g.id === groupeId);
     if (!groupe) return;
@@ -120,10 +140,65 @@ export default function FinitionsProduit({ vitrineId }) {
   const label = { fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#5c616a" };
   const input = { flex: 1, padding: "10px 14px", borderRadius: 10, border: "1px solid #ece8e0", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none" };
 
+  // Une carte de finition (utilisée dans chaque sous-groupe de palette)
+  const carteFinition = (f, g) => (
+    <div key={f.id} style={{ border: "1px solid #ece8e0", borderRadius: 12, padding: 12, background: "#faf8f4" }}>
+      <div style={{ aspectRatio: "1 / 1", borderRadius: 9, overflow: "hidden", background: f.couleur || "#fff", border: "1px solid #ece8e0", marginBottom: 10, display: "grid", placeItems: "center", position: "relative" }}>
+        {f.imageUrl ? (
+          <img src={f.imageUrl} alt={f.nom} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : !f.couleur ? (
+          <span style={{ fontSize: 11, color: "#c4c0b8" }}>pas d'échantillon</span>
+        ) : null}
+        <div style={{ position: "absolute", bottom: 4, left: 4, right: 4, display: "flex", justifyContent: "space-between" }}>
+          <button onClick={() => deplacerFinition(g.id, f.indexGlobal, -1)} disabled={f.indexGlobal === 0} title="Déplacer à gauche"
+            style={{ width: 22, height: 22, borderRadius: 6, border: "1px solid #ece8e0", background: "rgba(255,255,255,0.92)", cursor: f.indexGlobal === 0 ? "default" : "pointer", opacity: f.indexGlobal === 0 ? 0.35 : 1, fontSize: 11, lineHeight: 1 }}>◀</button>
+          <button onClick={() => deplacerFinition(g.id, f.indexGlobal, 1)} disabled={f.indexGlobal === g.finitions.length - 1} title="Déplacer à droite"
+            style={{ width: 22, height: 22, borderRadius: 6, border: "1px solid #ece8e0", background: "rgba(255,255,255,0.92)", cursor: f.indexGlobal === g.finitions.length - 1 ? "default" : "pointer", opacity: f.indexGlobal === g.finitions.length - 1 ? 0.35 : 1, fontSize: 11, lineHeight: 1 }}>▶</button>
+        </div>
+      </div>
+
+      {editFin === f.id ? (
+        <div style={{ display: "flex", gap: 4 }}>
+          <input autoFocus value={editFinNom} onChange={(e) => setEditFinNom(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") validerFin(); if (e.key === "Escape") setEditFin(null); }}
+            style={{ flex: 1, minWidth: 0, padding: "5px 8px", borderRadius: 7, border: "1px solid #f0661b", fontSize: 12.5, outline: "none" }} />
+          <button onClick={validerFin} style={{ padding: "5px 8px", borderRadius: 7, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 11, fontWeight: 600 }}>OK</button>
+        </div>
+      ) : (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#23262a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={f.nom}>{f.nom}</span>
+          <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+            <button onClick={() => { setEditFin(f.id); setEditFinNom(f.nom); }} title="Renommer"
+              style={{ padding: "1px 6px", borderRadius: 5, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 10, color: "#5c616a" }}>✎</button>
+            <button onClick={() => supprimerFin(f.id, g.id)} title="Supprimer"
+              style={{ padding: "1px 6px", borderRadius: 5, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 10, color: "#c4735a" }}>🗑</button>
+          </div>
+        </div>
+      )}
+
+      <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+        <button onClick={() => setUploadFin(uploadFin === f.id ? null : f.id)}
+          style={{ flex: 1, padding: "6px", borderRadius: 8, border: "1px solid " + (uploadFin === f.id ? "#f0661b" : "#ece8e0"), background: "#fff", cursor: "pointer", fontSize: 11.5, fontWeight: 600, color: "#f0661b" }}>
+          🖼 Image
+        </button>
+        <button onClick={() => ouvrirModalCouleur(f)}
+          style={{ flex: 1, padding: "6px", borderRadius: 8, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 11.5, fontWeight: 600, color: "#f0661b" }}>
+          🎨 Couleur
+        </button>
+      </div>
+
+      {uploadFin === f.id && (
+        <div style={{ marginTop: 10 }}>
+          <ImageUploader images={f.imageUrl ? [f.imageUrl] : []} onChange={(imgs) => { setImage(f.id, imgs[imgs.length - 1] || null); }} />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div>
       <p style={{ fontSize: 13.5, color: "#5c616a", margin: "0 0 16px" }}>
-        Un bloc visuel affiché sur la fiche produit (entre le descriptif et le bouton), purement informatif — sans lien avec le prix. Chaque option est un axe (ex. « Piètement »), chaque finition une pastille image ou couleur.
+        Un bloc visuel affiché sur la fiche produit (entre le descriptif et le bouton), purement informatif — sans lien avec le prix. Chaque option est un axe (ex. « Piètement »), chaque finition une pastille image ou couleur. Les coloris importés depuis une palette restent regroupés sous son nom.
       </p>
 
       <div style={{ ...card, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
@@ -138,100 +213,66 @@ export default function FinitionsProduit({ vitrineId }) {
         <div style={{ ...card, textAlign: "center", color: "#9aa0a8" }}>Aucune option pour ce produit pour l'instant.</div>
       )}
 
-      {groupes.map((g) => (
-        <div key={g.id} style={card}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-            {editGrp === g.id ? (
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <input autoFocus value={editGrpNom} onChange={(e) => setEditGrpNom(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") validerGrp(); if (e.key === "Escape") setEditGrp(null); }}
-                  style={{ padding: "7px 12px", borderRadius: 9, border: "1px solid #f0661b", fontSize: 14, outline: "none" }} />
-                <button onClick={validerGrp} style={{ padding: "7px 12px", borderRadius: 8, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>OK</button>
-              </div>
-            ) : (
-              <>
-                <h3 style={{ ...label, fontSize: 15, margin: 0, color: "#23262a", textTransform: "none" }}>{g.nom}</h3>
-                <button onClick={() => { setEditGrp(g.id); setEditGrpNom(g.nom); }} title="Renommer l'option"
-                  style={{ padding: "2px 8px", borderRadius: 6, border: "1px solid #ece8e0", background: "#faf8f4", cursor: "pointer", fontSize: 11, color: "#5c616a" }}>✎</button>
-                <span style={{ fontSize: 12.5, color: "#9aa0a8" }}>{g.finitions.length} finition{g.finitions.length > 1 ? "s" : ""}</span>
-                <button onClick={() => setBiblioGroupe(g.id)} title="Ajouter depuis la bibliothèque"
-                  style={{ marginLeft: "auto", padding: "5px 10px", borderRadius: 7, border: "1px solid #f0c4a0", background: "#fff", cursor: "pointer", fontSize: 12, color: "#f0661b", fontWeight: 600 }}>📚 Palettes</button>
-                <button onClick={() => supprimerGroupe(g.id)} title="Supprimer l'option"
-                  style={{ padding: "5px 10px", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 12, color: "#c4735a" }}>🗑 Supprimer l'option</button>
-              </>
-            )}
-          </div>
-
-          {g.finitions.length > 0 && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 14, marginBottom: 16 }}>
-              {g.finitions.map((f, fi) => (
-                <div key={f.id} style={{ border: "1px solid #ece8e0", borderRadius: 12, padding: 12, background: "#faf8f4" }}>
-                  <div style={{ aspectRatio: "1 / 1", borderRadius: 9, overflow: "hidden", background: f.couleur || "#fff", border: "1px solid #ece8e0", marginBottom: 10, display: "grid", placeItems: "center", position: "relative" }}>
-                    {f.imageUrl ? (
-                      <img src={f.imageUrl} alt={f.nom} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : !f.couleur ? (
-                      <span style={{ fontSize: 11, color: "#c4c0b8" }}>pas d'échantillon</span>
-                    ) : null}
-                    <div style={{ position: "absolute", bottom: 4, left: 4, right: 4, display: "flex", justifyContent: "space-between" }}>
-                      <button onClick={() => deplacerFinition(g.id, fi, -1)} disabled={fi === 0} title="Déplacer à gauche"
-                        style={{ width: 22, height: 22, borderRadius: 6, border: "1px solid #ece8e0", background: "rgba(255,255,255,0.92)", cursor: fi === 0 ? "default" : "pointer", opacity: fi === 0 ? 0.35 : 1, fontSize: 11, lineHeight: 1 }}>◀</button>
-                      <button onClick={() => deplacerFinition(g.id, fi, 1)} disabled={fi === g.finitions.length - 1} title="Déplacer à droite"
-                        style={{ width: 22, height: 22, borderRadius: 6, border: "1px solid #ece8e0", background: "rgba(255,255,255,0.92)", cursor: fi === g.finitions.length - 1 ? "default" : "pointer", opacity: fi === g.finitions.length - 1 ? 0.35 : 1, fontSize: 11, lineHeight: 1 }}>▶</button>
-                    </div>
-                  </div>
-
-                  {editFin === f.id ? (
-                    <div style={{ display: "flex", gap: 4 }}>
-                      <input autoFocus value={editFinNom} onChange={(e) => setEditFinNom(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === "Enter") validerFin(); if (e.key === "Escape") setEditFin(null); }}
-                        style={{ flex: 1, minWidth: 0, padding: "5px 8px", borderRadius: 7, border: "1px solid #f0661b", fontSize: 12.5, outline: "none" }} />
-                      <button onClick={validerFin} style={{ padding: "5px 8px", borderRadius: 7, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 11, fontWeight: 600 }}>OK</button>
-                    </div>
-                  ) : (
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: "#23262a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={f.nom}>{f.nom}</span>
-                      <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
-                        <button onClick={() => { setEditFin(f.id); setEditFinNom(f.nom); }} title="Renommer"
-                          style={{ padding: "1px 6px", borderRadius: 5, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 10, color: "#5c616a" }}>✎</button>
-                        <button onClick={() => supprimerFin(f.id, g.id)} title="Supprimer"
-                          style={{ padding: "1px 6px", borderRadius: 5, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 10, color: "#c4735a" }}>🗑</button>
-                      </div>
-                    </div>
-                  )}
-
-                  <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                    <button onClick={() => setUploadFin(uploadFin === f.id ? null : f.id)}
-                      style={{ flex: 1, padding: "6px", borderRadius: 8, border: "1px solid " + (uploadFin === f.id ? "#f0661b" : "#ece8e0"), background: "#fff", cursor: "pointer", fontSize: 11.5, fontWeight: 600, color: "#f0661b" }}>
-                      🖼 Image
-                    </button>
-                    <button onClick={() => ouvrirModalCouleur(f)}
-                      style={{ flex: 1, padding: "6px", borderRadius: 8, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 11.5, fontWeight: 600, color: "#f0661b" }}>
-                      🎨 Couleur
-                    </button>
-                  </div>
-
-                  {uploadFin === f.id && (
-                    <div style={{ marginTop: 10 }}>
-                      <ImageUploader images={f.imageUrl ? [f.imageUrl] : []} onChange={(imgs) => { setImage(f.id, imgs[imgs.length - 1] || null); }} />
-                    </div>
-                  )}
+      {groupes.map((g) => {
+        const blocs = sousGroupesParPalette(g.finitions);
+        const avecPalettes = blocs.some((b) => b.nom);
+        return (
+          <div key={g.id} style={card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+              {editGrp === g.id ? (
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <input autoFocus value={editGrpNom} onChange={(e) => setEditGrpNom(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") validerGrp(); if (e.key === "Escape") setEditGrp(null); }}
+                    style={{ padding: "7px 12px", borderRadius: 9, border: "1px solid #f0661b", fontSize: 14, outline: "none" }} />
+                  <button onClick={validerGrp} style={{ padding: "7px 12px", borderRadius: 8, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>OK</button>
                 </div>
-              ))}
+              ) : (
+                <>
+                  <h3 style={{ ...label, fontSize: 15, margin: 0, color: "#23262a", textTransform: "none" }}>{g.nom}</h3>
+                  <button onClick={() => { setEditGrp(g.id); setEditGrpNom(g.nom); }} title="Renommer l'option"
+                    style={{ padding: "2px 8px", borderRadius: 6, border: "1px solid #ece8e0", background: "#faf8f4", cursor: "pointer", fontSize: 11, color: "#5c616a" }}>✎</button>
+                  <span style={{ fontSize: 12.5, color: "#9aa0a8" }}>
+                    {g.finitions.length} finition{g.finitions.length > 1 ? "s" : ""}
+                    {avecPalettes && blocs.filter((b) => b.nom).length > 1 ? ` · ${blocs.filter((b) => b.nom).length} palettes` : ""}
+                  </span>
+                  <button onClick={() => setBiblioGroupe(g.id)} title="Ajouter depuis la bibliothèque"
+                    style={{ marginLeft: "auto", padding: "5px 10px", borderRadius: 7, border: "1px solid #f0c4a0", background: "#fff", cursor: "pointer", fontSize: 12, color: "#f0661b", fontWeight: 600 }}>📚 Palettes</button>
+                  <button onClick={() => supprimerGroupe(g.id)} title="Supprimer l'option"
+                    style={{ padding: "5px 10px", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontSize: 12, color: "#c4735a" }}>🗑 Supprimer l'option</button>
+                </>
+              )}
             </div>
-          )}
 
-          <div style={{ display: "flex", gap: 8 }}>
-            <input value={nouvelleFinition[g.id] || ""}
-              onChange={(e) => setNouvelleFinition((s) => ({ ...s, [g.id]: e.target.value }))}
-              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); ajouterFinition(g.id); } }}
-              placeholder="Nom de la finition (ex : Aluminium)" style={{ ...input, fontSize: 13.5, padding: "9px 12px" }} />
-            <button onClick={() => ajouterFinition(g.id)}
-              style={{ padding: "9px 16px", borderRadius: 9, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 12.5, fontWeight: 600, whiteSpace: "nowrap" }}>
-              + Ajouter
-            </button>
+            {blocs.map((bloc, bi) => (
+              <div key={`${g.id}-${bloc.cle}-${bi}`} style={{ marginBottom: 16 }}>
+                {bloc.nom && (
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#d9551a", background: "#fef4ee", border: "1px solid #f7d9c6", borderRadius: 999, padding: "3px 11px" }}>
+                      {bloc.nom}
+                    </span>
+                    <span style={{ fontSize: 11.5, color: "#9aa0a8" }}>{bloc.items.length} coloris</span>
+                    <span style={{ flex: 1, height: 1, background: "#f0ece4" }} />
+                  </div>
+                )}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 14 }}>
+                  {bloc.items.map((f) => carteFinition(f, g))}
+                </div>
+              </div>
+            ))}
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <input value={nouvelleFinition[g.id] || ""}
+                onChange={(e) => setNouvelleFinition((s) => ({ ...s, [g.id]: e.target.value }))}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); ajouterFinition(g.id); } }}
+                placeholder="Nom de la finition (ex : Aluminium)" style={{ ...input, fontSize: 13.5, padding: "9px 12px" }} />
+              <button onClick={() => ajouterFinition(g.id)}
+                style={{ padding: "9px 16px", borderRadius: 9, background: "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 12.5, fontWeight: 600, whiteSpace: "nowrap" }}>
+                + Ajouter
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       <div style={{ ...card, marginBottom: 0 }}>
         <label style={{ ...label, display: "block", marginBottom: 10 }}>Nouvelle option</label>
@@ -337,12 +378,21 @@ function ModaleBibliotheque({ onClose, onImported, vitrineId, groupeId = null })
   };
   const toggleFinition = (id) => setSelection((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
 
+  // Sélection ordonnée palette par palette : les coloris d'un même nuancier
+  // restent contigus dans l'option créée, donc regroupés à l'affichage.
+  const selectionOrdonnee = useMemo(() => {
+    const out = [];
+    palettes.forEach((p) => p.items.forEach((m) => { if (selSet.has(m.id)) out.push(m.id); }));
+    return out;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [palettes, selection]);
+
   const importer = () => {
     setErreur("");
     startTransition(async () => {
       const res = groupeId
-        ? await importerFinitionsDansGroupe(groupeId, selection)
-        : await importerFinitionsVersProduit(vitrineId, { groupeNom: groupeNom || "Finitions", finitionModeleIds: selection });
+        ? await importerFinitionsDansGroupe(groupeId, selectionOrdonnee)
+        : await importerFinitionsVersProduit(vitrineId, { groupeNom: groupeNom || "Finitions", finitionModeleIds: selectionOrdonnee });
       if (!res.ok) { setErreur(res.error || "Erreur."); return; }
       onImported();
     });
@@ -350,12 +400,17 @@ function ModaleBibliotheque({ onClose, onImported, vitrineId, groupeId = null })
 
   const input = { width: "100%", padding: "11px 14px", borderRadius: 11, border: "1.5px solid #ece8e0", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" };
 
+  const nbPalettesChoisies = palettes.filter((p) => p.items.some((m) => selSet.has(m.id))).length;
+
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 250, display: "grid", placeItems: "center", padding: 16 }}>
       <div onClick={onClose} style={{ position: "absolute", inset: 0, background: "rgba(33,38,42,0.6)", backdropFilter: "blur(2px)" }} />
       <div style={{ position: "relative", width: "100%", maxWidth: 620, maxHeight: "85vh", overflowY: "auto", background: "#fff", border: "1px solid #ece8e0", borderRadius: 20, padding: 26 }}>
         <h2 style={{ fontSize: 18, fontWeight: 800, color: "#23262a", margin: "0 0 6px" }}>{groupeId ? "Ajouter des palettes à ce groupe" : "Importer des palettes"}</h2>
-        <p style={{ fontSize: 13, color: "#9aa0a8", margin: "0 0 18px" }}>Coche une palette entière — toutes ses couleurs sont ajoutées d'un coup. Déplie une palette pour choisir des coloris précis.</p>
+        <p style={{ fontSize: 13, color: "#9aa0a8", margin: "0 0 18px" }}>
+          Coche une palette entière — toutes ses couleurs sont ajoutées d'un coup. Déplie une palette pour choisir des coloris précis.
+          Si tu prends plusieurs palettes, leurs coloris resteront séparés sous le nom de chaque nuancier.
+        </p>
 
         {!groupeId && (
           <div style={{ marginBottom: 16 }}>
@@ -433,7 +488,7 @@ function ModaleBibliotheque({ onClose, onImported, vitrineId, groupeId = null })
           <button onClick={onClose} style={{ flex: 1, padding: "12px", borderRadius: 12, background: "#fff", color: "#23262a", border: "1px solid #ece8e0", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>Annuler</button>
           <button onClick={importer} disabled={isPending || selection.length === 0}
             style={{ flex: 1, padding: "12px", borderRadius: 12, background: isPending || selection.length === 0 ? "#c98a5f" : "#f0661b", color: "#fff", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 700 }}>
-            {isPending ? "Import…" : `Importer${selection.length ? ` (${selection.length})` : ""}`}
+            {isPending ? "Import…" : `Importer${selection.length ? ` (${selection.length}${nbPalettesChoisies > 1 ? ` · ${nbPalettesChoisies} palettes` : ""})` : ""}`}
           </button>
         </div>
       </div>

@@ -100,13 +100,20 @@ export async function supprimerFinition(id) {
 // ─────────────────────────────────────────────────────────────
 // Import vers un produit : crée un groupe de finitions sur la vitrine
 // en COPIANT les finitions choisies (nom + couleur + imageUrl réutilisée,
-// donc aucun réupload). Le rendu produit/front existant fonctionne tel quel.
+// donc aucun réupload). Le nom de la palette d'origine est conservé dans
+// paletteNom, pour pouvoir sous-grouper les coloris par nuancier
+// (ex. « Tissu BeSoft » / « Tissu chiné Step Mélange ») à l'intérieur
+// d'une même option, en admin comme sur la fiche publique.
 // ─────────────────────────────────────────────────────────────
-export async function importerFinitionsVersProduit(vitrineId, { groupeNom, finitionModeleIds }) {  if (!vitrineId) return { ok: false, error: "Produit manquant." };
+export async function importerFinitionsVersProduit(vitrineId, { groupeNom, finitionModeleIds }) {
+  if (!vitrineId) return { ok: false, error: "Produit manquant." };
   const ids = Array.isArray(finitionModeleIds) ? finitionModeleIds : [];
   if (ids.length === 0) return { ok: false, error: "Sélectionne au moins une finition." };
 
-  const modeles = await prisma.finitionModele.findMany({ where: { id: { in: ids } } });
+  const modeles = await prisma.finitionModele.findMany({
+    where: { id: { in: ids } },
+    include: { palette: { select: { nom: true } } },
+  });
   if (modeles.length === 0) return { ok: false, error: "Finitions introuvables." };
   // conserve l'ordre de sélection
   const parId = new Map(modeles.map((m) => [m.id, m]));
@@ -124,6 +131,7 @@ export async function importerFinitionsVersProduit(vitrineId, { groupeNom, finit
           nom: m.nom,
           couleur: m.couleur || null,
           imageUrl: m.imageUrl || null, // même URL Cloudinary → pas de réupload
+          paletteNom: m.palette?.nom || null,
           ordre: i,
         })),
       },
@@ -146,7 +154,10 @@ export async function importerFinitionsDansGroupe(groupeId, finitionModeleIds) {
   if (!groupeId) return { ok: false, error: "Groupe manquant." };
   const ids = Array.isArray(finitionModeleIds) ? finitionModeleIds : [];
   if (ids.length === 0) return { ok: false, error: "Sélectionne au moins une finition." };
-  const modeles = await prisma.finitionModele.findMany({ where: { id: { in: ids } } });
+  const modeles = await prisma.finitionModele.findMany({
+    where: { id: { in: ids } },
+    include: { palette: { select: { nom: true } } },
+  });
   const parId = new Map(modeles.map((m) => [m.id, m]));
   const choisies = ids.map((id) => parId.get(id)).filter(Boolean);
   if (choisies.length === 0) return { ok: false, error: "Finitions introuvables." };
@@ -154,7 +165,12 @@ export async function importerFinitionsDansGroupe(groupeId, finitionModeleIds) {
   let ordre = (maxF._max.ordre ?? -1) + 1;
   await prisma.finition.createMany({
     data: choisies.map((m) => ({
-      nom: m.nom, couleur: m.couleur || null, imageUrl: m.imageUrl || null, ordre: ordre++, groupeId,
+      nom: m.nom,
+      couleur: m.couleur || null,
+      imageUrl: m.imageUrl || null,
+      paletteNom: m.palette?.nom || null,
+      ordre: ordre++,
+      groupeId,
     })),
   });
   return { ok: true, count: choisies.length };

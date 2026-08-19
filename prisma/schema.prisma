@@ -79,12 +79,13 @@ model GroupeFinition {
 }
 
 model Finition {
-  id       String         @id @default(cuid())
-  nom      String
-  imageUrl String?
-  couleur  String?
-  ordre    Int            @default(0)
-  groupeId String
+  id          String         @id @default(cuid())
+  nom         String
+  imageUrl    String?
+  couleur     String?
+  paletteNom  String?
+  ordre       Int            @default(0)
+  groupeId    String
   groupe   GroupeFinition @relation(fields: [groupeId], references: [id], onDelete: Cascade)
 
   @@index([groupeId])

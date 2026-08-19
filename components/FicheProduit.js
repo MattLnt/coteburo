@@ -11,6 +11,22 @@ import { useOptionsAcheteur } from "@/components/OptionsAcheteur";
 const fmt0 = (n) => (n == null ? null : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`);
 const fmt2 = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
+// Découpe les finitions d'un groupe en sous-blocs par palette d'origine,
+// en conservant l'ordre. Les finitions sans palette forment un bloc sans titre.
+function sousBlocsPalette(finitions) {
+  const blocs = [];
+  let courant = null;
+  (finitions || []).forEach((f) => {
+    const cle = f.paletteNom || "__sans__";
+    if (!courant || courant.cle !== cle) {
+      courant = { cle, nom: f.paletteNom || null, items: [] };
+      blocs.push(courant);
+    }
+    courant.items.push(f);
+  });
+  return blocs;
+}
+
 export default function FicheProduit({ data }) {
   const { addItem } = useCart();
   const { addDevis } = useDevis();
@@ -268,25 +284,37 @@ export default function FicheProduit({ data }) {
             <div className="mt-6 pt-6 border-t border-line">
               {finitionsAVoter.map((g) => {
                 const selectionneeId = finitionsSel[g.id];
+                const blocs = sousBlocsPalette(g.finitions);
                 return (
                   <div key={g.id} className="mb-5 last:mb-0">
                     <div className="flex items-center justify-between mb-3">
                       <p className="font-semibold text-ink text-[14px]">{g.nom}</p>
                       {!selectionneeId && <span className="text-[11.5px] text-orange-dark font-medium">À choisir</span>}
                     </div>
-                    <div className="flex flex-wrap gap-3">
-                      {g.finitions.map((f) => {
-                        const actif = selectionneeId === f.id;
-                        return (
-                          <button key={f.id} onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5">
-                            <span className={`rounded-full border-2 overflow-hidden transition block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 44, height: 44, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
-                              {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
-                            </span>
-                            <span className={`text-[11px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
+
+                    {blocs.map((bloc, bi) => (
+                      <div key={`${g.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-4" : ""}>
+                        {bloc.nom && (
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className="text-[11.5px] font-semibold text-ink-soft uppercase tracking-[0.06em]">{bloc.nom}</span>
+                            <span className="flex-1 h-px bg-line" />
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-3">
+                          {bloc.items.map((f) => {
+                            const actif = selectionneeId === f.id;
+                            return (
+                              <button key={f.id} type="button" onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5">
+                                <span className={`rounded-full border-2 overflow-hidden transition block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 44, height: 44, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                                  {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                                </span>
+                                <span className={`text-[11px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 );
               })}
@@ -364,7 +392,7 @@ export default function FicheProduit({ data }) {
                             <span className="rounded-full border border-line overflow-hidden inline-block" style={{ width: 16, height: 16, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
                               {f.imageUrl && <img src={f.imageUrl} alt="" className="w-full h-full object-cover rounded-full" />}
                             </span>
-                            {f.nom}
+                            {f.paletteNom ? `${f.paletteNom} — ${f.nom}` : f.nom}
                           </span>
                         </div>
                       ) : null;

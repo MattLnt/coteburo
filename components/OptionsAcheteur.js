@@ -3,6 +3,22 @@ import { useState } from "react";
 
 const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
+// Découpe les finitions d'un groupe en sous-blocs par palette d'origine,
+// en conservant l'ordre. Les finitions sans palette forment un bloc sans titre.
+function sousBlocsPalette(finitions) {
+  const blocs = [];
+  let courant = null;
+  (finitions || []).forEach((f) => {
+    const cle = f.paletteNom || "__sans__";
+    if (!courant || courant.cle !== cle) {
+      courant = { cle, nom: f.paletteNom || null, items: [] };
+      blocs.push(courant);
+    }
+    courant.items.push(f);
+  });
+  return blocs;
+}
+
 // ─────────── Helpers option (déclinaisons + finitions) ───────────
 export const estDeclOption = (o) => !(o.sansDeclinaisons ?? true) && (o.axes || []).length > 0;
 
@@ -51,7 +67,7 @@ export const libelleOption = (o, cfg) => {
   (o.axes || []).forEach((a) => { if (cfg?.valeurs?.[a.id]) parts.push(cfg.valeurs[a.id]); });
   groupesFinitionOption(o, cfg?.valeurs || {}).forEach((gr) => {
     const f = gr.finitions.find((x) => (x.id || x.nom) === cfg?.finitions?.[gr.id]);
-    if (f) parts.push(f.nom);
+    if (f) parts.push(f.paletteNom ? `${f.paletteNom} ${f.nom}` : f.nom);
   });
   return parts.join(" / ");
 };
@@ -255,27 +271,40 @@ function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
 
       {sel && groupes.length > 0 && (
         <div className="mt-3 pl-9 flex flex-col gap-3">
-          {groupes.map((gr) => (
-            <div key={gr.id}>
-              <p className="text-[12.5px] font-semibold text-ink mb-1.5">
-                {gr.nom}{!cfg.finitions?.[gr.id] && <span className="text-orange-dark font-medium"> · à choisir</span>}
-              </p>
-              <div className="flex flex-wrap gap-2.5">
-                {gr.finitions.map((f) => {
-                  const val = f.id || f.nom;
-                  const actif = cfg.finitions?.[gr.id] === val;
-                  return (
-                    <button key={val} type="button" onClick={() => onFinition(o.id, gr.id, val)} title={f.nom} className="flex flex-col items-center gap-1">
-                      <span className={`rounded-full border-2 overflow-hidden block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
-                        {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
-                      </span>
-                      <span className={`text-[10.5px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
-                    </button>
-                  );
-                })}
+          {groupes.map((gr) => {
+            const blocs = sousBlocsPalette(gr.finitions);
+            return (
+              <div key={gr.id}>
+                <p className="text-[12.5px] font-semibold text-ink mb-1.5">
+                  {gr.nom}{!cfg.finitions?.[gr.id] && <span className="text-orange-dark font-medium"> · à choisir</span>}
+                </p>
+                {blocs.map((bloc, bi) => (
+                  <div key={`${gr.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-3" : ""}>
+                    {bloc.nom && (
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-[10.5px] font-semibold text-ink-soft uppercase tracking-[0.06em]">{bloc.nom}</span>
+                        <span className="flex-1 h-px bg-line" />
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2.5">
+                      {bloc.items.map((f) => {
+                        const val = f.id || f.nom;
+                        const actif = cfg.finitions?.[gr.id] === val;
+                        return (
+                          <button key={val} type="button" onClick={() => onFinition(o.id, gr.id, val)} title={f.nom} className="flex flex-col items-center gap-1">
+                            <span className={`rounded-full border-2 overflow-hidden block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                              {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                            </span>
+                            <span className={`text-[10.5px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
