@@ -6,7 +6,6 @@ const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { m
 // ─────────── Helpers option (déclinaisons + finitions) ───────────
 export const estDeclOption = (o) => !(o.sansDeclinaisons ?? true) && (o.axes || []).length > 0;
 
-// Déclinaison de l'option correspondant aux valeurs choisies (toutes les valeurs requises)
 export const declinaisonOption = (o, valeurs) => {
   const axes = o.axes || [];
   if (!axes.length || !axes.every((a) => valeurs?.[a.id])) return null;
@@ -22,7 +21,6 @@ export const prixOption = (o, cfg) => {
   return d && d.prixVenteHT != null ? Number(d.prixVenteHT) : null;
 };
 
-// Groupes de finitions applicables : groupes nommés (Piètement, Plateau…) + ceux liés aux valeurs choisies
 export const groupesFinitionOption = (o, valeurs) => {
   const g = [];
   (o.groupesFinition || []).forEach((grp) => {
@@ -59,13 +57,6 @@ export const libelleOption = (o, cfg) => {
 };
 
 // ─────────── Hook réutilisable par les deux fiches ───────────
-// Usage :
-//   const { optionsUI, totalOptions, optionsOK, ajouterOptions } =
-//     useOptionsAcheteur({ options: carte.optionsAdditionnelles, carte, addItem });
-// - place {optionsUI} dans le rendu (rien si aucune option exploitable)
-// - ajoute optionsOK à ta condition "peutAjouter"
-// - ajoute totalOptions au total affiché
-// - après avoir ajouté le produit parent au panier, appelle ajouterOptions(parentId)
 export function useOptionsAcheteur({ options, carte, addItem }) {
   const optionsDispo = (options || []).filter((o) => {
     if (!o || !o.nom) return false;
@@ -73,8 +64,8 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
     return (o.prixVenteHT ?? o.prixHT) != null;
   });
 
-  const [optionsCfg, setOptionsCfg] = useState({}); // { [id]: { qte, valeurs:{}, finitions:{} } }
-  const [lightbox, setLightbox] = useState(null);   // { option, index }
+  const [optionsCfg, setOptionsCfg] = useState({});
+  const [lightbox, setLightbox] = useState(null);
 
   const toggleOption = (id) =>
     setOptionsCfg((s) => { const n = { ...s }; if (n[id]) delete n[id]; else n[id] = { qte: 1, valeurs: {}, finitions: {} }; return n; });
@@ -106,26 +97,46 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
       const d = estDeclOption(o) ? declinaisonOption(o, cfg.valeurs) : null;
       const prix = prixOption(o, cfg);
       if (prix == null) return;
-      const ref = (d && d.referenceFournisseur) || o.reference || null;
       const lbl = libelleOption(o, cfg);
-      addItem(
-        {
-          codeRacine: `opt-${o.id}-${d ? d.id : "simple"}`,
-          vitrineId: carte.id,
-          optionId: o.id,
-          optionDeclinaisonId: d ? d.id : null,
-          reference: ref,
-          slug: carte.slug,
-          categorieSlug: carte.categorieSlug || null,
-          sousCategorieSlug: carte.sousCategorieSlug || null,
-          designation: o.nom + (lbl ? ` — ${lbl}` : ""),
-          marque: "Buronomic",
-          image: (o.images && o.images[0]) || null,
-          prix,
-          parentId,
-        },
-        lbl || null, cfg.qte
-      );
+
+      if (o.estProduitLie) {
+        addItem(
+          {
+            type: "nouveau",
+            vitrineId: o.vitrineId || o.id,
+            declinaisonId: d ? d.id : null,
+            slug: o.slug || carte.slug,
+            categorieSlug: o.categorieSlug || carte.categorieSlug || null,
+            sousCategorieSlug: o.sousCategorieSlug || carte.sousCategorieSlug || null,
+            designation: o.nom + (lbl ? ` — ${lbl}` : ""),
+            marque: "Buronomic",
+            image: (o.images && o.images[0]) || null,
+            prix,
+            parentId,
+          },
+          lbl || null, cfg.qte
+        );
+      } else {
+        const ref = (d && d.referenceFournisseur) || o.reference || null;
+        addItem(
+          {
+            codeRacine: `opt-${o.id}-${d ? d.id : "simple"}`,
+            vitrineId: carte.id,
+            optionId: o.id,
+            optionDeclinaisonId: d ? d.id : null,
+            reference: ref,
+            slug: carte.slug,
+            categorieSlug: carte.categorieSlug || null,
+            sousCategorieSlug: carte.sousCategorieSlug || null,
+            designation: o.nom + (lbl ? ` — ${lbl}` : ""),
+            marque: "Buronomic",
+            image: (o.images && o.images[0]) || null,
+            prix,
+            parentId,
+          },
+          lbl || null, cfg.qte
+        );
+      }
     });
   };
 

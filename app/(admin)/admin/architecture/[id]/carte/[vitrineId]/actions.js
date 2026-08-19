@@ -15,8 +15,9 @@ export async function getCarteEdition(vitrineId) {
     where: { id: vitrineId },
     include: {
       gamme: { select: { id: true, nom: true, venteSurDevis: true, marqueId: true } },
-      categories: { select: { id: true } },
+      categories: { select: { id: true, estOption: true } },
       sousCategories: { select: { id: true } },
+      optionsLiees: { select: { id: true } },
       produits: {
         orderBy: { designation: "asc" },
         select: {
@@ -76,6 +77,9 @@ export async function getCarteEdition(vitrineId) {
     prixUnitaireVerrouille: !!vitrine.prixUnitaireVerrouille,
     referenceUnitaire: vitrine.referenceUnitaire ?? "",
     optionsAdditionnelles: vitrine.optionsAdditionnelles ?? [],
+    // Accessoires liés (nouveau système "option = produit")
+    estProduitOption: vitrine.categories.some((c) => c.estOption),
+    optionsLieesIds: vitrine.optionsLiees.map((o) => o.id),
     largeurMin: vitrine.largeurMin ?? "",
     largeurMax: vitrine.largeurMax ?? "",
     hauteurMin: vitrine.hauteurMin ?? "",
@@ -111,12 +115,51 @@ export async function getCarteEdition(vitrineId) {
   };
 }
 
+// Produits sélectionnables comme accessoires : ceux qui appartiennent à au moins une
+// catégorie marquée "estOption". On exclut le produit courant (un accessoire ne peut pas
+// se lier à lui-même). Prix indicatif : prix unique si sansDeclinaisons, sinon le mini des déclinaisons.
+export async function getOptionsDisponibles(vitrineId) {
+  const vitrines = await prisma.produitVitrine.findMany({
+    where: {
+      id: { not: vitrineId },
+      categories: { some: { estOption: true } },
+    },
+    orderBy: { nom: "asc" },
+    select: {
+      id: true, nom: true, imageUrl: true, images: true,
+      sansDeclinaisons: true, prixUnitaireHT: true, declinaisons: true, publie: true,
+      categories: { where: { estOption: true }, select: { nom: true } },
+    },
+  });
+
+  return vitrines.map((v) => {
+    let prix = null;
+    if (v.sansDeclinaisons) {
+      prix = v.prixUnitaireHT ?? null;
+    } else {
+      const ps = (Array.isArray(v.declinaisons) ? v.declinaisons : [])
+        .map((d) => Number(d.prixVenteHT))
+        .filter((x) => !Number.isNaN(x) && x > 0);
+      prix = ps.length ? Math.min(...ps) : null;
+    }
+    return {
+      id: v.id,
+      nom: v.nom,
+      image: v.imageUrl || (Array.isArray(v.images) && v.images[0]) || null,
+      prix,
+      publie: v.publie,
+      categorieNom: v.categories[0]?.nom || "Accessoire",
+    };
+  });
+}
+
 // ─────────── SAUVEGARDE UNIQUE : tout en un clic ───────────
 export async function sauverCarteComplete(vitrineId, data) {
   const {
     nom, descriptif, imageUrl, images,
     sectionsDevis, prixAPartir,
     sansDeclinaisons, prixUnitaireTarifHT, prixUnitaireHT, prixUnitaireVerrouille, referenceUnitaire, optionsAdditionnelles,
+    optionsLieesIds,
     largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax,
     axesDeclinaisons, declinaisons,
     categorieIds, sousCategorieIds, categoriePrincipaleId, sousCategoriePrincipaleId,
@@ -138,6 +181,7 @@ export async function sauverCarteComplete(vitrineId, data) {
 
   const catIds = Array.isArray(categorieIds) ? categorieIds : [];
   const sousCatIds = Array.isArray(sousCategorieIds) ? sousCategorieIds : [];
+  const optLieesIds = Array.isArray(optionsLieesIds) ? optionsLieesIds : [];
   // Les principales doivent faire partie des sélections ; sinon on prend la première (ou rien).
   const principaleId = catIds.includes(categoriePrincipaleId) ? categoriePrincipaleId : (catIds[0] || null);
   const sousPrincipaleId = sousCatIds.includes(sousCategoriePrincipaleId) ? sousCategoriePrincipaleId : (sousCatIds[0] || null);
@@ -172,7 +216,8 @@ export async function sauverCarteComplete(vitrineId, data) {
                 // Prix unique
                 prixTarifHT: toNum(o.prixTarifHT),
                 prixVenteHT: prixVente,
-                prixHT: prixVente,                 // compat ancien front
+                prixHT: prixVente,
+                // compat ancien front
                 reference: (o.reference || "").trim() || null, // compat
                 // Déclinaisons (axes + finitions par valeur conservés tels quels)
                 axes: Array.isArray(o.axes) ? o.axes : [],
@@ -201,6 +246,8 @@ export async function sauverCarteComplete(vitrineId, data) {
               };
             })
         : [],
+      // Accessoires liés (produits) — remplace entièrement la liste par la sélection courante
+      optionsLiees: { set: optLieesIds.map((id) => ({ id })) },
       largeurMin: toEntier(largeurMin),
       largeurMax: toEntier(largeurMax),
       hauteurMin: toEntier(hauteurMin),

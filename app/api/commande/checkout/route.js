@@ -34,6 +34,17 @@ function prixApresPromoVitrine(vitrine, prixBase) {
   return prixBase * (1 - vitrine.promoPct / 100);
 }
 
+// Prix unique effectif d'une fiche à prix fixe (sansDeclinaisons) :
+// verrouillé → prix de vente saisi ; sinon → fournisseur × (1 + marge) ; repli sur le prix de vente.
+function prixUniqueEffectif(vitrine, marge) {
+  const vente = Number(vitrine.prixUnitaireHT);
+  if (vitrine.prixUnitaireVerrouille && !Number.isNaN(vente) && vente > 0) return vente;
+  const tarif = Number(vitrine.prixUnitaireTarifHT);
+  if (!Number.isNaN(tarif) && tarif > 0) return Math.round(tarif * (1 + marge) * 100) / 100;
+  if (!Number.isNaN(vente) && vente > 0) return vente;
+  return null;
+}
+
 export async function POST(req) {
   try {
     const { client, items, avecInstallation, creerCompte, motDePasse } = await req.json();
@@ -74,9 +85,8 @@ export async function POST(req) {
 
     // ── Recharge les vrais prix depuis la base — jamais confiance au client.
     // Trois cas : l'ancien système (Produit, par codeRacine), le nouveau (ProduitVitrine
-    // + déclinaisons, par vitrineId + declinaisonId), et les options (optionsAdditionnelles). ──
+    // + déclinaisons OU prix fixe, par vitrineId), et les options inline (optionsAdditionnelles). ──
     const itemsAnciens = items.filter((it) => it.type !== "nouveau" && !it.optionId);
-    const itemsNouveaux = items.filter((it) => it.type === "nouveau");
 
     const codes = [...new Set(itemsAnciens.map((it) => it.codeRacine))];
     const produitsAnciens = codes.length > 0
@@ -105,7 +115,7 @@ export async function POST(req) {
     for (const it of items) {
       const quantite = Math.max(1, parseInt(it.quantite) || 1);
 
-      // ── Option additionnelle : prix vérifié depuis optionsAdditionnelles de la fiche parente ──
+      // ── Option additionnelle inline : prix vérifié depuis optionsAdditionnelles de la fiche parente ──
       if (it.optionId) {
         const v = vitrinesMap[it.vitrineId];
         if (!v) return NextResponse.json({ error: `Option indisponible : ${it.designation}` }, { status: 400 });
@@ -147,23 +157,41 @@ export async function POST(req) {
         const v = vitrinesMap[it.vitrineId];
         if (!v) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
 
-        const declinaisons = Array.isArray(v.declinaisons) ? v.declinaisons : [];
-        const decl = declinaisons.find((d) => d.id === it.declinaisonId);
-        if (!decl) return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
+        if (v.sansDeclinaisons || !it.declinaisonId) {
+          // ── Produit / accessoire à PRIX FIXE (pas de déclinaison) ──
+          const prixBase = prixUniqueEffectif(v, margeGlobale);
+          if (!prixBase || prixBase <= 0) return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
 
-        const prixBase = prixVenteEffectif(decl, margeGlobale);
-        if (!prixBase || prixBase <= 0) return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
+          lignes.push({
+            codeRacine: null,
+            referenceFournisseur: v.referenceUnitaire || null,
+            designation: it.designation || v.nom,
+            marque: v.gamme?.marque?.nom || null,
+            finition: it.finition || null,
+            prixHT: prixApresPromoVitrine(v, prixBase),
+            quantite,
+            imageUrl: v.imageUrl || null,
+          });
+        } else {
+          // ── Produit à DÉCLINAISONS ──
+          const declinaisons = Array.isArray(v.declinaisons) ? v.declinaisons : [];
+          const decl = declinaisons.find((d) => d.id === it.declinaisonId);
+          if (!decl) return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
 
-        lignes.push({
-          codeRacine: null,
-          referenceFournisseur: decl.referenceFournisseur || null,
-          designation: v.nom,
-          marque: v.gamme?.marque?.nom || null,
-          finition: it.finition || null,
-          prixHT: prixApresPromoVitrine(v, prixBase),
-          quantite,
-          imageUrl: v.imageUrl || null,
-        });
+          const prixBase = prixVenteEffectif(decl, margeGlobale);
+          if (!prixBase || prixBase <= 0) return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
+
+          lignes.push({
+            codeRacine: null,
+            referenceFournisseur: decl.referenceFournisseur || null,
+            designation: it.designation || v.nom,
+            marque: v.gamme?.marque?.nom || null,
+            finition: it.finition || null,
+            prixHT: prixApresPromoVitrine(v, prixBase),
+            quantite,
+            imageUrl: v.imageUrl || null,
+          });
+        }
       } else {
         const p = produitsAnciensMap[it.codeRacine];
         if (!p) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });

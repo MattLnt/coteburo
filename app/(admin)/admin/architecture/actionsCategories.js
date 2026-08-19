@@ -31,6 +31,7 @@ export async function getCategoriesAdmin() {
     nom: c.nom,
     slug: c.slug,
     icone: c.icone,
+    estOption: c.estOption,
     nbProduits: c._count.vitrines,
     sousCategories: c.sousCategories.map((s) => ({
       id: s.id,
@@ -74,6 +75,16 @@ export async function renommerCategorie(id, nom) {
 
 export async function changerIconeCategorie(id, icone) {
   await prisma.categorie.update({ where: { id }, data: { icone } });
+  revalidatePath("/admin/architecture");
+  revalidatePath("/", "layout");
+  return { ok: true };
+}
+
+// Bascule une catégorie en "catégorie d'accessoires" : ses produits deviennent
+// sélectionnables comme options/accessoires d'autres produits (et l'onglet Options
+// est masqué pour les produits qui appartiennent à une telle catégorie).
+export async function basculerOptionCategorie(id, valeur) {
+  await prisma.categorie.update({ where: { id }, data: { estOption: !!valeur } });
   revalidatePath("/admin/architecture");
   revalidatePath("/", "layout");
   return { ok: true };

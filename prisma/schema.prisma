@@ -29,6 +29,7 @@ model Categorie {
   createdAt      DateTime         @default(now())
   margePct       Float?
   icone          String?
+  estOption      Boolean          @default(false)
   marque         Marque           @relation(fields: [marqueId], references: [id], onDelete: Cascade)
   sousCategories SousCategorie[]
   gammes         Gamme[]          @relation("GammeCategories")
@@ -362,6 +363,8 @@ model ProduitVitrine {
   gamme                     Gamme            @relation(fields: [gammeId], references: [id], onDelete: Cascade)
   categories                Categorie[]      @relation("VitrineCategories")
   sousCategories            SousCategorie[]  @relation("VitrineSousCategories")
+  optionsLiees              ProduitVitrine[] @relation("ProduitOptions")
+  optionPour                ProduitVitrine[] @relation("ProduitOptions")
 
   @@unique([gammeId, slug])
   @@index([gammeId])

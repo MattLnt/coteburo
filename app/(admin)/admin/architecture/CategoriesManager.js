@@ -3,7 +3,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import SelecteurIcone from "./SelecteurIcone";
 import {
-  creerCategorie, renommerCategorie, changerIconeCategorie, supprimerCategorie,
+  creerCategorie, renommerCategorie, changerIconeCategorie, supprimerCategorie, basculerOptionCategorie,
   creerSousCategorie, renommerSousCategorie, supprimerSousCategorie,
 } from "./actionsCategories";
 
@@ -78,6 +78,7 @@ export default function CategoriesManager({ categories }) {
             onToggle={() => toggleDeplier(cat.id)}
             onRenommer={(nom) => startTransition(async () => { await renommerCategorie(cat.id, nom); router.refresh(); })}
             onChangerIcone={(icone) => startTransition(async () => { await changerIconeCategorie(cat.id, icone); router.refresh(); })}
+            onBasculerOption={(val) => startTransition(async () => { await basculerOptionCategorie(cat.id, val); router.refresh(); })}
             onSupprimer={() => setConfirmationSuppr({ type: "cat", id: cat.id, nom: cat.nom })}
             onAjouterSousCat={(nom) => startTransition(async () => { await creerSousCategorie(cat.id, nom); router.refresh(); })}
             onRenommerSousCat={(id, nom) => startTransition(async () => { await renommerSousCategorie(id, nom); router.refresh(); })}
@@ -103,7 +104,7 @@ export default function CategoriesManager({ categories }) {
   );
 }
 
-function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone, onSupprimer, onAjouterSousCat, onRenommerSousCat, onSupprimerSousCat, isPending }) {
+function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone, onBasculerOption, onSupprimer, onAjouterSousCat, onRenommerSousCat, onSupprimerSousCat, isPending }) {
   const [edition, setEdition] = useState(false);
   const [nomEdite, setNomEdite] = useState(categorie.nom);
   const [nouvelleSousCatNom, setNouvelleSousCatNom] = useState("");
@@ -116,8 +117,10 @@ function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone
     setEdition(false);
   };
 
+  const estOption = !!categorie.estOption;
+
   return (
-    <div style={card}>
+    <div style={{ ...card, ...(estOption ? { borderColor: "#f0c4a0" } : null) }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px" }}>
         <button onClick={onToggle} style={{ background: "none", border: "none", cursor: "pointer", color: "#9aa0a8", display: "flex" }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ transform: deplie ? "rotate(90deg)" : "none", transition: "transform .15s" }}><path d="M9 6l6 6-6 6" /></svg>
@@ -132,6 +135,19 @@ function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone
         ) : (
           <p onClick={() => setEdition(true)} style={{ flex: 1, fontWeight: 700, fontSize: 15, color: "#23262a", margin: 0, cursor: "text" }}>{categorie.nom}</p>
         )}
+
+        {/* Toggle : catégorie d'accessoires (ses produits deviennent sélectionnables comme options) */}
+        <button onClick={() => onBasculerOption(!estOption)} disabled={isPending}
+          title="Marquer comme catégorie d'accessoires — ses produits pourront être ajoutés comme options d'autres produits"
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 999, cursor: "pointer", flexShrink: 0,
+            fontSize: 12, fontWeight: 700, whiteSpace: "nowrap",
+            border: "1.5px solid " + (estOption ? "#f0661b" : "#ece8e0"),
+            background: estOption ? "#fef4ee" : "#fff",
+            color: estOption ? "#d9551a" : "#9aa0a8",
+          }}>
+          {estOption ? "✓ " : ""}Accessoires
+        </button>
 
         <span style={{ fontSize: 12, color: "#9aa0a8", whiteSpace: "nowrap" }}>{categorie.sousCategories.length} sous-cat. · {categorie.nbProduits} produit{categorie.nbProduits > 1 ? "s" : ""}</span>
 

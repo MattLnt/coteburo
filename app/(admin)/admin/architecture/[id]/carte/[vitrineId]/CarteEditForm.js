@@ -7,6 +7,7 @@ import SelecteurOptions from "@/components/dashboard/SelecteurOptions";
 import SectionsDescriptives from "./SectionsDescriptives";
 import DeclinaisonsBoutique from "./DeclinaisonsBoutique";
 import OptionsAdditionnelles from "./OptionsAdditionnelles";
+import SelecteurOptionsLiees from "./SelecteurOptionsLiees";
 import FinitionsProduit from "./FinitionsProduit";
 import PrixProduit from "./PrixProduit";
 import { sauverCarteComplete, changerGammeProduit, getGammesPourRecherche } from "./actions";
@@ -43,6 +44,7 @@ export default function CarteEditForm({ carte }) {
   const [prixUnitaireVerrouille, setPrixUnitaireVerrouille] = useState(!!carte.prixUnitaireVerrouille);
   const [referenceUnitaire, setReferenceUnitaire] = useState(carte.referenceUnitaire ?? "");
   const [optionsAdditionnelles, setOptionsAdditionnelles] = useState(carte.optionsAdditionnelles ?? []);
+  const [optionsLieesIds, setOptionsLieesIds] = useState(carte.optionsLieesIds ?? []);
 
   const [largeurMin, setLargeurMin] = useState(carte.largeurMin ?? "");
   const [largeurMax, setLargeurMax] = useState(carte.largeurMax ?? "");
@@ -61,8 +63,8 @@ export default function CarteEditForm({ carte }) {
 
   const surDevis = carte.gammeForceDevis || venteSurDevis;
   const utiliseAncienSysteme = (carte.produits || []).length > 0;
+  const estProduitOption = !!carte.estProduitOption;
 
-  // Catégories choisies (multiple) + sous-catégories disponibles = union des sous-cats des catégories cochées
   const categoriesChoisies = carte.categoriesDisponibles.filter((c) => categorieIds.includes(c.id));
   const sousCategoriesDispo = [];
   const vus = new Set();
@@ -76,7 +78,6 @@ export default function CarteEditForm({ carte }) {
   const nbSectionsDevis = sectionsDevis.length;
   const nbAxes = axesDeclinaisons.length;
   const nbDeclinaisons = declinaisonsLignes.length;
-  // Une ligne a un prix "rempli" si : verrouillée avec un prix de vente, OU un prix fournisseur (mode Auto).
   const prixLigneRempli = (l) => {
     const vente = Number(l.prixVenteHT);
     const tarif = Number(l.prixTarifHT);
@@ -85,8 +86,8 @@ export default function CarteEditForm({ carte }) {
   };
   const nbPrixRemplis = declinaisonsLignes.filter(prixLigneRempli).length;
   const nbOptions = (optionsAdditionnelles || []).length;
+  const nbOptionsTotal = nbOptions + optionsLieesIds.length;
 
-  // Prix unique effectif (pour le récap) : verrouillé → prix vente saisi ; sinon fournisseur × marge.
   const prixUniqueEffectif = (() => {
     const marge = carte.margeGlobale ?? 0.3;
     const vente = Number(prixUnitaireHT);
@@ -102,7 +103,6 @@ export default function CarteEditForm({ carte }) {
   const toggleCategorie = (id) => {
     const next = categorieIds.includes(id) ? categorieIds.filter((x) => x !== id) : [...categorieIds, id];
     setCategorieIds(next);
-    // Retire les sous-catégories qui ne sont plus rattachées à une catégorie cochée
     const dispo = new Set(
       carte.categoriesDisponibles
         .filter((c) => next.includes(c.id))
@@ -110,7 +110,6 @@ export default function CarteEditForm({ carte }) {
     );
     const nextSous = sousCategorieIds.filter((sid) => dispo.has(sid));
     setSousCategorieIds(nextSous);
-    // Maintient des principales valides (celles qui font l'URL)
     setCategoriePrincipaleId((prev) => (next.length === 0 ? "" : (!next.includes(prev) ? next[0] : prev)));
     setSousCategoriePrincipaleId((prev) => (nextSous.length === 0 ? "" : (!nextSous.includes(prev) ? nextSous[0] : prev)));
     dirty();
@@ -123,15 +122,8 @@ export default function CarteEditForm({ carte }) {
     dirty();
   };
 
-  const choisirPrincipale = (id) => {
-    setCategoriePrincipaleId(id);
-    dirty();
-  };
-
-  const choisirSousPrincipale = (id) => {
-    setSousCategoriePrincipaleId(id);
-    dirty();
-  };
+  const choisirPrincipale = (id) => { setCategoriePrincipaleId(id); dirty(); };
+  const choisirSousPrincipale = (id) => { setSousCategoriePrincipaleId(id); dirty(); };
 
   const changerPromo = ({ promoPct: pp, promoDebut: pd, promoFin: pf }) => {
     if (pp !== undefined) setPromoPct(pp);
@@ -141,7 +133,6 @@ export default function CarteEditForm({ carte }) {
   };
 
   const enregistrerTout = () => {
-    // Validation : chaque option doit avoir un nom (sinon elle serait perdue à l'enregistrement).
     const optionsSansNom = (optionsAdditionnelles || [])
       .map((o, i) => ({ n: i + 1, nom: (o.nom || "").trim() }))
       .filter((o) => !o.nom);
@@ -165,6 +156,7 @@ export default function CarteEditForm({ carte }) {
         prixUnitaireVerrouille,
         referenceUnitaire,
         optionsAdditionnelles,
+        optionsLieesIds,
         largeurMin: largeurMin === "" ? null : Number(largeurMin),
         largeurMax: largeurMax === "" ? null : Number(largeurMax),
         hauteurMin: hauteurMin === "" ? null : Number(hauteurMin),
@@ -195,9 +187,9 @@ export default function CarteEditForm({ carte }) {
     ["technique", `Descriptif technique${nbSectionsDevis > 0 ? ` (${nbSectionsDevis})` : ""}`],
     ["declinaisons", sansDeclinaisons ? "Déclinaisons" : `Déclinaisons${nbDeclinaisons > 0 ? ` (${nbDeclinaisons})` : ""}`],
     ["finitions", "Finitions"],
-    ["options", `Options${nbOptions > 0 ? ` (${nbOptions})` : ""}`],
-    ["prix", surDevis ? "Prix" : (sansDeclinaisons ? `Prix${(prixUnitaireHT !== "" && prixUnitaireHT != null) || (prixUnitaireTarifHT !== "" && prixUnitaireTarifHT != null) ? " ✓" : ""}` : `Prix${nbDeclinaisons > 0 ? ` (${nbPrixRemplis}/${nbDeclinaisons})` : ""}`)],
   ];
+  if (!estProduitOption) tabs.push(["options", `Options${nbOptionsTotal > 0 ? ` (${nbOptionsTotal})` : ""}`]);
+  tabs.push(["prix", surDevis ? "Prix" : (sansDeclinaisons ? `Prix${(prixUnitaireHT !== "" && prixUnitaireHT != null) || (prixUnitaireTarifHT !== "" && prixUnitaireTarifHT != null) ? " ✓" : ""}` : `Prix${nbDeclinaisons > 0 ? ` (${nbPrixRemplis}/${nbDeclinaisons})` : ""}`)]);
   if (!surDevis && utiliseAncienSysteme) tabs.push(["ancien", "Ancien sélecteur"]);
 
   const label = { display: "block", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#5c616a", marginBottom: 10 };
@@ -237,7 +229,6 @@ export default function CarteEditForm({ carte }) {
 
   return (
     <div>
-      {/* En-tête */}
       <div style={{ marginBottom: 22, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
         <div>
           <h1 style={{ fontSize: 30, fontWeight: 800, color: "#23262a", margin: 0, letterSpacing: "-0.02em" }}>{carte.nom}</h1>
@@ -263,6 +254,11 @@ export default function CarteEditForm({ carte }) {
           background: surDevis ? "#fef4ee" : "#e8f6f0", color: surDevis ? "#b45528" : "#1f7a52" }}>
           {surDevis ? "Sur devis" : "Boutique (checkout)"}
         </span>
+        {estProduitOption && (
+          <span style={{ padding: "6px 14px", borderRadius: 999, fontSize: 12.5, fontWeight: 600, background: "#fef4ee", color: "#d9551a" }}>
+            Accessoire
+          </span>
+        )}
         {bestSeller && (
           <span style={{ padding: "6px 14px", borderRadius: 999, fontSize: 12.5, fontWeight: 600, background: "#fef4ee", color: "#d9551a", display: "inline-flex", alignItems: "center", gap: 5 }}>
             ★ Best-seller
@@ -281,7 +277,6 @@ export default function CarteEditForm({ carte }) {
         </div>
       )}
 
-      {/* Barre d'onglets */}
       <div style={{ display: "flex", gap: 4, background: "#f0ece4", padding: 4, borderRadius: 12, marginBottom: 20, width: "fit-content", flexWrap: "wrap" }}>
         {tabs.map(([val, lbl]) => (
           <button key={val} onClick={() => setOnglet(val)}
@@ -294,7 +289,6 @@ export default function CarteEditForm({ carte }) {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 24, alignItems: "start" }}>
-        {/* ── Colonne contenu de l'onglet actif ── */}
         <div>
           {onglet === "infos" && (
             <div style={{ ...card, display: "flex", flexDirection: "column", gap: 24 }}>
@@ -455,11 +449,25 @@ export default function CarteEditForm({ carte }) {
             <FinitionsProduit vitrineId={carte.id} />
           )}
 
-          {onglet === "options" && (
-            <OptionsAdditionnelles
-              options={optionsAdditionnelles}
-              onChange={(o) => { setOptionsAdditionnelles(o); dirty(); }}
-            />
+          {onglet === "options" && !estProduitOption && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <SelecteurOptionsLiees
+                vitrineId={carte.id}
+                selectedIds={optionsLieesIds}
+                onChange={(ids) => { setOptionsLieesIds(ids); dirty(); }}
+              />
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "4px 2px 12px" }}>
+                  <span style={{ height: 1, flex: 1, background: "#ece8e0" }} />
+                  <span style={{ fontSize: 11.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#9aa0a8" }}>Options spécifiques à ce produit (avancé)</span>
+                  <span style={{ height: 1, flex: 1, background: "#ece8e0" }} />
+                </div>
+                <OptionsAdditionnelles
+                  options={optionsAdditionnelles}
+                  onChange={(o) => { setOptionsAdditionnelles(o); dirty(); }}
+                />
+              </div>
+            </div>
           )}
 
           {onglet === "prix" && (
@@ -496,7 +504,6 @@ export default function CarteEditForm({ carte }) {
             </div>
           )}
 
-          {/* ── Bouton unique, toujours visible peu importe l'onglet ── */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 14, marginTop: 24, paddingTop: 20, borderTop: "1px solid #ece8e0" }}>
             {erreurSave && <span style={{ fontSize: 13.5, color: "#b45528", fontWeight: 600 }}>⚠ {erreurSave}</span>}
             {saved && <span style={{ fontSize: 13.5, color: "#1f7a52", fontWeight: 600 }}>✓ Tout est enregistré</span>}
@@ -507,7 +514,6 @@ export default function CarteEditForm({ carte }) {
           </div>
         </div>
 
-        {/* ── Colonne récap ── */}
         <div style={{ position: "sticky", top: 24 }}>
           <div style={{ background: "linear-gradient(150deg, #23262a 0%, #33261f 100%)", borderRadius: 20, padding: 26, position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: -40, right: -40, width: 180, height: 180, borderRadius: "50%", background: "radial-gradient(circle, rgba(240,102,27,0.28), transparent 70%)" }} />
@@ -518,12 +524,14 @@ export default function CarteEditForm({ carte }) {
             <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 11, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 16 }}>
               {ligneRecap("Statut", publie, publie ? "Publié" : "Brouillon")}
               {ligneRecap("Mode", true, surDevis ? "Sur devis" : "Boutique")}
+              {estProduitOption && ligneRecap("Type", true, "Accessoire")}
               {ligneRecap("Best-seller", bestSeller, bestSeller ? "Oui" : "Non")}
               {ligneRecap("Promotion", !!promoPct, promoPct ? `-${promoPct}%` : "Aucune")}
               {ligneRecap("Catégorie(s)", categorieIds.length > 0, nomsCategories || "Non définie")}
               {categorieIds.length > 0 && ligneRecap("Catégorie URL", !!categoriePrincipaleId, nomPrincipale || "—")}
               {sousCategorieIds.length > 0 && ligneRecap("Sous-catégorie(s)", true, nomsSousCategories)}
               {sousCategorieIds.length > 0 && ligneRecap("Sous-catégorie URL", !!sousCategoriePrincipaleId, nomSousPrincipale || "—")}
+              {!estProduitOption && ligneRecap("Options", nbOptionsTotal > 0, nbOptionsTotal > 0 ? `${nbOptionsTotal} liée${nbOptionsTotal > 1 ? "s" : ""}` : "Aucune")}
               {ligneRecap("Photos", galerie.length > 0, galerie.length > 0 ? `${galerie.length} photo${galerie.length > 1 ? "s" : ""}` : "Aucune")}
               {ligneRecap("Descriptif court", !!descriptif, descriptif ? "Rempli" : "Vide")}
               {ligneRecap("Descriptif technique", nbSectionsDevis > 0, nbSectionsDevis > 0 ? `${nbSectionsDevis} section${nbSectionsDevis > 1 ? "s" : ""}` : "Vide")}
