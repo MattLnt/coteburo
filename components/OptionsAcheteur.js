@@ -160,9 +160,10 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
           ))}
         </div>
         {totalOptions > 0 && (
-          <p className="text-[13px] text-ink-soft mt-3 text-right">Total options : <span className="font-bold text-ink">+ {fmt(totalOptions)}</span></p>
+          <p className="text-[13px] text-ink-soft mt-4 text-right">Total options : <span className="font-bold text-ink">+ {fmt(totalOptions)}</span></p>
         )}
       </div>
+      <div className="mb-6" />
 
       {lightbox && (
         <div onClick={() => setLightbox(null)} className="fixed inset-0 z-[200] flex items-center justify-center p-6" style={{ background: "rgba(33,38,42,0.72)", backdropFilter: "blur(2px)" }}>

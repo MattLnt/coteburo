@@ -239,7 +239,7 @@ export default function FicheProduit({ data }) {
   return (
     <div>
       <div className="grid lg:grid-cols-2 gap-10 items-start">
-        <div className="lg:sticky lg:top-6">
+        <div className="lg:sticky lg:top-[260px]">
           <GalerieProduit images={images} alt={carte.nom} />
         </div>
 

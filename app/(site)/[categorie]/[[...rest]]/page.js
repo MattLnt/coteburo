@@ -48,7 +48,7 @@ export default async function ProduitPage({ params }) {
   return (
     <main>
       {/* Fil d'ariane */}
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-6 pb-4 text-sm text-ink-soft">
+      <div className="lg:sticky lg:top-[168px] z-40 bg-bg border-b border-line/60 mx-auto max-w-[1400px] px-5 sm:px-7 pt-6 pb-4 mb-8 text-sm text-ink-soft">
         <Link href="/" className="hover:text-orange">Accueil</Link> /{" "}
         <Link href="/catalogue" className="hover:text-orange">Catalogue</Link> /{" "}
         <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange">{payload.carte.categorieNom}</Link> /{" "}
