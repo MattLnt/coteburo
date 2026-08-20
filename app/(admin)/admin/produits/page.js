@@ -15,6 +15,17 @@ function libelleDeclinaison(axes, valeurs) {
     .join(" · ");
 }
 
+// Prix de vente d'un produit à prix unique (sansDeclinaisons) :
+// verrouillé → prix de vente saisi ; sinon → fournisseur × (1 + marge) ; repli sur le prix de vente.
+function prixUniqueEffectif(carte, marge) {
+  const vente = carte.prixUnitaireHT != null ? Number(carte.prixUnitaireHT) : null;
+  if (carte.prixUnitaireVerrouille && vente != null && !Number.isNaN(vente) && vente > 0) return vente;
+  const tarif = carte.prixUnitaireTarifHT != null ? Number(carte.prixUnitaireTarifHT) : null;
+  if (tarif != null && !Number.isNaN(tarif) && tarif > 0) return Math.round(tarif * (1 + marge) * 100) / 100;
+  if (vente != null && !Number.isNaN(vente) && vente > 0) return vente;
+  return null;
+}
+
 export default async function ProduitsPage() {
   const [cartes, gammes, reglages] = await Promise.all([
     prisma.produitVitrine.findMany({
@@ -28,6 +39,11 @@ export default async function ProduitsPage() {
         axesDeclinaisons: true,
         declinaisons: true,
         prixAPartir: true,
+        sansDeclinaisons: true,
+        prixUnitaireTarifHT: true,
+        prixUnitaireHT: true,
+        prixUnitaireVerrouille: true,
+        referenceUnitaire: true,
         categories: { select: { nom: true }, take: 1 },
         sousCategories: { select: { nom: true }, take: 1 },
         gamme: {
@@ -50,7 +66,31 @@ export default async function ProduitsPage() {
     const sousCategorieNom = carte.sousCategories?.[0]?.nom || null;
     const marqueNom = carte.gamme.marque?.nom || null;
 
-    if (!surDevis && declinaisons.length > 0) {
+    // Produit à PRIX UNIQUE (sans déclinaisons) : une seule ligne, prix depuis prixUnitaire*.
+    if (!surDevis && carte.sansDeclinaisons) {
+      const prix = prixUniqueEffectif(carte, margeGlobale);
+      const tarif = carte.prixUnitaireTarifHT != null ? Number(carte.prixUnitaireTarifHT) : null;
+      lignes.push({
+        key: carte.id,
+        nom: carte.nom,
+        sousLibelle: "Prix unique",
+        reference: carte.referenceUnitaire || null,
+        gammeNom: carte.gamme.nom,
+        marqueNom,
+        categorieNom,
+        sousCategorieNom,
+        gammeId: carte.gamme.id,
+        carteId: carte.id,
+        publie: carte.publie,
+        // Une ligne à prix unique n'est pas éditable en ligne (pas de declinaisonId) :
+        // le mode "boutique-vide" reste utilisé quand le prix manque réellement.
+        mode: prix != null ? "boutique" : "boutique-vide",
+        declinaisonId: null,
+        prixTarif: tarif,
+        prix,
+        verrouille: !!carte.prixUnitaireVerrouille,
+      });
+    } else if (!surDevis && declinaisons.length > 0) {
       for (const d of declinaisons) {
         const tarif = d.prixTarifHT != null && d.prixTarifHT !== "" ? Number(d.prixTarifHT) : null;
         lignes.push({

@@ -31,7 +31,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
   const modeOptions = [
     { value: "", label: "Tous les modes" },
     { value: "boutique", label: "Boutique (avec prix)" },
-    { value: "boutique-vide", label: "⚠ À compléter (sans déclinaisons)" },
+    { value: "boutique-vide", label: "⚠ À compléter (sans prix)" },
     { value: "devis", label: "Sur devis" },
   ];
   const statutOptions = [
@@ -101,10 +101,13 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
           prix: null, prixMax: null,             // prix vente mini / maxi
           prixTarif: null, prixTarifMax: null,   // prix fournisseur mini / maxi
           nbDeclinaisons: 0,
+          prixUnique: false,                     // produit vendu à prix fixe (sans déclinaisons)
         };
         parProduit.set(l.carteId, p);
       }
       if (l.declinaisonId) p.nbDeclinaisons += 1;
+      // Une ligne boutique sans declinaisonId = produit à prix unique.
+      if (l.mode === "boutique" && !l.declinaisonId) p.prixUnique = true;
       if (l.prix != null) {
         p.prix = p.prix == null ? l.prix : Math.min(p.prix, l.prix);
         p.prixMax = p.prixMax == null ? l.prix : Math.max(p.prixMax, l.prix);
@@ -268,6 +271,14 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
     </button>
   );
 
+  // Sous-libellé de la vue Produits : distingue prix unique, déclinaisons, devis et produit incomplet.
+  const sousLibelleProduit = (p) => {
+    if (p.mode === "devis") return "Sur devis";
+    if (p.nbDeclinaisons > 0) return `${p.nbDeclinaisons} déclinaison${p.nbDeclinaisons > 1 ? "s" : ""}`;
+    if (p.prixUnique) return "Prix unique";
+    return "Aucune déclinaison";
+  };
+
   const listeAffichee = vue === "produits" ? produitsAffiches : declinaisonsAffichees;
 
   return (
@@ -349,11 +360,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
                   <td style={{ ...td, maxWidth: 380 }}>
                     {renderNom(p.carteId, p.nom)}
                     <div style={{ fontSize: 12, color: "#9aa0a8", marginTop: 3 }}>
-                      {p.mode === "devis"
-                        ? "Sur devis"
-                        : p.nbDeclinaisons > 0
-                          ? `${p.nbDeclinaisons} déclinaison${p.nbDeclinaisons > 1 ? "s" : ""}`
-                          : "Aucune déclinaison"}
+                      {sousLibelleProduit(p)}
                     </div>
                   </td>
                   {celluleGamme(p)}

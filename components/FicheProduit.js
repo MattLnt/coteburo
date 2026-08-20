@@ -36,6 +36,12 @@ export default function FicheProduit({ data }) {
   const axesDecl = carte.axesDeclinaisons || [];
   const declLignes = carte.declinaisons || [];
 
+  // Produit vendu à PRIX FIXE : aucun produit de l'ancien système et aucun axe de choix.
+  // On teste l'absence d'AXES et non de déclinaisons : un produit basculé en prix fixe
+  // peut garder des lignes de déclinaisons résiduelles en base, inutilisables sans axe.
+  // (Si un axe existait, page.js afficherait FicheProduitLibre, pas ce composant.)
+  const prixFixe = produits.length === 0 && axesDecl.length === 0;
+
   // Options / accessoires — logique partagée avec FicheProduitLibre (composant OptionsAcheteur)
   const { optionsUI, totalOptions, optionsOK, ajouterOptions } = useOptionsAcheteur({
     options: carte.optionsAdditionnelles,
@@ -95,12 +101,6 @@ export default function FicheProduit({ data }) {
   const { match: declMatch } = useMemo(() => resoudreDeclinaison(declLignes, declReponses), [declLignes, declReponses]);
   const declinaisonFinale = declMatch || (declLignes.length === 1 && axesDecl.length > 0 ? declLignes[0] : null);
 
-  const referenceFinale = produitFinal
-    ? { codeRacine: produitFinal.codeRacine, designation: produitFinal.designation }
-    : declinaisonFinale
-    ? { codeRacine: declinaisonFinale.id, designation: carte.nom }
-    : null;
-
   const prixResolu = produitFinal
     ? (produitFinal.prixVenteHT ?? produitFinal.prixPublicHT)
     : declinaisonFinale
@@ -108,6 +108,14 @@ export default function FicheProduit({ data }) {
     : carte.prixMini;
   const prixAffiche = surDevis ? (carte.prixAPartir ?? prixResolu) : prixResolu;
   const ttc = !surDevis && prixAffiche != null ? prixAffiche * 1.2 : null;
+
+  const referenceFinale = produitFinal
+    ? { codeRacine: produitFinal.codeRacine, designation: produitFinal.designation }
+    : declinaisonFinale
+    ? { codeRacine: declinaisonFinale.id, designation: carte.nom }
+    : (prixFixe && prixAffiche != null)
+    ? { codeRacine: carte.id, designation: carte.nom }
+    : null;
 
   const nbConfigRepondu = historique.length;
   const nbConfigRestant = phase === "config" ? compterEtapesRestantes(identifs, produits, selection, optionsReponses, dejaTraites) : 0;
@@ -190,7 +198,7 @@ export default function FicheProduit({ data }) {
     for (const h of declHistorique) parts.push(`${h.nom}: ${h.valeur}`);
     for (const g of finitionsAVoter) {
       const f = g.finitions.find((x) => x.id === finitionsSel[g.id]);
-      if (f) parts.push(`${g.nom}: ${f.nom}`);
+      if (f) parts.push(`${g.nom}: ${f.paletteNom ? `${f.paletteNom} ${f.nom}` : f.nom}`);
     }
     return parts.join(" · ");
   };
@@ -216,9 +224,11 @@ export default function FicheProduit({ data }) {
           prix: prixAffiche,
         }
       : {
+          // Déclinaison OU prix fixe : dans les deux cas la vitrine sert de référence.
+          // declinaisonId à null = produit à prix unique, vérifié via prixUnitaireHT au paiement.
           type: "nouveau",
           vitrineId: carte.id,
-          declinaisonId: declinaisonFinale.id,
+          declinaisonId: declinaisonFinale ? declinaisonFinale.id : null,
           slug: carte.slug,
           categorieSlug: carte.categorieSlug || null,
           sousCategorieSlug: carte.sousCategorieSlug || null,
@@ -250,7 +260,7 @@ export default function FicheProduit({ data }) {
   const gros = (actif) => `px-4 py-2.5 rounded-xl border text-[13.5px] font-medium transition ${
     actif ? "border-orange bg-orange-tint text-orange-dark" : "border-line text-ink hover:border-orange/50 hover:bg-surface-2"}`;
 
-  const peutReculer = historique.length > 0 || declHistorique.length > 0 || phase !== "config";
+  const peutReculer = historique.length > 0 || declHistorique.length > 0 || (phase !== "config" && !prixFixe);
 
   return (
     <div>
@@ -447,7 +457,7 @@ export default function FicheProduit({ data }) {
             )}
           </div>
 
-          {phase !== "recap" && (
+          {phase !== "recap" && etapeTotalNum > 0 && (
             <div className="mt-6">
               <div className="flex items-center gap-1.5">
                 {Array.from({ length: etapeTotalNum }).map((_, i) => (
