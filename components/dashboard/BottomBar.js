@@ -3,10 +3,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { BOTTOM_NAV, sectionDeChemin } from "./navConfig";
+import styles from "./BottomBar.module.css";
 
 // Icônes de la bottom bar — jeu autonome, pour ne pas dépendre du composant Icon
 // de la sidebar (dont les noms peuvent évoluer indépendamment).
-function IconeBottom({ nom, taille = 21 }) {
+function IconeBottom({ nom, taille = 20 }) {
   const p = { width: taille, height: taille, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" };
   switch (nom) {
     case "home":
@@ -49,51 +50,9 @@ export function BottomBar() {
     return pathname === item.href || pathname.startsWith(item.href + "/");
   };
 
-  const styleItem = (actif) => ({
-    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-    gap: 4, minWidth: 64, padding: "9px 8px 7px", flexShrink: 0,
-    textDecoration: "none", border: "none", background: "none", cursor: "pointer",
-    fontSize: 10.5, fontWeight: 600, lineHeight: 1.1, textAlign: "center",
-    color: actif ? "#f0661b" : "#5c616a",
-    fontFamily: "inherit",
-  });
-
   return (
-    <nav className="adm-bottombar" aria-label="Navigation administration">
-      <style>{`
-        .adm-bottombar {
-          display: none;
-        }
-        .adm-bottombar-scroll {
-          display: flex;
-          align-items: stretch;
-          overflow-x: auto;
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        .adm-bottombar-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; }
-
-        @media (max-width: 1023px) {
-          /* Le backdrop-filter place la barre sur sa propre couche de composition :
-             c'est ce qui l'empêche de disparaître pendant que la barre d'adresse
-             du navigateur mobile se rétracte. */
-          .adm-bottombar {
-            display: block;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid #ece8e0;
-            padding-bottom: env(safe-area-inset-bottom, 0px);
-          }
-        }
-      `}</style>
-
-      <div className="adm-bottombar-scroll">
+    <nav className={styles.bottomBar} aria-label="Navigation administration">
+      <div className={styles.scroll}>
         {items.map((item) => {
           const actif = estActif(item);
 
@@ -103,7 +62,7 @@ export function BottomBar() {
                 key={item.id}
                 type="button"
                 onClick={() => signOut({ callbackUrl: "/" })}
-                style={{ ...styleItem(false), color: "#c4735a" }}
+                className={`${styles.barLink} ${styles.quitter}`}
               >
                 <IconeBottom nom={item.icon} />
                 <span>{item.label}</span>
@@ -113,7 +72,7 @@ export function BottomBar() {
 
           if (item.type === "externe") {
             return (
-              <a key={item.id} href={item.href} target="_blank" rel="noopener noreferrer" style={styleItem(false)}>
+              <a key={item.id} href={item.href} target="_blank" rel="noopener noreferrer" className={styles.barLink}>
                 <IconeBottom nom={item.icon} />
                 <span>{item.label}</span>
               </a>
@@ -121,12 +80,10 @@ export function BottomBar() {
           }
 
           return (
-            <Link key={item.id} href={item.href} style={styleItem(actif)}>
-              <span style={{ position: "relative", display: "grid", placeItems: "center" }}>
+            <Link key={item.id} href={item.href} className={`${styles.barLink} ${actif ? styles.on : ""}`}>
+              <span className={styles.pastille}>
                 <IconeBottom nom={item.icon} />
-                {actif && (
-                  <span style={{ position: "absolute", bottom: -5, width: 16, height: 2.5, borderRadius: 999, background: "#f0661b" }} />
-                )}
+                {actif && <span className={styles.point} />}
               </span>
               <span>{item.label}</span>
             </Link>

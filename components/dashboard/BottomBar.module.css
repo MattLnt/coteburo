@@ -1,0 +1,81 @@
+/* Bottom bar admin — reprend la mécanique de MH Defense :
+   module CSS, position fixed + backdrop-filter, affichée sous 1024px. */
+
+.bottomBar {
+  display: none;
+}
+
+.scroll {
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.barLink {
+  flex: 1 0 auto;
+  min-width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 9px 8px 7px;
+  background: none;
+  border: none;
+  text-decoration: none;
+  color: #5c616a;
+  font-family: inherit;
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.barLink.on {
+  color: #f0661b;
+}
+.barLink.quitter {
+  color: #c4735a;
+}
+
+.pastille {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.point {
+  position: absolute;
+  bottom: -5px;
+  width: 16px;
+  height: 2.5px;
+  border-radius: 999px;
+  background: #f0661b;
+}
+
+@media (max-width: 1023px) {
+  .bottomBar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid #ece8e0;
+    padding: 0 0 env(safe-area-inset-bottom);
+  }
+  .scroll {
+    flex: 1;
+    min-width: 0;
+  }
+}

@@ -1,0 +1,28 @@
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f7f4ef;
+  position: relative;
+}
+
+.colonne {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px 36px 96px;
+}
+
+@media (max-width: 1023px) {
+  .sideWrap {
+    display: none;
+  }
+  .main {
+    padding: 20px 18px 104px;
+  }
+}
