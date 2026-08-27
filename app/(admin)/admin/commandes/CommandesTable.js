@@ -12,6 +12,7 @@ export function CommandesTable({ commandes }) {
   const [q, setQ] = useState("");
   const [statut, setStatut] = useState("");
   const [tri, setTri] = useState("recent");
+  const [filtresOuverts, setFiltresOuverts] = useState(false);
 
   const statutOptions = [
     { value: "", label: "Tous les statuts" },
@@ -23,6 +24,15 @@ export function CommandesTable({ commandes }) {
     { value: "montant-desc", label: "Montant décroissant" },
     { value: "montant-asc", label: "Montant croissant" },
   ];
+
+  // Libellés courts pour les pastilles mobile — les libellés longs des selects
+  // débordent sur un écran de téléphone.
+  const triCourt = {
+    recent: "Récentes",
+    ancien: "Anciennes",
+    "montant-desc": "Montant ↓",
+    "montant-asc": "Montant ↑",
+  };
 
   const filtered = useMemo(() => {
     let list = [...commandes];
@@ -49,8 +59,40 @@ export function CommandesTable({ commandes }) {
 
   const resetFiltres = () => { setQ(""); setStatut(""); setTri("recent"); };
 
+  // Nombre de filtres réellement actifs (le tri par défaut ne compte pas).
+  const nbFiltresActifs = (statut ? 1 : 0) + (tri !== "recent" ? 1 : 0);
+
   const th = { textAlign: "left", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9aa0a8", padding: "16px 18px 13px", whiteSpace: "nowrap" };
   const td = { padding: "15px 18px", fontSize: 13.5, color: "#23262a", borderTop: "1px solid #f2efe9", verticalAlign: "middle" };
+
+  const champRecherche = (
+    <div style={{ position: "relative" }}>
+      <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "#9aa0a8", display: "flex" }}><Icon name="search" size={18} /></span>
+      <input
+        value={q} onChange={(e) => setQ(e.target.value)}
+        placeholder="Rechercher par numéro, nom, email…"
+        style={{ width: "100%", padding: "11px 14px 11px 42px", borderRadius: 10, border: "1.5px solid #e8e3da", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" }}
+      />
+    </div>
+  );
+
+  const pastille = (actif, onClick, label) => (
+    <button
+      key={label}
+      type="button"
+      onClick={onClick}
+      style={{
+        fontSize: 12, padding: "6px 12px", borderRadius: 999, cursor: "pointer",
+        border: "1.5px solid " + (actif ? "#f0661b" : "#ece8e0"),
+        background: actif ? "#fce6d6" : "#faf8f4",
+        color: actif ? "#d9551a" : "#5c616a",
+        fontWeight: actif ? 700 : 500,
+        fontFamily: "inherit", whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+    </button>
+  );
 
   const boutonDetail = (id, plein = false) => (
     <Link
@@ -68,99 +110,147 @@ export function CommandesTable({ commandes }) {
     </Link>
   );
 
-  // Une valeur de la bande centrale des cartes mobile (mini-label + valeur)
-  const infoCarte = (label, valeur, aligne = "left") => (
-    <div style={{ flex: 1, minWidth: 0, textAlign: aligne }}>
+  const infoCarte = (label, valeur) => (
+    <div style={{ flex: 1, minWidth: 0 }}>
       <p style={{ fontSize: 10.5, color: "#9aa0a8", margin: 0 }}>{label}</p>
       <p style={{ fontSize: 12.5, color: "#23262a", margin: "1px 0 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{valeur}</p>
     </div>
   );
 
+  const messageVide = commandes.length === 0
+    ? "Aucune commande pour l'instant."
+    : "Aucune commande ne correspond à ces filtres.";
+
   return (
     <div>
       <style>{`
-        /* En dessous de 1024px : cartes empilées. Au-dessus : tableau classique. */
-        .cmd-cartes { display: flex; flex-direction: column; gap: 10px; }
-        .cmd-tableau { display: none; }
+        /* Sous 1024px : recherche seule + bloc de filtres repliable, liste en cartes.
+           Au-delà : l'affichage d'origine (carte de filtres + tableau). */
+        .cmd-mobile { display: block; }
+        .cmd-desktop { display: none; }
         @media (min-width: 1024px) {
-          .cmd-cartes { display: none; }
-          .cmd-tableau { display: block; }
+          .cmd-mobile { display: none; }
+          .cmd-desktop { display: block; }
         }
       `}</style>
 
-      {/* Filtres */}
-      <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, padding: 16, marginBottom: 16 }}>
-        <div style={{ position: "relative", marginBottom: 12 }}>
-          <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "#9aa0a8", display: "flex" }}><Icon name="search" size={18} /></span>
-          <input
-            value={q} onChange={(e) => setQ(e.target.value)}
-            placeholder="Rechercher par numéro, nom, email…"
-            style={{ width: "100%", padding: "11px 14px 11px 42px", borderRadius: 10, border: "1.5px solid #e8e3da", background: "#faf8f4", fontSize: 14, color: "#23262a", outline: "none", boxSizing: "border-box" }}
-          />
+      {/* ═══ MOBILE ═══ */}
+      <div className="cmd-mobile">
+        <div style={{ marginBottom: 8 }}>{champRecherche}</div>
+
+        <div style={{
+          border: "1px solid " + (filtresOuverts ? "#f0c4a0" : "#ece8e0"),
+          borderRadius: 12, background: "#fff", marginBottom: 12, overflow: "hidden",
+        }}>
+          <button
+            type="button"
+            onClick={() => setFiltresOuverts((v) => !v)}
+            style={{
+              width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "11px 13px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: filtresOuverts ? "#d9551a" : "#5c616a", display: "flex" }}><Icon name="filter" size={17} /></span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#23262a" }}>Filtres</span>
+              {nbFiltresActifs > 0 && (
+                <span style={{ fontSize: 10.5, fontWeight: 700, padding: "2px 8px", borderRadius: 999, background: "#fce6d6", color: "#d9551a" }}>
+                  {nbFiltresActifs}
+                </span>
+              )}
+            </span>
+            <span style={{ color: filtresOuverts ? "#d9551a" : "#9aa0a8", display: "flex", transform: filtresOuverts ? "rotate(180deg)" : "none", transition: "transform .15s" }}>
+              <Icon name="chevron-down" size={16} />
+            </span>
+          </button>
+
+          {filtresOuverts && (
+            <div style={{ padding: "0 13px 14px", borderTop: "1px solid #f2efe9" }}>
+              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: "#9aa0a8", margin: "12px 0 7px" }}>Statut</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+                {statutOptions.map((o) => pastille(statut === o.value, () => setStatut(o.value), o.value === "" ? "Tous" : o.label))}
+              </div>
+
+              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: "#9aa0a8", margin: "0 0 7px" }}>Trier par</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {triOptions.map((o) => pastille(tri === o.value, () => setTri(o.value), triCourt[o.value] || o.label))}
+              </div>
+            </div>
+          )}
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
-          <FormSelect value={statut} onChange={setStatut} options={statutOptions} />
-          <FormSelect value={tri} onChange={setTri} options={triOptions} />
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, padding: "0 4px" }}>
+          <p style={{ fontSize: 12.5, color: "#5c616a", margin: 0 }}>
+            <strong style={{ color: "#23262a" }}>{filtered.length}</strong> commande{filtered.length > 1 ? "s" : ""}
+            {filtered.length !== commandes.length && <span style={{ color: "#9aa0a8" }}> sur {commandes.length}</span>}
+          </p>
+          {(q || statut || tri !== "recent") && (
+            <button onClick={resetFiltres} style={{ fontSize: 12.5, color: "#d9551a", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit" }}>Réinitialiser</button>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {filtered.map((c) => (
+            <div key={c.id} style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 14, padding: "14px 15px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, marginBottom: 10 }}>
+                <div style={{ minWidth: 0 }}>
+                  <p style={{ fontSize: 14.5, fontWeight: 700, color: "#23262a", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {c.prenom} {c.nom}
+                  </p>
+                  <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "2px 0 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {c.email}
+                  </p>
+                </div>
+                <div style={{ flexShrink: 0 }}><StatutCommande statut={c.statut} /></div>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: "1px solid #f2efe9", borderBottom: "1px solid #f2efe9", marginBottom: 10 }}>
+                {infoCarte("Numéro", c.numero)}
+                {infoCarte("Date", dateFR(c.createdAt))}
+                <div style={{ flexShrink: 0, textAlign: "center", minWidth: 48 }}>
+                  <p style={{ fontSize: 10.5, color: "#9aa0a8", margin: 0 }}>Articles</p>
+                  <p style={{ fontSize: 12.5, color: "#23262a", margin: "1px 0 0" }}>{c.lignes.length}</p>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+                <div>
+                  <p style={{ fontSize: 10.5, color: "#9aa0a8", margin: 0 }}>Total TTC</p>
+                  <p style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: "#23262a", margin: "1px 0 0" }}>{euro(c.totalTTC)}</p>
+                </div>
+                {boutonDetail(c.id, true)}
+              </div>
+            </div>
+          ))}
+
+          {filtered.length === 0 && (
+            <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 14, padding: "40px 24px", textAlign: "center" }}>
+              <p style={{ fontSize: 14, color: "#5c616a", margin: 0 }}>{messageVide}</p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Compteur + reset */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, padding: "0 4px" }}>
-        <p style={{ fontSize: 13, color: "#5c616a", margin: 0 }}>
-          <strong style={{ color: "#23262a" }}>{filtered.length}</strong> commande{filtered.length > 1 ? "s" : ""}
-          {filtered.length !== commandes.length && <span style={{ color: "#9aa0a8" }}> sur {commandes.length}</span>}
-        </p>
-        {(q || statut) && (
-          <button onClick={resetFiltres} style={{ fontSize: 13, color: "#d9551a", fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>Réinitialiser</button>
-        )}
-      </div>
-
-      {/* ─── Cartes (mobile / tablette) ─── */}
-      <div className="cmd-cartes">
-        {filtered.map((c) => (
-          <div key={c.id} style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 14, padding: "14px 15px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, marginBottom: 10 }}>
-              <div style={{ minWidth: 0 }}>
-                <p style={{ fontSize: 14.5, fontWeight: 700, color: "#23262a", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {c.prenom} {c.nom}
-                </p>
-                <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "2px 0 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {c.email}
-                </p>
-              </div>
-              <div style={{ flexShrink: 0 }}><StatutCommande statut={c.statut} /></div>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: "1px solid #f2efe9", borderBottom: "1px solid #f2efe9", marginBottom: 10 }}>
-              {infoCarte("Numéro", c.numero)}
-              {infoCarte("Date", dateFR(c.createdAt))}
-              <div style={{ flexShrink: 0, textAlign: "center", minWidth: 50 }}>
-                <p style={{ fontSize: 10.5, color: "#9aa0a8", margin: 0 }}>Articles</p>
-                <p style={{ fontSize: 12.5, color: "#23262a", margin: "1px 0 0" }}>{c.lignes.length}</p>
-              </div>
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-              <div>
-                <p style={{ fontSize: 10.5, color: "#9aa0a8", margin: 0 }}>Total TTC</p>
-                <p style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: "#23262a", margin: "1px 0 0" }}>{euro(c.totalTTC)}</p>
-              </div>
-              {boutonDetail(c.id, true)}
-            </div>
+      {/* ═══ DESKTOP ═══ */}
+      <div className="cmd-desktop">
+        <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, padding: 18, marginBottom: 18 }}>
+          <div style={{ marginBottom: 14 }}>{champRecherche}</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
+            <FormSelect value={statut} onChange={setStatut} options={statutOptions} />
+            <FormSelect value={tri} onChange={setTri} options={triOptions} />
           </div>
-        ))}
+        </div>
 
-        {filtered.length === 0 && (
-          <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 14, padding: "40px 24px", textAlign: "center" }}>
-            <p style={{ fontSize: 14, color: "#5c616a", margin: 0 }}>
-              {commandes.length === 0 ? "Aucune commande pour l'instant." : "Aucune commande ne correspond à ces filtres."}
-            </p>
-          </div>
-        )}
-      </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, padding: "0 4px" }}>
+          <p style={{ fontSize: 13, color: "#5c616a", margin: 0 }}>
+            <strong style={{ color: "#23262a" }}>{filtered.length}</strong> commande{filtered.length > 1 ? "s" : ""}
+            {filtered.length !== commandes.length && <span style={{ color: "#9aa0a8" }}> sur {commandes.length}</span>}
+          </p>
+          {(q || statut) && (
+            <button onClick={resetFiltres} style={{ fontSize: 13, color: "#d9551a", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit" }}>Réinitialiser</button>
+          )}
+        </div>
 
-      {/* ─── Tableau (desktop) ─── */}
-      <div className="cmd-tableau">
         <div style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 16, overflow: "hidden" }}>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 820 }}>
@@ -196,13 +286,11 @@ export function CommandesTable({ commandes }) {
 
           {filtered.length === 0 && (
             <div style={{ padding: "48px 24px", textAlign: "center" }}>
-              <p style={{ fontSize: 14, color: "#5c616a", margin: 0 }}>
-                {commandes.length === 0 ? "Aucune commande pour l'instant." : "Aucune commande ne correspond à ces filtres."}
-              </p>
+              <p style={{ fontSize: 14, color: "#5c616a", margin: 0 }}>{messageVide}</p>
             </div>
           )}
         </div>
       </div>
     </div>
   );
-} 
+}
