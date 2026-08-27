@@ -205,10 +205,11 @@ export function ClientsTable({ clients }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {filtered.map((c) => (
             <div key={c.email} style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 14, padding: "14px 15px" }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 11, marginBottom: 10 }}>
+              {/* Avatar centré verticalement avec le bloc nom/société */}
+              <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 10 }}>
                 <span style={{
                   width: 38, height: 38, borderRadius: "50%", flexShrink: 0,
-                  display: "grid", placeItems: "center", fontWeight: 700, fontSize: 13.5,
+                  display: "grid", placeItems: "center", fontWeight: 700, fontSize: 13.5, lineHeight: 1,
                   background: c.possedeCompte ? "#fce6d6" : "#f0ece4",
                   color: c.possedeCompte ? "#d9551a" : "#5c616a",
                 }}>

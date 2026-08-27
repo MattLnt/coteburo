@@ -29,7 +29,6 @@ export default async function ClientDetailPage({ params }) {
     fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em",
     color: "#9aa0a8", margin: "0 0 10px",
   };
-  const titreCarte = { fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, color: "#23262a", margin: "0 0 14px" };
 
   const badgeCompte = (
     <span style={{
@@ -48,14 +47,14 @@ export default async function ClientDetailPage({ params }) {
       <style>{`
         /* Sous 1024px : tout s'empile, en-tête compact avec avatar, actions sur une ligne.
            Au-delà : deux colonnes (historique + coordonnées) comme avant. */
-        .cd-entete { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+        .cd-entete { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
         .cd-avatar { display: grid; }
         .cd-badge-desktop { display: none; }
         .cd-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
         .cd-colonnes { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: start; }
         .cd-cmd-ligne { display: block; }
         @media (min-width: 1024px) {
-          .cd-entete { align-items: center; justify-content: space-between; margin-bottom: 22px; }
+          .cd-entete { justify-content: space-between; margin-bottom: 22px; }
           .cd-avatar { display: none; }
           .cd-badge-mobile { display: none; }
           .cd-badge-desktop { display: inline-block; }
@@ -70,11 +69,11 @@ export default async function ClientDetailPage({ params }) {
         <Link href="/admin/clients" style={{ color: "#f0661b", textDecoration: "none", fontWeight: 600 }}>← Clients</Link>
       </div>
 
-      {/* En-tête */}
+      {/* En-tête — avatar et bloc texte centrés verticalement l'un par rapport à l'autre */}
       <div className="cd-entete">
         <span className="cd-avatar" style={{
           width: 46, height: 46, borderRadius: "50%", flexShrink: 0, placeItems: "center",
-          fontWeight: 700, fontSize: 15.5,
+          fontWeight: 700, fontSize: 15.5, lineHeight: 1,
           background: client.possedeCompte ? "#fce6d6" : "#f0ece4",
           color: client.possedeCompte ? "#d9551a" : "#5c616a",
         }}>
@@ -88,7 +87,7 @@ export default async function ClientDetailPage({ params }) {
             </h1>
             <span className="cd-badge-desktop">{badgeCompte}</span>
           </div>
-          {client.societe && <p style={{ color: "#5c616a", marginTop: 4, fontSize: 13.5 }}>{client.societe}</p>}
+          {client.societe && <p style={{ color: "#5c616a", margin: "4px 0 0", fontSize: 13.5 }}>{client.societe}</p>}
         </div>
       </div>
 
@@ -151,7 +150,7 @@ export default async function ClientDetailPage({ params }) {
                 <div key={c.id} style={{ background: "#fff", border: "1px solid #ece8e0", borderRadius: 14, padding: "14px 16px" }}>
                   <div className="cd-cmd-ligne">
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
                         <div style={{ minWidth: 0 }}>
                           <p style={{ fontWeight: 700, fontSize: 14, color: "#23262a", margin: 0 }}>{c.numero}</p>
                           <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "2px 0 0" }}>
@@ -195,7 +194,7 @@ export default async function ClientDetailPage({ params }) {
           <p style={titreSection}>Coordonnées</p>
           <div style={card}>
             <div style={{ display: "flex", alignItems: "flex-start", gap: 10, paddingBottom: client.telephone || client.adresse ? 12 : 0 }}>
-              <span style={{ color: "#9aa0a8", display: "flex", flexShrink: 0, marginTop: 1 }}><Icon name="mail" size={15} /></span>
+              <span style={{ color: "#9aa0a8", display: "flex", flexShrink: 0, marginTop: 2 }}><Icon name="mail" size={15} /></span>
               <div style={{ minWidth: 0 }}>
                 <p style={label}>Email</p>
                 <p style={{ fontSize: 13, color: "#23262a", margin: 0, wordBreak: "break-word" }}>{client.email}</p>
@@ -204,7 +203,7 @@ export default async function ClientDetailPage({ params }) {
 
             {client.telephone && (
               <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 0", borderTop: "1px solid #f2efe9" }}>
-                <span style={{ color: "#9aa0a8", display: "flex", flexShrink: 0, marginTop: 1 }}><Icon name="phone" size={15} /></span>
+                <span style={{ color: "#9aa0a8", display: "flex", flexShrink: 0, marginTop: 2 }}><Icon name="phone" size={15} /></span>
                 <div>
                   <p style={label}>Téléphone</p>
                   <p style={{ fontSize: 13, color: "#23262a", margin: 0 }}>{client.telephone}</p>
@@ -214,7 +213,7 @@ export default async function ClientDetailPage({ params }) {
 
             {client.adresse && (
               <div style={{ display: "flex", alignItems: "flex-start", gap: 10, paddingTop: 12, borderTop: "1px solid #f2efe9" }}>
-                <span style={{ color: "#9aa0a8", display: "flex", flexShrink: 0, marginTop: 1 }}><Icon name="map-pin" size={15} /></span>
+                <span style={{ color: "#9aa0a8", display: "flex", flexShrink: 0, marginTop: 2 }}><Icon name="map-pin" size={15} /></span>
                 <div>
                   <p style={label}>Dernière adresse utilisée</p>
                   <p style={{ fontSize: 13, color: "#23262a", margin: 0, lineHeight: 1.5 }}>
