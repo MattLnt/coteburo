@@ -63,13 +63,6 @@ export function BottomBar() {
       <style>{`
         .adm-bottombar {
           display: none;
-          position: fixed;
-          bottom: 0; left: 0; right: 0;
-          z-index: 80;
-          background: #fff;
-          border-top: 1px solid #ece8e0;
-          box-shadow: 0 -6px 24px -12px rgba(33,38,42,0.28);
-          padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         .adm-bottombar-scroll {
           display: flex;
@@ -79,8 +72,24 @@ export function BottomBar() {
           -ms-overflow-style: none;
         }
         .adm-bottombar-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
         @media (max-width: 1023px) {
-          .adm-bottombar { display: block; }
+          /* Le backdrop-filter place la barre sur sa propre couche de composition :
+             c'est ce qui l'empêche de disparaître pendant que la barre d'adresse
+             du navigateur mobile se rétracte. */
+          .adm-bottombar {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid #ece8e0;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+          }
         }
       `}</style>
 
