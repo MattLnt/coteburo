@@ -12,13 +12,21 @@ export default async function MarquesPage() {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-        <span style={{ width: 44, height: 44, borderRadius: 12, background: "#fce6d6", color: "#d9551a", display: "grid", placeItems: "center", flexShrink: 0 }}>
+      <style>{`
+        /* L'icône d'en-tête prend de la place sans rien apporter en mobile. */
+        .mq-icone { display: none; }
+        @media (min-width: 1024px) {
+          .mq-icone { display: grid; }
+        }
+      `}</style>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+        <span className="mq-icone" style={{ width: 44, height: 44, borderRadius: 12, background: "#fce6d6", color: "#d9551a", placeItems: "center", flexShrink: 0 }}>
           <Icon name="layers" size={22} />
         </span>
         <div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: 0, lineHeight: 1.1 }}>Marques</h1>
-          <p style={{ fontSize: 14, color: "#5c616a", margin: "3px 0 0" }}>Gérez vos marques partenaires, leur remise et leur visibilité.</p>
+          <p style={{ fontSize: 13.5, color: "#5c616a", margin: "4px 0 0" }}>Remise et visibilité de vos partenaires.</p>
         </div>
       </div>
 
