@@ -155,13 +155,8 @@ export default async function ProduitsPage() {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
-        <div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: "0 0 4px" }}>Produits</h1>
-          <p style={{ fontSize: 14.5, color: "#5c616a", margin: 0 }}>
-            Vue d'ensemble : chaque déclinaison boutique avec son prix, chaque produit sur devis. {lignes.length} ligne{lignes.length > 1 ? "s" : ""} au total.
-          </p>
-        </div>
+      <div style={{ marginBottom: 18 }}>
+        <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: 0 }}>Produits</h1>
       </div>
 
       <ProduitsTable lignes={JSON.parse(JSON.stringify(lignes))} gammes={JSON.parse(JSON.stringify(gammes))} margeGlobale={margeGlobale} />
