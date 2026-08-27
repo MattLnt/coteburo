@@ -205,4 +205,4 @@ export function CommandesTable({ commandes }) {
       </div>
     </div>
   );
-}
+} 
