@@ -3,12 +3,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { BOTTOM_NAV, sectionDeChemin } from "./navConfig";
-import styles from "./BottomBar.module.css";
 
 // Icônes de la bottom bar — jeu autonome, pour ne pas dépendre du composant Icon
 // de la sidebar (dont les noms peuvent évoluer indépendamment).
 function IconeBottom({ nom, taille = 20 }) {
-  const p = { width: taille, height: taille, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" };
+  const p = { width: taille, height: taille, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round" };
   switch (nom) {
     case "home":
       return <svg {...p}><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /></svg>;
@@ -50,42 +49,76 @@ export function BottomBar() {
     return pathname === item.href || pathname.startsWith(item.href + "/");
   };
 
+  const lien = {
+    display: "flex", flexDirection: "column",
+    alignItems: "center", justifyContent: "center",
+    gap: 3, textDecoration: "none",
+    padding: "6px 12px", flexShrink: 0,
+    position: "relative", minWidth: 60,
+    background: "none", border: "none", cursor: "pointer",
+    fontFamily: "inherit",
+  };
+
+  const libelle = (actif, danger) => ({
+    fontSize: 9.5,
+    fontWeight: actif ? 700 : 500,
+    color: actif ? "#f0661b" : danger ? "#c4735a" : "#9aa0a8",
+    whiteSpace: "nowrap",
+  });
+
   return (
-    <nav className={styles.bottomBar} aria-label="Navigation administration">
-      <div className={styles.scroll}>
+    <nav
+      style={{
+        position: "fixed", bottom: 0, left: 0, right: 0,
+        background: "white", borderTop: "1px solid #ece8e0",
+        zIndex: 50, paddingBottom: "env(safe-area-inset-bottom)",
+        boxShadow: "0 -4px 20px rgba(0,0,0,0.06)",
+      }}
+      aria-label="Navigation administration"
+    >
+      <style>{`
+        .adm-bottomnav-scroll::-webkit-scrollbar { display: none; }
+        .adm-bottomnav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+
+      <div
+        className="adm-bottomnav-scroll"
+        style={{
+          display: "flex", alignItems: "center",
+          overflowX: "auto", overflowY: "hidden",
+          padding: "0 8px", height: 68,
+        }}
+      >
         {items.map((item) => {
           const actif = estActif(item);
 
           if (item.type === "logout") {
             return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className={`${styles.barLink} ${styles.quitter}`}
-              >
-                <IconeBottom nom={item.icon} />
-                <span>{item.label}</span>
+              <button key={item.id} type="button" onClick={() => signOut({ callbackUrl: "/" })} style={lien}>
+                <span style={{ color: "#c4735a" }}><IconeBottom nom={item.icon} /></span>
+                <span style={libelle(false, true)}>{item.label}</span>
               </button>
             );
           }
 
           if (item.type === "externe") {
             return (
-              <a key={item.id} href={item.href} target="_blank" rel="noopener noreferrer" className={styles.barLink}>
-                <IconeBottom nom={item.icon} />
-                <span>{item.label}</span>
+              <a key={item.id} href={item.href} target="_blank" rel="noopener noreferrer" style={lien}>
+                <span style={{ color: "#9aa0a8" }}><IconeBottom nom={item.icon} /></span>
+                <span style={libelle(false, false)}>{item.label}</span>
               </a>
             );
           }
 
           return (
-            <Link key={item.id} href={item.href} className={`${styles.barLink} ${actif ? styles.on : ""}`}>
-              <span className={styles.pastille}>
+            <Link key={item.id} href={item.href} style={lien}>
+              <span style={{ color: actif ? "#f0661b" : "#9aa0a8", transition: "color 0.15s" }}>
                 <IconeBottom nom={item.icon} />
-                {actif && <span className={styles.point} />}
               </span>
-              <span>{item.label}</span>
+              <span style={libelle(actif, false)}>{item.label}</span>
+              {actif && (
+                <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#f0661b", marginTop: -1 }} />
+              )}
             </Link>
           );
         })}
