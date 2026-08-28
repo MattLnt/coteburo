@@ -2,6 +2,7 @@
 import { useState, useMemo, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ModalConfirmation from "@/components/dashboard/ModalConfirmation";
 import { enregistrerDevis, changerStatutDevis, supprimerDevis, chargerCatalogueDevis, envoyerDevisAuClient } from "./actions";
 
 const euro = (v) => `${Number(v || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
@@ -78,6 +79,8 @@ export default function DevisEditForm({ devis }) {
   const [saved, setSaved] = useState(false);
   const [envoi, setEnvoi] = useState(false);
   const [message, setMessage] = useState(null); // { type: "ok" | "err", texte }
+  // Confirmation en modale — remplace les confirm() natifs
+  const [confirmation, setConfirmation] = useState(null); // { titre, message, label, ton, action }
 
   // Panneau d'ajout — catalogue chargé une seule fois, filtré côté navigateur
   const [panneauOuvert, setPanneauOuvert] = useState(false);
@@ -183,17 +186,8 @@ export default function DevisEditForm({ devis }) {
 
   // L'envoi enregistre d'abord : sans ça, le PDF partirait avec les
   // anciennes valeurs si des modifications n'ont pas été sauvegardées.
-  const envoyer = async () => {
-    if (lignes.length === 0) {
-      setMessage({ type: "err", texte: "Ajoutez au moins une ligne avant d'envoyer." });
-      return;
-    }
-    const dejaEnvoye = ["envoye", "accepte", "refuse"].includes(devis.statut);
-    const question = dejaEnvoye
-      ? "Ce devis a déjà été envoyé. Renvoyer une nouvelle version au client ?"
-      : `Envoyer ce devis à ${devis.email} ?`;
-    if (!confirm(question)) return;
-
+  const lancerEnvoi = async () => {
+    setConfirmation(null);
     setEnvoi(true);
     setMessage(null);
     await enregistrerDevis(devis.id, { ...form, lignes });
@@ -204,13 +198,38 @@ export default function DevisEditForm({ devis }) {
     router.refresh();
   };
 
+  const envoyer = () => {
+    if (lignes.length === 0) {
+      setMessage({ type: "err", texte: "Ajoutez au moins une ligne avant d'envoyer." });
+      return;
+    }
+    const dejaEnvoye = ["envoye", "accepte", "refuse"].includes(devis.statut);
+    setConfirmation({
+      titre: dejaEnvoye ? "Renvoyer ce devis ?" : "Envoyer ce devis ?",
+      message: dejaEnvoye
+        ? `Une nouvelle version sera envoyée à ${devis.email}, avec une date de validité remise à zéro.`
+        : `Le devis et son PDF seront envoyés à ${devis.email}.`,
+      label: dejaEnvoye ? "Renvoyer" : "Envoyer",
+      ton: "normal",
+      action: lancerEnvoi,
+    });
+  };
+
   const changerStatut = (statut) => {
     startTransition(async () => { await changerStatutDevis(devis.id, statut); router.refresh(); });
   };
 
   const supprimer = () => {
-    if (!confirm("Supprimer définitivement ce devis ?")) return;
-    startTransition(async () => { await supprimerDevis(devis.id); router.push("/admin/devis"); });
+    setConfirmation({
+      titre: "Supprimer ce devis ?",
+      message: "Cette action est définitive. Le devis et toutes ses lignes seront perdus.",
+      label: "Supprimer",
+      ton: "danger",
+      action: () => {
+        setConfirmation(null);
+        startTransition(async () => { await supprimerDevis(devis.id); router.push("/admin/devis"); });
+      },
+    });
   };
 
   const s = STATUTS[devis.statut] || STATUTS.nouveau;
@@ -743,6 +762,17 @@ export default function DevisEditForm({ devis }) {
           </div>
         </div>
       )}
+
+      <ModalConfirmation
+        ouvert={!!confirmation}
+        titre={confirmation?.titre}
+        message={confirmation?.message}
+        labelConfirmer={confirmation?.label}
+        ton={confirmation?.ton}
+        chargement={envoi}
+        onConfirmer={() => confirmation?.action?.()}
+        onAnnuler={() => setConfirmation(null)}
+      />
     </div>
   );
 }
