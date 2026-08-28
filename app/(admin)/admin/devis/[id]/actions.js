@@ -180,6 +180,7 @@ export async function envoyerDevisAuClient(id) {
   if (!devis) return { error: "Devis introuvable." };
   if (!devis.lignes.length) return { error: "Ajoutez au moins une ligne avant d'envoyer." };
   if (devis.totalTTC == null) return { error: "Enregistrez le devis avant de l'envoyer." };
+  if (!process.env.RESEND_API_KEY) return { error: "Clé Resend absente sur le serveur." };
 
   const reglages = await prisma.reglages.findUnique({ where: { id: 1 } });
   const jours = reglages?.validiteDevisJours ?? 30;
@@ -194,18 +195,27 @@ export async function envoyerDevisAuClient(id) {
     include: { lignes: { orderBy: { ordre: "asc" } } },
   });
 
+  // Deux étapes séparées : un PDF qui échoue et un email qui échoue ne se
+  // corrigent pas de la même façon, autant savoir lequel a lâché.
+  let pdfBase64;
   try {
     const { renderToBuffer } = await import("@react-pdf/renderer");
     const { DevisDocument } = await import("@/lib/DevisDocument");
-    const { envoyerDevisChiffre } = await import("@/lib/emails");
-
     const buffer = await renderToBuffer(DevisDocument({ d: aJour, reglages: reglages || {} }));
-    await envoyerDevisChiffre({ devis: aJour, pdfBase64: buffer.toString("base64") });
+    pdfBase64 = buffer.toString("base64");
   } catch (e) {
-    console.error("Erreur envoi devis:", e.message);
-    // Le statut reste "envoyé" : le devis est bien figé côté base, mais on
-    // signale l'échec pour que l'admin puisse relancer.
-    return { error: "Le devis est enregistré mais l'email n'a pas pu partir. Réessayez." };
+    console.error("Erreur génération PDF devis:", e);
+    return { error: `Génération du PDF impossible : ${e.message}` };
+  }
+
+  try {
+    const { envoyerDevisChiffre } = await import("@/lib/emails");
+    await envoyerDevisChiffre({ devis: aJour, pdfBase64 });
+  } catch (e) {
+    console.error("Erreur envoi email devis:", e);
+    // Le statut reste "envoyé" : le devis est figé côté base, mais on signale
+    // l'échec pour que l'admin puisse relancer.
+    return { error: `Email non envoyé : ${e.message}` };
   }
 
   revalidatePath("/admin/devis");
