@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import CatalogueFilters from "@/components/CatalogueFilters";
 import FavoriButton from "@/components/FavoriButton";
@@ -45,6 +45,27 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
 
   const favSet = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
 
+  // Le composant est réutilisé d'une URL à l'autre (bureaux → sièges) : les
+  // useState ne sont évalués qu'au montage, donc l'état resterait figé sur la
+  // catégorie d'origine. On resynchronise quand les valeurs initiales changent.
+  const cleInitiale = `${valeursInitiales.categorieSlug || ""}|${valeursInitiales.sousCategorieSlug || ""}`;
+  const cleAppliquee = useRef(cleInitiale);
+  useEffect(() => {
+    if (cleAppliquee.current === cleInitiale) return;
+    cleAppliquee.current = cleInitiale;
+    setCategorieSlug(valeursInitiales.categorieSlug || null);
+    setSousCategorieSlug(valeursInitiales.sousCategorieSlug || null);
+    setPrixMin(valeursInitiales.prixMin || null);
+    setPrixMax(valeursInitiales.prixMax || null);
+    setLargeurMin(valeursInitiales.largeurMin || null);
+    setLargeurMax(valeursInitiales.largeurMax || null);
+    setHauteurMin(valeursInitiales.hauteurMin || null);
+    setHauteurMax(valeursInitiales.hauteurMax || null);
+    setProfondeurMin(valeursInitiales.profondeurMin || null);
+    setProfondeurMax(valeursInitiales.profondeurMax || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cleInitiale]);
+
   // Empêche le scroll de la page derrière un panneau ouvert.
   useEffect(() => {
     const ouvert = panneauFiltres || panneauTri;
@@ -68,6 +89,9 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     if (profondeurMax) params.set("profondeurMax", profondeurMax);
     if (tri && tri !== "nom") params.set("tri", tri);
     const qs = params.toString();
+    // Garde la clé de synchro alignée : sans ça, revenir manuellement sur la
+    // catégorie d'origine relancerait l'effet de resynchronisation.
+    cleAppliquee.current = `${categorieSlug || ""}|${sousCategorieSlug || ""}`;
     window.history.replaceState(null, "", `${basePath}${qs ? `?${qs}` : ""}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
