@@ -17,7 +17,6 @@ export default function Hero() {
                 Des bureaux qui donnent envie de travailler.
               </h1>
             </div>
-            {/* Demi-largeur sur mobile : côte à côte, les deux boutons débordaient */}
             <div className="flex gap-2 sm:gap-3 sm:flex-wrap">
               <Link href="/catalogue" className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-full bg-orange text-white font-semibold px-4 sm:px-6 py-3 sm:py-3.5 text-[12.5px] sm:text-base hover:bg-orange-dark transition">
                 <span className="sm:hidden">Catalogue →</span>
@@ -40,7 +39,7 @@ export default function Hero() {
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(33,36,40,0.92) 0%, rgba(33,36,40,0.6) 48%, rgba(33,36,40,0.2) 100%)" }} />
             <div className="absolute inset-0 p-3.5 sm:p-7 flex flex-col justify-end">
               <h2 className="font-display font-bold text-white text-[15px] sm:text-2xl leading-tight">Sièges &amp; fauteuils</h2>
-              <Link href="/catalogue/sieges" className="inline-flex items-center gap-1.5 rounded-full bg-white text-ink font-semibold px-3 sm:px-5 py-1.5 sm:py-2.5 text-[11px] sm:text-sm hover:bg-orange hover:text-white transition mt-2 sm:mt-3 self-start">Découvrir →</Link>
+              <Link href="/catalogue?categorie=sieges" className="inline-flex items-center gap-1.5 rounded-full bg-white text-ink font-semibold px-3 sm:px-5 py-1.5 sm:py-2.5 text-[11px] sm:text-sm hover:bg-orange hover:text-white transition mt-2 sm:mt-3 self-start">Découvrir →</Link>
             </div>
           </div>
 
@@ -50,7 +49,7 @@ export default function Hero() {
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(33,36,40,0.92) 0%, rgba(33,36,40,0.6) 48%, rgba(33,36,40,0.2) 100%)" }} />
             <div className="absolute inset-0 p-3.5 sm:p-7 flex flex-col justify-end">
               <h2 className="font-display font-bold text-white text-[15px] sm:text-2xl leading-tight">Bureaux &amp; rangements</h2>
-              <Link href="/catalogue/bureaux" className="inline-flex items-center gap-1.5 rounded-full bg-white text-ink font-semibold px-3 sm:px-5 py-1.5 sm:py-2.5 text-[11px] sm:text-sm hover:bg-orange hover:text-white transition mt-2 sm:mt-3 self-start">Découvrir →</Link>
+              <Link href="/catalogue?categorie=bureaux" className="inline-flex items-center gap-1.5 rounded-full bg-white text-ink font-semibold px-3 sm:px-5 py-1.5 sm:py-2.5 text-[11px] sm:text-sm hover:bg-orange hover:text-white transition mt-2 sm:mt-3 self-start">Découvrir →</Link>
             </div>
           </div>
 

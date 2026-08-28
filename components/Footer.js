@@ -46,11 +46,11 @@ export default function Footer({ reglages = {} }) {
             ]} />
 
             <FooterCol title="Catalogue" links={[
-              ["Sièges", "/catalogue/sieges"],
-              ["Bureaux", "/catalogue/bureaux"],
-              ["Tables", "/catalogue/tables"],
-              ["Rangements", "/catalogue/rangements"],
-              ["Acoustique", "/catalogue/acoustique"],
+              ["Sièges", "/catalogue?categorie=sieges"],
+              ["Bureaux", "/catalogue?categorie=bureaux"],
+              ["Tables", "/catalogue?categorie=tables"],
+              ["Rangements", "/catalogue?categorie=rangements"],
+              ["Acoustique", "/catalogue?categorie=acoustique"],
             ]} />
           </div>
 
