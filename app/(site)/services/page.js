@@ -20,29 +20,37 @@ export default function ServicesPage() {
 
   return (
     <main>
-      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-14 pb-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Nos services</p>
-        <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mt-3 max-w-3xl">Un accompagnement de A à Z</h1>
-        <p className="text-ink-soft text-lg mt-5 max-w-[580px]">
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-7 sm:pt-14 pb-5 sm:pb-8">
+        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Nos services</p>
+        <h1 className="font-display font-bold text-[29px] sm:text-5xl lg:text-6xl mt-2 sm:mt-3 max-w-3xl leading-tight">Un accompagnement de A à Z</h1>
+        <p className="text-ink-soft text-[13.5px] sm:text-lg mt-3 sm:mt-5 max-w-[580px] leading-relaxed">
           De l&apos;analyse de vos besoins à l&apos;installation finale, nous gérons l&apos;ensemble de votre projet d&apos;aménagement.
         </p>
       </section>
 
-      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Services — en ligne sur mobile : une icône de 48px au-dessus de trois
+          lignes de texte fait des cartes très hautes pour six entrées. */}
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-9 sm:pb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
           {SERVICES.map((s) => (
-            <div key={s.title} className="rounded-2xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(33,36,40,0.08)]">
-              <span className="grid h-12 w-12 place-items-center rounded-xl bg-orange-tint text-orange-dark mb-4">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{s.icon}</svg>
+            <div key={s.title} className="rounded-2xl border border-line bg-surface p-4 sm:p-6 flex sm:block gap-3.5 sm:transition sm:hover:-translate-y-1 sm:hover:shadow-[0_8px_30px_rgba(33,36,40,0.08)]">
+              <span className="grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-xl bg-orange-tint text-orange-dark sm:mb-4 shrink-0">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{s.icon}</svg>
               </span>
-              <h3 className="font-display font-bold text-lg mb-1.5">{s.title}</h3>
-              <p className="text-[14.5px] text-ink-soft">{s.text}</p>
+              <div className="min-w-0">
+                <h3 className="font-display font-bold text-[15.5px] sm:text-lg mb-1 sm:mb-1.5">{s.title}</h3>
+                <p className="text-[12.5px] sm:text-[14.5px] text-ink-soft leading-relaxed">{s.text}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
       <Steps />
+
+      {/* Espace de respiration avant le bandeau CTA */}
+      <div className="h-8 sm:h-14" />
+
       <CtaBand />
     </main>
   );
