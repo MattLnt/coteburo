@@ -84,11 +84,9 @@ export default function CompteShell({ prenom, nom, email, children }) {
     <div style={{ display: "flex", minHeight: "100vh", background: "#f7f4ef" }}>
       <style>{`
         .cpt-sidebar { display: none; }
-        .cpt-topbar { display: flex; }
         .cpt-bottombar { display: flex; }
         @media (min-width: 1024px) {
           .cpt-sidebar { display: block; }
-          .cpt-topbar { display: none; }
           .cpt-bottombar { display: none; }
         }
       `}</style>
@@ -98,22 +96,8 @@ export default function CompteShell({ prenom, nom, email, children }) {
         <SidebarContent />
       </aside>
 
-      {/* Contenu */}
+      {/* Contenu — pas de topbar en mobile, la navigation passe par la bottom bar */}
       <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-        {/* TopBar mobile — logo à gauche, avatar à droite (le burger disparaît,
-            la navigation passe par la bottom bar). */}
-        <div className="cpt-topbar" style={{ alignItems: "center", justifyContent: "space-between", padding: "14px 18px", background: "#212428", position: "sticky", top: 0, zIndex: 40 }}>
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <span style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>CÔTÉ <span style={{ color: "#f0661b" }}>BURO</span></span>
-          </Link>
-          <Link href="/compte/profil" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", minWidth: 0 }}>
-            <span style={{ color: "#cdd1d6", fontSize: 12.5, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 120 }}>
-              {prenom || "Mon compte"}
-            </span>
-            <span style={{ display: "grid", placeItems: "center", width: 32, height: 32, borderRadius: "50%", background: "#f0661b", color: "#fff", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>{initiale}</span>
-          </Link>
-        </div>
-
         <main style={{ flex: 1, padding: "32px 40px 80px", minWidth: 0 }} className="cpt-main">
           <style>{`@media (max-width: 1023px){ .cpt-main { padding: 20px 18px 90px !important; } }`}</style>
           {children}
