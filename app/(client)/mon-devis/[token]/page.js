@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { rafraichirStatutsDevis } from "@/lib/devis";
 import MonDevisClient from "./MonDevisClient";
 
 export const dynamic = "force-dynamic";
@@ -7,6 +8,10 @@ export const metadata = { title: "Votre devis · Côté BURO", robots: { index: 
 
 export default async function MonDevisPage({ params }) {
   const { token } = await params;
+
+  // Même ménage que côté admin : un client qui revient après un abandon de
+  // paiement doit retrouver son devis dans un état cohérent.
+  await rafraichirStatutsDevis();
 
   const devis = await prisma.devis.findUnique({
     where: { token },

@@ -35,6 +35,14 @@ export async function POST(req) {
       include: { lignes: true },
     });
 
+    // Si la commande vient d'un devis, il passe en « accepté » maintenant —
+    // pas au lancement du paiement, sinon un abandon laisserait un devis
+    // accepté sans encaissement.
+    await prisma.devis.updateMany({
+      where: { commandeId: commande.id },
+      data: { statut: "accepte", dateReponse: new Date() },
+    });
+
     // On envoie les emails UNIQUEMENT si la commande n'était pas déjà payée
     if (!avant?.paye) {
       try {

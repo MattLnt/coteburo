@@ -1,19 +1,23 @@
 import { prisma } from "@/lib/prisma";
+import { rafraichirStatutsDevis } from "@/lib/devis";
 import DevisTable from "./DevisTable";
 
 export const dynamic = "force-dynamic";
 
 export default async function DevisAdminPage() {
+  // Expiration et nettoyage des paiements abandonnés avant l'affichage.
+  await rafraichirStatutsDevis();
+
   const devis = await prisma.devis.findMany({
     orderBy: { createdAt: "desc" },
     include: { lignes: { select: { id: true } } },
   });
 
   const nouveaux = devis.filter((d) => d.statut === "nouveau").length;
-  const enCours = devis.filter((d) => ["en_cours", "envoye"].includes(d.statut)).length;
+  const enCours = devis.filter((d) => ["en_cours", "envoye", "paiement_en_cours"].includes(d.statut)).length;
   const acceptes = devis.filter((d) => d.statut === "accepte");
   const caAccepte = acceptes.reduce((s, d) => s + (d.totalTTC || 0), 0);
-  // Taux de transformation sur les devis effectivement envoyés — les demandes
+  // Taux de transformation sur les devis effectivement tranchés — les demandes
   // encore à chiffrer fausseraient le calcul.
   const traites = devis.filter((d) => ["accepte", "refuse", "expire"].includes(d.statut)).length;
   const tauxAccept = traites > 0 ? Math.round((acceptes.length / traites) * 100) : null;

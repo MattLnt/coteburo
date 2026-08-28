@@ -36,7 +36,7 @@ export async function accepterDevis(token, { finitions, client }) {
     include: { lignes: { orderBy: { ordre: "asc" } } },
   });
   if (!devis) return { error: "Devis introuvable." };
-  if (devis.statut === "accepte" && devis.commandeId) {
+  if (devis.statut === "accepte") {
     return { error: "Ce devis a déjà été accepté." };
   }
   if (estExpire(devis)) {
@@ -49,6 +49,13 @@ export async function accepterDevis(token, { finitions, client }) {
   const requis = ["prenom", "nom", "adresse", "codePostal", "ville"];
   for (const k of requis) {
     if (!client?.[k]?.trim()) return { error: "Adresse de livraison incomplète." };
+  }
+
+  // Un paiement précédent a été lancé sans aboutir : on repart de zéro plutôt
+  // que de laisser deux commandes impayées derrière soi.
+  if (devis.commandeId) {
+    await prisma.commande.deleteMany({ where: { id: devis.commandeId, paye: false } });
+    await prisma.devis.update({ where: { id: devis.id }, data: { commandeId: null } });
   }
 
   // Un compte existe-t-il déjà pour cet email ? On rattache la commande sans
@@ -122,9 +129,12 @@ export async function accepterDevis(token, { finitions, client }) {
       data: { stripePaymentId: paymentIntent.id },
     });
 
+    // Statut intermédiaire : le devis n'est « accepté » qu'une fois le
+    // paiement encaissé (voir /api/commande/confirmer). Si le client
+    // abandonne, le ménage automatique le remet en « envoyé ».
     await prisma.devis.update({
       where: { id: devis.id },
-      data: { statut: "accepte", dateReponse: new Date(), commandeId: commande.id },
+      data: { statut: "paiement_en_cours", commandeId: commande.id },
     });
 
     revalidatePath("/admin/devis");

@@ -20,6 +20,7 @@ const STATUTS = {
   nouveau: { label: "Nouveau", bg: "#fce6d6", color: "#d9551a" },
   en_cours: { label: "En chiffrage", bg: "#e6eefc", color: "#2a5db0" },
   envoye: { label: "Envoyé", bg: "#f0ece4", color: "#5c616a" },
+  paiement_en_cours: { label: "Paiement en cours", bg: "#fef4ee", color: "#b45528" },
   accepte: { label: "Accepté", bg: "#e8f6f0", color: "#1f7a52" },
   refuse: { label: "Refusé", bg: "#fbe9e7", color: "#b3392f" },
   expire: { label: "Expiré", bg: "#f2efe9", color: "#9aa0a8" },
@@ -203,7 +204,7 @@ export default function DevisEditForm({ devis }) {
       setMessage({ type: "err", texte: "Ajoutez au moins une ligne avant d'envoyer." });
       return;
     }
-    const dejaEnvoye = ["envoye", "accepte", "refuse"].includes(devis.statut);
+    const dejaEnvoye = ["envoye", "paiement_en_cours", "accepte", "refuse", "expire"].includes(devis.statut);
     setConfirmation({
       titre: dejaEnvoye ? "Renvoyer ce devis ?" : "Envoyer ce devis ?",
       message: dejaEnvoye
@@ -236,7 +237,9 @@ export default function DevisEditForm({ devis }) {
   const infosProjet = [devis.typeProjet, devis.surface, devis.delai, devis.budget].filter(Boolean);
   const telLink = devis.telephone ? `tel:${devis.telephone.replace(/\s/g, "")}` : null;
   const prixAjout = declChoisie ? declChoisie.prixHT : (produitOuvert?.prixUnitaire ?? 0);
-  const dejaEnvoye = ["envoye", "accepte", "refuse"].includes(devis.statut);
+  const dejaEnvoye = ["envoye", "paiement_en_cours", "accepte", "refuse", "expire"].includes(devis.statut);
+  // Modifier un devis déjà accepté fausserait la commande déjà passée.
+  const verrouille = devis.statut === "accepte";
 
   return (
     <div style={{ paddingBottom: 140 }}>
@@ -265,6 +268,18 @@ export default function DevisEditForm({ devis }) {
         {devis.dateEnvoi ? ` · Envoyé le ${dateFR(devis.dateEnvoi)}` : ""}
         {devis.dateValidite ? ` · Valable jusqu'au ${dateFR(devis.dateValidite)}` : ""}
       </p>
+
+      {devis.statut === "paiement_en_cours" && (
+        <p style={{ fontSize: 12, color: "#b45528", background: "#fef4ee", borderRadius: 10, padding: "10px 12px", margin: "0 0 10px", lineHeight: 1.5 }}>
+          Le client a lancé le paiement. Le devis passera en « accepté » dès l&apos;encaissement, ou reviendra en « envoyé » s&apos;il abandonne.
+        </p>
+      )}
+
+      {verrouille && (
+        <p style={{ fontSize: 12, color: "#1f7a52", background: "#e8f6f0", borderRadius: 10, padding: "10px 12px", margin: "0 0 10px", lineHeight: 1.5 }}>
+          Devis accepté et payé — les montants sont figés pour rester cohérents avec la commande.
+        </p>
+      )}
 
       <Section titre="Client & projet" ouvertParDefaut>
         <div style={{ display: "flex", gap: 9, marginTop: 12 }}>
@@ -305,20 +320,20 @@ export default function DevisEditForm({ devis }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 12 }}>
           <div>
             <label style={mini}>Adresse</label>
-            <input style={champ} value={form.adresse} onChange={(e) => set("adresse", e.target.value)} placeholder="N° et nom de rue" />
+            <input style={champ} value={form.adresse} onChange={(e) => set("adresse", e.target.value)} placeholder="N° et nom de rue" disabled={verrouille} />
           </div>
           <div>
             <label style={mini}>Complément</label>
-            <input style={champ} value={form.complement} onChange={(e) => set("complement", e.target.value)} placeholder="Bâtiment, étage…" />
+            <input style={champ} value={form.complement} onChange={(e) => set("complement", e.target.value)} placeholder="Bâtiment, étage…" disabled={verrouille} />
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             <div style={{ width: 110 }}>
               <label style={mini}>Code postal</label>
-              <input style={champ} value={form.codePostal} onChange={(e) => set("codePostal", e.target.value)} inputMode="numeric" />
+              <input style={champ} value={form.codePostal} onChange={(e) => set("codePostal", e.target.value)} inputMode="numeric" disabled={verrouille} />
             </div>
             <div style={{ flex: 1 }}>
               <label style={mini}>Ville</label>
-              <input style={champ} value={form.ville} onChange={(e) => set("ville", e.target.value)} />
+              <input style={champ} value={form.ville} onChange={(e) => set("ville", e.target.value)} disabled={verrouille} />
             </div>
           </div>
         </div>
@@ -363,23 +378,25 @@ export default function DevisEditForm({ devis }) {
                       )}
                     </>
                   ) : (
-                    <input style={{ ...champ, padding: "7px 10px", fontSize: 12 }} value={l.designation} onChange={(e) => setLigne(i, "designation", e.target.value)} placeholder="Désignation (prestation, transport…)" />
+                    <input style={{ ...champ, padding: "7px 10px", fontSize: 12 }} value={l.designation} onChange={(e) => setLigne(i, "designation", e.target.value)} placeholder="Désignation (prestation, transport…)" disabled={verrouille} />
                   )}
                 </div>
-                <button onClick={() => supprimerLigne(i)} title="Retirer"
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#c4735a", flexShrink: 0, padding: 0, display: "flex", alignItems: "flex-start" }}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" /></svg>
-                </button>
+                {!verrouille && (
+                  <button onClick={() => supprimerLigne(i)} title="Retirer"
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "#c4735a", flexShrink: 0, padding: 0, display: "flex", alignItems: "flex-start" }}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" /></svg>
+                  </button>
+                )}
               </div>
 
               <div style={{ display: "flex", gap: 7, alignItems: "flex-end" }}>
                 <div style={{ width: 62 }}>
                   <label style={mini}>Qté</label>
-                  <input style={{ ...champ, padding: "8px 10px" }} value={l.quantite} onChange={(e) => setLigne(i, "quantite", e.target.value)} inputMode="numeric" />
+                  <input style={{ ...champ, padding: "8px 10px" }} value={l.quantite} onChange={(e) => setLigne(i, "quantite", e.target.value)} inputMode="numeric" disabled={verrouille} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <label style={mini}>Prix unitaire HT</label>
-                  <input style={{ ...champ, padding: "8px 10px" }} value={l.prixHT} onChange={(e) => setLigne(i, "prixHT", e.target.value)} inputMode="decimal" />
+                  <input style={{ ...champ, padding: "8px 10px" }} value={l.prixHT} onChange={(e) => setLigne(i, "prixHT", e.target.value)} inputMode="decimal" disabled={verrouille} />
                 </div>
                 <p style={{ fontSize: 13, fontWeight: 700, color: "#23262a", margin: 0, paddingBottom: 9, whiteSpace: "nowrap", minWidth: 78, textAlign: "right" }}>{euro(totalLigne)}</p>
               </div>
@@ -387,16 +404,18 @@ export default function DevisEditForm({ devis }) {
           );
         })}
 
-        <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={ouvrirPanneau} type="button"
-            style={{ flex: 1, padding: 11, borderRadius: 10, border: "none", background: "#23262a", color: "#fff", cursor: "pointer", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit" }}>
-            + Ajouter un produit
-          </button>
-          <button onClick={ajouterLigneLibre} type="button"
-            style={{ padding: "11px 16px", borderRadius: 10, border: "1.5px dashed #e8e3da", background: "#faf8f4", cursor: "pointer", fontSize: 12.5, fontWeight: 600, color: "#5c616a", fontFamily: "inherit", whiteSpace: "nowrap" }}>
-            Ligne libre
-          </button>
-        </div>
+        {!verrouille && (
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={ouvrirPanneau} type="button"
+              style={{ flex: 1, padding: 11, borderRadius: 10, border: "none", background: "#23262a", color: "#fff", cursor: "pointer", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit" }}>
+              + Ajouter un produit
+            </button>
+            <button onClick={ajouterLigneLibre} type="button"
+              style={{ padding: "11px 16px", borderRadius: 10, border: "1.5px dashed #e8e3da", background: "#faf8f4", cursor: "pointer", fontSize: 12.5, fontWeight: 600, color: "#5c616a", fontFamily: "inherit", whiteSpace: "nowrap" }}>
+              Ligne libre
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── Remise & frais ── */}
@@ -407,11 +426,11 @@ export default function DevisEditForm({ devis }) {
           <div style={{ flex: 1, minWidth: 0 }}>
             <label style={mini}>Remise</label>
             <div style={{ display: "flex", gap: 5 }}>
-              <input style={{ ...champ, flex: 1, minWidth: 0 }} value={form.remiseValeur} onChange={(e) => set("remiseValeur", e.target.value)} inputMode="decimal" />
+              <input style={{ ...champ, flex: 1, minWidth: 0 }} value={form.remiseValeur} onChange={(e) => set("remiseValeur", e.target.value)} inputMode="decimal" disabled={verrouille} />
               <div style={{ display: "flex", border: "1.5px solid #e8e3da", borderRadius: 10, overflow: "hidden", flexShrink: 0 }}>
                 {[["pourcentage", "%"], ["montant", "€"]].map(([val, lbl]) => (
-                  <button key={val} type="button" onClick={() => set("remiseType", val)}
-                    style={{ width: 28, background: form.remiseType === val ? "#f0661b" : "#fff", color: form.remiseType === val ? "#fff" : "#9aa0a8", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>
+                  <button key={val} type="button" onClick={() => !verrouille && set("remiseType", val)} disabled={verrouille}
+                    style={{ width: 28, background: form.remiseType === val ? "#f0661b" : "#fff", color: form.remiseType === val ? "#fff" : "#9aa0a8", border: "none", cursor: verrouille ? "default" : "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>
                     {lbl}
                   </button>
                 ))}
@@ -420,11 +439,11 @@ export default function DevisEditForm({ devis }) {
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <label style={mini}>Livraison €</label>
-            <input style={champ} value={form.fraisLivraison} onChange={(e) => set("fraisLivraison", e.target.value)} inputMode="decimal" />
+            <input style={champ} value={form.fraisLivraison} onChange={(e) => set("fraisLivraison", e.target.value)} inputMode="decimal" disabled={verrouille} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <label style={mini}>Installation €</label>
-            <input style={champ} value={form.fraisInstallation} onChange={(e) => set("fraisInstallation", e.target.value)} inputMode="decimal" />
+            <input style={champ} value={form.fraisInstallation} onChange={(e) => set("fraisInstallation", e.target.value)} inputMode="decimal" disabled={verrouille} />
           </div>
         </div>
 
@@ -460,7 +479,7 @@ export default function DevisEditForm({ devis }) {
 
       <Section titre="Mot d'accompagnement" sousTitre="Visible par le client sur son devis">
         <textarea style={{ ...champ, minHeight: 90, resize: "vertical", lineHeight: 1.6, marginTop: 12 }}
-          value={form.noteClient} onChange={(e) => set("noteClient", e.target.value)}
+          value={form.noteClient} onChange={(e) => set("noteClient", e.target.value)} disabled={verrouille}
           placeholder="Bonjour, suite à notre échange, voici notre proposition pour l'aménagement de vos bureaux…" />
       </Section>
 
@@ -500,6 +519,13 @@ export default function DevisEditForm({ devis }) {
               Page du client
             </a>
           )}
+          {devis.commandeId && (
+            <Link href={`/admin/commandes`}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600, color: "#23262a", textDecoration: "none", padding: "8px 14px", borderRadius: 999, border: "1px solid #ece8e0" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>
+              Voir la commande
+            </Link>
+          )}
         </div>
 
         <button onClick={supprimer} disabled={isPending}
@@ -534,16 +560,16 @@ export default function DevisEditForm({ devis }) {
             {saved && <span style={{ fontSize: 11, color: "#1f7a52", fontWeight: 600 }}>✓ Enregistré</span>}
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={enregistrer} disabled={saving || envoi}
-              style={{ padding: "12px 18px", borderRadius: 999, border: "1px solid #ece8e0", background: "#fff", fontSize: 13, fontWeight: 600, color: "#23262a", cursor: "pointer", fontFamily: "inherit", flexShrink: 0, opacity: saving || envoi ? 0.6 : 1 }}>
+            <button onClick={enregistrer} disabled={saving || envoi || verrouille}
+              style={{ padding: "12px 18px", borderRadius: 999, border: "1px solid #ece8e0", background: "#fff", fontSize: 13, fontWeight: 600, color: "#23262a", cursor: verrouille ? "not-allowed" : "pointer", fontFamily: "inherit", flexShrink: 0, opacity: saving || envoi || verrouille ? 0.5 : 1 }}>
               {saving ? "…" : "Enregistrer"}
             </button>
-            <button onClick={envoyer} disabled={envoi || saving || lignes.length === 0}
+            <button onClick={envoyer} disabled={envoi || saving || lignes.length === 0 || verrouille}
               style={{
                 flex: 1, padding: 12, borderRadius: 999, background: "#f0661b", color: "#fff", border: "none",
                 fontSize: 13, fontWeight: 700, fontFamily: "inherit",
-                cursor: envoi || lignes.length === 0 ? "not-allowed" : "pointer",
-                opacity: envoi || lignes.length === 0 ? 0.5 : 1,
+                cursor: envoi || lignes.length === 0 || verrouille ? "not-allowed" : "pointer",
+                opacity: envoi || lignes.length === 0 || verrouille ? 0.5 : 1,
               }}>
               {envoi ? "Envoi en cours…" : dejaEnvoye ? "Renvoyer au client" : "Envoyer au client"}
             </button>
