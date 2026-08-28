@@ -10,6 +10,7 @@ export const ADMIN_NAV = [
     items: [
       { href: "/admin/ventes", label: "Vue d'ensemble", short: "Ventes", icon: "home" },
       { href: "/admin/commandes", label: "Commandes", short: "Commandes", icon: "box" },
+      { href: "/admin/devis", label: "Devis", short: "Devis", icon: "edit" },
       { href: "/admin/clients", label: "Clients", short: "Clients", icon: "eye" },
     ],
   },
@@ -63,6 +64,7 @@ export const BOTTOM_NAV = {
     VUE_ENSEMBLE,
     { id: "ventes", label: "Ventes", icon: "cart", href: "/admin/ventes" },
     { id: "commandes", label: "Commandes", icon: "box", href: "/admin/commandes" },
+    { id: "devis", label: "Devis", icon: "edit", href: "/admin/devis" },
     { id: "clients", label: "Clients", icon: "eye", href: "/admin/clients" },
     DECONNEXION,
   ],
@@ -93,6 +95,7 @@ export const BOTTOM_NAV = {
 const PREFIXES_SECTION = [
   ["/admin/ventes", "ventes"],
   ["/admin/commandes", "ventes"],
+  ["/admin/devis", "ventes"],
   ["/admin/clients", "ventes"],
   ["/admin/produits", "catalogue"],
   ["/admin/architecture", "catalogue"],
