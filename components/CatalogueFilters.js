@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-export default function CatalogueFilters({ filtres, valeurs, onFiltresChange }) {
+export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, variante = "aside" }) {
   const [prixMin, setPrixMin] = useState(valeurs.prixMin ?? "");
   const [prixMax, setPrixMax] = useState(valeurs.prixMax ?? "");
 
@@ -17,6 +17,20 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange }) 
   const premierRendu = useRef(true);
   const debounceDim = useRef(null);
   const premierRenduDim = useRef(true);
+
+  // Les champs sont pilotés localement, mais un « Effacer » venu du parent
+  // (barre de pastilles, bouton « Voir tout ») doit les vider aussi.
+  useEffect(() => {
+    if (valeurs.prixMin == null && prixMin !== "") setPrixMin("");
+    if (valeurs.prixMax == null && prixMax !== "") setPrixMax("");
+    if (valeurs.largeurMin == null && largeurMin !== "") setLargeurMin("");
+    if (valeurs.largeurMax == null && largeurMax !== "") setLargeurMax("");
+    if (valeurs.hauteurMin == null && hauteurMin !== "") setHauteurMin("");
+    if (valeurs.hauteurMax == null && hauteurMax !== "") setHauteurMax("");
+    if (valeurs.profondeurMin == null && profondeurMin !== "") setProfondeurMin("");
+    if (valeurs.profondeurMax == null && profondeurMax !== "") setProfondeurMax("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valeurs.prixMin, valeurs.prixMax, valeurs.largeurMin, valeurs.largeurMax, valeurs.hauteurMin, valeurs.hauteurMax, valeurs.profondeurMin, valeurs.profondeurMax]);
 
   const toggleCategorie = (slug) => {
     if (valeurs.categorieSlug === slug) onFiltresChange({ categorieSlug: null, sousCategorieSlug: null });
@@ -81,6 +95,86 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange }) 
     ["Profondeur", dim.profondeur, profondeurMin, setProfondeurMin, profondeurMax, setProfondeurMax],
   ];
 
+  const enPanneau = variante === "panneau";
+  const categorieActive = filtres.categories.find((c) => c.slug === valeurs.categorieSlug);
+
+  // ─────────── Version panneau (mobile) : pastilles au lieu de cases ───────────
+  if (enPanneau) {
+    const pastille = (label, actif, onClick, petit) => (
+      <button key={label} type="button" onClick={onClick}
+        className={`rounded-full transition whitespace-nowrap ${petit ? "text-[11.5px] px-[11px] py-1.5" : "text-[12px] px-[13px] py-[7px]"} ${
+          actif
+            ? "border-[1.5px] border-orange bg-orange-tint text-orange-dark font-semibold"
+            : "border border-line bg-surface-2 text-ink-soft"
+        }`}>
+        {label}
+      </button>
+    );
+
+    const champ = (v, s, ph) => (
+      <input type="number" inputMode="decimal" value={v} onChange={(e) => s(e.target.value)} placeholder={ph}
+        className="w-full min-w-0 rounded-[10px] border border-line bg-surface px-3 py-2.5 text-[12.5px] outline-none focus:border-orange" />
+    );
+
+    return (
+      <div className="flex flex-col gap-5">
+        <div>
+          <p className="font-display font-bold text-[13.5px] text-ink mb-2.5">Catégorie</p>
+          <div className="flex flex-wrap gap-1.5">
+            {filtres.categories.map((cat) => pastille(cat.nom, valeurs.categorieSlug === cat.slug, () => toggleCategorie(cat.slug)))}
+          </div>
+
+          {categorieActive?.sousCategories?.length > 0 && (
+            <div className="pl-3 border-l-2 border-orange-tint mt-3">
+              <p className="text-[11px] text-ink-soft mb-2">Sous-catégorie</p>
+              <div className="flex flex-wrap gap-1.5">
+                {categorieActive.sousCategories.map((s) =>
+                  pastille(s.nom, valeurs.sousCategorieSlug === s.slug, () => toggleSousCategorie(categorieActive.slug, s.slug), true)
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {filtres.marques.length > 1 && (
+          <div>
+            <p className="font-display font-bold text-[13.5px] text-ink mb-2.5">Marque</p>
+            <div className="flex flex-wrap gap-1.5">
+              {filtres.marques.map((m) => pastille(m.nom, valeurs.marqueSlug === m.slug, () => toggleMarque(m.slug)))}
+            </div>
+          </div>
+        )}
+
+        <div>
+          <p className="font-display font-bold text-[13.5px] text-ink mb-2.5">Prix (€ HT)</p>
+          <div className="flex items-center gap-2">
+            {champ(prixMin, setPrixMin, "Min")}
+            <span className="text-ink-soft text-[13px] shrink-0">—</span>
+            {champ(prixMax, setPrixMax, "Max")}
+          </div>
+        </div>
+
+        {aDimensions && (
+          <div>
+            <p className="font-display font-bold text-[13.5px] text-ink mb-2.5">Dimensions (cm)</p>
+            <div className="flex flex-col gap-2.5">
+              {lignesDim.map(([label, bornes, vMin, sMin, vMax, sMax]) => (
+                bornes?.max != null && (
+                  <div key={label} className="flex items-center gap-2">
+                    <span className="text-[12px] text-ink-soft w-[62px] shrink-0">{label}</span>
+                    {champ(vMin, sMin, "Min")}
+                    {champ(vMax, sMax, "Max")}
+                  </div>
+                )
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ─────────── Version colonne (desktop) ───────────
   return (
     <aside className="hidden lg:block rounded-[24px] border border-line bg-surface px-5 pb-4">
       {/* Catégories */}

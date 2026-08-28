@@ -21,6 +21,8 @@ function dansPlage(cMin, cMax, selMin, selMax) {
   return true;
 }
 
+const LIBELLES_TRI = { nom: "Nom (A–Z)", "prix-asc": "Prix croissant", "prix-desc": "Prix décroissant" };
+
 export default function CatalogueClient({ cartes, filtres, favorisVitrines, connecte, valeursInitiales, basePath = "/catalogue" }) {
   const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);
   const [sousCategorieSlug, setSousCategorieSlug] = useState(valeursInitiales.sousCategorieSlug || null);
@@ -38,7 +40,18 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
 
   const [tri, setTri] = useState(valeursInitiales.tri || "nom");
 
+  // Panneaux mobile
+  const [panneauFiltres, setPanneauFiltres] = useState(false);
+  const [panneauTri, setPanneauTri] = useState(false);
+
   const favSet = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
+
+  // Empêche le scroll de la page derrière un panneau ouvert.
+  useEffect(() => {
+    const ouvert = panneauFiltres || panneauTri;
+    document.body.style.overflow = ouvert ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [panneauFiltres, panneauTri]);
 
   // Met à jour l'adresse dans le navigateur SANS passer par le routeur Next.js —
   // ça garde l'URL partageable, sans jamais redemander la page au serveur.
@@ -127,16 +140,59 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     largeurMin: null, largeurMax: null, hauteurMin: null, hauteurMax: null, profondeurMin: null, profondeurMax: null,
   });
 
+  const valeursFiltres = { categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax };
+
+  // Pastilles des filtres actifs, retirables d'un tap.
+  const marqueActive = filtres.marques.find((m) => m.slug === marqueSlug);
+  const pastillesActives = [];
+  if (categorieActive) pastillesActives.push({ cle: "cat", label: categorieActive.nom, retirer: () => handleFiltresChange({ categorieSlug: null, sousCategorieSlug: null }) });
+  if (sousCategorieActive) pastillesActives.push({ cle: "sscat", label: sousCategorieActive.nom, retirer: () => handleFiltresChange({ sousCategorieSlug: null }) });
+  if (marqueActive) pastillesActives.push({ cle: "marque", label: marqueActive.nom, retirer: () => handleFiltresChange({ marqueSlug: null }) });
+  if (prixMin || prixMax) pastillesActives.push({ cle: "prix", label: `${prixMin || "…"} – ${prixMax || "…"} €`, retirer: () => handleFiltresChange({ prixMin: null, prixMax: null }) });
+  if (largeurMin || largeurMax) pastillesActives.push({ cle: "larg", label: `Larg. ${largeurMin || "…"}–${largeurMax || "…"}`, retirer: () => handleFiltresChange({ largeurMin: null, largeurMax: null }) });
+  if (hauteurMin || hauteurMax) pastillesActives.push({ cle: "haut", label: `Haut. ${hauteurMin || "…"}–${hauteurMax || "…"}`, retirer: () => handleFiltresChange({ hauteurMin: null, hauteurMax: null }) });
+  if (profondeurMin || profondeurMax) pastillesActives.push({ cle: "prof", label: `Prof. ${profondeurMin || "…"}–${profondeurMax || "…"}`, retirer: () => handleFiltresChange({ profondeurMin: null, profondeurMax: null }) });
+
+  const carteProduit = (c) => (
+    <div key={c.id} className="group relative rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
+      <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20">
+        <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" />
+      </div>
+      <Link href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
+        <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
+          {c.imageUrl ? (
+            <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-[1.03] transition" />
+          ) : (
+            <div className="w-full h-full grid place-items-center text-charcoal/15">
+              <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
+            </div>
+          )}
+        </div>
+        <div className="p-3 sm:p-4">
+          <p className="text-[9.5px] sm:text-[11px] font-semibold uppercase tracking-wide text-orange truncate">{c.gammeNom}</p>
+          <p className="font-semibold text-ink text-[12.5px] sm:text-[15px] leading-snug mt-1 group-hover:text-orange-dark transition line-clamp-2">{c.nom}</p>
+          {c.prixMini != null ? (
+            <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">dès <span className="font-display font-bold text-ink text-[13px] sm:text-[15px]">{fmt(c.prixMini)}</span> HT</p>
+          ) : (
+            <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">Sur devis</p>
+          )}
+        </div>
+      </Link>
+    </div>
+  );
+
   return (
     <>
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-2 pb-8">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-2 pb-5 sm:pb-8">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Catalogue</p>
-            <h1 className="font-display font-bold text-4xl sm:text-5xl mt-3">{titre}</h1>
-            <p className="text-ink-soft mt-3">{filtered.length} produit{filtered.length > 1 ? "s" : ""}</p>
+            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Catalogue</p>
+            <h1 className="font-display font-bold text-[27px] sm:text-5xl mt-1.5 sm:mt-3">{titre}</h1>
+            <p className="text-ink-soft mt-1.5 sm:mt-3 text-[13px] sm:text-base">{filtered.length} produit{filtered.length > 1 ? "s" : ""}</p>
           </div>
-          <div className="flex items-center gap-3 flex-wrap">
+          {/* Le select de tri débordait de la ligne du titre sur mobile :
+              il passe dans la barre Filtrer / Trier ci-dessous. */}
+          <div className="hidden lg:flex items-center gap-3 flex-wrap">
             <label className="inline-flex items-center gap-2 text-sm text-ink-soft">
               Trier&nbsp;:
               <select
@@ -157,53 +213,121 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
             )}
           </div>
         </div>
+
+        {/* ── Barre Filtrer / Trier (mobile) ── */}
+        <div className="lg:hidden mt-4">
+          <div className="flex gap-2">
+            <button onClick={() => setPanneauFiltres(true)}
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white py-2.5 text-[12.5px] font-semibold">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
+              Filtrer
+              {pastillesActives.length > 0 && (
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-orange">{pastillesActives.length}</span>
+              )}
+            </button>
+            <button onClick={() => setPanneauTri(true)}
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white py-2.5 text-[12.5px] font-semibold text-ink">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"><path d="M3 8h13M3 16h9" /><path d="m17 12 4 4 4-4" transform="translate(-4,0)" /></svg>
+              Trier
+            </button>
+          </div>
+
+          {pastillesActives.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {pastillesActives.map((p) => (
+                <button key={p.cle} onClick={p.retirer}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-orange-tint text-orange-dark text-[11.5px] font-semibold px-3 py-1.5">
+                  {p.label}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                </button>
+              ))}
+              <button onClick={reinitialiserTout} className="text-[11.5px] font-semibold text-ink-soft px-2 py-1.5">Tout effacer</button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-20 grid lg:grid-cols-[280px_1fr] gap-8 items-start">
         <CatalogueFilters
           filtres={filtres}
-          valeurs={{ categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax }}
+          valeurs={valeursFiltres}
           onFiltresChange={handleFiltresChange}
         />
 
         <div>
           {filtered.length === 0 ? (
-            <div className="rounded-3xl border border-line bg-surface p-16 text-center text-ink-soft">
+            <div className="rounded-3xl border border-line bg-surface p-10 sm:p-16 text-center text-ink-soft text-[13.5px] sm:text-base">
               Aucun produit ne correspond à ces filtres.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
-              {filtered.map((c) => (
-                <div key={c.id} className="group relative rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
-                  <div className="absolute top-3 right-3 z-20">
-                    <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" />
-                  </div>
-                  <Link href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
-                    <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
-                      {c.imageUrl ? (
-                        <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-4 group-hover:scale-[1.03] transition" />
-                      ) : (
-                        <div className="w-full h-full grid place-items-center text-charcoal/15">
-                          <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-wide text-orange">{c.gammeNom}</p>
-                      <p className="font-semibold text-ink text-[15px] leading-snug mt-1 group-hover:text-orange-dark transition line-clamp-2">{c.nom}</p>
-                      {c.prixMini != null ? (
-                        <p className="text-[13px] text-ink-soft mt-1.5">à partir de <span className="font-display font-bold text-ink">{fmt(c.prixMini)}</span> HT</p>
-                      ) : (
-                        <p className="text-[13px] text-ink-soft mt-1.5">Sur devis</p>
-                      )}
-                    </div>
-                  </Link>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
+              {filtered.map(carteProduit)}
             </div>
           )}
         </div>
       </div>
+
+      {/* ══ Panneau Filtres (mobile) ══ */}
+      {panneauFiltres && (
+        <div className="lg:hidden fixed inset-0 z-[90] flex flex-col">
+          <div onClick={() => setPanneauFiltres(false)} className="absolute inset-0 bg-charcoal/50" />
+          <div className="relative mt-auto flex flex-col bg-white rounded-t-[22px] max-h-[88dvh]">
+            <div className="flex items-center justify-between px-4 py-3.5 border-b border-line shrink-0">
+              <p className="font-display font-bold text-[16px]">Filtrer</p>
+              <button onClick={() => setPanneauFiltres(false)} className="grid place-items-center w-8 h-8 text-ink-soft">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              <CatalogueFilters
+                filtres={filtres}
+                valeurs={valeursFiltres}
+                onFiltresChange={handleFiltresChange}
+                variante="panneau"
+              />
+            </div>
+
+            <div className="flex gap-2 px-4 py-3 border-t border-line shrink-0" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}>
+              {aDesFiltres && (
+                <button onClick={reinitialiserTout} className="rounded-full border border-line px-5 py-3 text-[13px] font-semibold text-ink-soft shrink-0">
+                  Effacer
+                </button>
+              )}
+              <button onClick={() => setPanneauFiltres(false)} className="flex-1 rounded-full bg-orange text-white py-3 text-[13px] font-semibold">
+                Voir {filtered.length} produit{filtered.length > 1 ? "s" : ""}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══ Panneau Tri (mobile) ══ */}
+      {panneauTri && (
+        <div className="lg:hidden fixed inset-0 z-[90] flex flex-col">
+          <div onClick={() => setPanneauTri(false)} className="absolute inset-0 bg-charcoal/50" />
+          <div className="relative mt-auto bg-white rounded-t-[22px]" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+            <div className="flex items-center justify-between px-4 py-3.5 border-b border-line">
+              <p className="font-display font-bold text-[16px]">Trier par</p>
+              <button onClick={() => setPanneauTri(false)} className="grid place-items-center w-8 h-8 text-ink-soft">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <div className="p-2">
+              {Object.entries(LIBELLES_TRI).map(([val, label]) => {
+                const actif = tri === val;
+                return (
+                  <button key={val} onClick={() => { setTri(val); setPanneauTri(false); }}
+                    className={`w-full flex items-center justify-between px-3.5 py-3.5 rounded-xl text-[14px] ${actif ? "bg-orange-tint text-orange-dark font-semibold" : "text-ink"}`}>
+                    {label}
+                    {actif && <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M20 6 9 17l-5-5" /></svg>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
