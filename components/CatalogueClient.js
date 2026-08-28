@@ -26,7 +26,6 @@ const LIBELLES_TRI = { nom: "Nom (A–Z)", "prix-asc": "Prix croissant", "prix-d
 export default function CatalogueClient({ cartes, filtres, favorisVitrines, connecte, valeursInitiales, basePath = "/catalogue" }) {
   const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);
   const [sousCategorieSlug, setSousCategorieSlug] = useState(valeursInitiales.sousCategorieSlug || null);
-  const [marqueSlug, setMarqueSlug] = useState(valeursInitiales.marqueSlug || null);
   const [prixMin, setPrixMin] = useState(valeursInitiales.prixMin || null);
   const [prixMax, setPrixMax] = useState(valeursInitiales.prixMax || null);
 
@@ -59,7 +58,6 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     const params = new URLSearchParams();
     if (categorieSlug) params.set("categorie", categorieSlug);
     if (sousCategorieSlug) params.set("sousCategorie", sousCategorieSlug);
-    if (marqueSlug) params.set("marque", marqueSlug);
     if (prixMin) params.set("prixMin", prixMin);
     if (prixMax) params.set("prixMax", prixMax);
     if (largeurMin) params.set("largeurMin", largeurMin);
@@ -72,12 +70,11 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     const qs = params.toString();
     window.history.replaceState(null, "", `${basePath}${qs ? `?${qs}` : ""}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
+  }, [categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
 
   const handleFiltresChange = (updates) => {
     if ("categorieSlug" in updates) setCategorieSlug(updates.categorieSlug);
     if ("sousCategorieSlug" in updates) setSousCategorieSlug(updates.sousCategorieSlug);
-    if ("marqueSlug" in updates) setMarqueSlug(updates.marqueSlug);
     if ("prixMin" in updates) setPrixMin(updates.prixMin);
     if ("prixMax" in updates) setPrixMax(updates.prixMax);
     if ("largeurMin" in updates) setLargeurMin(updates.largeurMin);
@@ -92,7 +89,6 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     let list = cartes;
     if (categorieSlug) list = list.filter((c) => c.categorieSlug === categorieSlug);
     if (sousCategorieSlug) list = list.filter((c) => c.sousCategorieSlug === sousCategorieSlug);
-    if (marqueSlug) list = list.filter((c) => c.marqueSlug === marqueSlug);
 
     const min = num(prixMin);
     const max = num(prixMax);
@@ -128,26 +124,24 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
       arr.sort(parNom);
     }
     return arr;
-  }, [cartes, categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
+  }, [cartes, categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
 
   const categorieActive = filtres.categories.find((c) => c.slug === categorieSlug);
   const sousCategorieActive = categorieActive?.sousCategories.find((s) => s.slug === sousCategorieSlug);
   const titre = sousCategorieActive?.nom || categorieActive?.nom || "Tout le catalogue";
-  const aDesFiltres = !!(categorieSlug || sousCategorieSlug || marqueSlug || prixMin || prixMax || largeurMin || largeurMax || hauteurMin || hauteurMax || profondeurMin || profondeurMax);
+  const aDesFiltres = !!(categorieSlug || sousCategorieSlug || prixMin || prixMax || largeurMin || largeurMax || hauteurMin || hauteurMax || profondeurMin || profondeurMax);
 
   const reinitialiserTout = () => handleFiltresChange({
-    categorieSlug: null, sousCategorieSlug: null, marqueSlug: null, prixMin: null, prixMax: null,
+    categorieSlug: null, sousCategorieSlug: null, prixMin: null, prixMax: null,
     largeurMin: null, largeurMax: null, hauteurMin: null, hauteurMax: null, profondeurMin: null, profondeurMax: null,
   });
 
-  const valeursFiltres = { categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax };
+  const valeursFiltres = { categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax };
 
   // Pastilles des filtres actifs, retirables d'un tap.
-  const marqueActive = filtres.marques.find((m) => m.slug === marqueSlug);
   const pastillesActives = [];
   if (categorieActive) pastillesActives.push({ cle: "cat", label: categorieActive.nom, retirer: () => handleFiltresChange({ categorieSlug: null, sousCategorieSlug: null }) });
   if (sousCategorieActive) pastillesActives.push({ cle: "sscat", label: sousCategorieActive.nom, retirer: () => handleFiltresChange({ sousCategorieSlug: null }) });
-  if (marqueActive) pastillesActives.push({ cle: "marque", label: marqueActive.nom, retirer: () => handleFiltresChange({ marqueSlug: null }) });
   if (prixMin || prixMax) pastillesActives.push({ cle: "prix", label: `${prixMin || "…"} – ${prixMax || "…"} €`, retirer: () => handleFiltresChange({ prixMin: null, prixMax: null }) });
   if (largeurMin || largeurMax) pastillesActives.push({ cle: "larg", label: `Larg. ${largeurMin || "…"}–${largeurMax || "…"}`, retirer: () => handleFiltresChange({ largeurMin: null, largeurMax: null }) });
   if (hauteurMin || hauteurMax) pastillesActives.push({ cle: "haut", label: `Haut. ${hauteurMin || "…"}–${hauteurMax || "…"}`, retirer: () => handleFiltresChange({ hauteurMin: null, hauteurMax: null }) });
