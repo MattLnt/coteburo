@@ -170,6 +170,7 @@ model Reglages {
   margeGlobale           Float    @default(0.30)
   seuilLivraisonGratuite Float    @default(500)
   fraisLivraison         Float    @default(59)
+  validiteDevisJours     Int      @default(30)
 }
 
 model PalierInstallation {
@@ -287,6 +288,7 @@ model Commande {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   lignes            LigneCommande[]
+  devis             Devis?
 
   @@index([email])
   @@index([statut])
@@ -306,6 +308,92 @@ model LigneCommande {
   commande             Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
 
   @@index([commandeId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Devis — cycle complet : demande client → chiffrage admin →
+// envoi → acceptation → paiement (devient une Commande).
+//
+// statut : nouveau | en_cours | envoye | accepte | refuse | expire
+// ─────────────────────────────────────────────────────────────
+model Devis {
+  id        String   @id @default(cuid())
+  numero    String   @unique
+  statut    String   @default("nouveau")
+  // Jeton du lien unique envoyé au client (accès sans compte)
+  token     String   @unique
+
+  // Coordonnées saisies dans le formulaire
+  prenom    String
+  nom       String
+  societe   String?
+  email     String
+  telephone String?
+
+  // Description du projet
+  typeProjet String?
+  surface    String?
+  delai      String?
+  budget     String?
+  message    String?
+
+  // Adresse de livraison — renseignée au chiffrage, pas au formulaire
+  adresse    String?
+  complement String?
+  codePostal String?
+  ville      String?
+  pays       String  @default("France")
+
+  // Montants — calculés au chiffrage, nuls tant que le devis n'est pas chiffré
+  totalHT           Float?
+  totalTVA          Float?
+  totalTTC          Float?
+  fraisLivraison    Float   @default(0)
+  fraisInstallation Float   @default(0)
+  remisePct         Float   @default(0)
+
+  // Mot d'accompagnement affiché sur le devis envoyé au client
+  noteClient String?
+  // Note interne, jamais visible par le client
+  noteInterne String?
+
+  // Suivi
+  dateEnvoi     DateTime?
+  dateValidite  DateTime?
+  dateReponse   DateTime?
+  userId        String?
+
+  // Commande générée à l'acceptation
+  commandeId String?   @unique
+  commande   Commande? @relation(fields: [commandeId], references: [id])
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  lignes    LigneDevis[]
+
+  @@index([email])
+  @@index([statut])
+  @@index([token])
+}
+
+model LigneDevis {
+  id          String  @id @default(cuid())
+  devisId     String
+  // Référence au catalogue si la ligne vient d'un produit ; nulle pour une
+  // ligne libre ajoutée à la main (prestation, transport, remise…)
+  codeRacine  String?
+  vitrineId   String?
+  designation String
+  marque      String?
+  gammeNom    String?
+  config      String?
+  imageUrl    String?
+  prixHT      Float   @default(0)
+  quantite    Int     @default(1)
+  ordre       Int     @default(0)
+  devis       Devis   @relation(fields: [devisId], references: [id], onDelete: Cascade)
+
+  @@index([devisId])
 }
 
 model Favori {
