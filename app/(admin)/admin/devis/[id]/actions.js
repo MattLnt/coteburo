@@ -9,9 +9,10 @@ const nb = (v) => {
 };
 
 // Calcule les totaux à partir des lignes et des frais.
-// Source unique de vérité : l'admin affiche le même calcul côté client, mais
-// c'est celui-ci qui est enregistré.
-export function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, fraisInstallation }) {
+// Non exportée : dans un fichier "use server", tout export doit être une
+// fonction asynchrone. L'admin refait le même calcul côté client pour
+// l'affichage en direct ; c'est celui-ci qui est enregistré.
+function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, fraisInstallation }) {
   const sousTotal = (lignes || []).reduce((s, l) => s + nb(l.prixHT) * (parseInt(l.quantite, 10) || 0), 0);
   const remise = remiseType === "montant"
     ? Math.min(nb(remiseValeur), sousTotal)
@@ -38,7 +39,7 @@ export async function enregistrerDevis(id, data) {
   });
 
   // Les lignes sont remplacées en bloc : plus simple et plus sûr que de
-  // diffusion ligne à ligne, le volume reste petit.
+  // les comparer une à une, le volume reste petit.
   await prisma.$transaction([
     prisma.ligneDevis.deleteMany({ where: { devisId: id } }),
     prisma.devis.update({
