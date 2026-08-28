@@ -7,24 +7,22 @@ const STEPS = [
 export default function Steps() {
   return (
     <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
-      <div className="flex items-end justify-between gap-4 mb-8">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Notre méthode</p>
-          <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mt-1.5">Votre projet en 3 étapes</h2>
-        </div>
+      <div className="mb-4 sm:mb-8">
+        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Notre méthode</p>
+        <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Votre projet en 3 étapes</h2>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-3 gap-2.5 sm:gap-5">
         {STEPS.map((s) => (
-          <div key={s.n} className="relative rounded-3xl bg-surface border border-line p-8 hover:border-orange transition">
+          <div key={s.n} className="relative rounded-[18px] sm:rounded-3xl bg-surface border border-line p-5 sm:p-8 hover:border-orange transition">
             <div className="flex items-center justify-between">
-              <span className="font-display font-bold text-orange text-5xl leading-none">{s.n}</span>
-              <span className="grid place-items-center w-12 h-12 rounded-2xl bg-orange-tint text-orange-dark">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{s.icon}</svg>
+              <span className="font-display font-bold text-orange text-[38px] sm:text-5xl leading-none">{s.n}</span>
+              <span className="grid place-items-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-orange-tint text-orange-dark">
+                <svg className="w-[19px] h-[19px] sm:w-[22px] sm:h-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{s.icon}</svg>
               </span>
             </div>
-            <h3 className="font-display font-bold text-ink text-xl mt-6">{s.title}</h3>
-            <p className="text-ink-soft text-[14.5px] mt-2.5 leading-relaxed">{s.text}</p>
+            <h3 className="font-display font-bold text-ink text-[17px] sm:text-xl mt-3.5 sm:mt-6">{s.title}</h3>
+            <p className="text-ink-soft text-[13px] sm:text-[14.5px] mt-2 sm:mt-2.5 leading-relaxed">{s.text}</p>
           </div>
         ))}
       </div>
