@@ -2,7 +2,7 @@
 import { useState, useMemo, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { enregistrerDevis, changerStatutDevis, supprimerDevis, chargerCatalogueDevis } from "./actions";
+import { enregistrerDevis, changerStatutDevis, supprimerDevis, chargerCatalogueDevis, envoyerDevisAuClient } from "./actions";
 
 const euro = (v) => `${Number(v || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 const euro0 = (v) => `${Math.round(Number(v || 0)).toLocaleString("fr-FR")} €`;
@@ -76,6 +76,8 @@ export default function DevisEditForm({ devis }) {
   });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [envoi, setEnvoi] = useState(false);
+  const [message, setMessage] = useState(null); // { type: "ok" | "err", texte }
 
   // Panneau d'ajout — catalogue chargé une seule fois, filtré côté navigateur
   const [panneauOuvert, setPanneauOuvert] = useState(false);
@@ -87,15 +89,15 @@ export default function DevisEditForm({ devis }) {
   const [declChoisie, setDeclChoisie] = useState(null);
   const [qteAjout, setQteAjout] = useState(1);
 
-  const set = (k, v) => { setForm((f) => ({ ...f, [k]: v })); setSaved(false); };
+  const set = (k, v) => { setForm((f) => ({ ...f, [k]: v })); setSaved(false); setMessage(null); };
   const setLigne = (i, k, v) => {
     setLignes((ls) => ls.map((l, j) => (j === i ? { ...l, [k]: v } : l)));
-    setSaved(false);
+    setSaved(false); setMessage(null);
   };
-  const supprimerLigne = (i) => { setLignes((ls) => ls.filter((_, j) => j !== i)); setSaved(false); };
+  const supprimerLigne = (i) => { setLignes((ls) => ls.filter((_, j) => j !== i)); setSaved(false); setMessage(null); };
   const ajouterLigneLibre = () => {
     setLignes((ls) => [...ls, { id: `new-${Date.now()}`, designation: "", config: null, imageUrl: null, prixHT: "0", quantite: "1", codeRacine: null, vitrineId: null }]);
-    setSaved(false);
+    setSaved(false); setMessage(null);
   };
 
   const ouvrirPanneau = async () => {
@@ -155,6 +157,7 @@ export default function DevisEditForm({ devis }) {
       sousCategorieSlug: p.sousCategorieSlug,
     }]);
     setSaved(false);
+    setMessage(null);
     fermerPanneau();
   };
 
@@ -170,10 +173,34 @@ export default function DevisEditForm({ devis }) {
 
   const enregistrer = async () => {
     setSaving(true);
+    setMessage(null);
     const statut = devis.statut === "nouveau" ? "en_cours" : undefined;
     await enregistrerDevis(devis.id, { ...form, lignes, statut });
     setSaving(false);
     setSaved(true);
+    router.refresh();
+  };
+
+  // L'envoi enregistre d'abord : sans ça, le PDF partirait avec les
+  // anciennes valeurs si des modifications n'ont pas été sauvegardées.
+  const envoyer = async () => {
+    if (lignes.length === 0) {
+      setMessage({ type: "err", texte: "Ajoutez au moins une ligne avant d'envoyer." });
+      return;
+    }
+    const dejaEnvoye = ["envoye", "accepte", "refuse"].includes(devis.statut);
+    const question = dejaEnvoye
+      ? "Ce devis a déjà été envoyé. Renvoyer une nouvelle version au client ?"
+      : `Envoyer ce devis à ${devis.email} ?`;
+    if (!confirm(question)) return;
+
+    setEnvoi(true);
+    setMessage(null);
+    await enregistrerDevis(devis.id, { ...form, lignes });
+    const res = await envoyerDevisAuClient(devis.id);
+    setEnvoi(false);
+    if (res?.error) setMessage({ type: "err", texte: res.error });
+    else setMessage({ type: "ok", texte: `Devis envoyé à ${devis.email}.` });
     router.refresh();
   };
 
@@ -190,9 +217,10 @@ export default function DevisEditForm({ devis }) {
   const infosProjet = [devis.typeProjet, devis.surface, devis.delai, devis.budget].filter(Boolean);
   const telLink = devis.telephone ? `tel:${devis.telephone.replace(/\s/g, "")}` : null;
   const prixAjout = declChoisie ? declChoisie.prixHT : (produitOuvert?.prixUnitaire ?? 0);
+  const dejaEnvoye = ["envoye", "accepte", "refuse"].includes(devis.statut);
 
   return (
-    <div style={{ paddingBottom: 130 }}>
+    <div style={{ paddingBottom: 140 }}>
       <style>{`
         .dv-barre { position: fixed; bottom: 0; left: 0; right: 0; }
         .dv-panneau { margin-top: auto; border-radius: 22px 22px 0 0; max-height: 88dvh; width: 100%; }
@@ -213,7 +241,11 @@ export default function DevisEditForm({ devis }) {
         <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 22, color: "#23262a", margin: 0 }}>{devis.numero}</h1>
         <span style={{ fontSize: 10.5, fontWeight: 700, padding: "3px 9px", borderRadius: 999, background: s.bg, color: s.color }}>{s.label}</span>
       </div>
-      <p style={{ fontSize: 12, color: "#5c616a", margin: "0 0 14px" }}>Reçu le {dateFR(devis.createdAt)}</p>
+      <p style={{ fontSize: 12, color: "#5c616a", margin: "0 0 14px" }}>
+        Reçu le {dateFR(devis.createdAt)}
+        {devis.dateEnvoi ? ` · Envoyé le ${dateFR(devis.dateEnvoi)}` : ""}
+        {devis.dateValidite ? ` · Valable jusqu'au ${dateFR(devis.dateValidite)}` : ""}
+      </p>
 
       <Section titre="Client & projet" ouvertParDefaut>
         <div style={{ display: "flex", gap: 9, marginTop: 12 }}>
@@ -436,11 +468,20 @@ export default function DevisEditForm({ devis }) {
           })}
         </div>
 
-        <a href={`/api/devis/${devis.id}/pdf`} target="_blank" rel="noopener noreferrer"
-          style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, fontSize: 12.5, fontWeight: 600, color: "#23262a", textDecoration: "none", padding: "8px 14px", borderRadius: 999, border: "1px solid #ece8e0" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5" /><path d="M12 15V3" /></svg>
-          Aperçu du PDF
-        </a>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 }}>
+          <a href={`/api/devis/${devis.id}/pdf`} target="_blank" rel="noopener noreferrer"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600, color: "#23262a", textDecoration: "none", padding: "8px 14px", borderRadius: 999, border: "1px solid #ece8e0" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5" /><path d="M12 15V3" /></svg>
+            Aperçu du PDF
+          </a>
+          {dejaEnvoye && (
+            <a href={`/mon-devis/${devis.token}`} target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600, color: "#23262a", textDecoration: "none", padding: "8px 14px", borderRadius: 999, border: "1px solid #ece8e0" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17 17 7M7 7h10v10" /></svg>
+              Page du client
+            </a>
+          )}
+        </div>
 
         <button onClick={supprimer} disabled={isPending}
           style={{ display: "block", marginTop: 14, background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#c4735a", fontFamily: "inherit", padding: 0 }}>
@@ -456,6 +497,16 @@ export default function DevisEditForm({ devis }) {
           boxShadow: "0 -4px 20px rgba(0,0,0,0.06)",
           paddingBottom: "calc(12px + env(safe-area-inset-bottom))",
         }}>
+          {message && (
+            <p style={{
+              fontSize: 12, margin: "0 0 10px", padding: "8px 11px", borderRadius: 9, lineHeight: 1.5,
+              background: message.type === "ok" ? "#e8f6f0" : "#fce6d6",
+              color: message.type === "ok" ? "#1f7a52" : "#d9551a",
+            }}>
+              {message.texte}
+            </p>
+          )}
+
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
             <div>
               <p style={{ fontSize: 10.5, color: "#9aa0a8", margin: 0 }}>Total TTC</p>
@@ -464,13 +515,18 @@ export default function DevisEditForm({ devis }) {
             {saved && <span style={{ fontSize: 11, color: "#1f7a52", fontWeight: 600 }}>✓ Enregistré</span>}
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={enregistrer} disabled={saving}
-              style={{ padding: "12px 18px", borderRadius: 999, border: "1px solid #ece8e0", background: "#fff", fontSize: 13, fontWeight: 600, color: "#23262a", cursor: "pointer", fontFamily: "inherit", flexShrink: 0, opacity: saving ? 0.6 : 1 }}>
+            <button onClick={enregistrer} disabled={saving || envoi}
+              style={{ padding: "12px 18px", borderRadius: 999, border: "1px solid #ece8e0", background: "#fff", fontSize: 13, fontWeight: 600, color: "#23262a", cursor: "pointer", fontFamily: "inherit", flexShrink: 0, opacity: saving || envoi ? 0.6 : 1 }}>
               {saving ? "…" : "Enregistrer"}
             </button>
-            <button disabled title="Disponible à la prochaine étape"
-              style={{ flex: 1, padding: 12, borderRadius: 999, background: "#f0661b", color: "#fff", border: "none", fontSize: 13, fontWeight: 700, cursor: "not-allowed", fontFamily: "inherit", opacity: 0.5 }}>
-              Envoyer au client
+            <button onClick={envoyer} disabled={envoi || saving || lignes.length === 0}
+              style={{
+                flex: 1, padding: 12, borderRadius: 999, background: "#f0661b", color: "#fff", border: "none",
+                fontSize: 13, fontWeight: 700, fontFamily: "inherit",
+                cursor: envoi || lignes.length === 0 ? "not-allowed" : "pointer",
+                opacity: envoi || lignes.length === 0 ? 0.5 : 1,
+              }}>
+              {envoi ? "Envoi en cours…" : dejaEnvoye ? "Renvoyer au client" : "Envoyer au client"}
             </button>
           </div>
         </div>
@@ -483,7 +539,6 @@ export default function DevisEditForm({ devis }) {
 
           <div className="dv-panneau" style={{ position: "relative", display: "flex", flexDirection: "column", background: "#fff", overflow: "hidden" }}>
 
-            {/* ── Écran 2 : choix de la déclinaison ── */}
             {produitOuvert ? (
               <>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "15px 16px 13px", borderBottom: "1px solid #f2efe9", flexShrink: 0 }}>
@@ -570,7 +625,6 @@ export default function DevisEditForm({ devis }) {
                 </div>
               </>
             ) : (
-              /* ── Écran 1 : recherche et filtres ── */
               <>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "15px 16px 13px", flexShrink: 0 }}>
                   <div style={{ minWidth: 0 }}>
@@ -595,7 +649,6 @@ export default function DevisEditForm({ devis }) {
                   </div>
                 </div>
 
-                {/* Catégories — défilement horizontal, pas de retour à la ligne */}
                 {catalogue && catalogue.categories.length > 0 && (
                   <div className="dv-scroll-x" style={{ display: "flex", gap: 6, padding: "0 16px 10px", flexShrink: 0 }}>
                     <button onClick={() => { setCatId(null); setSousCatId(null); }}
@@ -624,7 +677,6 @@ export default function DevisEditForm({ devis }) {
                   </div>
                 )}
 
-                {/* Sous-catégories de la catégorie choisie */}
                 {catActive && catActive.sousCategories.length > 0 && (
                   <div className="dv-scroll-x" style={{ display: "flex", gap: 6, padding: "0 16px 12px", flexShrink: 0 }}>
                     <div style={{ borderLeft: "2px solid #fce6d6", paddingLeft: 10, display: "flex", gap: 6 }}>

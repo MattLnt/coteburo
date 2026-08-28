@@ -169,3 +169,46 @@ export async function chargerCatalogueDevis() {
 
   return { produits, categories: cats };
 }
+
+// Envoi du devis au client : génère le PDF, l'attache à l'email, pose la
+// date de validité et bascule le statut.
+export async function envoyerDevisAuClient(id) {
+  const devis = await prisma.devis.findUnique({
+    where: { id },
+    include: { lignes: { orderBy: { ordre: "asc" } } },
+  });
+  if (!devis) return { error: "Devis introuvable." };
+  if (!devis.lignes.length) return { error: "Ajoutez au moins une ligne avant d'envoyer." };
+  if (devis.totalTTC == null) return { error: "Enregistrez le devis avant de l'envoyer." };
+
+  const reglages = await prisma.reglages.findUnique({ where: { id: 1 } });
+  const jours = reglages?.validiteDevisJours ?? 30;
+  const dateValidite = new Date();
+  dateValidite.setDate(dateValidite.getDate() + jours);
+
+  // La date de validité est posée AVANT la génération du PDF : elle doit
+  // y figurer.
+  const aJour = await prisma.devis.update({
+    where: { id },
+    data: { dateEnvoi: new Date(), dateValidite, statut: "envoye" },
+    include: { lignes: { orderBy: { ordre: "asc" } } },
+  });
+
+  try {
+    const { renderToBuffer } = await import("@react-pdf/renderer");
+    const { DevisDocument } = await import("@/lib/DevisDocument");
+    const { envoyerDevisChiffre } = await import("@/lib/emails");
+
+    const buffer = await renderToBuffer(DevisDocument({ d: aJour, reglages: reglages || {} }));
+    await envoyerDevisChiffre({ devis: aJour, pdfBase64: buffer.toString("base64") });
+  } catch (e) {
+    console.error("Erreur envoi devis:", e.message);
+    // Le statut reste "envoyé" : le devis est bien figé côté base, mais on
+    // signale l'échec pour que l'admin puisse relancer.
+    return { error: "Le devis est enregistré mais l'email n'a pas pu partir. Réessayez." };
+  }
+
+  revalidatePath("/admin/devis");
+  revalidatePath(`/admin/devis/${id}`);
+  return { ok: true };
+}
