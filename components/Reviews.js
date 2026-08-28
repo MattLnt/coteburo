@@ -14,10 +14,13 @@ function Stars({ n }) {
 const initiale = (nom) => (nom || "?").trim().charAt(0).toUpperCase();
 
 export default async function Reviews() {
-  const { note, nombre, avis } = await getAvisGoogle();
+  const { note, nombre, avis, url } = await getAvisGoogle();
 
   if (!avis || avis.length === 0) return null;
 
+  // L'URL renvoyée par l'API est la plus fiable ; sinon on retombe sur
+  // l'URL Maps construite à partir du Place ID.
+  const lienGoogle = url || URL_FICHE_GOOGLE;
   const noteAffichee = Number(note).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
   return (
@@ -29,7 +32,7 @@ export default async function Reviews() {
           </p>
           <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Ce qu&apos;en disent nos clients</h2>
         </div>
-        <a href={URL_FICHE_GOOGLE} target="_blank" rel="noopener noreferrer"
+        <a href={lienGoogle} target="_blank" rel="noopener noreferrer"
           className="text-orange font-semibold whitespace-nowrap text-[12.5px] sm:text-[15px] hover:text-orange-dark transition">
           <span className="sm:hidden">Tous les avis →</span>
           <span className="hidden sm:inline">Voir tous les avis →</span>
