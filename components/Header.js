@@ -36,7 +36,8 @@ export default function Header({ reglages = {}, categories = [] }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(null);
   const [content, setContent] = useState(categories[0] || null);
-  const [mobileCat, setMobileCat] = useState(null);
+  // Catégorie ouverte dans le menu mobile — null = grille des catégories
+  const [catOuverte, setCatOuverte] = useState(null);
   const [compteMenuOuvert, setCompteMenuOuvert] = useState(false);
   const [rechercheOuverte, setRechercheOuverte] = useState(false);
   const compteMenuRef = useRef(null);
@@ -54,6 +55,9 @@ export default function Header({ reglages = {}, categories = [] }) {
     return () => (document.body.style.overflow = "");
   }, [open]);
 
+  // On revient toujours sur la grille en rouvrant le menu
+  useEffect(() => { if (!open) setCatOuverte(null); }, [open]);
+
   useEffect(() => {
     function onClick(e) {
       if (compteMenuRef.current && !compteMenuRef.current.contains(e.target)) setCompteMenuOuvert(false);
@@ -65,6 +69,11 @@ export default function Header({ reglages = {}, categories = [] }) {
   const enter = (cat) => { setContent(cat); setActive(cat.slug); };
   const sousCatContent = content?.sousCategories || [];
   const iconeDe = (cat) => (cat?.icone && ICONES_CATEGORIE[cat.icone]) || ICONE_PAR_DEFAUT;
+  const fermer = () => setOpen(false);
+
+  // Ombre douce commune aux cartes du menu — pas de bordure, elles flottent
+  // sur le fond crème plutôt que d'être des cases dessinées.
+  const ombreCarte = "0 1px 2px rgba(35,38,42,0.04), 0 10px 26px -20px rgba(35,38,42,0.4)";
 
   return (
     <header className="sticky top-0 z-50">
@@ -113,7 +122,7 @@ export default function Header({ reglages = {}, categories = [] }) {
           </div>
 
           {/* Actions mobile — la recherche et surtout le panier étaient enfermés
-              dans le tiroir : rien ne confirmait un ajout au panier. */}
+              dans le menu : rien ne confirmait un ajout au panier. */}
           <div className="cb-actions-mobile items-center gap-0.5">
             <button onClick={() => setRechercheOuverte((v) => !v)} aria-label="Rechercher"
               className="grid place-items-center w-[38px] h-[38px] text-ink">
@@ -247,71 +256,169 @@ export default function Header({ reglages = {}, categories = [] }) {
         </div>
       </div>
 
-      <div className={`fixed inset-0 z-[70] ${open ? "" : "pointer-events-none"}`} style={{ display: open ? "block" : undefined }}>
-        <div onClick={() => setOpen(false)} className="transition-opacity duration-300" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", opacity: open ? 1 : 0 }} />
-        <div className="bg-bg transition-transform duration-300" style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "88%", maxWidth: 400, boxShadow: "-10px 0 40px rgba(0,0,0,.2)", display: "flex", flexDirection: "column", transform: open ? "translateX(0)" : "translateX(100%)" }}>
-          <div className="border-b border-line" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: 66 }}>
-            <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={150} height={29} />
-            <button onClick={() => setOpen(false)} className="text-ink" style={{ display: "grid", placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Fermer"><CloseIcon /></button>
-          </div>
+      {/* ═══ MENU PLEIN ÉCRAN (mobile) ═══ */}
+      <div
+        className="lg:hidden fixed inset-0 z-[70] flex flex-col bg-bg transition-all duration-300"
+        style={{
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "auto" : "none",
+          transform: open ? "translateY(0)" : "translateY(-12px)",
+        }}
+      >
+        {/* Halo orange, comme sur les cartes hero et CTA */}
+        <div className="absolute -top-20 -right-16 w-[260px] h-[260px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(240,102,27,0.13), transparent 68%)" }} />
 
-          <div style={{ flex: 1, overflowY: "auto", padding: 18 }}>
-            {connecte && (
-              <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, background: "#faf8f4", border: "1px solid #ece8e0", marginBottom: 16 }}>
-                <span style={{ width: 34, height: 34, borderRadius: "50%", background: "#fce6d6", color: "#d9551a", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 13.5, flexShrink: 0 }}>{initiale}</span>
-                <div style={{ minWidth: 0 }}>
-                  <p style={{ fontSize: 12.5, fontWeight: 600, color: "#23262a", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{session.user.email}</p>
-                  <p style={{ fontSize: 11, color: "#9aa0a8", margin: "1px 0 0" }}>Connecté</p>
+        {/* En-tête du menu */}
+        <div className="relative flex items-center justify-between px-5 pt-4 pb-1 shrink-0">
+          {catOuverte ? (
+            <button onClick={() => setCatOuverte(null)} className="flex items-center gap-2.5 bg-transparent border-none cursor-pointer">
+              <span className="grid place-items-center w-[34px] h-[34px] rounded-full bg-white/70 border border-ink/[0.08] text-ink backdrop-blur-sm">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+              </span>
+              <span className="text-[12px] text-ink-soft">Le catalogue</span>
+            </button>
+          ) : (
+            <Link href="/" onClick={fermer}>
+              <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={140} height={27} className="h-auto" />
+            </Link>
+          )}
+          <button onClick={fermer} aria-label="Fermer"
+            className="grid place-items-center w-9 h-9 rounded-full bg-white/70 border border-ink/[0.08] text-ink backdrop-blur-sm">
+            <CloseIcon size={19} />
+          </button>
+        </div>
+
+        {/* ── Vue catégorie ── */}
+        {catOuverte ? (
+          <>
+            <div className="relative px-5 pt-4 pb-[18px] shrink-0">
+              <div className="flex items-center gap-3.5">
+                <span className="grid place-items-center w-[46px] h-[46px] rounded-[14px] text-orange-dark shrink-0"
+                  style={{ background: "linear-gradient(145deg, #fce6d6, #f8dcc8)" }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(catOuverte)}</svg>
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display font-bold text-ink text-[22px] leading-tight">{catOuverte.nom}</p>
+                  <p className="text-[12px] text-ink-soft mt-0.5">
+                    {catOuverte.sousCategories.length > 0
+                      ? `${catOuverte.sousCategories.length} sous-catégorie${catOuverte.sousCategories.length > 1 ? "s" : ""}`
+                      : "Nouveautés à venir"}
+                  </p>
                 </div>
               </div>
-            )}
-
-            <nav style={{ display: "flex", flexDirection: "column" }}>
-              {categories.map((cat) => (
-                <div key={cat.slug} className="border-b border-line/70">
-                  <button onClick={() => setMobileCat(mobileCat === cat.slug ? null : cat.slug)} className="text-ink" style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", fontSize: 14.5, fontWeight: 600 }}>
-                    {cat.nom}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" style={{ transform: mobileCat === cat.slug ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
-                  </button>
-                  {mobileCat === cat.slug && (
-                    <div style={{ paddingBottom: 12, display: "flex", flexDirection: "column", gap: 8 }}>
-                      <Link href={`/catalogue?categorie=${cat.slug}`} onClick={() => setOpen(false)} className="text-orange font-semibold transition" style={{ fontSize: 13.5, paddingLeft: 4 }}>Tout {cat.nom.toLowerCase()}</Link>
-                      {cat.sousCategories.length > 0 ? cat.sousCategories.map((s) => (
-                        <Link key={s.slug} href={`/catalogue?categorie=${cat.slug}&sousCategorie=${s.slug}`} onClick={() => setOpen(false)} className="text-ink-soft hover:text-orange transition" style={{ fontSize: 13.5, paddingLeft: 4 }}>{s.nom}</Link>
-                      )) : (
-                        <span style={{ fontSize: 12.5, color: "#9aa0a8", paddingLeft: 4 }}>Nouveautés à venir</span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {CORP.map(([l, h]) => (
-                <Link key={h} href={h} onClick={() => setOpen(false)} className="text-ink hover:text-orange transition border-b border-line/70" style={{ padding: "12px 0", fontSize: 14.5, fontWeight: 600 }}>{l}</Link>
-              ))}
-            </nav>
-
-            <Link href="/devis" onClick={() => setOpen(false)} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 700, fontSize: 14, marginTop: 18 }}>
-              Demander un devis →
-            </Link>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginTop: 14, fontSize: 12.5, fontWeight: 600 }}>
-              <MobileTile href={connecte ? "/compte" : "/connexion"} onClose={() => setOpen(false)} label={connecte ? "Mon compte" : "Connexion"}><UserIcon /></MobileTile>
-              <MobileTile href="/devis" onClose={() => setOpen(false)} label={`Devis${countDevis > 0 ? ` (${countDevis})` : ""}`}><DevisIcon /></MobileTile>
-              <MobileTile href="/panier" onClose={() => setOpen(false)} label={`Panier${count > 0 ? ` (${count})` : ""}`}><CartIcon /></MobileTile>
             </div>
 
-            {connecte && (
-              <button
-                onClick={() => { setOpen(false); signOut({ callbackUrl: "/" }); }}
-                style={{ width: "100%", textAlign: "center", marginTop: 12, padding: "12px 0", fontSize: 13, fontWeight: 600, color: "#d9551a", background: "none", border: "none", cursor: "pointer" }}
-              >
-                Se déconnecter
-              </button>
-            )}
-          </div>
+            <div className="relative flex-1 overflow-y-auto px-5">
+              <div className="rounded-2xl bg-white overflow-hidden" style={{ boxShadow: ombreCarte }}>
+                <Link href={`/catalogue?categorie=${catOuverte.slug}`} onClick={fermer}
+                  className="flex items-center justify-between px-[17px] py-[15px]"
+                  style={{ background: "linear-gradient(90deg, #fce6d6, rgba(252,230,214,0.35))" }}>
+                  <span className="text-[14px] font-semibold text-orange-dark">Tout voir dans {catOuverte.nom}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-orange-dark shrink-0"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                </Link>
 
-          <div className="border-t border-line" style={{ padding: 18 }}>
-            <a href={telLink} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 600, fontSize: 14 }}>{tel}</a>
+                {catOuverte.sousCategories.map((s) => (
+                  <Link key={s.slug} href={`/catalogue?categorie=${catOuverte.slug}&sousCategorie=${s.slug}`} onClick={fermer}
+                    className="flex items-center justify-between px-[17px] py-[15px] border-t border-line/70 active:bg-surface-2 transition">
+                    <span className="text-[14px] text-ink">{s.nom}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-ink-soft/50 shrink-0"><path d="m9 18 6-6-6-6" /></svg>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          /* ── Vue racine ── */
+          <>
+            <div className="relative px-5 pt-3.5 pb-4 shrink-0">
+              <SearchBar variant="mobile" />
+            </div>
+
+            <div className="relative flex-1 overflow-y-auto px-5 pb-2">
+              {connecte && (
+                <Link href="/compte" onClick={fermer}
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-white mb-5" style={{ boxShadow: ombreCarte }}>
+                  <span className="grid place-items-center w-9 h-9 rounded-full bg-orange-tint text-orange-dark font-bold text-[14px] shrink-0">{initiale}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[13px] font-semibold text-ink truncate">{session.user.email}</p>
+                    <p className="text-[11px] text-ink-soft mt-px">Voir mon compte</p>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-ink-soft/50 shrink-0"><path d="m9 18 6-6-6-6" /></svg>
+                </Link>
+              )}
+
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="text-[9.5px] font-semibold uppercase tracking-[0.2em] text-ink-soft/70">Le catalogue</span>
+                <span className="flex-1 h-px" style={{ background: "linear-gradient(90deg, rgba(35,38,42,0.09), transparent)" }} />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5 mb-6">
+                {categories.map((cat) => (
+                  <button key={cat.slug} onClick={() => setCatOuverte(cat)}
+                    className="bg-white rounded-2xl p-[15px] flex flex-col gap-[22px] text-left active:scale-[0.98] transition"
+                    style={{ boxShadow: ombreCarte }}>
+                    <span className="grid place-items-center w-9 h-9 rounded-[11px] text-orange-dark"
+                      style={{ background: "linear-gradient(145deg, #fce6d6, #f8dcc8)" }}>
+                      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(cat)}</svg>
+                    </span>
+                    <span className="flex items-center justify-between">
+                      <span className="text-[13.5px] font-semibold text-ink">{cat.nom}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-ink-soft/40"><path d="M7 17 17 7M7 7h10v10" /></svg>
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="text-[9.5px] font-semibold uppercase tracking-[0.2em] text-ink-soft/70">La maison</span>
+                <span className="flex-1 h-px" style={{ background: "linear-gradient(90deg, rgba(35,38,42,0.09), transparent)" }} />
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {CORP.map(([l, h]) => (
+                  <Link key={h} href={h} onClick={fermer}
+                    className="text-[12.5px] px-3.5 py-2 rounded-full bg-white/75 text-ink-soft active:bg-white transition">
+                    {l}
+                  </Link>
+                ))}
+              </div>
+
+              {connecte && (
+                <button onClick={() => { fermer(); signOut({ callbackUrl: "/" }); }}
+                  className="w-full text-center mt-5 py-3 text-[13px] font-semibold text-orange-dark bg-transparent border-none cursor-pointer">
+                  Se déconnecter
+                </button>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Pied — dégradé plutôt qu'une bordure nette */}
+        <div className="relative shrink-0 px-5 pt-4 pb-[18px]"
+          style={{ background: "linear-gradient(to top, var(--color-bg) 72%, transparent)", paddingBottom: "calc(18px + env(safe-area-inset-bottom))" }}>
+          <Link href="/devis" onClick={fermer}
+            className="flex items-center justify-center gap-2 py-3.5 rounded-full bg-orange text-white text-[14px] font-semibold mb-3"
+            style={{ boxShadow: "0 8px 22px -8px rgba(240,102,27,0.6)" }}>
+            Demander un devis
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </Link>
+
+          <div className="flex items-center justify-between gap-1.5">
+            <Link href={connecte ? "/compte" : "/connexion"} onClick={fermer} className="flex-1 flex flex-col items-center gap-1.5 py-1 text-ink-soft">
+              <UserIcon size={18} /><span className="text-[10.5px]">Compte</span>
+            </Link>
+            <Link href="/devis" onClick={fermer} className="relative flex-1 flex flex-col items-center gap-1.5 py-1 text-ink-soft">
+              <DevisIcon size={18} /><span className="text-[10.5px]">Devis</span>
+              {countDevis > 0 && <span className="absolute -top-0.5 right-[22px] min-w-[15px] h-[15px] px-1 rounded-full bg-charcoal text-white text-[9px] grid place-items-center">{countDevis}</span>}
+            </Link>
+            <Link href="/panier" onClick={fermer} className="relative flex-1 flex flex-col items-center gap-1.5 py-1 text-ink-soft">
+              <CartIcon size={18} /><span className="text-[10.5px]">Panier</span>
+              {count > 0 && <span className="absolute -top-0.5 right-[20px] min-w-[15px] h-[15px] px-1 rounded-full bg-orange text-white text-[9px] grid place-items-center">{count}</span>}
+            </Link>
+            <a href={telLink} className="flex-1 flex flex-col items-center gap-1.5 py-1 text-ink-soft">
+              <PhoneIcon /><span className="text-[10.5px]">Appeler</span>
+            </a>
           </div>
         </div>
       </div>
@@ -326,17 +433,11 @@ function Action({ href, label, children }) {
     </Link>
   );
 }
-function MobileTile({ href, label, children, onClose }) {
-  return (
-    <Link href={href} onClick={onClose} className="text-ink border border-line" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, borderRadius: 12, padding: "11px 0", textAlign: "center", lineHeight: 1.2 }}>
-      {children}{label}
-    </Link>
-  );
-}
 
-function UserIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>; }
+function UserIcon({ size = 22 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>; }
 function CartIcon({ size = 22 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>; }
-function DevisIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M9 13h6M9 17h4" /></svg>; }
+function DevisIcon({ size = 22 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M9 13h6M9 17h4" /></svg>; }
+function PhoneIcon({ size = 18 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" /></svg>; }
 function SearchIcon() { return <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>; }
 function BurgerIcon() { return <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
 function CloseIcon({ size = 24 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>; }
