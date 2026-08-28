@@ -11,24 +11,29 @@ const CATS = [
 
 export default function CategoryBar() {
   return (
-    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
-      <div className="flex items-end justify-between gap-4 mb-7">
+    <section className="w-full">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 flex items-end justify-between gap-4 mb-4 sm:mb-7">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Le catalogue</p>
-          <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mt-1.5">Parcourez nos catégories</h2>
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Le catalogue</p>
+          <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Parcourez nos catégories</h2>
         </div>
-        <Link href="/catalogue" className="text-orange font-semibold whitespace-nowrap text-[15px] hover:text-orange-dark transition">Tout le catalogue →</Link>
+        <Link href="/catalogue" className="text-orange font-semibold whitespace-nowrap text-[12.5px] sm:text-[15px] hover:text-orange-dark transition">
+          <span className="sm:hidden">Tout voir →</span>
+          <span className="hidden sm:inline">Tout le catalogue →</span>
+        </Link>
       </div>
 
-      <div className="flex gap-5 overflow-x-auto pb-1.5">
+      {/* Le défilement déborde volontairement des marges sur mobile : la dernière
+          carte reste visible au bord de l'écran, ce qui signale qu'on peut glisser. */}
+      <div className="flex gap-2.5 sm:gap-5 overflow-x-auto pb-1.5 px-5 sm:px-7 mx-auto max-w-[1400px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {CATS.map((c) => (
-          <Link key={c.href} href={c.href} className="group shrink-0 grow basis-0 min-w-[150px] text-center">
-            <div className="w-full h-[158px] rounded-[20px] grid place-items-center bg-surface border border-line shadow-[0_1px_4px_rgba(33,36,40,0.06)] group-hover:border-orange group-hover:bg-orange-tint transition">
+          <Link key={c.href} href={c.href} className="group shrink-0 grow basis-0 min-w-[108px] sm:min-w-[150px] text-center">
+            <div className="w-full h-[100px] sm:h-[158px] rounded-[16px] sm:rounded-[20px] grid place-items-center bg-surface border border-line shadow-[0_1px_4px_rgba(33,36,40,0.06)] group-hover:border-orange group-hover:bg-orange-tint transition">
               <span className="text-charcoal group-hover:text-orange-dark transition">
-                <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{c.icon}</svg>
+                <svg className="w-[34px] h-[34px] sm:w-[54px] sm:h-[54px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{c.icon}</svg>
               </span>
             </div>
-            <p className="text-ink group-hover:text-orange font-semibold mt-3.5 text-sm transition">{c.label}</p>
+            <p className="text-ink group-hover:text-orange font-semibold mt-2 sm:mt-3.5 text-[11.5px] sm:text-sm leading-tight transition">{c.label}</p>
           </Link>
         ))}
       </div>
