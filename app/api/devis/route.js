@@ -31,6 +31,10 @@ export async function POST(req) {
 
     const articles = Array.isArray(d.articles)
       ? d.articles.map((a) => ({
+          // La référence catalogue distingue une ligne produit d'une ligne
+          // libre : sans elle, l'admin traite tout comme une ligne libre.
+          codeRacine: a.codeRacine || null,
+          carteSlug: a.carteSlug || null,
           designation: a.designation || "",
           gammeNom: a.gammeNom || null,
           config: a.config || null,
@@ -80,6 +84,7 @@ export async function POST(req) {
           message: payload.message,
           lignes: {
             create: articles.map((a, i) => ({
+              codeRacine: a.codeRacine,
               designation: a.designation,
               gammeNom: a.gammeNom,
               // Les finitions choisies sont recopiées dans la config : le

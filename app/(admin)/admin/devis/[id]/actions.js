@@ -98,3 +98,54 @@ export async function supprimerDevis(id) {
   revalidatePath("/admin/devis");
   return { ok: true };
 }
+
+// Recherche dans le catalogue pour le panneau d'ajout de produits.
+// Renvoie les déclinaisons avec leur prix : c'est la déclinaison qui
+// détermine le montant, pas le produit.
+export async function chercherProduits(q) {
+  const recherche = (q || "").trim();
+  if (recherche.length < 2) return [];
+
+  const vitrines = await prisma.produitVitrine.findMany({
+    where: {
+      publie: true,
+      gamme: { publie: true },
+      nom: { contains: recherche, mode: "insensitive" },
+    },
+    include: {
+      gamme: { select: { nom: true } },
+      categories: { select: { slug: true }, take: 1 },
+      sousCategories: { select: { slug: true }, take: 1 },
+    },
+    orderBy: { nom: "asc" },
+    take: 20,
+  });
+
+  return vitrines.map((v) => {
+    const decl = Array.isArray(v.declinaisons) ? v.declinaisons : [];
+    const axes = Array.isArray(v.axesDeclinaisons) ? v.axesDeclinaisons : [];
+
+    // Libellé lisible d'une déclinaison : "180 cm / Avec retour"
+    const libelle = (d) => {
+      if (!d.valeurs) return d.reference || "Variante";
+      return axes.map((a) => d.valeurs[a.id]).filter(Boolean).join(" / ") || (d.reference || "Variante");
+    };
+
+    return {
+      id: v.id,
+      nom: v.nom,
+      gammeNom: v.gamme.nom,
+      imageUrl: (v.images && v.images[0]) || v.imageUrl || null,
+      slug: v.slug,
+      categorieSlug: v.categories[0]?.slug || null,
+      sousCategorieSlug: v.sousCategories[0]?.slug || null,
+      // Produit à prix unique : une seule entrée, pas de choix à faire
+      prixUnitaire: v.prixUnitaireHT ?? null,
+      declinaisons: decl.map((d) => ({
+        id: d.id,
+        libelle: libelle(d),
+        prixHT: Number(d.prixVenteHT) || 0,
+      })),
+    };
+  });
+}
