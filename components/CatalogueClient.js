@@ -42,8 +42,21 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   // Panneaux mobile
   const [panneauFiltres, setPanneauFiltres] = useState(false);
   const [panneauTri, setPanneauTri] = useState(false);
+  // Menu de tri desktop — remplace le <select> natif, impossible à styler
+  const [menuTriOuvert, setMenuTriOuvert] = useState(false);
+  const menuTriRef = useRef(null);
 
   const favSet = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
+
+  // Ferme le menu de tri au clic extérieur
+  useEffect(() => {
+    if (!menuTriOuvert) return;
+    const onClick = (e) => {
+      if (menuTriRef.current && !menuTriRef.current.contains(e.target)) setMenuTriOuvert(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [menuTriOuvert]);
 
   // Le composant est réutilisé d'une URL à l'autre (bureaux → sièges) : les
   // useState ne sont évalués qu'au montage, donc l'état resterait figé sur la
@@ -208,21 +221,40 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
             <h1 className="font-display font-bold text-[27px] sm:text-5xl mt-1.5 sm:mt-3">{titre}</h1>
             <p className="text-ink-soft mt-1.5 sm:mt-3 text-[13px] sm:text-base">{filtered.length} produit{filtered.length > 1 ? "s" : ""}</p>
           </div>
-          {/* Le select de tri débordait de la ligne du titre sur mobile :
-              il passe dans la barre Filtrer / Trier ci-dessous. */}
+
           <div className="hidden lg:flex items-center gap-3 flex-wrap">
-            <label className="inline-flex items-center gap-2 text-sm text-ink-soft">
-              Trier&nbsp;:
-              <select
-                value={tri}
-                onChange={(e) => setTri(e.target.value)}
-                className="rounded-full border border-line bg-white px-4 py-2.5 text-sm font-semibold text-ink hover:border-orange focus:border-orange outline-none cursor-pointer"
+            {/* Menu de tri sur mesure : le <select> natif impose l'apparence de
+                sa liste déroulante et ne s'accorde pas au reste du site. */}
+            <div ref={menuTriRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setMenuTriOuvert((v) => !v)}
+                className={`inline-flex items-center gap-2.5 rounded-full border bg-white px-5 py-2.5 text-sm transition ${menuTriOuvert ? "border-ink/25" : "border-line hover:border-ink/25"}`}
               >
-                <option value="nom">Nom (A–Z)</option>
-                <option value="prix-asc">Prix croissant</option>
-                <option value="prix-desc">Prix décroissant</option>
-              </select>
-            </label>
+                <span className="text-ink-soft">Trier :</span>
+                <span className="font-semibold text-ink">{LIBELLES_TRI[tri]}</span>
+                <span className={`text-ink-soft/60 transition-transform ${menuTriOuvert ? "rotate-180" : ""}`}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+
+              {menuTriOuvert && (
+                <div className="absolute top-[calc(100%+8px)] right-0 z-50 w-[210px] rounded-2xl bg-white border border-line p-1.5"
+                  style={{ boxShadow: "0 16px 40px -12px rgba(33,36,40,0.22)" }}>
+                  {Object.entries(LIBELLES_TRI).map(([val, label]) => {
+                    const actif = tri === val;
+                    return (
+                      <button key={val} type="button" onClick={() => { setTri(val); setMenuTriOuvert(false); }}
+                        className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-[13.5px] transition ${actif ? "bg-orange-tint text-orange-dark font-semibold" : "text-ink hover:bg-surface-2"}`}>
+                        {label}
+                        {actif && <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" className="shrink-0"><path d="M20 6 9 17l-5-5" /></svg>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
             {aDesFiltres && (
               <button onClick={reinitialiserTout}
                 className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-ink hover:border-orange hover:text-orange transition whitespace-nowrap">
