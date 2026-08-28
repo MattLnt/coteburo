@@ -350,7 +350,10 @@ model Devis {
   totalTTC          Float?
   fraisLivraison    Float   @default(0)
   fraisInstallation Float   @default(0)
-  remisePct         Float   @default(0)
+  // Remise globale : "pourcentage" ou "montant" — remiseValeur s'interprète
+  // selon ce type (5 = 5 % ou 5 €).
+  remiseType        String  @default("pourcentage")
+  remiseValeur      Float   @default(0)
 
   // Mot d'accompagnement affiché sur le devis envoyé au client
   noteClient String?
