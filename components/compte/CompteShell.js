@@ -11,6 +11,7 @@ const NAV = [
 ];
 
 const ICONE_QUITTER = (<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="m16 17 5-5-5-5" /><path d="M21 12H9" /></>);
+const ICONE_SITE = (<><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z" /></>);
 
 export default function CompteShell({ prenom, nom, email, children }) {
   const pathname = usePathname();
@@ -69,12 +70,12 @@ export default function CompteShell({ prenom, nom, email, children }) {
     flex: 1, display: "flex", flexDirection: "column",
     alignItems: "center", justifyContent: "center",
     gap: 3, textDecoration: "none",
-    padding: "6px 4px", minWidth: 0,
+    padding: "6px 2px", minWidth: 0,
     background: "none", border: "none", cursor: "pointer",
     fontFamily: "inherit",
   };
   const libelleBottom = (actif, danger) => ({
-    fontSize: 9.5,
+    fontSize: 9,
     fontWeight: actif ? 700 : 500,
     color: actif ? "#f0661b" : danger ? "#c4735a" : "#9aa0a8",
     whiteSpace: "nowrap",
@@ -109,7 +110,7 @@ export default function CompteShell({ prenom, nom, email, children }) {
       <nav className="cpt-bottombar"
         style={{
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
-          alignItems: "center", padding: "0 4px", height: 68,
+          alignItems: "center", padding: "0 2px", height: 68,
           background: "rgba(255,255,255,0.94)",
           backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
           borderTop: "1px solid #ece8e0",
@@ -130,6 +131,14 @@ export default function CompteShell({ prenom, nom, email, children }) {
             </Link>
           );
         })}
+
+        {/* Retour au site — remplace le lien qu'assurait le logo de la topbar */}
+        <Link href="/" style={lienBottom}>
+          <span style={{ color: "#9aa0a8", display: "flex" }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{ICONE_SITE}</svg>
+          </span>
+          <span style={libelleBottom(false, false)}>Le site</span>
+        </Link>
 
         <button type="button" onClick={() => signOut({ callbackUrl: "/" })} style={lienBottom}>
           <span style={{ color: "#c4735a", display: "flex" }}>
