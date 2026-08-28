@@ -38,6 +38,7 @@ export default function Header({ reglages = {}, categories = [] }) {
   const [content, setContent] = useState(categories[0] || null);
   const [mobileCat, setMobileCat] = useState(null);
   const [compteMenuOuvert, setCompteMenuOuvert] = useState(false);
+  const [rechercheOuverte, setRechercheOuverte] = useState(false);
   const compteMenuRef = useRef(null);
 
   const connecte = sessionStatus === "authenticated";
@@ -72,7 +73,7 @@ export default function Header({ reglages = {}, categories = [] }) {
         .cb-search { display: none; }
         .cb-nav-desktop { display: none; }
         .cb-catbar { display: none; }
-        .cb-burger { display: grid; margin-left: auto; }
+        .cb-actions-mobile { display: flex; margin-left: auto; }
         @media (min-width: 768px) {
           .cb-corp { display: flex; }
         }
@@ -80,16 +81,19 @@ export default function Header({ reglages = {}, categories = [] }) {
           .cb-search { display: block; }
           .cb-nav-desktop { display: flex; }
           .cb-catbar { display: block; }
-          .cb-burger { display: none; }
+          .cb-actions-mobile { display: none; }
         }
       `}</style>
 
-      <div className="bg-charcoal text-[#cdd1d6]" style={{ fontSize: 13 }}>
-        <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 38, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-          <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+      {/* Bandeau — le téléphone y apparaît aussi sur mobile : c'est là qu'un
+          appel se déclenche en un seul tap. */}
+      <div className="bg-charcoal text-[#cdd1d6] text-[11px] sm:text-[13px]">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-7 h-8 sm:h-[38px] flex items-center justify-between gap-3 sm:gap-4">
+          <p className="truncate min-w-0">
             <span className="text-orange">●</span> {bandeauActif ? bandeauTexte : "Showroom Aix-en-Provence — 645 rue Mayor de Montricher"}
           </p>
-          <div className="cb-corp" style={{ alignItems: "center", gap: 18, flexShrink: 0 }}>
+          <a href={telLink} className="lg:hidden text-white font-semibold whitespace-nowrap shrink-0">{tel}</a>
+          <div className="cb-corp items-center gap-[18px] shrink-0">
             {CORP.map(([l, h]) => (
               <Link key={h} href={h} className="hover:text-white transition">{l}</Link>
             ))}
@@ -99,24 +103,42 @@ export default function Header({ reglages = {}, categories = [] }) {
       </div>
 
       <div className="bg-bg border-b border-line">
-        <div className="mx-auto max-w-[1400px] px-5 sm:px-7" style={{ height: 78, display: "flex", alignItems: "center", gap: 24 }}>
-          <Link href="/" aria-label="Côté BURO — accueil" style={{ flexShrink: 0 }}>
-            <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority />
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-7 h-[62px] lg:h-[78px] flex items-center gap-4 lg:gap-6">
+          <Link href="/" aria-label="Côté BURO — accueil" className="shrink-0">
+            <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={168} height={32} priority className="w-[140px] lg:w-[168px] h-auto" />
           </Link>
 
-          <div className="cb-search" style={{ flex: 1, maxWidth: 440 }}>
+          <div className="cb-search flex-1 max-w-[440px]">
             <SearchBar variant="desktop" />
           </div>
 
-          <nav className="cb-nav-desktop" style={{ alignItems: "center", gap: 24, marginLeft: "auto", fontSize: 13, fontWeight: 600 }}>
+          {/* Actions mobile — la recherche et surtout le panier étaient enfermés
+              dans le tiroir : rien ne confirmait un ajout au panier. */}
+          <div className="cb-actions-mobile items-center gap-0.5">
+            <button onClick={() => setRechercheOuverte((v) => !v)} aria-label="Rechercher"
+              className="grid place-items-center w-[38px] h-[38px] text-ink">
+              {rechercheOuverte ? <CloseIcon size={21} /> : <SearchIcon />}
+            </button>
+            <Link href="/panier" aria-label="Panier" className="relative grid place-items-center w-[38px] h-[38px] text-ink">
+              <CartIcon size={21} />
+              {count > 0 && (
+                <span className="absolute top-1 right-0.5 min-w-4 h-4 px-1 rounded-full bg-orange text-white text-[9.5px] font-bold grid place-items-center">{count}</span>
+              )}
+            </Link>
+            <button onClick={() => setOpen(true)} aria-label="Ouvrir le menu"
+              className="grid place-items-center w-[38px] h-[38px] text-ink -mr-2">
+              <BurgerIcon />
+            </button>
+          </div>
+
+          <nav className="cb-nav-desktop items-center gap-6 ml-auto text-[13px] font-semibold">
             {connecte ? (
-              <div ref={compteMenuRef} style={{ position: "relative" }}>
+              <div ref={compteMenuRef} className="relative">
                 <button
                   onClick={() => setCompteMenuOuvert((v) => !v)}
-                  className="text-ink hover:text-orange transition"
-                  style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, font: "inherit", color: "inherit" }}
+                  className="text-ink hover:text-orange transition flex flex-col items-center gap-0.5 bg-transparent border-none cursor-pointer text-[13px] font-semibold"
                 >
-                  <span style={{ width: 22, height: 22, borderRadius: "50%", background: "#fce6d6", color: "#d9551a", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 11.5 }}>
+                  <span className="w-[22px] h-[22px] rounded-full bg-orange-tint text-orange-dark grid place-items-center font-bold text-[11.5px]">
                     {initiale}
                   </span>
                   <span>Compte</span>
@@ -141,20 +163,23 @@ export default function Header({ reglages = {}, categories = [] }) {
             ) : (
               <Action href="/connexion" label="Connexion"><UserIcon /></Action>
             )}
-            <Link href="/devis" className="text-ink hover:text-orange transition" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-              {countDevis > 0 && <span className="bg-charcoal text-white" style={{ position: "absolute", top: -6, right: -8, minWidth: 16, height: 16, borderRadius: 8, display: "grid", placeItems: "center", fontSize: 10, fontWeight: 700, padding: "0 3px" }}>{countDevis}</span>}
+            <Link href="/devis" className="text-ink hover:text-orange transition relative flex flex-col items-center gap-0.5">
+              {countDevis > 0 && <span className="bg-charcoal text-white absolute -top-1.5 -right-2 min-w-4 h-4 rounded-lg grid place-items-center text-[10px] font-bold px-[3px]">{countDevis}</span>}
               <DevisIcon /><span>Devis</span>
             </Link>
-            <Link href="/panier" className="text-ink hover:text-orange transition" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-              {count > 0 && <span className="bg-orange text-white" style={{ position: "absolute", top: -6, right: -8, minWidth: 16, height: 16, borderRadius: 8, display: "grid", placeItems: "center", fontSize: 10, fontWeight: 700, padding: "0 3px" }}>{count}</span>}
+            <Link href="/panier" className="text-ink hover:text-orange transition relative flex flex-col items-center gap-0.5">
+              {count > 0 && <span className="bg-orange text-white absolute -top-1.5 -right-2 min-w-4 h-4 rounded-lg grid place-items-center text-[10px] font-bold px-[3px]">{count}</span>}
               <CartIcon /><span>Panier</span>
             </Link>
           </nav>
-
-          <button onClick={() => setOpen(true)} className="cb-burger text-ink" style={{ placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Ouvrir le menu">
-            <BurgerIcon />
-          </button>
         </div>
+
+        {/* Champ de recherche mobile, déplié par la loupe */}
+        {rechercheOuverte && (
+          <div className="lg:hidden px-5 pb-3 -mt-1">
+            <SearchBar variant="mobile" />
+          </div>
+        )}
 
         {/* Barre catégories + méga-menu — zone de survol resserrée sur 1400px,
             panneau collé sans décalage, même couleur crème que le header. */}
@@ -225,22 +250,18 @@ export default function Header({ reglages = {}, categories = [] }) {
       <div className={`fixed inset-0 z-[70] ${open ? "" : "pointer-events-none"}`} style={{ display: open ? "block" : undefined }}>
         <div onClick={() => setOpen(false)} className="transition-opacity duration-300" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", opacity: open ? 1 : 0 }} />
         <div className="bg-bg transition-transform duration-300" style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "88%", maxWidth: 400, boxShadow: "-10px 0 40px rgba(0,0,0,.2)", display: "flex", flexDirection: "column", transform: open ? "translateX(0)" : "translateX(100%)" }}>
-          <div className="border-b border-line" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: 72 }}>
+          <div className="border-b border-line" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: 66 }}>
             <Image src="/logo-coteburo-bicolore.svg" alt="Côté BURO" width={150} height={29} />
             <button onClick={() => setOpen(false)} className="text-ink" style={{ display: "grid", placeItems: "center", height: 40, width: 40, marginRight: -8 }} aria-label="Fermer"><CloseIcon /></button>
           </div>
 
-          <div style={{ flex: 1, overflowY: "auto", padding: 20 }}>
-            <div style={{ marginBottom: 18 }}>
-              <SearchBar variant="mobile" />
-            </div>
-
+          <div style={{ flex: 1, overflowY: "auto", padding: 18 }}>
             {connecte && (
-              <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderRadius: 14, background: "#faf8f4", border: "1px solid #ece8e0", marginBottom: 18 }}>
-                <span style={{ width: 36, height: 36, borderRadius: "50%", background: "#fce6d6", color: "#d9551a", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{initiale}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, background: "#faf8f4", border: "1px solid #ece8e0", marginBottom: 16 }}>
+                <span style={{ width: 34, height: 34, borderRadius: "50%", background: "#fce6d6", color: "#d9551a", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 13.5, flexShrink: 0 }}>{initiale}</span>
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "#23262a", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{session.user.email}</p>
-                  <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "1px 0 0" }}>Connecté</p>
+                  <p style={{ fontSize: 12.5, fontWeight: 600, color: "#23262a", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{session.user.email}</p>
+                  <p style={{ fontSize: 11, color: "#9aa0a8", margin: "1px 0 0" }}>Connecté</p>
                 </div>
               </div>
             )}
@@ -248,49 +269,49 @@ export default function Header({ reglages = {}, categories = [] }) {
             <nav style={{ display: "flex", flexDirection: "column" }}>
               {categories.map((cat) => (
                 <div key={cat.slug} className="border-b border-line/70">
-                  <button onClick={() => setMobileCat(mobileCat === cat.slug ? null : cat.slug)} className="text-ink" style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 0", fontSize: 15, fontWeight: 600 }}>
+                  <button onClick={() => setMobileCat(mobileCat === cat.slug ? null : cat.slug)} className="text-ink" style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", fontSize: 14.5, fontWeight: 600 }}>
                     {cat.nom}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" style={{ transform: mobileCat === cat.slug ? "rotate(180deg)" : "none", transition: "transform .2s" }}><path d="m6 9 6 6 6-6" /></svg>
                   </button>
                   {mobileCat === cat.slug && (
                     <div style={{ paddingBottom: 12, display: "flex", flexDirection: "column", gap: 8 }}>
-                      <Link href={`/catalogue?categorie=${cat.slug}`} onClick={() => setOpen(false)} className="text-orange font-semibold transition" style={{ fontSize: 14, paddingLeft: 4 }}>Tout {cat.nom.toLowerCase()}</Link>
+                      <Link href={`/catalogue?categorie=${cat.slug}`} onClick={() => setOpen(false)} className="text-orange font-semibold transition" style={{ fontSize: 13.5, paddingLeft: 4 }}>Tout {cat.nom.toLowerCase()}</Link>
                       {cat.sousCategories.length > 0 ? cat.sousCategories.map((s) => (
-                        <Link key={s.slug} href={`/catalogue?categorie=${cat.slug}&sousCategorie=${s.slug}`} onClick={() => setOpen(false)} className="text-ink-soft hover:text-orange transition" style={{ fontSize: 14, paddingLeft: 4 }}>{s.nom}</Link>
+                        <Link key={s.slug} href={`/catalogue?categorie=${cat.slug}&sousCategorie=${s.slug}`} onClick={() => setOpen(false)} className="text-ink-soft hover:text-orange transition" style={{ fontSize: 13.5, paddingLeft: 4 }}>{s.nom}</Link>
                       )) : (
-                        <span style={{ fontSize: 13, color: "#9aa0a8", paddingLeft: 4 }}>Nouveautés à venir</span>
+                        <span style={{ fontSize: 12.5, color: "#9aa0a8", paddingLeft: 4 }}>Nouveautés à venir</span>
                       )}
                     </div>
                   )}
                 </div>
               ))}
               {CORP.map(([l, h]) => (
-                <Link key={h} href={h} onClick={() => setOpen(false)} className="text-ink hover:text-orange transition border-b border-line/70" style={{ padding: "13px 0", fontSize: 15, fontWeight: 600 }}>{l}</Link>
+                <Link key={h} href={h} onClick={() => setOpen(false)} className="text-ink hover:text-orange transition border-b border-line/70" style={{ padding: "12px 0", fontSize: 14.5, fontWeight: 600 }}>{l}</Link>
               ))}
             </nav>
 
-            <Link href="/devis" onClick={() => setOpen(false)} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 13, fontWeight: 700, marginTop: 20 }}>
+            <Link href="/devis" onClick={() => setOpen(false)} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 700, fontSize: 14, marginTop: 18 }}>
               Demander un devis →
             </Link>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 16, fontSize: 13, fontWeight: 600 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginTop: 14, fontSize: 12.5, fontWeight: 600 }}>
               <MobileTile href={connecte ? "/compte" : "/connexion"} onClose={() => setOpen(false)} label={connecte ? "Mon compte" : "Connexion"}><UserIcon /></MobileTile>
               <MobileTile href="/devis" onClose={() => setOpen(false)} label={`Devis${countDevis > 0 ? ` (${countDevis})` : ""}`}><DevisIcon /></MobileTile>
-              <MobileTile href="/panier" onClose={() => setOpen(false)} label="Panier"><CartIcon /></MobileTile>
+              <MobileTile href="/panier" onClose={() => setOpen(false)} label={`Panier${count > 0 ? ` (${count})` : ""}`}><CartIcon /></MobileTile>
             </div>
 
             {connecte && (
               <button
                 onClick={() => { setOpen(false); signOut({ callbackUrl: "/" }); }}
-                style={{ width: "100%", textAlign: "center", marginTop: 14, padding: "12px 0", fontSize: 13.5, fontWeight: 600, color: "#d9551a", background: "none", border: "none", cursor: "pointer" }}
+                style={{ width: "100%", textAlign: "center", marginTop: 12, padding: "12px 0", fontSize: 13, fontWeight: 600, color: "#d9551a", background: "none", border: "none", cursor: "pointer" }}
               >
                 Se déconnecter
               </button>
             )}
           </div>
 
-          <div className="border-t border-line" style={{ padding: 20 }}>
-            <a href={telLink} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 600 }}>{tel}</a>
+          <div className="border-t border-line" style={{ padding: 18 }}>
+            <a href={telLink} className="bg-orange text-white hover:bg-orange-dark transition" style={{ display: "block", textAlign: "center", borderRadius: 999, padding: 12, fontWeight: 600, fontSize: 14 }}>{tel}</a>
           </div>
         </div>
       </div>
@@ -307,14 +328,15 @@ function Action({ href, label, children }) {
 }
 function MobileTile({ href, label, children, onClose }) {
   return (
-    <Link href={href} onClick={onClose} className="text-ink border border-line" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, borderRadius: 12, padding: "12px 0" }}>
+    <Link href={href} onClick={onClose} className="text-ink border border-line" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, borderRadius: 12, padding: "11px 0", textAlign: "center", lineHeight: 1.2 }}>
       {children}{label}
     </Link>
   );
 }
 
 function UserIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>; }
-function CartIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>; }
+function CartIcon({ size = 22 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>; }
 function DevisIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M9 13h6M9 17h4" /></svg>; }
-function BurgerIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
-function CloseIcon() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>; }
+function SearchIcon() { return <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>; }
+function BurgerIcon() { return <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
+function CloseIcon({ size = 24 }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>; }
