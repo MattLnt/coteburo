@@ -72,20 +72,24 @@ export default async function FavorisPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange">Espace client</p>
-        <h1 className="font-display font-bold text-3xl sm:text-4xl mt-2">Mes favoris</h1>
-        <p className="text-ink-soft mt-2">Retrouvez ici les produits que vous avez enregistrés.</p>
+      <div className="mb-5 sm:mb-8">
+        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Espace client</p>
+        <h1 className="font-display font-bold text-[26px] sm:text-4xl mt-1.5 sm:mt-2">Mes favoris</h1>
+        <p className="text-ink-soft mt-1.5 sm:mt-2 text-[13px] sm:text-base">
+          {items.length > 0
+            ? `${items.length} produit${items.length > 1 ? "s" : ""} enregistré${items.length > 1 ? "s" : ""}.`
+            : "Retrouvez ici les produits que vous avez enregistrés."}
+        </p>
       </div>
 
       {items.length === 0 ? (
-        <div className="rounded-2xl border border-line bg-surface p-12 text-center">
+        <div className="rounded-2xl border border-line bg-surface p-8 sm:p-12 text-center">
           <div className="mx-auto mb-4 grid place-items-center w-14 h-14 rounded-full bg-surface-2 text-ink-soft/40">
             <svg width="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" /></svg>
           </div>
-          <p className="text-ink-soft">Vous n&apos;avez pas encore de favoris.</p>
-          <p className="text-[13px] text-ink-soft/80 mt-1">Cliquez sur le cœur d&apos;un produit pour l&apos;enregistrer ici.</p>
-          <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+          <p className="text-ink-soft text-[14px]">Vous n&apos;avez pas encore de favoris.</p>
+          <p className="text-[12.5px] text-ink-soft/80 mt-1">Cliquez sur le cœur d&apos;un produit pour l&apos;enregistrer ici.</p>
+          <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
         </div>
       ) : (
         <FavorisGrille items={JSON.parse(JSON.stringify(items))} />
