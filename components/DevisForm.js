@@ -1,19 +1,58 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDevis } from "@/components/devis/DevisContext";
 
-const champStyle = "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-orange focus:bg-white/10 transition";
-const selectStyle = champStyle + " appearance-none cursor-pointer";
-const labelStyle = "block text-[13px] font-semibold mb-1.5 text-white/80";
+const champStyle = "w-full rounded-xl border border-white/15 bg-white/5 px-3.5 sm:px-4 py-3 text-[13.5px] sm:text-sm text-white placeholder:text-white/40 outline-none focus:border-orange focus:bg-white/10 transition";
+const labelStyle = "block text-[12px] sm:text-[13px] font-semibold mb-1.5 text-white/80";
 
 const TYPES = ["Aménagement complet de bureaux", "Poste(s) de travail", "Salle de réunion", "Espace d'accueil", "Rangements", "Cloisons / acoustique", "Autre"];
 const DELAIS = ["Dès que possible", "Sous 1 mois", "Sous 3 mois", "Plus de 3 mois", "Non défini"];
 const BUDGETS = ["Moins de 5 000 €", "5 000 – 15 000 €", "15 000 – 50 000 €", "Plus de 50 000 €", "À définir"];
 
-const chevron = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-opacity='0.5' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")";
-const selectBg = { backgroundImage: chevron, backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center" };
-
 const ETAPES = ["Coordonnées", "Votre projet", "Envoi"];
+
+// Menu déroulant sur mesure — le <select> natif impose l'apparence de sa liste
+// et rend très mal sur fond sombre, surtout sur mobile.
+function Selecteur({ label, valeur, options, onChange, placeholder = "Sélectionnez…" }) {
+  const [ouvert, setOuvert] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ouvert) return;
+    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOuvert(false); };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [ouvert]);
+
+  return (
+    <div ref={ref} className="relative">
+      <label className={labelStyle}>{label}</label>
+      <button type="button" onClick={() => setOuvert((v) => !v)}
+        className={`w-full flex items-center justify-between gap-3 rounded-xl border bg-white/5 px-3.5 sm:px-4 py-3 text-[13.5px] sm:text-sm text-left transition ${ouvert ? "border-white/35 bg-white/10" : "border-white/15"}`}>
+        <span className={valeur ? "text-white" : "text-white/40"}>{valeur || placeholder}</span>
+        <span className={`text-white/50 shrink-0 transition-transform ${ouvert ? "rotate-180" : ""}`}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="m6 9 6 6 6-6" /></svg>
+        </span>
+      </button>
+
+      {ouvert && (
+        <div className="absolute top-[calc(100%+6px)] left-0 right-0 z-50 rounded-xl bg-[#2b2f34] border border-white/15 p-1.5 max-h-[240px] overflow-y-auto"
+          style={{ boxShadow: "0 16px 40px -12px rgba(0,0,0,0.5)" }}>
+          {options.map((o) => {
+            const actif = valeur === o;
+            return (
+              <button key={o} type="button" onClick={() => { onChange(o); setOuvert(false); }}
+                className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg text-[13px] text-left transition ${actif ? "bg-orange/20 text-orange font-semibold" : "text-white/80 hover:bg-white/8"}`}>
+                <span>{o}</span>
+                {actif && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" className="shrink-0"><path d="M20 6 9 17l-5-5" /></svg>}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function DevisForm() {
   const { items, clear } = useDevis();
@@ -75,35 +114,35 @@ export default function DevisForm() {
 
   if (envoye) {
     return (
-      <div className="rounded-[24px] bg-charcoal p-10 sm:p-14 text-center">
-        <div className="mx-auto mb-5 grid place-items-center w-16 h-16 rounded-full bg-[#1f7a52]/20 text-[#4ade80]">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M20 6 9 17l-5-5" /></svg>
+      <div className="rounded-2xl lg:rounded-[24px] bg-charcoal p-7 sm:p-14 text-center">
+        <div className="mx-auto mb-4 sm:mb-5 grid place-items-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#1f7a52]/20 text-[#4ade80]">
+          <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M20 6 9 17l-5-5" /></svg>
         </div>
-        <h3 className="font-display font-bold text-2xl text-white">Demande envoyée !</h3>
-        <p className="text-white/60 mt-2 max-w-md mx-auto">Merci pour votre demande de devis. Notre équipe étudie votre projet et vous recontacte rapidement avec une proposition. Un email de confirmation vous a été envoyé.</p>
+        <h3 className="font-display font-bold text-[21px] sm:text-2xl text-white">Demande envoyée !</h3>
+        <p className="text-white/60 mt-2 max-w-md mx-auto text-[13px] sm:text-base leading-relaxed">Merci pour votre demande de devis. Notre équipe étudie votre projet et vous recontacte rapidement avec une proposition. Un email de confirmation vous a été envoyé.</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-[24px] bg-charcoal p-7 sm:p-9 relative overflow-hidden">
+    <div className="rounded-2xl lg:rounded-[24px] bg-charcoal p-5 sm:p-9 relative overflow-hidden">
       <div className="absolute -top-20 -right-16 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(240,102,27,0.22), transparent 70%)" }} />
 
       <div className="relative">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange">Votre projet</p>
-        <h2 className="font-display font-bold text-2xl text-white mt-1.5 mb-1">Demande de devis gratuit</h2>
-        <p className="text-white/55 text-sm mb-6">Décrivez votre projet, nous revenons vers vous avec une proposition adaptée.</p>
+        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-orange">Votre projet</p>
+        <h2 className="font-display font-bold text-[21px] sm:text-2xl text-white mt-1.5 mb-1">Demande de devis gratuit</h2>
+        <p className="text-white/55 text-[12.5px] sm:text-sm mb-5 sm:mb-6 leading-relaxed">Décrivez votre projet, nous revenons vers vous avec une proposition adaptée.</p>
 
         {/* Progress bar */}
-        <div className="flex items-center gap-2 mb-7">
+        <div className="flex items-center gap-2 mb-5 sm:mb-7">
           {ETAPES.map((label, i) => (
-            <div key={label} className="flex items-center gap-2 flex-1">
-              <div className="flex items-center gap-2">
-                <span className={`grid place-items-center w-7 h-7 rounded-full text-[12.5px] font-bold shrink-0 transition ${
+            <div key={label} className="flex items-center gap-2 flex-1 last:flex-none sm:last:flex-1">
+              <div className="flex items-center gap-2 shrink-0">
+                <span className={`grid place-items-center w-6 h-6 sm:w-7 sm:h-7 rounded-full text-[11.5px] sm:text-[12.5px] font-bold shrink-0 transition ${
                   i < step ? "bg-orange/25 text-orange" : i === step ? "bg-orange text-white" : "bg-white/10 text-white/40"}`}>
                   {i < step ? "✓" : i + 1}
                 </span>
-                <span className={`text-[12.5px] font-semibold hidden sm:inline ${i === step ? "text-white" : "text-white/40"}`}>{label}</span>
+                <span className={`text-[12px] sm:text-[12.5px] font-semibold ${i === step ? "text-white" : "text-white/40 hidden sm:inline"}`}>{label}</span>
               </div>
               {i < ETAPES.length - 1 && <div className={`flex-1 h-[2px] rounded ${i < step ? "bg-orange/40" : "bg-white/10"}`} />}
             </div>
@@ -112,24 +151,24 @@ export default function DevisForm() {
 
         {/* Étape 1 : Coordonnées */}
         {step === 0 && (
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className={labelStyle}>Prénom *</label>
-              <input className={`${champStyle} ${erreurs.prenom ? "border-orange" : ""}`} value={form.prenom} onChange={(e) => set("prenom", e.target.value)} placeholder="Votre prénom" />
+              <input className={`${champStyle} ${erreurs.prenom ? "border-orange" : ""}`} value={form.prenom} onChange={(e) => set("prenom", e.target.value)} placeholder="Prénom" />
             </div>
             <div>
               <label className={labelStyle}>Nom *</label>
-              <input className={`${champStyle} ${erreurs.nom ? "border-orange" : ""}`} value={form.nom} onChange={(e) => set("nom", e.target.value)} placeholder="Votre nom" />
+              <input className={`${champStyle} ${erreurs.nom ? "border-orange" : ""}`} value={form.nom} onChange={(e) => set("nom", e.target.value)} placeholder="Nom" />
             </div>
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <label className={labelStyle}>Email *</label>
-              <input className={`${champStyle} ${erreurs.email ? "border-orange" : ""}`} value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="vous@exemple.fr" type="email" />
+              <input className={`${champStyle} ${erreurs.email ? "border-orange" : ""}`} value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="vous@exemple.fr" type="email" inputMode="email" />
             </div>
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <label className={labelStyle}>Téléphone</label>
-              <input className={champStyle} value={form.telephone} onChange={(e) => set("telephone", e.target.value)} placeholder="06 12 34 56 78" />
+              <input className={champStyle} value={form.telephone} onChange={(e) => set("telephone", e.target.value)} placeholder="06 12 34 56 78" type="tel" inputMode="tel" />
             </div>
-            <div className="sm:col-span-2">
+            <div className="col-span-2">
               <label className={labelStyle}>Société</label>
               <input className={champStyle} value={form.societe} onChange={(e) => set("societe", e.target.value)} placeholder="Nom de votre société (optionnel)" />
             </div>
@@ -138,35 +177,23 @@ export default function DevisForm() {
 
         {/* Étape 2 : Projet */}
         {step === 1 && (
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="sm:col-span-2">
-              <label className={labelStyle}>Type de projet</label>
-              <select className={selectStyle} value={form.typeProjet} onChange={(e) => set("typeProjet", e.target.value)} style={selectBg}>
-                <option value="" className="text-ink">Sélectionnez…</option>
-                {TYPES.map((t) => <option key={t} value={t} className="text-ink">{t}</option>)}
-              </select>
+              <Selecteur label="Type de projet" valeur={form.typeProjet} options={TYPES} onChange={(v) => set("typeProjet", v)} />
             </div>
             <div>
               <label className={labelStyle}>Surface / nb de postes</label>
               <input className={champStyle} value={form.surface} onChange={(e) => set("surface", e.target.value)} placeholder="ex : 120 m² ou 15 postes" />
             </div>
             <div>
-              <label className={labelStyle}>Délai souhaité</label>
-              <select className={selectStyle} value={form.delai} onChange={(e) => set("delai", e.target.value)} style={selectBg}>
-                <option value="" className="text-ink">Sélectionnez…</option>
-                {DELAIS.map((t) => <option key={t} value={t} className="text-ink">{t}</option>)}
-              </select>
+              <Selecteur label="Délai souhaité" valeur={form.delai} options={DELAIS} onChange={(v) => set("delai", v)} />
             </div>
             <div className="sm:col-span-2">
-              <label className={labelStyle}>Budget estimé</label>
-              <select className={selectStyle} value={form.budget} onChange={(e) => set("budget", e.target.value)} style={selectBg}>
-                <option value="" className="text-ink">Sélectionnez…</option>
-                {BUDGETS.map((t) => <option key={t} value={t} className="text-ink">{t}</option>)}
-              </select>
+              <Selecteur label="Budget estimé" valeur={form.budget} options={BUDGETS} onChange={(v) => set("budget", v)} />
             </div>
             <div className="sm:col-span-2">
               <label className={labelStyle}>Détails du projet</label>
-              <textarea className={`${champStyle} min-h-[110px] resize-y leading-relaxed`} value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="Décrivez votre besoin, vos contraintes, vos préférences…" />
+              <textarea className={`${champStyle} min-h-[100px] sm:min-h-[110px] resize-y leading-relaxed`} value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="Décrivez votre besoin, vos contraintes, vos préférences…" />
             </div>
           </div>
         )}
@@ -174,46 +201,46 @@ export default function DevisForm() {
         {/* Étape 3 : Récap + envoi */}
         {step === 2 && (
           <div>
-            <div className="rounded-xl bg-white/5 border border-white/10 divide-y divide-white/10 mb-5">
-              <div className="px-4 py-3 flex justify-between text-[13.5px]">
-                <span className="text-white/55">Contact</span>
+            <div className="rounded-xl bg-white/5 border border-white/10 divide-y divide-white/10 mb-4 sm:mb-5">
+              <div className="px-3.5 sm:px-4 py-3 flex justify-between gap-3 text-[12.5px] sm:text-[13.5px]">
+                <span className="text-white/55 shrink-0">Contact</span>
                 <span className="text-white font-medium text-right">{form.prenom} {form.nom}{form.societe ? ` · ${form.societe}` : ""}</span>
               </div>
-              <div className="px-4 py-3 flex justify-between text-[13.5px]">
-                <span className="text-white/55">Email</span>
-                <span className="text-white font-medium">{form.email}</span>
+              <div className="px-3.5 sm:px-4 py-3 flex justify-between gap-3 text-[12.5px] sm:text-[13.5px]">
+                <span className="text-white/55 shrink-0">Email</span>
+                <span className="text-white font-medium text-right truncate">{form.email}</span>
               </div>
               {form.typeProjet && (
-                <div className="px-4 py-3 flex justify-between text-[13.5px]">
-                  <span className="text-white/55">Projet</span>
+                <div className="px-3.5 sm:px-4 py-3 flex justify-between gap-3 text-[12.5px] sm:text-[13.5px]">
+                  <span className="text-white/55 shrink-0">Projet</span>
                   <span className="text-white font-medium text-right">{form.typeProjet}</span>
                 </div>
               )}
               {items.length > 0 && (
-                <div className="px-4 py-3 flex justify-between text-[13.5px]">
+                <div className="px-3.5 sm:px-4 py-3 flex justify-between gap-3 text-[12.5px] sm:text-[13.5px]">
                   <span className="text-white/55">Produits joints</span>
                   <span className="text-white font-medium">{items.length}</span>
                 </div>
               )}
             </div>
-            <p className="text-[12.5px] text-white/45 mb-5">Vérifiez vos informations puis envoyez votre demande — notre équipe revient vers vous sous 24 à 48h ouvrées.</p>
+            <p className="text-[11.5px] sm:text-[12.5px] text-white/45 mb-4 sm:mb-5 leading-relaxed">Vérifiez vos informations puis envoyez votre demande — notre équipe revient vers vous sous 24 à 48h ouvrées.</p>
           </div>
         )}
 
-        {erreurGlobale && <p className="text-sm text-white bg-orange/20 border border-orange/40 rounded-lg px-3 py-2 mt-4">{erreurGlobale}</p>}
+        {erreurGlobale && <p className="text-[12.5px] sm:text-sm text-white bg-orange/20 border border-orange/40 rounded-lg px-3 py-2.5 mt-4 leading-relaxed">{erreurGlobale}</p>}
 
         {/* Navigation */}
-        <div className="flex items-center gap-3 mt-6">
+        <div className="flex items-center gap-2 sm:gap-3 mt-5 sm:mt-6">
           {step > 0 && (
-            <button onClick={precedent} className="text-[14px] font-semibold text-white/60 hover:text-white transition px-2">← Retour</button>
+            <button onClick={precedent} className="text-[13px] sm:text-[14px] font-semibold text-white/60 hover:text-white transition px-2 shrink-0">← Retour</button>
           )}
           {step < ETAPES.length - 1 ? (
-            <button onClick={suivant} className="flex-1 rounded-full bg-orange text-white font-semibold px-8 py-3.5 hover:bg-orange-dark transition">
+            <button onClick={suivant} className="flex-1 rounded-full bg-orange text-white font-semibold px-6 sm:px-8 py-3.5 text-[13.5px] sm:text-base hover:bg-orange-dark transition">
               Continuer →
             </button>
           ) : (
-            <button onClick={handleSubmit} disabled={envoi} className="flex-1 rounded-full bg-orange text-white font-semibold px-8 py-3.5 hover:bg-orange-dark transition disabled:opacity-60">
-              {envoi ? "Envoi…" : "Envoyer ma demande de devis →"}
+            <button onClick={handleSubmit} disabled={envoi} className="flex-1 rounded-full bg-orange text-white font-semibold px-6 sm:px-8 py-3.5 text-[13.5px] sm:text-base hover:bg-orange-dark transition disabled:opacity-60">
+              {envoi ? "Envoi…" : "Envoyer ma demande →"}
             </button>
           )}
         </div>
