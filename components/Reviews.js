@@ -16,15 +16,15 @@ function Stars({ n }) {
 
 export default function Reviews() {
   return (
-    <section className="w-full">
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 mb-4 sm:mb-8">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
+      <div className="mb-4 sm:mb-8">
         <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">★ 4,9 / 5 sur Google</p>
         <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Ce qu&apos;en disent nos clients</h2>
       </div>
 
-      {/* Défilement horizontal sur mobile : trois avis empilés font beaucoup
-          de texte à faire défiler avant la suite de la page. */}
-      <div className="mx-auto max-w-[1400px] flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible px-5 sm:px-7 pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
+      {/* Même principe que les réalisations : la bande déborde jusqu'aux bords
+          de l'écran, la première carte reste alignée sur la marge. */}
+      <div className="-mx-5 px-5 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
         {REVIEWS.map((r, i) => (
           <div key={i} className="shrink-0 md:shrink w-[280px] md:w-auto rounded-[18px] sm:rounded-3xl bg-surface border border-line p-5 sm:p-7 flex flex-col [scroll-snap-align:start]">
             <Stars n={r.stars} />

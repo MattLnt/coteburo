@@ -9,8 +9,8 @@ const REALS = [
 
 export default function Realisations() {
   return (
-    <section className="w-full">
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-7 flex items-end justify-between gap-4 mb-4 sm:mb-8">
+    <section className="mx-auto max-w-[1400px] px-5 sm:px-7 w-full">
+      <div className="flex items-end justify-between gap-4 mb-4 sm:mb-8">
         <div>
           <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Nos réalisations</p>
           <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Des espaces qui ont pris vie</h2>
@@ -21,9 +21,10 @@ export default function Realisations() {
         </Link>
       </div>
 
-      {/* Défilement horizontal sur mobile : trois cartes de 340px empilées
-          faisaient plus de 1000px de haut pour un bloc secondaire. */}
-      <div className="mx-auto max-w-[1400px] flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible px-5 sm:px-7 pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
+      {/* Défilement horizontal sur mobile. Le -mx-5 + px-5 fait déborder la
+          bande jusqu'aux bords de l'écran tout en gardant la première carte
+          alignée sur la marge — la carte suivante reste visible en amorce. */}
+      <div className="-mx-5 px-5 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
         {REALS.map((r, i) => (
           <Link key={i} href="/realisations" className="group relative block shrink-0 md:shrink w-[270px] md:w-auto h-[250px] sm:h-[340px] rounded-[18px] sm:rounded-3xl overflow-hidden bg-charcoal [scroll-snap-align:start]">
             <Image src={r.image} alt={r.titre} fill sizes="(max-width:768px) 270px, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />
