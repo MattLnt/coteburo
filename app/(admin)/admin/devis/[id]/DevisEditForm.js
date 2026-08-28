@@ -1,8 +1,8 @@
 "use client";
-import { useState, useMemo, useTransition, useEffect, useRef } from "react";
+import { useState, useMemo, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { enregistrerDevis, changerStatutDevis, supprimerDevis, chercherProduits } from "./actions";
+import { enregistrerDevis, changerStatutDevis, supprimerDevis, chargerCatalogueDevis } from "./actions";
 
 const euro = (v) => `${Number(v || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 const euro0 = (v) => `${Math.round(Number(v || 0)).toLocaleString("fr-FR")} €`;
@@ -12,6 +12,8 @@ const nb = (v) => {
   const n = Number(String(v).replace(",", "."));
   return Number.isFinite(n) ? n : 0;
 };
+// Recherche insensible aux accents et à la casse
+const norm = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const STATUTS = {
   nouveau: { label: "Nouveau", bg: "#fce6d6", color: "#d9551a" },
@@ -29,7 +31,6 @@ const champ = {
 };
 const mini = { fontSize: 10, color: "#9aa0a8", margin: "0 0 4px", display: "block" };
 
-// URL publique d'un produit — le chemin dépend de la présence d'une sous-catégorie.
 const urlProduit = (l) => {
   if (!l.categorieSlug || !l.slug) return null;
   return l.sousCategorieSlug
@@ -37,7 +38,6 @@ const urlProduit = (l) => {
     : `/${l.categorieSlug}/${l.slug}`;
 };
 
-// Section repliable — la page est longue, tout ouvert on ne s'y retrouve pas.
 function Section({ titre, sousTitre, ouvertParDefaut, children }) {
   const [ouvert, setOuvert] = useState(!!ouvertParDefaut);
   return (
@@ -77,13 +77,15 @@ export default function DevisEditForm({ devis }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // Panneau d'ajout de produits
+  // Panneau d'ajout — catalogue chargé une seule fois, filtré côté navigateur
   const [panneauOuvert, setPanneauOuvert] = useState(false);
+  const [catalogue, setCatalogue] = useState(null);
   const [recherche, setRecherche] = useState("");
-  const [resultats, setResultats] = useState([]);
-  const [chargement, setChargement] = useState(false);
+  const [catId, setCatId] = useState(null);
+  const [sousCatId, setSousCatId] = useState(null);
   const [produitOuvert, setProduitOuvert] = useState(null);
-  const debounce = useRef(null);
+  const [declChoisie, setDeclChoisie] = useState(null);
+  const [qteAjout, setQteAjout] = useState(1);
 
   const set = (k, v) => { setForm((f) => ({ ...f, [k]: v })); setSaved(false); };
   const setLigne = (i, k, v) => {
@@ -96,26 +98,46 @@ export default function DevisEditForm({ devis }) {
     setSaved(false);
   };
 
-  // Recherche catalogue, avec un délai après la dernière frappe
-  useEffect(() => {
-    if (!panneauOuvert) return;
-    clearTimeout(debounce.current);
-    if (recherche.trim().length < 2) { setResultats([]); return; }
-    setChargement(true);
-    debounce.current = setTimeout(async () => {
-      const r = await chercherProduits(recherche);
-      setResultats(r);
-      setChargement(false);
-    }, 350);
-    return () => clearTimeout(debounce.current);
-  }, [recherche, panneauOuvert]);
+  const ouvrirPanneau = async () => {
+    setPanneauOuvert(true);
+    if (!catalogue) setCatalogue(await chargerCatalogueDevis());
+  };
+
+  const fermerPanneau = () => {
+    setPanneauOuvert(false);
+    setProduitOuvert(null);
+    setDeclChoisie(null);
+    setQteAjout(1);
+  };
 
   useEffect(() => {
     document.body.style.overflow = panneauOuvert ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [panneauOuvert]);
 
-  const ajouterProduit = (p, decl) => {
+  const produitsFiltres = useMemo(() => {
+    if (!catalogue) return [];
+    const q = norm(recherche.trim());
+    return catalogue.produits.filter((p) => {
+      if (catId && p.categorieId !== catId) return false;
+      if (sousCatId && p.sousCategorieId !== sousCatId) return false;
+      if (q && !norm(`${p.nom} ${p.gammeNom}`).includes(q)) return false;
+      return true;
+    });
+  }, [catalogue, recherche, catId, sousCatId]);
+
+  const catActive = catalogue?.categories.find((c) => c.id === catId) || null;
+
+  const ouvrirProduit = (p) => {
+    setProduitOuvert(p);
+    setDeclChoisie(p.declinaisons.length > 0 ? p.declinaisons[0] : null);
+    setQteAjout(1);
+  };
+
+  const confirmerAjout = () => {
+    const p = produitOuvert;
+    if (!p) return;
+    const prix = declChoisie ? declChoisie.prixHT : (p.prixUnitaire ?? 0);
     setLignes((ls) => [...ls, {
       id: `new-${Date.now()}`,
       vitrineId: p.id,
@@ -124,21 +146,18 @@ export default function DevisEditForm({ devis }) {
       gammeNom: p.gammeNom,
       // La config affiche la déclinaison choisie ; les finitions seront
       // sélectionnées par le client au moment d'accepter le devis.
-      config: decl ? decl.libelle : null,
+      config: declChoisie ? declChoisie.libelle : null,
       imageUrl: p.imageUrl,
-      prixHT: String(decl ? decl.prixHT : (p.prixUnitaire ?? 0)),
-      quantite: "1",
+      prixHT: String(prix),
+      quantite: String(qteAjout),
       slug: p.slug,
       categorieSlug: p.categorieSlug,
       sousCategorieSlug: p.sousCategorieSlug,
     }]);
     setSaved(false);
-    setPanneauOuvert(false);
-    setProduitOuvert(null);
-    setRecherche("");
+    fermerPanneau();
   };
 
-  // Totaux recalculés en direct — mêmes règles que le serveur.
   const totaux = useMemo(() => {
     const sousTotal = lignes.reduce((s, l) => s + nb(l.prixHT) * (parseInt(l.quantite, 10) || 0), 0);
     const remise = form.remiseType === "montant"
@@ -149,9 +168,9 @@ export default function DevisEditForm({ devis }) {
     return { sousTotal, remise, totalHT, totalTVA, totalTTC: totalHT + totalTVA };
   }, [lignes, form]);
 
-  const enregistrer = async (nouveauStatut) => {
+  const enregistrer = async () => {
     setSaving(true);
-    const statut = nouveauStatut || (devis.statut === "nouveau" ? "en_cours" : undefined);
+    const statut = devis.statut === "nouveau" ? "en_cours" : undefined;
     await enregistrerDevis(devis.id, { ...form, lignes, statut });
     setSaving(false);
     setSaved(true);
@@ -170,13 +189,18 @@ export default function DevisEditForm({ devis }) {
   const s = STATUTS[devis.statut] || STATUTS.nouveau;
   const infosProjet = [devis.typeProjet, devis.surface, devis.delai, devis.budget].filter(Boolean);
   const telLink = devis.telephone ? `tel:${devis.telephone.replace(/\s/g, "")}` : null;
+  const prixAjout = declChoisie ? declChoisie.prixHT : (produitOuvert?.prixUnitaire ?? 0);
 
   return (
     <div style={{ paddingBottom: 130 }}>
       <style>{`
         .dv-barre { position: fixed; bottom: 0; left: 0; right: 0; }
+        .dv-panneau { margin-top: auto; border-radius: 22px 22px 0 0; max-height: 88dvh; width: 100%; }
+        .dv-scroll-x { overflow-x: auto; scrollbar-width: none; }
+        .dv-scroll-x::-webkit-scrollbar { display: none; }
         @media (min-width: 1024px) {
           .dv-barre { position: sticky; bottom: 20px; left: auto; right: auto; }
+          .dv-panneau { margin: auto; border-radius: 22px; max-height: 80vh; width: 560px; }
         }
       `}</style>
 
@@ -191,7 +215,6 @@ export default function DevisEditForm({ devis }) {
       </div>
       <p style={{ fontSize: 12, color: "#5c616a", margin: "0 0 14px" }}>Reçu le {dateFR(devis.createdAt)}</p>
 
-      {/* ── Client & projet ── */}
       <Section titre="Client & projet" ouvertParDefaut>
         <div style={{ display: "flex", gap: 9, marginTop: 12 }}>
           <span style={{ color: "#9aa0a8", flexShrink: 0, marginTop: 2, display: "flex" }}>
@@ -227,7 +250,6 @@ export default function DevisEditForm({ devis }) {
         )}
       </Section>
 
-      {/* ── Adresse ── */}
       <Section titre="Adresse de livraison" sousTitre={devis.adresse ? `${devis.codePostal || ""} ${devis.ville || ""}`.trim() : "Non renseignée"}>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 12 }}>
           <div>
@@ -277,8 +299,6 @@ export default function DevisEditForm({ devis }) {
                   )}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  {/* La désignation d'un produit catalogue est verrouillée :
-                      elle doit correspondre exactement à la fiche. */}
                   {estCatalogue ? (
                     <>
                       <p style={{ fontSize: 12.5, fontWeight: 600, color: "#23262a", margin: 0, lineHeight: 1.3 }}>{l.designation}</p>
@@ -306,18 +326,18 @@ export default function DevisEditForm({ devis }) {
                   <label style={mini}>Qté</label>
                   <input style={{ ...champ, padding: "8px 10px" }} value={l.quantite} onChange={(e) => setLigne(i, "quantite", e.target.value)} inputMode="numeric" />
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <label style={mini}>Prix unitaire HT</label>
                   <input style={{ ...champ, padding: "8px 10px" }} value={l.prixHT} onChange={(e) => setLigne(i, "prixHT", e.target.value)} inputMode="decimal" />
                 </div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#23262a", margin: 0, paddingBottom: 9, whiteSpace: "nowrap", minWidth: 84, textAlign: "right" }}>{euro(totalLigne)}</p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#23262a", margin: 0, paddingBottom: 9, whiteSpace: "nowrap", minWidth: 78, textAlign: "right" }}>{euro(totalLigne)}</p>
               </div>
             </div>
           );
         })}
 
         <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={() => setPanneauOuvert(true)} type="button"
+          <button onClick={ouvrirPanneau} type="button"
             style={{ flex: 1, padding: 11, borderRadius: 10, border: "none", background: "#23262a", color: "#fff", cursor: "pointer", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit" }}>
             + Ajouter un produit
           </button>
@@ -333,11 +353,10 @@ export default function DevisEditForm({ devis }) {
         <p style={{ fontSize: 14, fontWeight: 700, color: "#23262a", margin: "0 0 12px" }}>Remise & frais</p>
 
         <div style={{ display: "flex", gap: 8, marginBottom: 13 }}>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <label style={mini}>Remise</label>
             <div style={{ display: "flex", gap: 5 }}>
               <input style={{ ...champ, flex: 1, minWidth: 0 }} value={form.remiseValeur} onChange={(e) => set("remiseValeur", e.target.value)} inputMode="decimal" />
-              {/* Bascule % / € : deux formes de remise, un seul champ de valeur */}
               <div style={{ display: "flex", border: "1.5px solid #e8e3da", borderRadius: 10, overflow: "hidden", flexShrink: 0 }}>
                 {[["pourcentage", "%"], ["montant", "€"]].map(([val, lbl]) => (
                   <button key={val} type="button" onClick={() => set("remiseType", val)}
@@ -348,11 +367,11 @@ export default function DevisEditForm({ devis }) {
               </div>
             </div>
           </div>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <label style={mini}>Livraison €</label>
             <input style={champ} value={form.fraisLivraison} onChange={(e) => set("fraisLivraison", e.target.value)} inputMode="decimal" />
           </div>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <label style={mini}>Installation €</label>
             <input style={champ} value={form.fraisInstallation} onChange={(e) => set("fraisInstallation", e.target.value)} inputMode="decimal" />
           </div>
@@ -388,7 +407,6 @@ export default function DevisEditForm({ devis }) {
         </div>
       </div>
 
-      {/* ── Notes ── */}
       <Section titre="Mot d'accompagnement" sousTitre="Visible par le client sur son devis">
         <textarea style={{ ...champ, minHeight: 90, resize: "vertical", lineHeight: 1.6, marginTop: 12 }}
           value={form.noteClient} onChange={(e) => set("noteClient", e.target.value)}
@@ -401,7 +419,6 @@ export default function DevisEditForm({ devis }) {
           placeholder="Remarques, points à vérifier, historique des échanges…" />
       </Section>
 
-      {/* ── Statut ── */}
       <Section titre="Statut du devis" sousTitre={s.label}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 12 }}>
           {Object.entries(STATUTS).map(([cle, st]) => {
@@ -447,7 +464,7 @@ export default function DevisEditForm({ devis }) {
             {saved && <span style={{ fontSize: 11, color: "#1f7a52", fontWeight: 600 }}>✓ Enregistré</span>}
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={() => enregistrer()} disabled={saving}
+            <button onClick={enregistrer} disabled={saving}
               style={{ padding: "12px 18px", borderRadius: 999, border: "1px solid #ece8e0", background: "#fff", fontSize: 13, fontWeight: 600, color: "#23262a", cursor: "pointer", fontFamily: "inherit", flexShrink: 0, opacity: saving ? 0.6 : 1 }}>
               {saving ? "…" : "Enregistrer"}
             </button>
@@ -459,100 +476,215 @@ export default function DevisEditForm({ devis }) {
         </div>
       </div>
 
-      {/* ══ Panneau d'ajout de produits ══ */}
+      {/* ══ Panneau d'ajout ══ */}
       {panneauOuvert && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 90, display: "flex", flexDirection: "column" }}>
-          <div onClick={() => { setPanneauOuvert(false); setProduitOuvert(null); }}
-            style={{ position: "absolute", inset: 0, background: "rgba(33,36,40,0.5)" }} />
+        <div style={{ position: "fixed", inset: 0, zIndex: 90, display: "flex", flexDirection: "column", padding: 0 }}>
+          <div onClick={fermerPanneau} style={{ position: "absolute", inset: 0, background: "rgba(33,36,40,0.5)" }} />
 
-          <div style={{
-            position: "relative", marginTop: "auto", display: "flex", flexDirection: "column",
-            background: "#fff", borderRadius: "22px 22px 0 0", maxHeight: "88dvh",
-          }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", borderBottom: "1px solid #ece8e0", flexShrink: 0 }}>
-              {produitOuvert ? (
-                <button onClick={() => setProduitOuvert(null)}
-                  style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }}>
-                  <span style={{ color: "#23262a", display: "flex" }}>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-                  </span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: "#23262a" }}>{produitOuvert.nom}</span>
-                </button>
-              ) : (
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#23262a", margin: 0 }}>Ajouter un produit</p>
-              )}
-              <button onClick={() => { setPanneauOuvert(false); setProduitOuvert(null); }}
-                style={{ display: "grid", placeItems: "center", width: 32, height: 32, background: "none", border: "none", cursor: "pointer", color: "#5c616a" }}>
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M18 6 6 18M6 6l12 12" /></svg>
-              </button>
-            </div>
+          <div className="dv-panneau" style={{ position: "relative", display: "flex", flexDirection: "column", background: "#fff", overflow: "hidden" }}>
 
-            {/* Liste des déclinaisons du produit choisi */}
+            {/* ── Écran 2 : choix de la déclinaison ── */}
             {produitOuvert ? (
-              <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
-                <p style={{ fontSize: 12, color: "#9aa0a8", margin: "0 0 12px" }}>
-                  Choisissez la déclinaison — c&apos;est elle qui détermine le prix. Les finitions seront choisies par le client.
-                </p>
-                {produitOuvert.declinaisons.length === 0 ? (
-                  <button onClick={() => ajouterProduit(produitOuvert, null)}
-                    style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 15px", borderRadius: 12, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontFamily: "inherit" }}>
-                    <span style={{ fontSize: 13.5, color: "#23262a" }}>Produit à prix unique</span>
-                    <span style={{ fontSize: 13.5, fontWeight: 700, color: "#23262a" }}>{euro0(produitOuvert.prixUnitaire || 0)}</span>
-                  </button>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                    {produitOuvert.declinaisons.map((d) => (
-                      <button key={d.id} onClick={() => ajouterProduit(produitOuvert, d)}
-                        style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "13px 15px", borderRadius: 12, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
-                        <span style={{ fontSize: 13.5, color: "#23262a", minWidth: 0 }}>{d.libelle}</span>
-                        <span style={{ fontSize: 13.5, fontWeight: 700, color: "#23262a", whiteSpace: "nowrap" }}>{euro0(d.prixHT)}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
               <>
-                <div style={{ padding: "12px 16px", flexShrink: 0 }}>
-                  <div style={{ position: "relative" }}>
-                    <span style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", color: "#9aa0a8", display: "flex" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "15px 16px 13px", borderBottom: "1px solid #f2efe9", flexShrink: 0 }}>
+                  <button onClick={() => setProduitOuvert(null)}
+                    style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0, minWidth: 0 }}>
+                    <span style={{ width: 30, height: 30, borderRadius: "50%", background: "#f7f4ef", display: "grid", placeItems: "center", color: "#23262a", flexShrink: 0 }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
                     </span>
-                    <input autoFocus value={recherche} onChange={(e) => setRecherche(e.target.value)}
-                      placeholder="Nom du produit…"
-                      style={{ ...champ, padding: "11px 14px 11px 38px", fontSize: 13.5 }} />
+                    <span style={{ fontSize: 14, fontWeight: 700, color: "#23262a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{produitOuvert.nom}</span>
+                  </button>
+                  <button onClick={fermerPanneau}
+                    style={{ width: 32, height: 32, borderRadius: "50%", background: "#f7f4ef", display: "grid", placeItems: "center", border: "none", cursor: "pointer", color: "#5c616a", flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div style={{ padding: "14px 16px", flexShrink: 0 }}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    <div style={{ width: 64, height: 64, borderRadius: 12, background: "#f4f2ed", flexShrink: 0, overflow: "hidden" }}>
+                      {produitOuvert.imageUrl && <img src={produitOuvert.imageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#f0661b", margin: 0 }}>{produitOuvert.gammeNom}</p>
+                      <p style={{ fontSize: 11.5, color: "#5c616a", margin: "4px 0 0" }}>
+                        {[produitOuvert.categorieNom, produitOuvert.sousCategorieNom].filter(Boolean).join(" · ")}
+                      </p>
+                      {urlProduit(produitOuvert) && (
+                        <a href={urlProduit(produitOuvert)} target="_blank" rel="noopener noreferrer"
+                          style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 10.5, fontWeight: 600, color: "#f0661b", textDecoration: "none", marginTop: 5 }}>
+                          Voir la fiche
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M7 17 17 7M7 7h10v10" /></svg>
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ flex: 1, overflowY: "auto", padding: "0 16px 16px" }}>
-                  {chargement && <p style={{ fontSize: 12.5, color: "#9aa0a8", textAlign: "center", padding: "20px 0" }}>Recherche…</p>}
-                  {!chargement && recherche.trim().length < 2 && (
-                    <p style={{ fontSize: 12.5, color: "#9aa0a8", textAlign: "center", padding: "20px 0" }}>Tapez au moins 2 caractères.</p>
+                <div style={{ flex: 1, overflowY: "auto", padding: "0 16px" }}>
+                  {produitOuvert.declinaisons.length === 0 ? (
+                    <p style={{ fontSize: 12.5, color: "#5c616a", padding: "10px 14px", borderRadius: 12, background: "#faf8f4", margin: 0 }}>
+                      Produit à prix unique — {euro0(produitOuvert.prixUnitaire || 0)}
+                    </p>
+                  ) : (
+                    <>
+                      <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "0 0 11px", lineHeight: 1.5 }}>
+                        Choisissez la déclinaison — les finitions seront sélectionnées par le client.
+                      </p>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                        {produitOuvert.declinaisons.map((d) => {
+                          const actif = declChoisie?.id === d.id;
+                          return (
+                            <button key={d.id} onClick={() => setDeclChoisie(d)}
+                              style={{
+                                width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+                                padding: "13px 15px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+                                border: actif ? "1.5px solid #f0661b" : "1px solid #ece8e0",
+                                background: actif ? "#fce6d6" : "#fff",
+                              }}>
+                              <span style={{ fontSize: 13.5, color: actif ? "#d9551a" : "#23262a", fontWeight: actif ? 700 : 400, minWidth: 0 }}>{d.libelle}</span>
+                              <span style={{ fontSize: 14, fontWeight: 700, color: actif ? "#d9551a" : "#23262a", whiteSpace: "nowrap" }}>{euro0(d.prixHT)}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
                   )}
-                  {!chargement && recherche.trim().length >= 2 && resultats.length === 0 && (
-                    <p style={{ fontSize: 12.5, color: "#9aa0a8", textAlign: "center", padding: "20px 0" }}>Aucun produit trouvé.</p>
-                  )}
+                </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                    {resultats.map((p) => (
-                      <button key={p.id} onClick={() => setProduitOuvert(p)}
-                        style={{ width: "100%", display: "flex", alignItems: "center", gap: 11, padding: 10, borderRadius: 12, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
-                        <div style={{ width: 44, height: 44, borderRadius: 9, background: "#f4f2ed", flexShrink: 0, overflow: "hidden" }}>
-                          {p.imageUrl && <img src={p.imageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />}
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <p style={{ fontSize: 13, fontWeight: 600, color: "#23262a", margin: 0, lineHeight: 1.3 }}>{p.nom}</p>
-                          <p style={{ fontSize: 11, color: "#9aa0a8", margin: "2px 0 0" }}>
-                            {p.gammeNom}
-                            {p.declinaisons.length > 0 ? ` · ${p.declinaisons.length} déclinaison${p.declinaisons.length > 1 ? "s" : ""}` : ""}
-                          </p>
-                        </div>
-                        <span style={{ color: "#c4c0b6", display: "flex", flexShrink: 0 }}>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="m9 18 6-6-6-6" /></svg>
-                        </span>
-                      </button>
-                    ))}
+                <div style={{ flexShrink: 0, padding: "14px 16px", borderTop: "1px solid #f2efe9", paddingBottom: "calc(14px + env(safe-area-inset-bottom))" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                    <span style={{ fontSize: 12, color: "#9aa0a8" }}>Quantité</span>
+                    <div style={{ display: "flex", alignItems: "center", border: "1px solid #ece8e0", borderRadius: 999, marginLeft: "auto" }}>
+                      <button onClick={() => setQteAjout((q) => Math.max(1, q - 1))}
+                        style={{ width: 32, height: 32, display: "grid", placeItems: "center", background: "none", border: "none", cursor: "pointer", color: "#5c616a", fontSize: 15 }}>−</button>
+                      <span style={{ width: 26, textAlign: "center", fontSize: 13, fontWeight: 700 }}>{qteAjout}</span>
+                      <button onClick={() => setQteAjout((q) => q + 1)}
+                        style={{ width: 32, height: 32, display: "grid", placeItems: "center", background: "none", border: "none", cursor: "pointer", color: "#5c616a", fontSize: 15 }}>+</button>
+                    </div>
                   </div>
+                  <button onClick={confirmerAjout}
+                    style={{ width: "100%", padding: 13, borderRadius: 999, background: "#f0661b", color: "#fff", border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+                    Ajouter au devis · {euro0(prixAjout * qteAjout)}
+                  </button>
+                </div>
+              </>
+            ) : (
+              /* ── Écran 1 : recherche et filtres ── */
+              <>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "15px 16px 13px", flexShrink: 0 }}>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: 15.5, fontWeight: 700, color: "#23262a", margin: 0 }}>Ajouter un produit</p>
+                    <p style={{ fontSize: 11, color: "#9aa0a8", margin: "2px 0 0" }}>
+                      {catalogue ? `${catalogue.produits.length} produits au catalogue` : "Chargement…"}
+                    </p>
+                  </div>
+                  <button onClick={fermerPanneau}
+                    style={{ width: 32, height: 32, borderRadius: "50%", background: "#f7f4ef", display: "grid", placeItems: "center", border: "none", cursor: "pointer", color: "#5c616a", flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div style={{ padding: "0 16px 12px", flexShrink: 0 }}>
+                  <div style={{ position: "relative" }}>
+                    <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "#9aa0a8", display: "flex" }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+                    </span>
+                    <input autoFocus value={recherche} onChange={(e) => setRecherche(e.target.value)} placeholder="Nom du produit…"
+                      style={{ width: "100%", padding: "11px 14px 11px 40px", borderRadius: 12, border: "none", background: "#f7f4ef", fontSize: 13, color: "#23262a", outline: "none", boxSizing: "border-box", fontFamily: "inherit" }} />
+                  </div>
+                </div>
+
+                {/* Catégories — défilement horizontal, pas de retour à la ligne */}
+                {catalogue && catalogue.categories.length > 0 && (
+                  <div className="dv-scroll-x" style={{ display: "flex", gap: 6, padding: "0 16px 10px", flexShrink: 0 }}>
+                    <button onClick={() => { setCatId(null); setSousCatId(null); }}
+                      style={{
+                        padding: "6px 12px", borderRadius: 999, fontSize: 11.5, fontWeight: catId === null ? 700 : 400,
+                        cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", flexShrink: 0,
+                        background: catId === null ? "#23262a" : "#fff", color: catId === null ? "#fff" : "#5c616a",
+                        border: catId === null ? "1px solid #23262a" : "1px solid #ece8e0",
+                      }}>
+                      Tout
+                    </button>
+                    {catalogue.categories.map((c) => {
+                      const actif = catId === c.id;
+                      return (
+                        <button key={c.id} onClick={() => { setCatId(actif ? null : c.id); setSousCatId(null); }}
+                          style={{
+                            padding: "6px 12px", borderRadius: 999, fontSize: 11.5, fontWeight: actif ? 700 : 400,
+                            cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", flexShrink: 0,
+                            background: actif ? "#23262a" : "#fff", color: actif ? "#fff" : "#5c616a",
+                            border: actif ? "1px solid #23262a" : "1px solid #ece8e0",
+                          }}>
+                          {c.nom}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Sous-catégories de la catégorie choisie */}
+                {catActive && catActive.sousCategories.length > 0 && (
+                  <div className="dv-scroll-x" style={{ display: "flex", gap: 6, padding: "0 16px 12px", flexShrink: 0 }}>
+                    <div style={{ borderLeft: "2px solid #fce6d6", paddingLeft: 10, display: "flex", gap: 6 }}>
+                      {catActive.sousCategories.map((sc) => {
+                        const actif = sousCatId === sc.id;
+                        return (
+                          <button key={sc.id} onClick={() => setSousCatId(actif ? null : sc.id)}
+                            style={{
+                              padding: "5px 10px", borderRadius: 999, fontSize: 11, fontWeight: actif ? 700 : 400,
+                              cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", flexShrink: 0, border: "none",
+                              background: actif ? "#fce6d6" : "#faf8f4", color: actif ? "#d9551a" : "#5c616a",
+                            }}>
+                            {sc.nom}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <div style={{ flex: 1, overflowY: "auto", padding: "0 16px 16px" }}>
+                  {!catalogue && <p style={{ fontSize: 12.5, color: "#9aa0a8", textAlign: "center", padding: "24px 0" }}>Chargement du catalogue…</p>}
+
+                  {catalogue && (
+                    <>
+                      <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "#b0aca2", margin: "0 0 9px" }}>
+                        {produitsFiltres.length} produit{produitsFiltres.length > 1 ? "s" : ""}
+                      </p>
+
+                      {produitsFiltres.length === 0 && (
+                        <p style={{ fontSize: 12.5, color: "#9aa0a8", textAlign: "center", padding: "20px 0" }}>Aucun produit ne correspond.</p>
+                      )}
+
+                      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                        {produitsFiltres.map((p) => (
+                          <button key={p.id} onClick={() => ouvrirProduit(p)}
+                            style={{ width: "100%", display: "flex", alignItems: "center", gap: 11, padding: 10, borderRadius: 12, border: "none", background: "#faf8f4", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
+                            <div style={{ width: 46, height: 46, borderRadius: 10, background: "#f0ece4", flexShrink: 0, overflow: "hidden" }}>
+                              {p.imageUrl && <img src={p.imageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />}
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <p style={{ fontSize: 13, fontWeight: 600, color: "#23262a", margin: 0, lineHeight: 1.3 }}>{p.nom}</p>
+                              <div style={{ display: "flex", alignItems: "center", gap: 7, marginTop: 3 }}>
+                                <span style={{ fontSize: 10.5, color: "#9aa0a8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.gammeNom}</span>
+                                {p.prixMini != null && (
+                                  <>
+                                    <span style={{ width: 2, height: 2, borderRadius: "50%", background: "#d3d1c7", flexShrink: 0 }} />
+                                    <span style={{ fontSize: 10.5, color: "#d9551a", fontWeight: 700, whiteSpace: "nowrap" }}>dès {euro0(p.prixMini)}</span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                            <span style={{ color: "#c4c0b6", display: "flex", flexShrink: 0 }}>
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="m9 18 6-6-6-6" /></svg>
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </>
             )}

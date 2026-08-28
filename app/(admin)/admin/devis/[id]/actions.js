@@ -99,29 +99,27 @@ export async function supprimerDevis(id) {
   return { ok: true };
 }
 
-// Recherche dans le catalogue pour le panneau d'ajout de produits.
-// Renvoie les déclinaisons avec leur prix : c'est la déclinaison qui
-// détermine le montant, pas le produit.
-export async function chercherProduits(q) {
-  const recherche = (q || "").trim();
-  if (recherche.length < 2) return [];
+// Charge tout le catalogue en une fois pour le panneau d'ajout.
+// Le filtrage se fait ensuite côté navigateur : instantané, et le volume
+// reste raisonnable (quelques centaines de produits au plus).
+export async function chargerCatalogueDevis() {
+  const [vitrines, categories] = await Promise.all([
+    prisma.produitVitrine.findMany({
+      where: { publie: true, gamme: { publie: true } },
+      include: {
+        gamme: { select: { nom: true } },
+        categories: { select: { id: true, slug: true, nom: true }, take: 1 },
+        sousCategories: { select: { id: true, slug: true, nom: true }, take: 1 },
+      },
+      orderBy: { nom: "asc" },
+    }),
+    prisma.categorie.findMany({
+      orderBy: { ordre: "asc" },
+      include: { sousCategories: { orderBy: { ordre: "asc" }, select: { id: true, nom: true, slug: true } } },
+    }),
+  ]);
 
-  const vitrines = await prisma.produitVitrine.findMany({
-    where: {
-      publie: true,
-      gamme: { publie: true },
-      nom: { contains: recherche, mode: "insensitive" },
-    },
-    include: {
-      gamme: { select: { nom: true } },
-      categories: { select: { slug: true }, take: 1 },
-      sousCategories: { select: { slug: true }, take: 1 },
-    },
-    orderBy: { nom: "asc" },
-    take: 20,
-  });
-
-  return vitrines.map((v) => {
+  const produits = vitrines.map((v) => {
     const decl = Array.isArray(v.declinaisons) ? v.declinaisons : [];
     const axes = Array.isArray(v.axesDeclinaisons) ? v.axesDeclinaisons : [];
 
@@ -131,21 +129,43 @@ export async function chercherProduits(q) {
       return axes.map((a) => d.valeurs[a.id]).filter(Boolean).join(" / ") || (d.reference || "Variante");
     };
 
+    const declinaisons = decl.map((d) => ({
+      id: d.id,
+      libelle: libelle(d),
+      prixHT: Number(d.prixVenteHT) || 0,
+    }));
+
+    const prix = declinaisons.length > 0
+      ? Math.min(...declinaisons.map((d) => d.prixHT).filter((p) => p > 0))
+      : (v.prixUnitaireHT ?? null);
+
     return {
       id: v.id,
       nom: v.nom,
       gammeNom: v.gamme.nom,
       imageUrl: (v.images && v.images[0]) || v.imageUrl || null,
       slug: v.slug,
+      categorieId: v.categories[0]?.id || null,
+      categorieNom: v.categories[0]?.nom || null,
       categorieSlug: v.categories[0]?.slug || null,
+      sousCategorieId: v.sousCategories[0]?.id || null,
+      sousCategorieNom: v.sousCategories[0]?.nom || null,
       sousCategorieSlug: v.sousCategories[0]?.slug || null,
-      // Produit à prix unique : une seule entrée, pas de choix à faire
+      prixMini: Number.isFinite(prix) ? prix : null,
       prixUnitaire: v.prixUnitaireHT ?? null,
-      declinaisons: decl.map((d) => ({
-        id: d.id,
-        libelle: libelle(d),
-        prixHT: Number(d.prixVenteHT) || 0,
-      })),
+      declinaisons,
     };
   });
+
+  // On ne garde que les catégories qui contiennent réellement des produits.
+  const idsUtilises = new Set(produits.map((p) => p.categorieId).filter(Boolean));
+  const cats = categories
+    .filter((c) => idsUtilises.has(c.id))
+    .map((c) => ({
+      id: c.id,
+      nom: c.nom,
+      sousCategories: c.sousCategories.filter((s) => produits.some((p) => p.sousCategorieId === s.id)),
+    }));
+
+  return { produits, categories: cats };
 }
