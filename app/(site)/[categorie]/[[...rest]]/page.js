@@ -47,20 +47,28 @@ export default async function ProduitPage({ params }) {
 
   return (
     <main>
-      {/* Fil d'ariane */}
-      <div className="lg:sticky lg:top-[168px] z-40 bg-bg border-b border-line/60 mx-auto max-w-[1400px] px-5 sm:px-7 pt-6 pb-4 mb-8 text-sm text-ink-soft">
-        <Link href="/" className="hover:text-orange">Accueil</Link> /{" "}
-        <Link href="/catalogue" className="hover:text-orange">Catalogue</Link> /{" "}
-        <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange">{payload.carte.categorieNom}</Link> /{" "}
-        {payload.carte.sousCategorieNom && (
-          <>
-            <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}&sousCategorie=${payload.carte.sousCategorieSlug}`} className="hover:text-orange">{payload.carte.sousCategorieNom}</Link> /{" "}
-          </>
-        )}
-        <span className="text-ink">{payload.carte.nom}</span>
+      {/* Fil d'ariane — « Accueil » et « Catalogue » masqués sur mobile,
+          la ligne débordait avec le nom du produit. */}
+      <div className="lg:sticky lg:top-[168px] z-40 bg-bg border-b border-line/60 mx-auto max-w-[1400px] px-5 sm:px-7 pt-3 sm:pt-6 pb-3 sm:pb-4 mb-5 sm:mb-8 text-[11.5px] sm:text-sm text-ink-soft">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <Link href="/" className="hidden sm:inline hover:text-orange">Accueil</Link>
+          <span className="hidden sm:inline text-ink-soft/40">/</span>
+          <Link href="/catalogue" className="hidden sm:inline hover:text-orange">Catalogue</Link>
+          <span className="hidden sm:inline text-ink-soft/40">/</span>
+          <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.categorieNom}</Link>
+          {payload.carte.sousCategorieNom && (
+            <>
+              <span className="text-ink-soft/40 shrink-0">/</span>
+              <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}&sousCategorie=${payload.carte.sousCategorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.sousCategorieNom}</Link>
+            </>
+          )}
+          <span className="text-ink-soft/40 shrink-0">/</span>
+          <span className="text-ink truncate min-w-0">{payload.carte.nom}</span>
+        </div>
       </div>
 
-      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-16">
+      {/* pb : place laissée à la barre d'achat fixe en bas d'écran */}
+      <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-[120px] lg:pb-16">
         {estDeclinaisonLibre ? (
           <FicheProduitLibre data={payload} />
         ) : (
@@ -71,27 +79,27 @@ export default async function ProduitPage({ params }) {
       {/* Vous aimerez aussi — autres produits de la même catégorie, jamais "de la même gamme" */}
       {payload.autresCartes?.length > 0 && (
         <section>
-          <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-14 border-t border-line">
-            <h2 className="font-display font-bold text-2xl mb-6">Vous aimerez aussi</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          <div className="mx-auto max-w-[1400px] px-5 sm:px-7 py-8 sm:py-14 border-t border-line">
+            <h2 className="font-display font-bold text-[19px] sm:text-2xl mb-4 sm:mb-6">Vous aimerez aussi</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {payload.autresCartes.map((c) => (
                 <Link key={c.id} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
                   className="group rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
                     {c.imageUrl ? (
-                      <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-4 group-hover:scale-[1.03] transition" />
+                      <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-[1.03] transition" />
                     ) : (
                       <div className="w-full h-full grid place-items-center text-charcoal/15">
                         <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
                       </div>
                     )}
                   </div>
-                  <div className="p-4">
-                    <p className="font-semibold text-ink text-[15px] leading-snug group-hover:text-orange-dark transition line-clamp-2">{c.nom}</p>
+                  <div className="p-3 sm:p-4">
+                    <p className="font-semibold text-ink text-[12.5px] sm:text-[15px] leading-snug group-hover:text-orange-dark transition line-clamp-2">{c.nom}</p>
                     {c.prixMini != null ? (
-                      <p className="text-[13px] text-ink-soft mt-1.5">à partir de <span className="font-display font-bold text-ink">{Math.round(c.prixMini).toLocaleString("fr-FR")} €</span> HT</p>
+                      <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">dès <span className="font-display font-bold text-ink text-[12.5px] sm:text-[15px]">{Math.round(c.prixMini).toLocaleString("fr-FR")} €</span> HT</p>
                     ) : (
-                      <p className="text-[13px] text-ink-soft mt-1.5">Sur devis</p>
+                      <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">Sur devis</p>
                     )}
                   </div>
                 </Link>
