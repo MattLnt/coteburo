@@ -21,10 +21,10 @@ export default function Realisations() {
         </Link>
       </div>
 
-      {/* Défilement horizontal sur mobile. Le -mx-5 + px-5 fait déborder la
-          bande jusqu'aux bords de l'écran tout en gardant la première carte
-          alignée sur la marge — la carte suivante reste visible en amorce. */}
-      <div className="-mx-5 px-5 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
+      {/* Le conteneur reste dans la marge du parent (pas de -mx-5 : sur un
+          élément défilant, le padding gauche est absorbé par le scroll et la
+          première carte se colle au bord). */}
+      <div className="flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
         {REALS.map((r, i) => (
           <Link key={i} href="/realisations" className="group relative block shrink-0 md:shrink w-[270px] md:w-auto h-[250px] sm:h-[340px] rounded-[18px] sm:rounded-3xl overflow-hidden bg-charcoal [scroll-snap-align:start]">
             <Image src={r.image} alt={r.titre} fill sizes="(max-width:768px) 270px, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />

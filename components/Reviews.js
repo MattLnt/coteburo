@@ -22,9 +22,7 @@ export default function Reviews() {
         <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Ce qu&apos;en disent nos clients</h2>
       </div>
 
-      {/* Même principe que les réalisations : la bande déborde jusqu'aux bords
-          de l'écran, la première carte reste alignée sur la marge. */}
-      <div className="-mx-5 px-5 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
+      <div className="flex md:grid md:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto md:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] md:[scroll-snap-type:none]">
         {REVIEWS.map((r, i) => (
           <div key={i} className="shrink-0 md:shrink w-[280px] md:w-auto rounded-[18px] sm:rounded-3xl bg-surface border border-line p-5 sm:p-7 flex flex-col [scroll-snap-align:start]">
             <Stars n={r.stars} />
