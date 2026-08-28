@@ -40,10 +40,6 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
     if (valeurs.sousCategorieSlug === sousSlug) onFiltresChange({ categorieSlug: catSlug, sousCategorieSlug: null });
     else onFiltresChange({ categorieSlug: catSlug, sousCategorieSlug: sousSlug });
   };
-  const toggleMarque = (slug) => {
-    if (valeurs.marqueSlug === slug) onFiltresChange({ marqueSlug: null });
-    else onFiltresChange({ marqueSlug: slug });
-  };
 
   // Applique le prix automatiquement, avec un léger délai après la dernière frappe
   useEffect(() => {
@@ -82,7 +78,7 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
     });
   };
 
-  const actif = valeurs.categorieSlug || valeurs.sousCategorieSlug || valeurs.marqueSlug
+  const actif = valeurs.categorieSlug || valeurs.sousCategorieSlug
     || valeurs.prixMin || valeurs.prixMax
     || valeurs.largeurMin || valeurs.largeurMax || valeurs.hauteurMin || valeurs.hauteurMax || valeurs.profondeurMin || valeurs.profondeurMax;
 
@@ -135,15 +131,6 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
             </div>
           )}
         </div>
-
-        {filtres.marques.length > 1 && (
-          <div>
-            <p className="font-display font-bold text-[13.5px] text-ink mb-2.5">Marque</p>
-            <div className="flex flex-wrap gap-1.5">
-              {filtres.marques.map((m) => pastille(m.nom, valeurs.marqueSlug === m.slug, () => toggleMarque(m.slug)))}
-            </div>
-          </div>
-        )}
 
         <div>
           <p className="font-display font-bold text-[13.5px] text-ink mb-2.5">Prix (€ HT)</p>
@@ -202,15 +189,6 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
           </div>
         ))}
       </Group>
-
-      {/* Marque */}
-      {filtres.marques.length > 1 && (
-        <Group title="Marque">
-          {filtres.marques.map((m) => (
-            <Check key={m.slug} label={m.nom} checked={valeurs.marqueSlug === m.slug} onChange={() => toggleMarque(m.slug)} />
-          ))}
-        </Group>
-      )}
 
       {/* Prix — s'applique automatiquement, sans bouton */}
       <Group title="Prix">
