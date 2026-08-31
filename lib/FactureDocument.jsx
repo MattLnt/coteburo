@@ -9,7 +9,6 @@ const C = { orange: "#f0661b", ink: "#1a1a1a", soft: "#555", line: "#000", gris:
 const s = StyleSheet.create({
   page: { paddingTop: 28, paddingHorizontal: 32, paddingBottom: 90, fontSize: 8.5, color: C.ink, fontFamily: "Helvetica" },
 
-  // ── En-tête ──
   logo: { width: 168 },
   entete: { flexDirection: "row", justifyContent: "space-between", marginBottom: 18 },
   colGauche: { width: "50%" },
@@ -21,7 +20,6 @@ const s = StyleSheet.create({
   clientNom: { fontSize: 10, fontFamily: "Helvetica-Bold", marginBottom: 3 },
   clientLigne: { fontSize: 9, lineHeight: 1.5 },
 
-  // ── Bandeau Facture ──
   titreCadre: { borderWidth: 1, borderColor: C.line, paddingVertical: 4, paddingHorizontal: 14, alignSelf: "flex-start", marginBottom: 8 },
   titreTexte: { fontSize: 14, fontFamily: "Helvetica-Bold" },
 
@@ -30,7 +28,6 @@ const s = StyleSheet.create({
   bandeauLabel: { fontSize: 7, color: C.soft, textAlign: "center", marginBottom: 2 },
   bandeauValeur: { fontSize: 9.5, fontFamily: "Helvetica-Bold", textAlign: "center" },
 
-  // ── Tableau ──
   thead: { flexDirection: "row", backgroundColor: C.gris, borderWidth: 1, borderColor: C.line },
   th: { fontSize: 8, fontFamily: "Helvetica-Bold", paddingVertical: 5, paddingHorizontal: 4, textAlign: "center" },
   tr: { flexDirection: "row", borderLeftWidth: 1, borderRightWidth: 1, borderColor: C.line },
@@ -43,7 +40,6 @@ const s = StyleSheet.create({
   cTva: { width: "6%", textAlign: "right" },
   filetBas: { borderBottomWidth: 1, borderColor: C.line },
 
-  // ── Totaux ──
   basPage: { flexDirection: "row", justifyContent: "space-between", marginTop: 22, gap: 14 },
   blocTotaux: { width: 230, borderWidth: 1, borderColor: C.line },
   totalLigne: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 4, paddingHorizontal: 8, fontSize: 9 },
@@ -51,7 +47,6 @@ const s = StyleSheet.create({
   totalFort: { fontFamily: "Helvetica-Bold", fontSize: 10 },
   aPayer: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, paddingHorizontal: 8, borderTopWidth: 1.5, borderColor: C.line, backgroundColor: "#f2f2f2" },
 
-  // ── Pied ──
   pied: { position: "absolute", bottom: 24, left: 32, right: 32, borderTopWidth: 0.8, borderColor: "#bbb", paddingTop: 8 },
   piedTexte: { fontSize: 6.5, color: C.soft, lineHeight: 1.5, textAlign: "center" },
 });
@@ -60,8 +55,8 @@ const LOGO = `${process.env.NEXT_PUBLIC_SITE_URL || "https://coteburo.fr"}/logo-
 
 export function FactureDocument({ c }) {
   const lignes = c.lignes || [];
-  // Sur une facture, tout est à 20 % : on affiche le taux par ligne comme
-  // sur le modèle d'origine, mais le récapitulatif reste sur un seul taux.
+  // Toutes les lignes sont à 20 % : on affiche le taux par ligne comme sur le
+  // modèle d'origine, et le récapitulatif reste sur un seul taux.
   const tauxTVA = 20;
 
   return (
@@ -167,3 +162,44 @@ export function FactureDocument({ c }) {
             <View style={s.totalLigne}>
               <Text>Total HT</Text><Text>{euro(c.totalHT)}</Text>
             </View>
+            {c.fraisLivraison > 0 ? (
+              <View style={s.totalLigne}><Text>Frais de port</Text><Text>{euro(c.fraisLivraison)}</Text></View>
+            ) : null}
+            {c.fraisInstallation > 0 ? (
+              <View style={s.totalLigne}><Text>Montage et installation</Text><Text>{euro(c.fraisInstallation)}</Text></View>
+            ) : null}
+            <View style={[s.totalLigne, s.totalSep]}>
+              <Text style={s.totalFort}>Net HT</Text><Text style={s.totalFort}>{euro(c.totalHT)}</Text>
+            </View>
+            <View style={[s.totalLigne, s.totalSep]}>
+              <Text>Total TVA  {tauxTVA} %</Text><Text>{euro(c.totalTVA)}</Text>
+            </View>
+            <View style={s.totalLigne}>
+              <Text>Total TTC</Text><Text style={s.totalFort}>{euro(c.totalTTC)}</Text>
+            </View>
+            <View style={s.aPayer}>
+              <Text style={s.totalFort}>{c.paye ? "Montant réglé" : "Montant à payer"}</Text>
+              <Text style={[s.totalFort, { color: C.orange }]}>{euro(c.totalTTC)} EUR</Text>
+            </View>
+          </View>
+        </View>
+
+        {c.paye ? (
+          <Text style={{ fontSize: 8, marginTop: 10, color: C.soft }}>
+            Réglée en ligne par carte bancaire le {dateFR(c.updatedAt || c.createdAt)}
+            {c.stripePaymentId ? ` — réf. ${c.stripePaymentId}` : ""}.
+          </Text>
+        ) : null}
+
+        {/* ══ Pied de page légal ══ */}
+        <View style={s.pied} fixed>
+          <Text style={s.piedTexte}>{mentionLegale()}</Text>
+          <Text style={[s.piedTexte, { marginTop: 3 }]}>{MENTION_RETARD}</Text>
+          <Text style={[s.piedTexte, { marginTop: 3 }]}>
+            Escompte pour règlement anticipé : néant · {SOCIETE.garantie}
+          </Text>
+        </View>
+      </Page>
+    </Document>
+  );
+}
