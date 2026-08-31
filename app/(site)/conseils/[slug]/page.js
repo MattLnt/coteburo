@@ -124,7 +124,7 @@ export default async function ArticlePage({ params }) {
           <div className="rounded-[18px] sm:rounded-[22px] border border-line bg-orange-tint p-4 sm:p-6">
             <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.15em] text-orange-dark mb-2">Notre showroom</p>
             <p className="font-display font-bold text-ink text-[14.5px] sm:text-base leading-snug">Venez tester nos produits à Aix-en-Provence</p>
-            <p className="text-[12px] sm:text-[13px] text-ink-soft mt-2 leading-relaxed">TECH&apos;INDUS — Bât D, Porte 8<br />645 rue Mayor de Montricher</p>
+            <p className="text-[12px] sm:text-[13px] text-ink-soft mt-2 leading-relaxed">645 rue Mayor de Montricher<br />13290 Aix-en-Provence</p>
             <Link href="/contact" className="inline-flex items-center gap-1.5 text-orange-dark font-semibold text-[12.5px] sm:text-sm mt-3 hover:gap-2.5 transition-all">Nous trouver →</Link>
           </div>
         </aside>

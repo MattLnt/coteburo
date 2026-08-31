@@ -48,7 +48,7 @@ export default function Header({ reglages = {}, categories = [] }) {
   const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
   const telLink = "tel:" + tel.replace(/\s/g, "");
   const bandeauActif = reglages.bandeauActif;
-  const bandeauTexte = reglages.bandeauTexte || "Showroom Aix-en-Provence — 645 rue Mayor de Montricher";
+            <span className="text-orange">●</span> {bandeauActif ? bandeauTexte : "Showroom Aix-en-Provence — 645 rue Mayor de Montricher"}
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";

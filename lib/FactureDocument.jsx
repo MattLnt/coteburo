@@ -39,8 +39,7 @@ export function FactureDocument({ c }) {
         <View style={s.headerRow}>
           <View>
             <Text style={s.logo}>CÔTÉ BURO</Text>
-            <Text style={[s.soft9, { marginTop: 8 }]}>TECH'INDUS - Bât D, Porte 8</Text>
-            <Text style={s.soft9}>645 rue Mayor de Montricher</Text>
+            <Text style={[s.soft9, { marginTop: 8 }]}>645 rue Mayor de Montricher</Text>
             <Text style={s.soft9}>13290 Aix-en-Provence</Text>
             <Text style={[s.soft9, { marginTop: 4 }]}>contact@coteburo.fr - 07 81 02 06 31</Text>
           </View>
@@ -95,7 +94,7 @@ export function FactureDocument({ c }) {
         </View>
 
         {/* Pied de page légal */}
-        <View style={s.footer}>
+        <View style={s.footer} fixed>
           <Text>Côté BURO - [Forme juridique à compléter] au capital de [montant] - SIRET [à compléter] - TVA intracom. [à compléter]</Text>
           <Text>Garantie 7 ans sur le mobilier - Merci de votre confiance</Text>
         </View>

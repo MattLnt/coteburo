@@ -14,7 +14,7 @@ export default async function ContactPage() {
   const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
   const telLink = "tel:" + tel.replace(/\s/g, "");
   const email = reglages.email || "coteburo@orange.fr";
-  const adresse = reglages.adresse || "TECH'INDUS — Bât D, Porte 8\n645 rue Mayor de Montricher\n13290 Aix-en-Provence";
+  const adresse = reglages.adresse || "645 rue Mayor de Montricher\n13290 Aix-en-Provence";
   const horaires = reglages.horaires || "Du lundi au vendredi\n9h – 18h";
 
   const INFOS = [
