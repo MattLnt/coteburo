@@ -70,7 +70,8 @@ export const viewport = {
 
 // Données structurées — c'est ce que Google lit pour associer un logo, une
 // adresse et des horaires à l'entreprise (fiche établissement, panneau de
-// connaissance). Le type LocalBusiness convient à un commerce avec showroom.
+// connaissance). Le type FurnitureStore convient à un commerce de mobilier
+// avec showroom.
 const donneesStructurees = {
   "@context": "https://schema.org",
   "@type": "FurnitureStore",
@@ -86,15 +87,15 @@ const donneesStructurees = {
   priceRange: "€€",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "TECH'INDUS Bât D Porte 8, 645 rue Mayor de Montricher",
+    streetAddress: "645 rue Mayor de Montricher",
     addressLocality: "Aix-en-Provence",
     postalCode: "13290",
     addressCountry: "FR",
   },
   geo: {
     "@type": "GeoCoordinates",
-    latitude: 43.4986,
-    longitude: 5.3479,
+    latitude: 43.47918349683292,
+    longitude: 5.382134965164936,
   },
   openingHoursSpecification: [
     {
