@@ -22,7 +22,9 @@ export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId
 
   return (
     <Link href={href} className="group h-full flex flex-col bg-surface border border-line rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(33,36,40,0.05)] hover:border-transparent transition">
-      <div className="relative aspect-square grid place-items-center border-b border-line/60 bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)] overflow-hidden">
+      {/* Fond blanc uni : le dégradé crème créait un halo qui entrait en
+          conflit avec les photos d'ambiance. */}
+      <div className="relative aspect-square grid place-items-center border-b border-line/60 bg-white overflow-hidden">
         {promo && (
           <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-20 bg-orange text-white text-[10px] sm:text-[11px] font-bold tracking-wide px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full">{promo}</span>
         )}
@@ -33,7 +35,10 @@ export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId
         )}
 
         {gallery.length > 0 ? (
-          <img src={gallery[idx]} alt={name} className="absolute inset-0 w-full h-full object-cover transition duration-300 group-hover:scale-105" />
+          // object-contain + coins arrondis : l'image entière reste visible,
+          // et une photo rectangulaire devient un visuel assumé plutôt qu'un
+          // rectangle posé au milieu de la carte.
+          <img src={gallery[idx]} alt={name} className="w-full h-full object-contain p-2.5 sm:p-3 rounded-[14px] transition duration-300 group-hover:scale-[1.03]" />
         ) : (
           <svg width="52%" viewBox="0 0 120 140" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" className="text-charcoal opacity-80 transition duration-300 group-hover:scale-105">
             <path d="M38 22c0-5 4-9 9-9h26c5 0 9 4 9 9v40H38z" /><path d="M32 62h56l-4 20H36z" /><path d="M60 82v28" /><path d="M40 130l20-16 20 16" />

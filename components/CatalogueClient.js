@@ -190,9 +190,11 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
         <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" />
       </div>
       <Link href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
-        <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
+        {/* Fond blanc uni + coins arrondis sur l'image : le dégradé crème
+            entrait en conflit avec les photos d'ambiance rectangulaires. */}
+        <div className="aspect-[4/3] bg-white overflow-hidden">
           {c.imageUrl ? (
-            <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-[1.03] transition" />
+            <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-2.5 sm:p-[10px] rounded-[14px] group-hover:scale-[1.03] transition" />
           ) : (
             <div className="w-full h-full grid place-items-center text-charcoal/15">
               <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
