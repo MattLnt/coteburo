@@ -76,11 +76,9 @@ export default function GalerieProduit({ images = [], alt = "" }) {
   });
 
   const imagePrincipale = (
-    <div className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-white">
-      {/* Toujours en contain : une photo d'ambiance recadrée en cover perdait
-          la moitié de la scène. Mieux vaut des marges que du hors-champ. */}
+    <div className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)]">
       {urlActive ? (
-        <img src={urlActive} alt={alt} className="w-full h-full object-contain p-3 lg:p-5" />
+        <img src={urlActive} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain p-4 lg:p-6" : "object-cover"}`} />
       ) : (
         <div className="w-full h-full grid place-items-center text-charcoal/15">
           <svg width="38%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
