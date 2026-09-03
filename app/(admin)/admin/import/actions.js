@@ -10,10 +10,10 @@ function slugify(s) {
     .replace(/(^-|-$)/g, "");
 }
 
-// Identifiant court, au même format que ceux générés par l'éditeur de carte
-// ("pw3ge") — les déclinaisons y sont référencées par id.
+// Identifiant court, au format de ceux générés par l'éditeur de carte.
+// 5 caractères pour les déclinaisons, 7 pour les sections — on reste large.
 function idCourt() {
-  return Math.random().toString(36).slice(2, 7);
+  return Math.random().toString(36).slice(2, 9);
 }
 
 const entier = (v) => {
@@ -21,6 +21,37 @@ const entier = (v) => {
   const n = parseInt(String(v), 10);
   return Number.isNaN(n) ? null : n;
 };
+
+const echapper = (s) =>
+  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+// L'éditeur Tiptap enregistre du HTML. Le JSON accepte du texte brut, plus
+// simple à écrire : les blocs séparés par une ligne vide deviennent des <p>.
+// Un contenu déjà balisé passe tel quel.
+function texteVersHtml(valeur) {
+  if (valeur == null) return null;
+  const texte = String(valeur).trim();
+  if (!texte) return null;
+  if (texte.startsWith("<")) return texte;
+
+  return texte
+    .split(/\n\s*\n/)
+    .map((bloc) => `<p>${echapper(bloc.trim()).replace(/\n/g, "<br>")}</p>`)
+    .join("");
+}
+
+// Un tableau de chaînes devient une liste à puces — c'est le format des
+// descriptions techniques. Sinon, on applique la règle des paragraphes.
+function contenuVersHtml(valeur) {
+  if (Array.isArray(valeur)) {
+    const items = valeur
+      .filter(Boolean)
+      .map((l) => `<li><p>${echapper(String(l).trim())}</p></li>`)
+      .join("");
+    return items ? `<ul>${items}</ul>` : null;
+  }
+  return texteVersHtml(valeur);
+}
 
 // Suffixe apposé à tous les produits importés : permet de les repérer d'un
 // coup d'œil dans l'admin et évite les collisions de slug avec l'existant.
@@ -123,8 +154,8 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     slugsParGamme.get(p.gammeId).add(p.slug);
   }
   const nomsExistants = new Set(existants.map((p) => cleNom(p.nom)));
-  // Accessoires déjà en base, indexés par nom : un produit peut se lier à eux
-  // sans qu'ils figurent dans le fichier.
+  // Produits déjà en base, indexés par nom : un produit peut se lier à un
+  // accessoire existant sans qu'il figure dans le fichier.
   const vitrinesParNom = new Map(existants.map((p) => [cleNom(p.nom), p.id]));
 
   const prepares = [];
@@ -168,6 +199,28 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     if (p.sousCategorie && cat && !sousCat) {
       alertes.push({ type: "attention", texte: `${nomBrut} : sous-catégorie « ${p.sousCategorie} » introuvable dans ${cat.nom}.` });
     }
+
+    // ── Sections descriptives (onglet Descriptif technique) ──
+    const sections = Array.isArray(p.sections)
+      ? p.sections
+          .filter((s) => s && (s.titre || s.contenu))
+          .map((s) => ({
+            id: s.id || idCourt(),
+            titre: (s.titre || "").trim(),
+            contenu: contenuVersHtml(s.contenu) || "",
+          }))
+      : [];
+
+    // ── Choix sans impact sur le prix ──
+    const optionsInformatives = Array.isArray(p.optionsInformatives)
+      ? p.optionsInformatives
+          .filter((g) => g && g.nom)
+          .map((g) => ({
+            id: g.id || idCourt(),
+            nom: (g.nom || "").trim(),
+            valeurs: Array.isArray(g.valeurs) ? g.valeurs.filter(Boolean).map(String) : [],
+          }))
+      : [];
 
     // ── Axes et déclinaisons ──
     const axes = Array.isArray(p.axesDeclinaisons)
@@ -238,7 +291,9 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       gammeDemandee: gammeDemandee || null,
       gammeCibleId,
       gammeCibleNom,
-      descriptif: p.descriptif || null,
+      descriptif: texteVersHtml(p.descriptif),
+      sections,
+      optionsInformatives,
       categorieId: cat?.id || null,
       categorieNom: cat?.nom || null,
       sousCategorieId: sousCat?.id || null,
@@ -383,6 +438,8 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
         publie: false,
         venteSurDevis: false,
         descriptif: p.descriptif,
+        sectionsDevis: p.sections,
+        optionsInformatives: p.optionsInformatives,
         largeurMin: p.largeurMin,
         largeurMax: p.largeurMax,
         hauteurMin: p.hauteurMin,
