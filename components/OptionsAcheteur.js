@@ -72,6 +72,8 @@ export const libelleOption = (o, cfg) => {
   return parts.join(" / ");
 };
 
+const imageOption = (o) => (o.images && o.images[0]) || null;
+
 // ─────────── Hook réutilisable par les deux fiches ───────────
 export function useOptionsAcheteur({ options, carte, addItem }) {
   const optionsDispo = (options || []).filter((o) => {
@@ -79,6 +81,14 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
     if (estDeclOption(o)) return (o.declinaisons || []).length > 0;
     return (o.prixVenteHT ?? o.prixHT) != null;
   });
+
+  // Beaucoup d'accessoires n'ont pas de visuel — les pièces techniques
+  // comme les roulettes, les pinces ou les goulottes ne sont pas
+  // photographiées par les fournisseurs. Quand aucune option de la liste
+  // n'a d'image, on retire la colonne : ça évite une rangée de carrés
+  // vides. Si une seule en a, la colonne reste pour garder l'alignement,
+  // et les autres reçoivent une pastille discrète.
+  const avecVisuels = optionsDispo.some((o) => imageOption(o));
 
   const [optionsCfg, setOptionsCfg] = useState({});
   const [lightbox, setLightbox] = useState(null);
@@ -115,6 +125,10 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
       if (prix == null) return;
       const lbl = libelleOption(o, cfg);
 
+      // La marque suit celle du produit parent : le catalogue ne contient
+      // pas que du Buronomic.
+      const marque = o.marque || carte.marque || carte.marqueNom || "Buronomic";
+
       if (o.estProduitLie) {
         addItem(
           {
@@ -125,8 +139,8 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
             categorieSlug: o.categorieSlug || carte.categorieSlug || null,
             sousCategorieSlug: o.sousCategorieSlug || carte.sousCategorieSlug || null,
             designation: o.nom + (lbl ? ` — ${lbl}` : ""),
-            marque: "Buronomic",
-            image: (o.images && o.images[0]) || null,
+            marque,
+            image: imageOption(o),
             prix,
             parentId,
           },
@@ -145,8 +159,8 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
             categorieSlug: carte.categorieSlug || null,
             sousCategorieSlug: carte.sousCategorieSlug || null,
             designation: o.nom + (lbl ? ` — ${lbl}` : ""),
-            marque: "Buronomic",
-            image: (o.images && o.images[0]) || null,
+            marque,
+            image: imageOption(o),
             prix,
             parentId,
           },
@@ -167,6 +181,7 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
               key={o.id}
               o={o}
               cfg={optionsCfg[o.id]}
+              avecVisuels={avecVisuels}
               onToggle={toggleOption}
               onQte={setQteOption}
               onValeur={setValeurOption}
@@ -214,15 +229,19 @@ export function useOptionsAcheteur({ options, carte, addItem }) {
 }
 
 // ─────────── Une option configurable (déclinaison + finitions + quantité) ───────────
-function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
+function OptionRow({ o, cfg, avecVisuels, onToggle, onQte, onValeur, onFinition, onZoom }) {
   const sel = !!cfg;
   const q = cfg?.qte || 1;
-  const img = (o.images && o.images[0]) || null;
+  const img = imageOption(o);
   const multi = (o.images || []).length > 1;
   const decl = estDeclOption(o);
   const prix = prixOption(o, cfg || { valeurs: {} });
   const groupes = groupesFinitionOption(o, cfg?.valeurs || {});
   const configuree = optionConfiguree(o, cfg);
+
+  // Décalage du bloc de configuration : il s'aligne sous le nom, donc
+  // il suit la présence ou non de la colonne image.
+  const retrait = avecVisuels ? "pl-[81px]" : "pl-[30px]";
 
   const valeurBtn = (actif) => `px-3 py-1.5 rounded-lg border text-[12.5px] font-medium transition ${
     actif ? "border-orange bg-orange-tint text-orange-dark" : "border-line text-ink hover:border-orange/50"}`;
@@ -231,10 +250,28 @@ function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
     <div className={`p-3 rounded-xl border transition ${sel ? "border-orange bg-orange-tint" : "border-line"}`}>
       <div className="flex items-center gap-3">
         <input type="checkbox" checked={sel} onChange={() => onToggle(o.id)} style={{ width: 18, height: 18, accentColor: "#f0661b", cursor: "pointer" }} />
-        <button type="button" onClick={() => img && onZoom({ option: o, index: 0 })} className="relative w-[54px] h-[54px] rounded-lg overflow-hidden shrink-0 bg-surface-2" style={{ cursor: img ? "zoom-in" : "default" }}>
-          {img ? <img src={img} alt={o.nom} className="w-full h-full object-cover" /> : null}
-          {multi && <span className="absolute bottom-0.5 right-0.5 bg-charcoal/80 text-white text-[10px] font-bold px-1.5 rounded">{o.images.length}</span>}
-        </button>
+
+        {avecVisuels && (
+          img ? (
+            <button
+              type="button"
+              onClick={() => onZoom({ option: o, index: 0 })}
+              className="relative w-[54px] h-[54px] rounded-lg overflow-hidden shrink-0 bg-surface-2"
+              style={{ cursor: "zoom-in" }}
+            >
+              <img src={img} alt={o.nom} className="w-full h-full object-cover" />
+              {multi && <span className="absolute bottom-0.5 right-0.5 bg-charcoal/80 text-white text-[10px] font-bold px-1.5 rounded">{o.images.length}</span>}
+            </button>
+          ) : (
+            <span
+              aria-hidden="true"
+              className="w-[54px] h-[54px] rounded-lg shrink-0 bg-surface-2 border border-line grid place-items-center text-[17px] font-semibold text-ink-soft/60 select-none"
+            >
+              {(o.nom || "?").trim().charAt(0).toUpperCase()}
+            </span>
+          )
+        )}
+
         <div className="flex-1 min-w-0">
           <p className="text-[14px] font-semibold text-ink">{o.nom}</p>
           {o.description && <p className="text-[12px] text-ink-soft leading-snug">{o.description}</p>}
@@ -253,7 +290,7 @@ function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
       </div>
 
       {sel && decl && (
-        <div className="mt-3 pl-9 flex flex-col gap-3">
+        <div className={`mt-3 ${retrait} flex flex-col gap-3`}>
           {(o.axes || []).map((a) => (
             <div key={a.id}>
               <p className="text-[12.5px] font-semibold text-ink mb-1.5">
@@ -270,7 +307,7 @@ function OptionRow({ o, cfg, onToggle, onQte, onValeur, onFinition, onZoom }) {
       )}
 
       {sel && groupes.length > 0 && (
-        <div className="mt-3 pl-9 flex flex-col gap-3">
+        <div className={`mt-3 ${retrait} flex flex-col gap-3`}>
           {groupes.map((gr) => {
             const blocs = sousBlocsPalette(gr.finitions);
             return (

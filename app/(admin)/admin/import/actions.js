@@ -10,8 +10,6 @@ function slugify(s) {
     .replace(/(^-|-$)/g, "");
 }
 
-// Identifiant court, au format de ceux générés par l'éditeur de carte.
-// 5 caractères pour les déclinaisons, 7 pour les sections — on reste large.
 function idCourt() {
   return Math.random().toString(36).slice(2, 9);
 }
@@ -22,12 +20,17 @@ const entier = (v) => {
   return Number.isNaN(n) ? null : n;
 };
 
+// Les prix arrivent en chaîne dans le JSON, parfois avec une virgule.
+// Le modèle Prisma attend un Float sur les champs unitaires.
+const nombre = (v) => {
+  if (v === "" || v == null) return null;
+  const n = parseFloat(String(v).replace(",", "."));
+  return Number.isNaN(n) ? null : n;
+};
+
 const echapper = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-// L'éditeur Tiptap enregistre du HTML. Le JSON accepte du texte brut, plus
-// simple à écrire : les blocs séparés par une ligne vide deviennent des <p>.
-// Un contenu déjà balisé passe tel quel.
 function texteVersHtml(valeur) {
   if (valeur == null) return null;
   const texte = String(valeur).trim();
@@ -40,8 +43,6 @@ function texteVersHtml(valeur) {
     .join("");
 }
 
-// Un tableau de chaînes devient une liste à puces — c'est le format des
-// descriptions techniques. Sinon, on applique la règle des paragraphes.
 function contenuVersHtml(valeur) {
   if (Array.isArray(valeur)) {
     const items = valeur
@@ -53,16 +54,11 @@ function contenuVersHtml(valeur) {
   return texteVersHtml(valeur);
 }
 
-// Suffixe apposé à tous les produits importés : permet de les repérer d'un
-// coup d'œil dans l'admin et évite les collisions de slug avec l'existant.
 const SUFFIXE = " - NEW";
-
-// Nom sans le suffixe, pour comparer un produit du fichier à ceux en base
-// quelle que soit la casse, les accents ou la présence du « - NEW ».
 const cleNom = (nom) => slugify((nom || "").replace(SUFFIXE, ""));
 
 export async function getContexteImport() {
-  const [gammes, categories] = await Promise.all([
+  const [gammes, categories, palettes] = await Promise.all([
     prisma.gamme.findMany({
       orderBy: { nom: "asc" },
       select: { id: true, nom: true, marque: { select: { nom: true } } },
@@ -70,6 +66,10 @@ export async function getContexteImport() {
     prisma.categorie.findMany({
       orderBy: { nom: "asc" },
       include: { sousCategories: { orderBy: { nom: "asc" }, select: { id: true, nom: true } } },
+    }),
+    prisma.paletteFinition.findMany({
+      orderBy: { nom: "asc" },
+      select: { id: true, nom: true, _count: { select: { finitions: true } } },
     }),
   ]);
 
@@ -80,12 +80,10 @@ export async function getContexteImport() {
       nom: c.nom,
       sousCategories: c.sousCategories,
     })),
+    palettes: palettes.map((p) => ({ id: p.id, nom: p.nom, nb: p._count.finitions })),
   };
 }
 
-// Trouve ou crée une gamme par son nom. Utilisé pour la gamme cible du fichier
-// et pour celles qu'un produit désigne lui-même (les accessoires vivent dans
-// leur propre gamme, pas dans celle de la collection importée).
 async function resoudreGamme(nom, { creer = true } = {}) {
   const propre = (nom || "").trim();
   if (!propre) return null;
@@ -106,9 +104,6 @@ async function resoudreGamme(nom, { creer = true } = {}) {
   return creee.id;
 }
 
-// Normalise et contrôle le JSON. Renvoie la liste des produits prêts à créer
-// et les anomalies relevées. Utilisée par l'aperçu ET par l'import, pour que
-// ce qui s'affiche soit exactement ce qui sera écrit.
 async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
   let brut;
   try {
@@ -122,16 +117,17 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     return { erreur: "Aucun produit trouvé. Le JSON doit contenir un tableau « produits »." };
   }
 
-  const [categories, toutesGammes, existants] = await Promise.all([
+  const [categories, toutesGammes, existants, palettes] = await Promise.all([
     prisma.categorie.findMany({
       include: { sousCategories: { select: { id: true, nom: true, slug: true } } },
     }),
     prisma.gamme.findMany({ select: { id: true, nom: true, slug: true } }),
     prisma.produitVitrine.findMany({ select: { id: true, slug: true, nom: true, gammeId: true } }),
+    prisma.paletteFinition.findMany({
+      include: { finitions: { orderBy: { ordre: "asc" } } },
+    }),
   ]);
 
-  // Correspondance par slug du nom : « Bureaux direction » trouve la
-  // catégorie quelle que soit la casse ou les accents.
   const trouverCategorie = (nom) => {
     if (!nom) return null;
     const cible = slugify(nom);
@@ -147,6 +143,11 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     const cible = slugify(nom);
     return toutesGammes.find((g) => slugify(g.nom) === cible || g.slug === cible) || null;
   };
+  const trouverPalette = (nom) => {
+    if (!nom) return null;
+    const cible = slugify(nom);
+    return palettes.find((p) => slugify(p.nom) === cible) || null;
+  };
 
   const slugsParGamme = new Map();
   for (const p of existants) {
@@ -154,8 +155,6 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     slugsParGamme.get(p.gammeId).add(p.slug);
   }
   const nomsExistants = new Set(existants.map((p) => cleNom(p.nom)));
-  // Produits déjà en base, indexés par nom : un produit peut se lier à un
-  // accessoire existant sans qu'il figure dans le fichier.
   const vitrinesParNom = new Map(existants.map((p) => [cleNom(p.nom), p.id]));
 
   const prepares = [];
@@ -170,7 +169,6 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
 
     const nomFinal = nomBrut.endsWith(SUFFIXE) ? nomBrut : nomBrut + SUFFIXE;
 
-    // Gamme : celle indiquée par le produit, sinon celle choisie à l'import.
     const gammeDemandee = (p.gamme || "").trim();
     const gammeExistante = gammeDemandee ? trouverGamme(gammeDemandee) : null;
     const gammeCibleId = gammeDemandee ? (gammeExistante?.id || null) : gammeParDefautId;
@@ -180,7 +178,6 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       alertes.push({ type: "info", texte: `${nomBrut} : la gamme « ${gammeDemandee} » sera créée.` });
     }
 
-    // Unicité du slug dans la gamme de destination.
     const pris = slugsParGamme.get(gammeCibleId) || new Set();
     if (!slugsParGamme.has(gammeCibleId)) slugsParGamme.set(gammeCibleId, pris);
     let slug = slugify(nomFinal);
@@ -200,7 +197,7 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       alertes.push({ type: "attention", texte: `${nomBrut} : sous-catégorie « ${p.sousCategorie} » introuvable dans ${cat.nom}.` });
     }
 
-    // ── Sections descriptives (onglet Descriptif technique) ──
+    // ── Sections descriptives ──
     const sections = Array.isArray(p.sections)
       ? p.sections
           .filter((s) => s && (s.titre || s.contenu))
@@ -237,8 +234,6 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       ? p.declinaisons.map((d) => ({
           id: d.id || idCourt(),
           valeurs: d.valeurs || {},
-          // Les prix sont des chaînes dans l'éditeur : on garde ce format,
-          // vides par défaut puisqu'ils seront saisis depuis le catalogue.
           prixTarifHT: d.prixTarifHT != null ? String(d.prixTarifHT) : "",
           prixVenteHT: d.prixVenteHT != null ? String(d.prixVenteHT) : "",
           prixVerrouille: !!d.prixVerrouille,
@@ -250,8 +245,23 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       ? !!p.sansDeclinaisons
       : declinaisons.length === 0;
 
-    // Une déclinaison dont les valeurs ne correspondent à aucun axe ne
-    // s'affichera pas sur la fiche : autant le signaler tout de suite.
+    // ── Prix unitaire ──
+    // Un produit sans déclinaison porte son prix dans prixUnitaireTarifHT :
+    // c'est ce champ que lit le reste de l'application, notamment la liste
+    // des accessoires rattachables. Le JSON peut le donner directement, ou
+    // le loger dans une déclinaison unique — les deux écritures marchent.
+    let prixUnitaireTarifHT = nombre(p.prixTarifHT);
+    let prixUnitaireHT = nombre(p.prixVenteHT);
+
+    if (sansDeclinaisons && declinaisons.length > 0) {
+      if (prixUnitaireTarifHT == null) prixUnitaireTarifHT = nombre(declinaisons[0].prixTarifHT);
+      if (prixUnitaireHT == null) prixUnitaireHT = nombre(declinaisons[0].prixVenteHT);
+    }
+
+    if (sansDeclinaisons && prixUnitaireTarifHT == null) {
+      alertes.push({ type: "info", texte: `${nomBrut} : aucun prix unitaire — à saisir dans la fiche.` });
+    }
+
     if (!sansDeclinaisons && axes.length > 0) {
       const idsAxes = axes.map((a) => a.id);
       declinaisons.forEach((d) => {
@@ -263,22 +273,48 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     }
 
     // ── Finitions ──
+    // Un groupe puise soit dans une palette de la bibliothèque, soit dans
+    // une liste écrite à la main. La palette évite de recopier des dizaines
+    // de coloris dans chaque fiche : une correction se fait à un seul endroit.
     const groupesFinition = Array.isArray(p.groupesFinition)
       ? p.groupesFinition
           .filter((g) => g && g.nom)
-          .map((g, gi) => ({
-            nom: g.nom,
-            ordre: gi,
-            finitions: (Array.isArray(g.finitions) ? g.finitions : [])
-              .filter((f) => f && f.nom)
-              .map((f, fi) => ({
-                nom: f.nom,
-                couleur: f.couleur || null,
-                imageUrl: f.imageUrl || null,
-                paletteNom: f.paletteNom || null,
-                ordre: fi,
-              })),
-          }))
+          .map((g, gi) => {
+            const nomPalette = (g.palette || "").trim();
+
+            if (nomPalette) {
+              const palette = trouverPalette(nomPalette);
+              if (!palette) {
+                alertes.push({ type: "attention", texte: `${nomBrut} : palette « ${nomPalette} » introuvable, le groupe « ${g.nom} » sera vide.` });
+                return { nom: g.nom, ordre: gi, finitions: [] };
+              }
+              return {
+                nom: g.nom,
+                ordre: gi,
+                finitions: palette.finitions.map((f, fi) => ({
+                  nom: f.nom,
+                  couleur: f.couleur || null,
+                  imageUrl: f.imageUrl || null,
+                  paletteNom: palette.nom,
+                  ordre: fi,
+                })),
+              };
+            }
+
+            return {
+              nom: g.nom,
+              ordre: gi,
+              finitions: (Array.isArray(g.finitions) ? g.finitions : [])
+                .filter((f) => f && f.nom)
+                .map((f, fi) => ({
+                  nom: f.nom,
+                  couleur: f.couleur || null,
+                  imageUrl: f.imageUrl || null,
+                  paletteNom: f.paletteNom || null,
+                  ordre: fi,
+                })),
+            };
+          })
       : [];
 
     const dim = p.dimensions || {};
@@ -306,19 +342,16 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       profondeurMax: entier(dim.profondeurMax),
       sansDeclinaisons,
       referenceUnitaire: (p.referenceUnitaire || "").trim() || null,
+      prixUnitaireTarifHT,
+      prixUnitaireHT,
       axesDeclinaisons: axes,
       declinaisons,
       groupesFinition,
-      // Noms bruts : la résolution en identifiants se fait plus bas, une fois
-      // qu'on connaît tous les produits du fichier.
       optionsLiees: Array.isArray(p.optionsLiees) ? p.optionsLiees.filter(Boolean) : [],
     });
   });
 
   // ── Liaison des accessoires ──
-  // Un produit peut se lier à un accessoire du même fichier ou à un accessoire
-  // déjà en base. Les premiers n'ont pas encore d'identifiant : on les repère
-  // par leur nom, et l'import les crée avant les produits qui s'y rattachent.
   const nomsDuFichier = new Set(prepares.map((p) => cleNom(p.nom)));
 
   for (const p of prepares) {
@@ -335,8 +368,6 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
     }
   }
 
-  // Les accessoires d'abord : ils doivent exister avant les produits qui s'y
-  // rattachent. Un accessoire est un produit référencé par un autre.
   const clesAccessoires = new Set(
     prepares.flatMap((p) => p.optionsResolues.filter((o) => o.source === "fichier").map((o) => o.cle))
   );
@@ -366,7 +397,6 @@ export async function analyserImport({ json, gammeId, nouvelleGammeNom }) {
 }
 
 export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
-  // ── Gamme par défaut, pour les produits qui n'en désignent aucune ──
   let gammeIdFinal = gammeId || null;
   let gammeNomFinal = null;
 
@@ -385,8 +415,6 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
   if (res.erreur) return { erreur: res.erreur };
   if (res.produits.length === 0) return { erreur: "Aucun produit à importer." };
 
-  // Les gammes désignées par un produit et qui n'existent pas encore sont
-  // créées maintenant, avant la boucle d'insertion.
   const gammesResolues = new Map();
   for (const p of res.produits) {
     if (!p.gammeDemandee || p.gammeCibleId) continue;
@@ -396,7 +424,6 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
     }
   }
 
-  // Position de départ dans chaque gamme touchée.
   const ordreParGamme = new Map();
   const prochainOrdre = async (gid) => {
     if (!ordreParGamme.has(gid)) {
@@ -412,8 +439,6 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
     return n;
   };
 
-  // Identifiants des produits créés, par nom : les accessoires du fichier
-  // s'y retrouvent au moment de lier les produits qui les utilisent.
   const idsCrees = new Map();
   const creees = [];
 
@@ -421,14 +446,10 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
     const gid = p.gammeCibleId || gammesResolues.get(p.gammeDemandee) || gammeIdFinal;
     if (!gid) continue;
 
-    // Les accessoires viennent en premier dans la liste (tri fait à la
-    // préparation), donc leurs identifiants sont déjà connus ici.
     const idsOptions = p.optionsResolues
       .map((o) => (o.source === "base" ? o.id : idsCrees.get(o.cle)))
       .filter(Boolean);
 
-    // Les produits arrivent en brouillon : prix à saisir et photos à ajouter
-    // avant publication.
     const vitrine = await prisma.produitVitrine.create({
       data: {
         nom: p.nom,
@@ -448,6 +469,8 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
         profondeurMax: p.profondeurMax,
         sansDeclinaisons: p.sansDeclinaisons,
         referenceUnitaire: p.referenceUnitaire,
+        prixUnitaireTarifHT: p.prixUnitaireTarifHT,
+        prixUnitaireHT: p.prixUnitaireHT,
         axesDeclinaisons: p.axesDeclinaisons,
         declinaisons: p.declinaisons,
         categories: p.categorieId ? { connect: { id: p.categorieId } } : undefined,
@@ -461,14 +484,13 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
 
     idsCrees.set(cleNom(p.nom), vitrine.id);
 
-    // Les finitions sont des tables à part, créées après la vitrine.
     for (const g of p.groupesFinition) {
       await prisma.groupeFinition.create({
         data: {
           nom: g.nom,
           ordre: g.ordre,
           vitrineId: vitrine.id,
-          finitions: { create: g.finitions },
+          finitions: g.finitions.length > 0 ? { create: g.finitions } : undefined,
         },
       });
     }
