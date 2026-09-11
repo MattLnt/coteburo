@@ -274,48 +274,89 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
 
     // ── Finitions ──
     // Un groupe puise soit dans une palette de la bibliothèque, soit dans
-    // une liste écrite à la main. La palette évite de recopier des dizaines
-    // de coloris dans chaque fiche : une correction se fait à un seul endroit.
-    const groupesFinition = Array.isArray(p.groupesFinition)
-      ? p.groupesFinition
-          .filter((g) => g && g.nom)
-          .map((g, gi) => {
-            const nomPalette = (g.palette || "").trim();
+    // une liste écrite à la main.
+    //
+    // Cas particulier des catégories tarifaires : chez Sokoa, le prix dépend
+    // de la catégorie de revêtement, et chaque catégorie a son propre
+    // nuancier. Laissés en groupes globaux, les six s'afficheraient ensemble
+    // sur la fiche, tous marqués « à choisir », alors que le client n'en
+    // retient qu'un. On les rattache donc à la valeur d'axe correspondante :
+    // le nuancier n'apparaît qu'une fois la catégorie choisie, et ne montre
+    // que ses coloris.
+    //
+    // Le rattachement se déclare dans le JSON avec "axe" et "valeur" :
+    //   { "nom": "Revêtement B", "palette": "Tissu B",
+    //     "axe": "revetement", "valeur": "B" }
+    //
+    // Sans ces deux champs, le groupe reste global — c'est ce qu'il faut
+    // pour les coloris de résille, de coque ou de piétement, qui valent
+    // quelle que soit la catégorie retenue.
+    const groupesFinition = [];
+    const finitionsParAxe = {};
 
-            if (nomPalette) {
-              const palette = trouverPalette(nomPalette);
-              if (!palette) {
-                alertes.push({ type: "attention", texte: `${nomBrut} : palette « ${nomPalette} » introuvable, le groupe « ${g.nom} » sera vide.` });
-                return { nom: g.nom, ordre: gi, finitions: [] };
-              }
-              return {
-                nom: g.nom,
-                ordre: gi,
-                finitions: palette.finitions.map((f, fi) => ({
-                  nom: f.nom,
-                  couleur: f.couleur || null,
-                  imageUrl: f.imageUrl || null,
-                  paletteNom: palette.nom,
-                  ordre: fi,
-                })),
-              };
-            }
+    (Array.isArray(p.groupesFinition) ? p.groupesFinition : [])
+      .filter((g) => g && g.nom)
+      .forEach((g, gi) => {
+        const nomPalette = (g.palette || "").trim();
+        let finitions;
 
-            return {
-              nom: g.nom,
-              ordre: gi,
-              finitions: (Array.isArray(g.finitions) ? g.finitions : [])
-                .filter((f) => f && f.nom)
-                .map((f, fi) => ({
-                  nom: f.nom,
-                  couleur: f.couleur || null,
-                  imageUrl: f.imageUrl || null,
-                  paletteNom: f.paletteNom || null,
-                  ordre: fi,
-                })),
-            };
-          })
-      : [];
+        if (nomPalette) {
+          const palette = trouverPalette(nomPalette);
+          if (!palette) {
+            alertes.push({ type: "attention", texte: `${nomBrut} : palette « ${nomPalette} » introuvable, le groupe « ${g.nom} » sera vide.` });
+            finitions = [];
+          } else {
+            finitions = palette.finitions.map((f, fi) => ({
+              nom: f.nom,
+              couleur: f.couleur || null,
+              imageUrl: f.imageUrl || null,
+              paletteNom: palette.nom,
+              ordre: fi,
+            }));
+          }
+        } else {
+          finitions = (Array.isArray(g.finitions) ? g.finitions : [])
+            .filter((f) => f && f.nom)
+            .map((f, fi) => ({
+              nom: f.nom,
+              couleur: f.couleur || null,
+              imageUrl: f.imageUrl || null,
+              paletteNom: f.paletteNom || null,
+              ordre: fi,
+            }));
+        }
+
+        const axeId = (g.axe || "").trim();
+        const valeur = (g.valeur || "").trim();
+
+        if (axeId && valeur) {
+          const axe = axes.find((a) => a.id === axeId);
+          if (!axe) {
+            alertes.push({ type: "attention", texte: `${nomBrut} : axe « ${axeId} » introuvable pour le groupe « ${g.nom} », il restera global.` });
+          } else if (!(axe.valeurs || []).includes(valeur)) {
+            alertes.push({ type: "attention", texte: `${nomBrut} : la valeur « ${valeur} » n'existe pas sur l'axe ${axe.nom}, le groupe « ${g.nom} » restera global.` });
+          } else {
+            if (!finitionsParAxe[axeId]) finitionsParAxe[axeId] = {};
+            // Les finitions rattachées à une valeur vivent dans le JSON de
+            // l'axe, pas en table : elles ont besoin d'un identifiant stable.
+            finitionsParAxe[axeId][valeur] = finitions.map((f, fi) => ({
+              id: `${axeId}:${slugify(valeur)}:${fi}`,
+              nom: f.nom,
+              couleur: f.couleur,
+              imageUrl: f.imageUrl,
+              paletteNom: f.paletteNom,
+            }));
+            return;
+          }
+        }
+
+        groupesFinition.push({ nom: g.nom, ordre: gi, finitions });
+      });
+
+    // Report des nuanciers sur les axes concernés.
+    const axesAvecFinitions = axes.map((a) =>
+      finitionsParAxe[a.id] ? { ...a, finitionsParValeur: finitionsParAxe[a.id] } : a
+    );
 
     const dim = p.dimensions || {};
 
@@ -344,7 +385,7 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
       referenceUnitaire: (p.referenceUnitaire || "").trim() || null,
       prixUnitaireTarifHT,
       prixUnitaireHT,
-      axesDeclinaisons: axes,
+      axesDeclinaisons: axesAvecFinitions,
       declinaisons,
       groupesFinition,
       optionsLiees: Array.isArray(p.optionsLiees) ? p.optionsLiees.filter(Boolean) : [],
