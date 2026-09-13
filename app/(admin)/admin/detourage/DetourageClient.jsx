@@ -26,13 +26,21 @@ const dejaDetouree = (url) => decodeURIComponent(url).toLowerCase().includes("_d
 // plus grande dimension. Sans elle, le produit toucherait les bords.
 const MARGE = 0.03;
 
-// Rogne la transparence autour du produit.
+// En dessous de ce seuil d'opacité, un pixel est considéré comme du
+// fond résiduel. Au-dessus, il fait partie du produit.
+const SEUIL_OPACITE = 128;
+
+// Nettoie et recadre l'image détourée.
 //
-// Le détourage laisse l'image à ses dimensions d'origine : le produit
-// occupe le centre, entouré de vide. Affiché en « contain », il paraît
-// donc bien plus petit qu'avant traitement. On recadre au plus près,
-// avec une marge légère, pour qu'il remplisse à nouveau son cadre.
-async function rogner(blob) {
+// Le modèle de détourage laisse un contour en demi-teinte là où le
+// produit rencontrait le fond : ces pixels à moitié opaques dessinent
+// un liseré blanchâtre une fois l'image posée sur la page. On durcit
+// donc le contour avant de recadrer.
+//
+// Le recadrage, lui, rend au produit la place que le détourage lui a
+// prise : sans lui, il flotte au milieu d'un carré vide et paraît
+// beaucoup plus petit qu'avant traitement.
+async function nettoyerEtRogner(blob) {
   const bitmap = await createImageBitmap(blob);
   const { width: w, height: h } = bitmap;
 
@@ -42,16 +50,21 @@ async function rogner(blob) {
   const ctx = c.getContext("2d", { willReadFrequently: true });
   ctx.drawImage(bitmap, 0, 0);
 
-  const data = ctx.getImageData(0, 0, w, h).data;
+  const img = ctx.getImageData(0, 0, w, h);
+  const data = img.data;
 
-  // On cherche les extrêmes du produit : le premier et le dernier pixel
-  // suffisamment opaque sur chaque axe.
+  // Passage en tout ou rien sur l'opacité : plus de demi-teintes, donc
+  // plus de liseré. On relève au passage les extrêmes du produit.
   let gauche = w, droite = -1, haut = h, bas = -1;
-  const SEUIL = 12; // en dessous, c'est du bruit de compression
 
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
-      if (data[(y * w + x) * 4 + 3] <= SEUIL) continue;
+      const i = (y * w + x) * 4;
+      if (data[i + 3] < SEUIL_OPACITE) {
+        data[i + 3] = 0;
+        continue;
+      }
+      data[i + 3] = 255;
       if (x < gauche) gauche = x;
       if (x > droite) droite = x;
       if (y < haut) haut = y;
@@ -62,6 +75,8 @@ async function rogner(blob) {
   // Image entièrement transparente : le détourage a tout effacé, on
   // garde l'originale plutôt qu'un carré vide.
   if (droite < 0 || bas < 0) return blob;
+
+  ctx.putImageData(img, 0, 0);
 
   const largeur = droite - gauche + 1;
   const hauteur = bas - haut + 1;
@@ -77,7 +92,7 @@ async function rogner(blob) {
   const ctxOut = sortie.getContext("2d");
 
   ctxOut.drawImage(
-    bitmap,
+    c,
     gauche, haut, largeur, hauteur,
     Math.round((cote - largeur) / 2),
     Math.round((cote - hauteur) / 2),
@@ -189,13 +204,10 @@ export default function DetourageClient({ produits, marques }) {
 
           const source = await resp.blob();
           const detoure = await removeBackground(source);
-
-          // Le rognage rend au produit la place que le détourage lui a
-          // prise : sans lui, il flotte au milieu d'un carré vide.
-          const cadre = await rogner(detoure);
+          const propre = await nettoyerEtRogner(detoure);
 
           const nomFichier = decodeURIComponent(url).split("/").pop() || "image.png";
-          const nouvelleUrl = await envoyer(cadre, nomFichier);
+          const nouvelleUrl = await envoyer(propre, nomFichier);
 
           const i = nouvelles.indexOf(url);
           if (i >= 0) nouvelles[i] = nouvelleUrl;
