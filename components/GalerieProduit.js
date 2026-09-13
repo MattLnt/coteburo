@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { urlProduit, urlVignette } from "@/lib/cloudinary";
 
 // Nombre de miniatures visibles avant scroll (colonne desktop).
 const VIGNETTES_VISIBLES = 5;
@@ -7,6 +8,16 @@ const HAUTEUR_VIGNETTE = 80;
 const GAP = 12;
 const HAUTEUR_COLONNE = VIGNETTES_VISIBLES * HAUTEUR_VIGNETTE + (VIGNETTES_VISIBLES - 1) * GAP;
 const PAS_SCROLL = HAUTEUR_VIGNETTE + GAP;
+
+// Une photo d'ambiance montre le produit en situation : la rogner
+// couperait le décor qui fait tout son intérêt. On les reconnaît à leur
+// nom de fichier, les catalogues fournisseurs les préfixant ainsi.
+const MOTS_AMBIANCE = ["amb_", "amb-", "ambiance", "_amb", "bodegon"];
+
+const estAmbiance = (url) => {
+  const nom = decodeURIComponent(url || "").toLowerCase();
+  return MOTS_AMBIANCE.some((m) => nom.includes(m));
+};
 
 export default function GalerieProduit({ images = [], alt = "" }) {
   const [imgActive, setImgActive] = useState(0);
@@ -17,12 +28,29 @@ export default function GalerieProduit({ images = [], alt = "" }) {
 
   useEffect(() => { setImgActive(0); }, [images]);
 
-  // Détection fond transparent (⇒ contain) vs photo pleine (⇒ cover). Indexé par URL.
+  // Détermine le cadrage de chaque image, indexé par URL.
+  //
+  // Un packshot — fond transparent ou uniformément clair — doit tenir
+  // entier dans le cadre : le rogner couperait le produit. Une photo
+  // d'ambiance, elle, remplit le cadre sans qu'on perde l'essentiel.
+  //
+  // Les captures du configurateur pCon ont un fond blanc opaque : la
+  // seule détection de transparence les classait à tort en « cover »,
+  // et les armoires hautes se retrouvaient tronquées.
   useEffect(() => {
     images.forEach((url) => {
       if (!url) return;
+
+      // Le nom de fichier tranche avant toute analyse : une ambiance
+      // reste une ambiance même sur fond clair.
+      if (estAmbiance(url)) {
+        setModes((m) => ({ ...m, [url]: "cover" }));
+        return;
+      }
+
       const probe = new Image();
       probe.crossOrigin = "anonymous";
+
       probe.onload = () => {
         try {
           const c = document.createElement("canvas");
@@ -30,14 +58,36 @@ export default function GalerieProduit({ images = [], alt = "" }) {
           const ctx = c.getContext("2d");
           ctx.drawImage(probe, 0, 0, w, h);
           const data = ctx.getImageData(0, 0, w, h).data;
+
           let transparents = 0;
-          for (let p = 3; p < data.length; p += 4) if (data[p] < 200) transparents++;
-          setModes((m) => ({ ...m, [url]: transparents / (w * h) > 0.12 ? "contain" : "cover" }));
+          // On échantillonne les bords : c'est là que le fond se voit,
+          // le produit occupant le centre.
+          const bords = [];
+          for (let y = 0; y < h; y++) {
+            for (let x = 0; x < w; x++) {
+              const i = (y * w + x) * 4;
+              if (data[i + 3] < 200) transparents++;
+              const surBord = x < 2 || x >= w - 2 || y < 2 || y >= h - 2;
+              if (surBord) bords.push([data[i], data[i + 1], data[i + 2], data[i + 3]]);
+            }
+          }
+
+          const partTransparente = transparents / (w * h);
+          const clairs = bords.filter(([r, g, b, a]) => a > 200 && r > 225 && g > 225 && b > 225);
+          const partClaire = bords.length ? clairs.length / bords.length : 0;
+
+          const packshot = partTransparente > 0.12 || partClaire > 0.75;
+          setModes((m) => ({ ...m, [url]: packshot ? "contain" : "cover" }));
         } catch {
+          // Canvas verrouillé par le navigateur : on se rabat sur
+          // l'extension, le PNG servant aux packshots.
           setModes((m) => ({ ...m, [url]: /\.png(\?|$)/i.test(url) ? "contain" : "cover" }));
         }
       };
-      probe.onerror = () => setModes((m) => ({ ...m, [url]: /\.png(\?|$)/i.test(url) ? "contain" : "cover" }));
+
+      probe.onerror = () =>
+        setModes((m) => ({ ...m, [url]: /\.png(\?|$)/i.test(url) ? "contain" : "cover" }));
+
       probe.src = url;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,8 +115,18 @@ export default function GalerieProduit({ images = [], alt = "" }) {
   };
 
   const urlActive = images[imgActive];
-  const modeActive = (urlActive && modes[urlActive]) || "cover";
+
+  // Tant que la détection n'a pas répondu, « contain » est le choix sûr :
+  // une image affichée entière avec des marges vaut mieux qu'un produit
+  // rogné le temps du chargement.
+  const modeActive = (urlActive && modes[urlActive]) || "contain";
   const avecScroll = images.length > VIGNETTES_VISIBLES;
+
+  // Les captures du configurateur laissent de larges marges blanches :
+  // sans rognage, le meuble occupe moins de la moitié de son cadre.
+  // Cloudinary les coupe à la volée, l'original reste intact.
+  const afficher = (url, taille) =>
+    estAmbiance(url) ? url : urlProduit(url, { largeur: taille });
 
   const styleFleche = (actif) => ({
     width: 80, height: 22, display: "grid", placeItems: "center",
@@ -78,7 +138,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
   const imagePrincipale = (
     <div className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)]">
       {urlActive ? (
-        <img src={urlActive} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain p-4 lg:p-6" : "object-cover"}`} />
+        <img src={afficher(urlActive, 900)} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain p-4 lg:p-6" : "object-cover"}`} />
       ) : (
         <div className="w-full h-full grid place-items-center text-charcoal/15">
           <svg width="38%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
@@ -107,7 +167,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
         {images.length > 1 && (
           <div className="galerie-scroll flex gap-1.5 overflow-x-auto mt-2 pb-1">
             {images.map((img, i) => {
-              const m = modes[img] || "cover";
+              const m = modes[img] || "contain";
               return (
                 <button
                   key={img + i}
@@ -117,7 +177,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
                   aria-pressed={i === imgActive}
                   className={`relative w-[52px] h-[52px] rounded-[10px] overflow-hidden border-2 shrink-0 transition bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] ${i === imgActive ? "border-orange" : "border-line"}`}
                 >
-                  <img src={img} alt="" className={`w-full h-full ${m === "contain" ? "object-contain p-1" : "object-cover"}`} />
+                  <img src={estAmbiance(img) ? img : urlVignette(img, 120)} alt="" className={`w-full h-full ${m === "contain" ? "object-contain p-1" : "object-cover"}`} />
                 </button>
               );
             })}
@@ -137,7 +197,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
 
             <div ref={listeRef} className="galerie-scroll flex flex-col gap-3 overflow-y-auto" style={{ maxHeight: HAUTEUR_COLONNE }}>
               {images.map((img, i) => {
-                const m = modes[img] || "cover";
+                const m = modes[img] || "contain";
                 return (
                   <button
                     key={img + i}
@@ -147,7 +207,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
                     aria-pressed={i === imgActive}
                     className={`relative aspect-square rounded-2xl overflow-hidden border-2 shrink-0 transition bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] ${i === imgActive ? "border-orange shadow-[0_4px_14px_rgba(240,102,27,0.18)]" : "border-line hover:border-orange/40"}`}
                   >
-                    <img src={img} alt="" className={`w-full h-full ${m === "contain" ? "object-contain p-1.5" : "object-cover"}`} />
+                    <img src={estAmbiance(img) ? img : urlVignette(img, 180)} alt="" className={`w-full h-full ${m === "contain" ? "object-contain p-1.5" : "object-cover"}`} />
                   </button>
                 );
               })}
