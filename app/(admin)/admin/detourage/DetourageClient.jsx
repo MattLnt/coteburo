@@ -22,10 +22,76 @@ const estAmbiance = (url) => {
 // Une image déjà détourée porte la marque du traitement dans son nom.
 const dejaDetouree = (url) => decodeURIComponent(url).toLowerCase().includes("_detoure");
 
+// Marge conservée autour du produit après rognage, en proportion de la
+// plus grande dimension. Sans elle, le produit toucherait les bords.
+const MARGE = 0.03;
+
+// Rogne la transparence autour du produit.
+//
+// Le détourage laisse l'image à ses dimensions d'origine : le produit
+// occupe le centre, entouré de vide. Affiché en « contain », il paraît
+// donc bien plus petit qu'avant traitement. On recadre au plus près,
+// avec une marge légère, pour qu'il remplisse à nouveau son cadre.
+async function rogner(blob) {
+  const bitmap = await createImageBitmap(blob);
+  const { width: w, height: h } = bitmap;
+
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(bitmap, 0, 0);
+
+  const data = ctx.getImageData(0, 0, w, h).data;
+
+  // On cherche les extrêmes du produit : le premier et le dernier pixel
+  // suffisamment opaque sur chaque axe.
+  let gauche = w, droite = -1, haut = h, bas = -1;
+  const SEUIL = 12; // en dessous, c'est du bruit de compression
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (data[(y * w + x) * 4 + 3] <= SEUIL) continue;
+      if (x < gauche) gauche = x;
+      if (x > droite) droite = x;
+      if (y < haut) haut = y;
+      if (y > bas) bas = y;
+    }
+  }
+
+  // Image entièrement transparente : le détourage a tout effacé, on
+  // garde l'originale plutôt qu'un carré vide.
+  if (droite < 0 || bas < 0) return blob;
+
+  const largeur = droite - gauche + 1;
+  const hauteur = bas - haut + 1;
+  const marge = Math.round(Math.max(largeur, hauteur) * MARGE);
+
+  // Un canevas carré garde les proportions du produit quel que soit son
+  // format : une armoire haute ne sera pas étirée dans un cadre carré.
+  const cote = Math.max(largeur, hauteur) + marge * 2;
+
+  const sortie = document.createElement("canvas");
+  sortie.width = cote;
+  sortie.height = cote;
+  const ctxOut = sortie.getContext("2d");
+
+  ctxOut.drawImage(
+    bitmap,
+    gauche, haut, largeur, hauteur,
+    Math.round((cote - largeur) / 2),
+    Math.round((cote - hauteur) / 2),
+    largeur, hauteur
+  );
+
+  return new Promise((res) => sortie.toBlob((b) => res(b || blob), "image/png"));
+}
+
 export default function DetourageClient({ produits, marques }) {
   const [marque, setMarque] = useState("");
   const [gamme, setGamme] = useState("");
   const [exclus, setExclus] = useState(() => new Set());
+  const [refaire, setRefaire] = useState(false);
   const [enCours, setEnCours] = useState(false);
   const [progression, setProgression] = useState(null);
   const [journal, setJournal] = useState([]);
@@ -49,13 +115,13 @@ export default function DetourageClient({ produits, marques }) {
       .filter((p) => (!marque || p.marque === marque) && (!gamme || p.gamme === gamme))
       .map((p) => {
         const aTraiter = p.images.filter(
-          (u) => !estAmbiance(u) && !dejaDetouree(u) && !exclus.has(u)
+          (u) => !estAmbiance(u) && !exclus.has(u) && (refaire || !dejaDetouree(u))
         );
         const ambiances = p.images.filter((u) => estAmbiance(u));
         return { ...p, aTraiter, ambiances };
       })
       .filter((p) => p.aTraiter.length);
-  }, [produits, marque, gamme, exclus]);
+  }, [produits, marque, gamme, exclus, refaire]);
 
   const totalImages = selection.reduce((s, p) => s + p.aTraiter.length, 0);
   const totalAmbiances = produits
@@ -76,8 +142,8 @@ export default function DetourageClient({ produits, marques }) {
     const fd = new FormData();
     // Le suffixe marque l'image comme traitée : un second passage la
     // reconnaîtra et la laissera tranquille.
-    const nom = nomOrigine.replace(/\.[^.]+$/, "") + "_detoure.png";
-    fd.append("file", new File([blob], nom, { type: "image/png" }));
+    const base = nomOrigine.replace(/\.[^.]+$/, "").replace(/_detoure$/i, "");
+    fd.append("file", new File([blob], `${base}_detoure.png`, { type: "image/png" }));
     fd.append("upload_preset", PRESET);
     fd.append("folder", "coteburo/detoure");
 
@@ -115,11 +181,7 @@ export default function DetourageClient({ produits, marques }) {
       for (const url of produit.aTraiter) {
         if (arret.current) break;
 
-        setProgression({
-          produit: produit.nom,
-          faites,
-          total: totalImages,
-        });
+        setProgression({ produit: produit.nom, faites, total: totalImages });
 
         try {
           const resp = await fetch(url, { mode: "cors" });
@@ -128,8 +190,12 @@ export default function DetourageClient({ produits, marques }) {
           const source = await resp.blob();
           const detoure = await removeBackground(source);
 
+          // Le rognage rend au produit la place que le détourage lui a
+          // prise : sans lui, il flotte au milieu d'un carré vide.
+          const cadre = await rogner(detoure);
+
           const nomFichier = decodeURIComponent(url).split("/").pop() || "image.png";
-          const nouvelleUrl = await envoyer(detoure, nomFichier);
+          const nouvelleUrl = await envoyer(cadre, nomFichier);
 
           const i = nouvelles.indexOf(url);
           if (i >= 0) nouvelles[i] = nouvelleUrl;
@@ -149,7 +215,7 @@ export default function DetourageClient({ produits, marques }) {
         setJournal((j) => [
           ...j,
           res.ok
-            ? { type: "ok", texte: `${produit.nom} — ${produit.aTraiter.length} image(s) détourée(s)` }
+            ? { type: "ok", texte: `${produit.nom} — ${produit.aTraiter.length} image(s) traitée(s)` }
             : { type: "erreur", texte: `${produit.nom} — ${res.message}` },
         ]);
       }
@@ -204,6 +270,19 @@ export default function DetourageClient({ produits, marques }) {
             <FormSelect value={gamme} onChange={setGamme} options={gammeOptions} />
           </label>
         </div>
+
+        <label style={{ display: "flex", alignItems: "center", gap: 9, marginTop: 14, cursor: "pointer" }}>
+          <input
+            type="checkbox"
+            checked={refaire}
+            onChange={(e) => setRefaire(e.target.checked)}
+            style={{ width: 16, height: 16, accentColor: "#f0661b", cursor: "pointer" }}
+          />
+          <span style={{ fontSize: 13, color: "#5c616a" }}>
+            Reprendre les images déjà détourées
+            <span style={{ color: "#9aa0a8" }}> — utile après un changement de réglage</span>
+          </span>
+        </label>
       </div>
 
       {/* ── Résumé et lancement ── */}
@@ -211,7 +290,7 @@ export default function DetourageClient({ produits, marques }) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
             <p style={{ fontSize: 15, fontWeight: 700, color: "#23262a", margin: 0 }}>
-              {totalImages} image{totalImages > 1 ? "s" : ""} à détourer
+              {totalImages} image{totalImages > 1 ? "s" : ""} à traiter
               <span style={{ color: "#9aa0a8", fontWeight: 500 }}> · {selection.length} produit{selection.length > 1 ? "s" : ""}</span>
             </p>
             <p style={{ fontSize: 12.5, color: "#5c616a", margin: "4px 0 0" }}>
