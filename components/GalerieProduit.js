@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { urlProduit, urlVignette } from "@/lib/cloudinary";
 
 // Nombre de miniatures visibles avant scroll (colonne desktop).
 const VIGNETTES_VISIBLES = 5;
@@ -9,9 +8,9 @@ const GAP = 12;
 const HAUTEUR_COLONNE = VIGNETTES_VISIBLES * HAUTEUR_VIGNETTE + (VIGNETTES_VISIBLES - 1) * GAP;
 const PAS_SCROLL = HAUTEUR_VIGNETTE + GAP;
 
-// Une photo d'ambiance montre le produit en situation : la rogner
-// couperait le décor qui fait tout son intérêt. On les reconnaît à leur
-// nom de fichier, les catalogues fournisseurs les préfixant ainsi.
+// Une photo d'ambiance montre le produit en situation : elle doit
+// remplir le cadre, le décor faisant partie de l'image. On les reconnaît
+// à leur nom de fichier, les catalogues fournisseurs les préfixant ainsi.
 const MOTS_AMBIANCE = ["amb_", "amb-", "ambiance", "_amb", "bodegon"];
 
 const estAmbiance = (url) => {
@@ -122,12 +121,6 @@ export default function GalerieProduit({ images = [], alt = "" }) {
   const modeActive = (urlActive && modes[urlActive]) || "contain";
   const avecScroll = images.length > VIGNETTES_VISIBLES;
 
-  // Les captures du configurateur laissent de larges marges blanches :
-  // sans rognage, le meuble occupe moins de la moitié de son cadre.
-  // Cloudinary les coupe à la volée, l'original reste intact.
-  const afficher = (url, taille) =>
-    estAmbiance(url) ? url : urlProduit(url, { largeur: taille });
-
   const styleFleche = (actif) => ({
     width: 80, height: 22, display: "grid", placeItems: "center",
     borderRadius: 8, border: "1px solid #ece8e0", background: "#fff",
@@ -138,7 +131,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
   const imagePrincipale = (
     <div className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)]">
       {urlActive ? (
-        <img src={afficher(urlActive, 900)} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain p-4 lg:p-6" : "object-cover"}`} />
+        <img src={urlActive} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain" : "object-cover"}`} />
       ) : (
         <div className="w-full h-full grid place-items-center text-charcoal/15">
           <svg width="38%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
@@ -177,7 +170,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
                   aria-pressed={i === imgActive}
                   className={`relative w-[52px] h-[52px] rounded-[10px] overflow-hidden border-2 shrink-0 transition bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] ${i === imgActive ? "border-orange" : "border-line"}`}
                 >
-                  <img src={estAmbiance(img) ? img : urlVignette(img, 120)} alt="" className={`w-full h-full ${m === "contain" ? "object-contain p-1" : "object-cover"}`} />
+                  <img src={img} alt="" className={`w-full h-full ${m === "contain" ? "object-contain" : "object-cover"}`} />
                 </button>
               );
             })}
@@ -207,7 +200,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
                     aria-pressed={i === imgActive}
                     className={`relative aspect-square rounded-2xl overflow-hidden border-2 shrink-0 transition bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] ${i === imgActive ? "border-orange shadow-[0_4px_14px_rgba(240,102,27,0.18)]" : "border-line hover:border-orange/40"}`}
                   >
-                    <img src={estAmbiance(img) ? img : urlVignette(img, 180)} alt="" className={`w-full h-full ${m === "contain" ? "object-contain p-1.5" : "object-cover"}`} />
+                    <img src={img} alt="" className={`w-full h-full ${m === "contain" ? "object-contain" : "object-cover"}`} />
                   </button>
                 );
               })}
