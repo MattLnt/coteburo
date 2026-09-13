@@ -26,6 +26,14 @@ function prixUniqueEffectif(carte, marge) {
   return null;
 }
 
+// Compte les visuels d'un produit sans compter deux fois la vignette
+// lorsqu'elle figure aussi dans la galerie.
+function compterImages(carte) {
+  const galerie = Array.isArray(carte.images) ? carte.images.filter(Boolean) : [];
+  if (!carte.imageUrl) return galerie.length;
+  return galerie.includes(carte.imageUrl) ? galerie.length : galerie.length + 1;
+}
+
 export default async function ProduitsPage() {
   const [cartes, gammes, reglages] = await Promise.all([
     prisma.produitVitrine.findMany({
@@ -44,6 +52,8 @@ export default async function ProduitsPage() {
         prixUnitaireHT: true,
         prixUnitaireVerrouille: true,
         referenceUnitaire: true,
+        imageUrl: true,
+        images: true,
         categories: { select: { nom: true }, take: 1 },
         sousCategories: { select: { nom: true }, take: 1 },
         gamme: {
@@ -65,6 +75,7 @@ export default async function ProduitsPage() {
     const categorieNom = carte.categories?.[0]?.nom || null;
     const sousCategorieNom = carte.sousCategories?.[0]?.nom || null;
     const marqueNom = carte.gamme.marque?.nom || null;
+    const nbImages = compterImages(carte);
 
     // Produit à PRIX UNIQUE (sans déclinaisons) : une seule ligne, prix depuis prixUnitaire*.
     if (!surDevis && carte.sansDeclinaisons) {
@@ -82,6 +93,7 @@ export default async function ProduitsPage() {
         gammeId: carte.gamme.id,
         carteId: carte.id,
         publie: carte.publie,
+        nbImages,
         // Une ligne à prix unique n'est pas éditable en ligne (pas de declinaisonId) :
         // le mode "boutique-vide" reste utilisé quand le prix manque réellement.
         mode: prix != null ? "boutique" : "boutique-vide",
@@ -105,6 +117,7 @@ export default async function ProduitsPage() {
           gammeId: carte.gamme.id,
           carteId: carte.id,
           publie: carte.publie,
+          nbImages,
           mode: "boutique",
           declinaisonId: d.id,
           prixTarif: tarif,
@@ -125,6 +138,7 @@ export default async function ProduitsPage() {
         gammeId: carte.gamme.id,
         carteId: carte.id,
         publie: carte.publie,
+        nbImages,
         mode: "boutique-vide",
         declinaisonId: null,
         prixTarif: null,
@@ -144,6 +158,7 @@ export default async function ProduitsPage() {
         gammeId: carte.gamme.id,
         carteId: carte.id,
         publie: carte.publie,
+        nbImages,
         mode: "devis",
         declinaisonId: null,
         prixTarif: null,
