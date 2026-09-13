@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import { removeBackground } from "@imgly/background-removal";
 import { Icon } from "@/components/dashboard/Icon";
 import { FormSelect } from "@/components/dashboard/FormSelect";
 import { enregistrerImages } from "./actions";
@@ -9,38 +8,39 @@ import { enregistrerImages } from "./actions";
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-// Une photo d'ambiance montre le produit en situation : la détourer
-// isolerait un meuble au hasard dans la scène. On les reconnaît à leur
+// Une photo d'ambiance montre le produit en situation : la rogner
+// couperait le décor qui fait tout son intérêt. On les reconnaît à leur
 // nom de fichier, les catalogues fournisseurs les préfixant ainsi.
 const MOTS_AMBIANCE = ["amb_", "amb-", "ambiance", "_amb", "bodegon", "zoom"];
 
 const estAmbiance = (url) => {
-  const nom = decodeURIComponent(url).toLowerCase();
+  const nom = decodeURIComponent(url || "").toLowerCase();
   return MOTS_AMBIANCE.some((m) => nom.includes(m));
 };
 
-// Une image déjà détourée porte la marque du traitement dans son nom.
-const dejaDetouree = (url) => decodeURIComponent(url).toLowerCase().includes("_detoure");
+// Une image déjà recadrée porte la marque du traitement dans son nom.
+const dejaRecadree = (url) => decodeURIComponent(url || "").toLowerCase().includes("_cadre");
 
-// Marge conservée autour du produit après rognage, en proportion de la
-// plus grande dimension. Sans elle, le produit toucherait les bords.
-const MARGE = 0.03;
+// Marge conservée autour du produit, en proportion de sa plus grande
+// dimension. Sans elle, le meuble toucherait les bords du cadre.
+const MARGE = 0.04;
 
-// En dessous de ce seuil d'opacité, un pixel est considéré comme du
-// fond résiduel. Au-dessus, il fait partie du produit.
-const SEUIL_OPACITE = 128;
+// Un pixel dont les trois composantes dépassent ce seuil est considéré
+// comme du fond. Les captures pCon ont un fond blanc légèrement dégradé,
+// d'où une valeur en dessous de 255.
+const SEUIL_FOND = 244;
 
-// Nettoie et recadre l'image détourée.
+// Rogne les marges uniformes autour du produit.
 //
-// Le modèle de détourage laisse un contour en demi-teinte là où le
-// produit rencontrait le fond : ces pixels à moitié opaques dessinent
-// un liseré blanchâtre une fois l'image posée sur la page. On durcit
-// donc le contour avant de recadrer.
+// Les captures du configurateur laissent beaucoup de blanc autour du
+// meuble : sans rognage, il occupe moins de la moitié de son cadre et
+// paraît minuscule sur la fiche.
 //
-// Le recadrage, lui, rend au produit la place que le détourage lui a
-// prise : sans lui, il flotte au milieu d'un carré vide et paraît
-// beaucoup plus petit qu'avant traitement.
-async function nettoyerEtRogner(blob) {
+// On balaie l'image pour trouver le premier et le dernier pixel qui ne
+// soit ni blanc ni transparent sur chaque axe, puis on recadre dessus.
+// Le fond d'origine est conservé — pas de détourage, donc pas de liseré
+// ni de contour granuleux.
+async function rogner(blob) {
   const bitmap = await createImageBitmap(blob);
   const { width: w, height: h } = bitmap;
 
@@ -50,21 +50,19 @@ async function nettoyerEtRogner(blob) {
   const ctx = c.getContext("2d", { willReadFrequently: true });
   ctx.drawImage(bitmap, 0, 0);
 
-  const img = ctx.getImageData(0, 0, w, h);
-  const data = img.data;
+  const data = ctx.getImageData(0, 0, w, h).data;
 
-  // Passage en tout ou rien sur l'opacité : plus de demi-teintes, donc
-  // plus de liseré. On relève au passage les extrêmes du produit.
   let gauche = w, droite = -1, haut = h, bas = -1;
 
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const i = (y * w + x) * 4;
-      if (data[i + 3] < SEUIL_OPACITE) {
-        data[i + 3] = 0;
-        continue;
-      }
-      data[i + 3] = 255;
+
+      // Transparent : c'est du fond.
+      if (data[i + 3] < 20) continue;
+      // Blanc ou quasi blanc : c'est du fond aussi.
+      if (data[i] >= SEUIL_FOND && data[i + 1] >= SEUIL_FOND && data[i + 2] >= SEUIL_FOND) continue;
+
       if (x < gauche) gauche = x;
       if (x > droite) droite = x;
       if (y < haut) haut = y;
@@ -72,18 +70,21 @@ async function nettoyerEtRogner(blob) {
     }
   }
 
-  // Image entièrement transparente : le détourage a tout effacé, on
-  // garde l'originale plutôt qu'un carré vide.
-  if (droite < 0 || bas < 0) return blob;
-
-  ctx.putImageData(img, 0, 0);
+  // Rien trouvé : image entièrement blanche ou transparente. On garde
+  // l'originale plutôt qu'un carré vide.
+  if (droite < 0 || bas < 0) return { blob, inchange: true };
 
   const largeur = droite - gauche + 1;
   const hauteur = bas - haut + 1;
+
+  // Le produit occupe déjà presque tout le cadre : recadrer n'apporterait
+  // rien et ferait un aller-retour Cloudinary pour rien.
+  if (largeur > w * 0.92 && hauteur > h * 0.92) return { blob, inchange: true };
+
   const marge = Math.round(Math.max(largeur, hauteur) * MARGE);
 
-  // Un canevas carré garde les proportions du produit quel que soit son
-  // format : une armoire haute ne sera pas étirée dans un cadre carré.
+  // Un canevas carré préserve les proportions du produit : une armoire
+  // haute ne sera pas étirée dans un cadre carré.
   const cote = Math.max(largeur, hauteur) + marge * 2;
 
   const sortie = document.createElement("canvas");
@@ -91,15 +92,23 @@ async function nettoyerEtRogner(blob) {
   sortie.height = cote;
   const ctxOut = sortie.getContext("2d");
 
+  // Fond blanc pour rester cohérent avec les captures d'origine.
+  ctxOut.fillStyle = "#ffffff";
+  ctxOut.fillRect(0, 0, cote, cote);
+
   ctxOut.drawImage(
-    c,
+    bitmap,
     gauche, haut, largeur, hauteur,
     Math.round((cote - largeur) / 2),
     Math.round((cote - hauteur) / 2),
     largeur, hauteur
   );
 
-  return new Promise((res) => sortie.toBlob((b) => res(b || blob), "image/png"));
+  const recadre = await new Promise((res) =>
+    sortie.toBlob((b) => res(b || blob), "image/jpeg", 0.92)
+  );
+
+  return { blob: recadre, inchange: false, avant: `${w}×${h}`, apres: `${cote}×${cote}` };
 }
 
 export default function DetourageClient({ produits, marques }) {
@@ -130,7 +139,7 @@ export default function DetourageClient({ produits, marques }) {
       .filter((p) => (!marque || p.marque === marque) && (!gamme || p.gamme === gamme))
       .map((p) => {
         const aTraiter = p.images.filter(
-          (u) => !estAmbiance(u) && !exclus.has(u) && (refaire || !dejaDetouree(u))
+          (u) => !estAmbiance(u) && !exclus.has(u) && (refaire || !dejaRecadree(u))
         );
         const ambiances = p.images.filter((u) => estAmbiance(u));
         return { ...p, aTraiter, ambiances };
@@ -143,7 +152,9 @@ export default function DetourageClient({ produits, marques }) {
     .filter((p) => (!marque || p.marque === marque) && (!gamme || p.gamme === gamme))
     .reduce((s, p) => s + p.images.filter(estAmbiance).length, 0);
 
-  const minutes = Math.ceil((totalImages * 3.5) / 60);
+  // Le recadrage est bien plus rapide que le détourage : une seconde par
+  // image, essentiellement le temps de l'aller-retour réseau.
+  const minutes = Math.ceil(totalImages / 60);
 
   const basculer = (url) => {
     setExclus((s) => {
@@ -157,10 +168,10 @@ export default function DetourageClient({ produits, marques }) {
     const fd = new FormData();
     // Le suffixe marque l'image comme traitée : un second passage la
     // reconnaîtra et la laissera tranquille.
-    const base = nomOrigine.replace(/\.[^.]+$/, "").replace(/_detoure$/i, "");
-    fd.append("file", new File([blob], `${base}_detoure.png`, { type: "image/png" }));
+    const base = nomOrigine.replace(/\.[^.]+$/, "").replace(/_cadre$/i, "");
+    fd.append("file", new File([blob], `${base}_cadre.jpg`, { type: "image/jpeg" }));
     fd.append("upload_preset", PRESET);
-    fd.append("folder", "coteburo/detoure");
+    fd.append("folder", "coteburo/cadre");
 
     const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`, {
       method: "POST",
@@ -184,6 +195,7 @@ export default function DetourageClient({ produits, marques }) {
     setJournal([]);
 
     let faites = 0;
+    let sautees = 0;
     let echecs = 0;
 
     for (const produit of selection) {
@@ -196,18 +208,20 @@ export default function DetourageClient({ produits, marques }) {
       for (const url of produit.aTraiter) {
         if (arret.current) break;
 
-        setProgression({ produit: produit.nom, faites, total: totalImages });
+        setProgression({ produit: produit.nom, faites: faites + sautees, total: totalImages });
 
         try {
           const resp = await fetch(url, { mode: "cors" });
           if (!resp.ok) throw new Error("image inaccessible");
 
           const source = await resp.blob();
-          const detoure = await removeBackground(source);
-          const propre = await nettoyerEtRogner(detoure);
+          const { blob, inchange } = await rogner(source);
 
-          const nomFichier = decodeURIComponent(url).split("/").pop() || "image.png";
-          const nouvelleUrl = await envoyer(propre, nomFichier);
+          // Le produit remplissait déjà son cadre : on n'envoie rien.
+          if (inchange) { sautees++; continue; }
+
+          const nomFichier = decodeURIComponent(url).split("/").pop() || "image.jpg";
+          const nouvelleUrl = await envoyer(blob, nomFichier);
 
           const i = nouvelles.indexOf(url);
           if (i >= 0) nouvelles[i] = nouvelleUrl;
@@ -227,7 +241,7 @@ export default function DetourageClient({ produits, marques }) {
         setJournal((j) => [
           ...j,
           res.ok
-            ? { type: "ok", texte: `${produit.nom} — ${produit.aTraiter.length} image(s) traitée(s)` }
+            ? { type: "ok", texte: `${produit.nom} — recadré` }
             : { type: "erreur", texte: `${produit.nom} — ${res.message}` },
         ]);
       }
@@ -239,9 +253,7 @@ export default function DetourageClient({ produits, marques }) {
       ...j,
       {
         type: "bilan",
-        texte: arret.current
-          ? `Interrompu — ${faites} image(s) traitée(s), ${echecs} échec(s)`
-          : `Terminé — ${faites} image(s) traitée(s), ${echecs} échec(s)`,
+        texte: `${arret.current ? "Interrompu" : "Terminé"} — ${faites} recadrée(s), ${sautees} déjà bien cadrée(s), ${echecs} échec(s)`,
       },
     ]);
   };
@@ -291,7 +303,7 @@ export default function DetourageClient({ produits, marques }) {
             style={{ width: 16, height: 16, accentColor: "#f0661b", cursor: "pointer" }}
           />
           <span style={{ fontSize: 13, color: "#5c616a" }}>
-            Reprendre les images déjà détourées
+            Reprendre les images déjà recadrées
             <span style={{ color: "#9aa0a8" }}> — utile après un changement de réglage</span>
           </span>
         </label>
@@ -302,11 +314,11 @@ export default function DetourageClient({ produits, marques }) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
             <p style={{ fontSize: 15, fontWeight: 700, color: "#23262a", margin: 0 }}>
-              {totalImages} image{totalImages > 1 ? "s" : ""} à traiter
+              {totalImages} image{totalImages > 1 ? "s" : ""} à examiner
               <span style={{ color: "#9aa0a8", fontWeight: 500 }}> · {selection.length} produit{selection.length > 1 ? "s" : ""}</span>
             </p>
             <p style={{ fontSize: 12.5, color: "#5c616a", margin: "4px 0 0" }}>
-              Environ {minutes} minute{minutes > 1 ? "s" : ""} de traitement
+              Environ {minutes} minute{minutes > 1 ? "s" : ""}
               {totalAmbiances > 0 && ` · ${totalAmbiances} photo${totalAmbiances > 1 ? "s" : ""} d'ambiance écartée${totalAmbiances > 1 ? "s" : ""}`}
             </p>
           </div>
@@ -326,7 +338,7 @@ export default function DetourageClient({ produits, marques }) {
               disabled={!totalImages}
               style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 22px", borderRadius: 11, background: totalImages ? "#f0661b" : "#e8e3da", color: totalImages ? "#fff" : "#9aa0a8", border: "none", cursor: totalImages ? "pointer" : "default", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
             >
-              Lancer le détourage
+              Lancer le recadrage
             </button>
           )}
         </div>
