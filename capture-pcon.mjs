@@ -48,16 +48,30 @@ const DOSSIERS = [
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER2690%24default%2C%40FOLDER2777%24default&lang=fr",
   },
   {
+    // Premier dossier Alto Réunion, qui ne contenait aucune des
+    // références du catalogue Côté BURO.
     gamme: "Alto Réunion",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1750%24default%2C%40FOLDER2931%24default&lang=fr",
+  },
+  {
+    // Le vrai dossier Alto Réunion, sous la catégorie Réunion : il porte
+    // les tables carrée et rectangle — DT70, DT72, DT86, DT89.
+    gamme: "Alto Réunion Tables",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1758%24default%2C%40FOLDER2665%24default&lang=fr",
   },
   {
     gamme: "Astro",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1736%24default%2C%40FOLDER1123%24default&lang=fr",
   },
   {
+    // Astrolite collaboratif : plans à hauteur fixe.
     gamme: "Astrolite",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1736%24default%2C%40FOLDER1124%24default&lang=fr",
+  },
+  {
+    // Astrolite ergonomique : les plans à hauteur réglable — BM79, BT67.
+    gamme: "Astrolite Réglable",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER2690%24default%2C%40FOLDER2691%24default&lang=fr",
   },
   {
     gamme: "Comfort",
@@ -68,12 +82,34 @@ const DOSSIERS = [
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER1139%24default&lang=fr",
   },
   {
+    // Les armoires à portes coulissantes forment un dossier distinct de
+    // Quiétude dans le configurateur.
+    gamme: "Quiétude Coulissantes",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER2942%24default&lang=fr",
+  },
+  {
     gamme: "Classif",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER1141%24default&lang=fr",
   },
   {
     gamme: "Essentiel",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1734%24default%2C%40FOLDER2759%24default&lang=fr",
+  },
+  {
+    // Les cabines acoustiques Essentielle. Comme Modul'Up, ce dossier
+    // affiche une page de conditions avant la grille : il lui faut plus
+    // de temps pour se peupler. Les identifiants sont des tailles —
+    // « cat/S/default », « cat/XL/default » — et non des références.
+    gamme: "Essentielle",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER2765%24default%2C%40FOLDER2822%24default&lang=fr",
+    attenteGrille: 45000,
+  },
+  {
+    // Le plan d'angle Essentiel est rangé dans « Extensions », aux côtés
+    // de produits que Côté BURO n'a pas importés — le rattachement par
+    // référence les écartera d'office.
+    gamme: "Extensions Bureaux Classiques",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1734%24default%2C%40FOLDER1129%24default&lang=fr",
   },
   {
     gamme: "Partage",
@@ -88,8 +124,20 @@ const DOSSIERS = [
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1727%24default%2C%40FOLDER1675%24default&lang=fr",
   },
   {
+    // La table haute forme un dossier distinct dans le configurateur :
+    // « Cohésion haute ».
+    gamme: "Cohésion Haute",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1727%24default%2C%40FOLDER1762%24default&lang=fr",
+  },
+  {
     gamme: "Bewall",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER2765%24default%2C%40FOLDER2956%24default&lang=fr",
+  },
+  {
+    // Les séparateurs sont rangés sous « Compléments & Accessoires »,
+    // pas avec les cloisons Bewall qui sont en Confidentialité.
+    gamme: "Bewall Séparateurs",
+    url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1737%24default%2C%40FOLDER2440%24default&lang=fr",
   },
   {
     gamme: "Astrolite Haute",
@@ -151,6 +199,11 @@ const AXE_MATIERE = [
   "finition top",
   "finition structure",
   "finition voile de fond suspendu",
+  "finition écran",
+  "finition séparateur",
+  "finition intérieure",
+  "finition extérieure",
+  "revêtement",
   "finition b-box",
   "finition",
   "couleur colonne",
@@ -234,9 +287,16 @@ const ressembleADecors = (options) => {
 };
 
 async function main() {
+  // La correspondance exacte l'emporte : demander « Cohésion » ne doit
+  // pas relancer « Cohésion Haute » par la même occasion.
   const aTraiter = DEMANDEES.length
-    ? DOSSIERS.filter((d) =>
-        DEMANDEES.some((n) => normalise(d.gamme).includes(normalise(n))))
+    ? (() => {
+        const exacts = DOSSIERS.filter((d) =>
+          DEMANDEES.some((n) => normalise(d.gamme) === normalise(n)));
+        if (exacts.length === DEMANDEES.length) return exacts;
+        return DOSSIERS.filter((d) =>
+          DEMANDEES.some((n) => normalise(d.gamme).includes(normalise(n))));
+      })()
     : DOSSIERS;
 
   if (DEMANDEES.length) {
@@ -395,9 +455,9 @@ async function main() {
     }
 
     // La plupart des identifiants portent une référence courte —
-    // « cat/ED733/default » — mais certains dossiers, comme Modul'Up,
-    // utilisent le nom du produit avec des espaces :
-    // « cat/MODULE BAS REHAUSSE DOSSIER/default ».
+    // « cat/ED733/default » — mais certains dossiers utilisent le nom du
+    // produit : « cat/MODULE BAS/default » chez Modul'Up, « cat/XL/default »
+    // pour les cabines Essentielle.
     const produits = await page.evaluate(() => {
       const boutons = [...document.querySelectorAll('button[class*="CatalogGridItem"]')];
       return boutons.map((b) => {

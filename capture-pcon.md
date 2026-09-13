@@ -1,62 +1,54 @@
 # Captures pCon
 
-Lancé le 13/09/2026 10:30:18
-Gammes : Modul Up
+Lancé le 13/09/2026 17:13:50
+Gammes : Essentielle
 
 
-## Modul Up
+## Essentielle
 
-3 produit(s) : MODULE BAS, MODULE BAS REHAUSSE DOSSIER, MODULE BAS REHAUSSE ESTRADE
+5 produit(s) : S, S BUREAU, M, L, XL
 
 
-### MODULE-BAS — MODULE BAS SOLO
+### S_CABINE-ACOUSTIQUE-S-POUR-1-PERSONNE — CABINE ACOUSTIQUE S POUR 1 PERSONNE
 
-Propriétés : Réhausse · Tissu coussin 1 · Tissu coussin 2 · Tissu coussin 3 · Tissu coussin 4
-Axe retenu : **Tissu coussin 1** — 8 option(s)
-   Tissu A - A2403 coloris GRIS CLAIR
-   Tissu A - A2405 coloris BLEU VERT
-   Tissu A - A2406 coloris BLEU PETROL
-   Tissu A - A2407 coloris GRIS FONCE/NOIR
-   Tissu A - A2408 coloris TERRACOTA
-   Tissu A - A2411 coloris JAUNE CUMIN
-   Tissu B non feu - B2425 coloris BLEU
-   Tissu B non feu - B2427 coloris ROUGE
+Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Sens d'ouverture · Porte · Lumière
+⚠ Aucun axe de matière exploitable.
 
-### MODULE-BAS-REHAUSSE-DOSSIER — MODULE BAS AVEC REHAUSSE POSITION DOSSIER
+### S_CABINE-ACOUSTIQUE-S-AVEC-BUREAU-POUR-1-PERSONNE — CABINE ACOUSTIQUE S AVEC BUREAU POUR 1 PERSONNE
 
-Propriétés : Réhausse · Tissu coussin 1 · Tissu coussin 2 · Tissu coussin 3 · Tissu coussin 4
-Axe retenu : **Tissu coussin 1** — 8 option(s)
-   Tissu A - A2403 coloris GRIS CLAIR
-   Tissu A - A2405 coloris BLEU VERT
-   Tissu A - A2406 coloris BLEU PETROL
-   Tissu A - A2407 coloris GRIS FONCE/NOIR
-   Tissu A - A2408 coloris TERRACOTA
-   Tissu A - A2411 coloris JAUNE CUMIN
-   Tissu B non feu - B2425 coloris BLEU
-   Tissu B non feu - B2427 coloris ROUGE
+Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière
+⚠ Aucun axe de matière exploitable.
 
-### MODULE-BAS-REHAUSSE-ESTRADE — MODULE BAS AVEC REHAUSSE POSITION ESTRADE
+### M_CABINE-ACOUSTIQUE-M-POUR-2-PERSONNES — CABINE ACOUSTIQUE M POUR 2 PERSONNES
 
-Propriétés : Réhausse · Tissu coussin 1 · Tissu coussin 2 · Tissu coussin 3 · Tissu coussin 4
-Axe retenu : **Tissu coussin 1** — 8 option(s)
-   Tissu A - A2403 coloris GRIS CLAIR
-   Tissu A - A2405 coloris BLEU VERT
-   Tissu A - A2406 coloris BLEU PETROL
-   Tissu A - A2407 coloris GRIS FONCE/NOIR
-   Tissu A - A2408 coloris TERRACOTA
-   Tissu A - A2411 coloris JAUNE CUMIN
-   Tissu B non feu - B2425 coloris BLEU
-   Tissu B non feu - B2427 coloris ROUGE
+Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière · Support pour écran
+⚠ Aucun axe de matière exploitable.
+
+### L_CABINE-ACOUSTIQUE-L-POUR-4-PERSONNES — CABINE ACOUSTIQUE L POUR 4 PERSONNES
+
+Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière · Support pour écran
+⚠ Aucun axe de matière exploitable.
+
+### XL_CABINE-ACOUSTIQUE-XL-POUR-6-PERSONNES — CABINE ACOUSTIQUE XL POUR 6 PERSONNES
+
+Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière · Support pour écran
+⚠ Aucun axe de matière exploitable.
 
 ---
 
 ## Bilan
 
-27 image(s) capturée(s).
+5 image(s) capturée(s).
 
 ## Libellés non reconnus
 
-- **Réhausse** — 3 produit(s), gammes : Modul Up
-- **Tissu coussin 2** — 3 produit(s), gammes : Modul Up
-- **Tissu coussin 3** — 3 produit(s), gammes : Modul Up
-- **Tissu coussin 4** — 3 produit(s), gammes : Modul Up
+- **Type** — 5 produit(s), gammes : Essentielle
+- **Face arrière** — 5 produit(s), gammes : Essentielle
+- **Finition structure extérieure** — 5 produit(s), gammes : Essentielle
+- **Finition structure intérieure** — 5 produit(s), gammes : Essentielle
+- **Coloris Tissus - Panneaux** — 5 produit(s), gammes : Essentielle
+- **Sens d'ouverture** — 5 produit(s), gammes : Essentielle
+- **Porte** — 5 produit(s), gammes : Essentielle
+- **Lumière** — 5 produit(s), gammes : Essentielle
+- **Coloris Tissus - Banquette** — 4 produit(s), gammes : Essentielle
+- **Support pour écran** — 3 produit(s), gammes : Essentielle

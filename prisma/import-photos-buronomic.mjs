@@ -25,6 +25,12 @@ const prisma = new PrismaClient();
 
 const APPLIQUER = process.argv.includes("--appliquer");
 
+// Le preset Cloudinary non signé attribue un identifiant aléatoire à
+// chaque envoi : réimporter un produit déjà illustré duplique ses images
+// au lieu de les remplacer. On saute donc ce qui a déjà une vignette,
+// sauf demande explicite avec --forcer.
+const FORCER = process.argv.includes("--forcer");
+
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 const RACINE = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Buronomic";
@@ -96,6 +102,8 @@ async function main() {
     ? "═══ MODE RÉEL ═══\n"
     : "═══ SIMULATION — relancer avec --appliquer ═══\n");
 
+  if (FORCER) console.log("Mode --forcer : les produits déjà illustrés seront retraités.\n");
+
   const marque = await prisma.marque.findFirst({
     where: { slug: "buronomic" },
     select: { id: true },
@@ -110,16 +118,7 @@ async function main() {
         : {}),
     },
     orderBy: { nom: "asc" },
-    include: {
-      vitrines: {
-        orderBy: { nom: "asc" },
-        select: {
-          id: true, nom: true, sansDeclinaisons: true,
-          referenceUnitaire: true, declinaisons: true,
-          gamme: { select: { nom: true } },
-        },
-      },
-    },
+    select: { id: true, nom: true },
   });
 
   // Index de toutes les références de la marque, pour rattraper les
@@ -130,6 +129,7 @@ async function main() {
     select: {
       id: true, nom: true, sansDeclinaisons: true,
       referenceUnitaire: true, declinaisons: true,
+      imageUrl: true,
       gamme: { select: { nom: true } },
     },
   });
@@ -158,12 +158,12 @@ async function main() {
   ];
   const noter = (s = "") => rapport.push(s);
 
-  let produitsOk = 0, totalImages = 0;
+  let produitsOk = 0, totalImages = 0, sautes = 0;
   const orphelines = [];
 
   // Une capture peut concerner un produit d'une autre gamme : on
   // rassemble d'abord tout, on écrit ensuite.
-  const parProduit = new Map(); // id → { produit, fichiers: [{dossier, fichier}] }
+  const parProduit = new Map(); // id → { produit, fichiers: [...] }
 
   let dossiersDisque = [];
   try {
@@ -229,6 +229,10 @@ async function main() {
   let gammeCourante = null;
 
   for (const { produit, fichiers } of ordonneesPar) {
+    // Un produit déjà illustré garde ses images : les renvoyer créerait
+    // des doublons sur Cloudinary.
+    if (!FORCER && produit.imageUrl) { sautes++; continue; }
+
     if (produit.gamme.nom !== gammeCourante) {
       gammeCourante = produit.gamme.nom;
       console.log(`\n═══ ${gammeCourante} ═══`);
@@ -271,11 +275,14 @@ async function main() {
   }
 
   // ── Synthèse ──
-  const sansCapture = tousProduits.filter((v) => !parProduit.has(v.id) && refsDe(v).length);
+  const sansCapture = tousProduits.filter(
+    (v) => !parProduit.has(v.id) && refsDe(v).length && !v.imageUrl
+  );
 
   noter(`\n---\n`);
   noter(`## Bilan\n`);
   noter(`${produitsOk} produit(s) illustré(s) · ${totalImages} image(s)`);
+  noter(`${sautes} produit(s) déjà illustré(s), non retraité(s)`);
   noter(`${sansCapture.length} produit(s) sans capture\n`);
 
   if (sansCapture.length) {
@@ -300,6 +307,7 @@ async function main() {
   await writeFile("import-photos-buronomic.md", rapport.join("\n"), "utf8");
 
   console.log(`\n═══ ${produitsOk} produit(s) · ${totalImages} image(s) ═══`);
+  if (sautes) console.log(`${sautes} produit(s) déjà illustré(s), non retraité(s).`);
   console.log(`${sansCapture.length} produit(s) sans capture.`);
   if (orphelines.length) {
     const n = orphelines.reduce((s, o) => s + o.fichiers.length, 0);
