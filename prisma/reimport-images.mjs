@@ -156,6 +156,18 @@ async function main() {
     indexParGamme.get(cle).push(e);
   }
 
+  // Un dossier peut être plus fin que la gamme : « Quiétude-Coulissantes »
+  // est le sous-dossier pCon des armoires à portes coulissantes, dont les
+  // fiches sont dans la gamme Quiétude. À défaut de correspondance exacte, on
+  // retient la clé de gamme la plus longue qui préfixe celle du dossier —
+  // l'exactitude passe d'abord, « Essentielle » ne devant pas tomber sur
+  // « Essentiel ».
+  const clesGammes = [...indexParGamme.keys()].sort((a, b) => b.length - a.length);
+  const gammeDuDossier = (d) => {
+    const k = cleDossier(d);
+    return indexParGamme.has(k) ? k : clesGammes.find((c) => k.startsWith(c)) || null;
+  };
+
   const dossiers = (await readdir(RACINE, { withFileTypes: true })).filter((e) => e.isDirectory()).map((e) => e.name);
   const parVitrine = new Map();
   let total = 0, orphelins = 0, ambiances = 0;
@@ -163,7 +175,7 @@ async function main() {
 
   for (const d of dossiers) {
     if (DEMANDEES.length && !DEMANDEES.some((n) => norm(d).includes(norm(n)))) continue;
-    const local = indexParGamme.get(cleDossier(d)) || [];
+    const local = indexParGamme.get(gammeDuDossier(d)) || [];
     for (const f of await fichiersDe(join(RACINE, d, "_captures"))) {
       total++;
       const base = basename(f, extname(f));

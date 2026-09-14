@@ -1,54 +1,119 @@
 # Captures pCon
 
-Lancé le 13/09/2026 17:13:50
-Gammes : Essentielle
+Lancé le 14/09/2026 16:23:57
+Gammes : Quiétude Coulissantes
 
 
-## Essentielle
+## Quiétude Coulissantes
 
-5 produit(s) : S, S BUREAU, M, L, XL
+5 produit(s) : EG98, EH04, EH143, ED98, ED733
 
 
-### S_CABINE-ACOUSTIQUE-S-POUR-1-PERSONNE — CABINE ACOUSTIQUE S POUR 1 PERSONNE
+### EG98SSC1 — ARMOIRE PORTE COULISSANTE L143 x H72
 
-Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Sens d'ouverture · Porte · Lumière
-⚠ Aucun axe de matière exploitable.
+Propriétés : Longueur · Hauteur · Dos tissu · Finition structure · Finition intérieure · Type de poignées · Couleur des poignées
+Axes retenus : **Finition structure** (7) × **Finition intérieure** (7)
+   Blanc · Blanc
+   Blanc · Chêne fil
+   Blanc · Chêne Nebraska
+   Chêne fil · Timber
+   Chêne fil · Hêtre
+   Chêne fil · Argile
+   Chêne Nebraska · Yukon
+   Chêne Nebraska · Blanc
+   Chêne Nebraska · Chêne fil
+   Timber · Chêne Nebraska
+   Timber · Timber
+   Timber · Hêtre
+   Hêtre · Argile
+   Hêtre · Yukon
+   Hêtre · Blanc
+   Argile · Chêne fil
+   Argile · Chêne Nebraska
+   Argile · Timber
+   Yukon · Hêtre
+   Yukon · Argile
+   Yukon · Yukon
 
-### S_CABINE-ACOUSTIQUE-S-AVEC-BUREAU-POUR-1-PERSONNE — CABINE ACOUSTIQUE S AVEC BUREAU POUR 1 PERSONNE
+### EH04SSC1 — ARMOIRE PORTE COULISSANTE L120 x H104
 
-Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière
-⚠ Aucun axe de matière exploitable.
+Propriétés : Longueur · Hauteur · Dos tissu · Finition structure · Finition intérieure · Type de poignées · Couleur des poignées
+Axes retenus : **Finition structure** (7) × **Finition intérieure** (7)
+   Blanc · Blanc
+   Blanc · Chêne fil
+   Blanc · Chêne Nebraska
+   Chêne fil · Timber
+   Chêne fil · Hêtre
+   Chêne fil · Argile
+   Chêne Nebraska · Yukon
+   Chêne Nebraska · Blanc
+   Chêne Nebraska · Chêne fil
+   Timber · Chêne Nebraska
+   Timber · Timber
+   Timber · Hêtre
+   Hêtre · Argile
+   Hêtre · Yukon
+   Hêtre · Blanc
+   Argile · Chêne fil
+   Argile · Chêne Nebraska
+   Argile · Timber
+   Yukon · Hêtre
+   Yukon · Argile
+   Yukon · Yukon
 
-### M_CABINE-ACOUSTIQUE-M-POUR-2-PERSONNES — CABINE ACOUSTIQUE M POUR 2 PERSONNES
+### EH143E — DOS TISSU L120 x H104
 
-Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière · Support pour écran
-⚠ Aucun axe de matière exploitable.
+Propriétés : Longueur · Hauteur · Type de revêtement · Tissu
+Axe retenu : **Tissu** — 9 option(s)
+   Gris
+   Rouge
+   Bleu
+   Vert acide
+   Vert d'eau
+   Orange
+   Ocre
+   Bleu pétrole
+   Gris carbone
 
-### L_CABINE-ACOUSTIQUE-L-POUR-4-PERSONNES — CABINE ACOUSTIQUE L POUR 4 PERSONNES
+### ED98NNC1 — CONSOLE B-BOX L140 x P55 - 1 PORTE COULISSANTE
 
-Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière · Support pour écran
-⚠ Aucun axe de matière exploitable.
+Propriétés : Façade · Support · Finition B-box · Intérieur et portes · Type de poignée · Finition poignée · Sens
+Axes retenus : **Support** (2) × **Finition B-box** (7)
+   patins · Chêne fil
+   patins · Chêne Nebraska
+   patins · Timber
+   roulettes · Blanc
+   roulettes · Yukon
+   roulettes · Hêtre
 
-### XL_CABINE-ACOUSTIQUE-XL-POUR-6-PERSONNES — CABINE ACOUSTIQUE XL POUR 6 PERSONNES
+### ED733E — COUSSIN ASSISE TISSU L32 x P55 / CAISSON SLIM MELAMINE
 
-Propriétés : Type · Face arrière · Finition structure extérieure · Finition structure intérieure · Coloris Tissus - Panneaux · Coloris Tissus - Banquette · Sens d'ouverture · Porte · Lumière · Support pour écran
-⚠ Aucun axe de matière exploitable.
+Propriétés : Type de revêtement · Tissu
+Axe retenu : **Tissu** — 9 option(s)
+   Gris
+   Rouge
+   Bleu
+   Vert acide
+   Vert d'eau
+   Orange
+   Ocre
+   Bleu pétrole
+   Gris carbone
 
 ---
 
 ## Bilan
 
-5 image(s) capturée(s).
+71 image(s) capturée(s).
 
 ## Libellés non reconnus
 
-- **Type** — 5 produit(s), gammes : Essentielle
-- **Face arrière** — 5 produit(s), gammes : Essentielle
-- **Finition structure extérieure** — 5 produit(s), gammes : Essentielle
-- **Finition structure intérieure** — 5 produit(s), gammes : Essentielle
-- **Coloris Tissus - Panneaux** — 5 produit(s), gammes : Essentielle
-- **Sens d'ouverture** — 5 produit(s), gammes : Essentielle
-- **Porte** — 5 produit(s), gammes : Essentielle
-- **Lumière** — 5 produit(s), gammes : Essentielle
-- **Coloris Tissus - Banquette** — 4 produit(s), gammes : Essentielle
-- **Support pour écran** — 3 produit(s), gammes : Essentielle
+- **Longueur** — 3 produit(s), gammes : Quiétude Coulissantes
+- **Hauteur** — 3 produit(s), gammes : Quiétude Coulissantes
+- **Dos tissu** — 2 produit(s), gammes : Quiétude Coulissantes
+- **Type de poignées** — 2 produit(s), gammes : Quiétude Coulissantes
+- **Couleur des poignées** — 2 produit(s), gammes : Quiétude Coulissantes
+- **Type de revêtement** — 2 produit(s), gammes : Quiétude Coulissantes
+- **Type de poignée** — 1 produit(s), gammes : Quiétude Coulissantes
+- **Finition poignée** — 1 produit(s), gammes : Quiétude Coulissantes
+- **Sens** — 1 produit(s), gammes : Quiétude Coulissantes
