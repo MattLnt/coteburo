@@ -1,0 +1,380 @@
+[
+  {
+    "id": "cmsc840vf00317kro11lel3z6",
+    "nom": "Chauffeuse - Arco",
+    "descriptif": "",
+    "sectionsDevis": []
+  },
+  {
+    "id": "cmu1os47g0009l5vkp1ncdok9",
+    "nom": "Chauffeuse - Arco Chic",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1os5jf000bl5vk98sf3tda",
+    "nom": "Fauteuil lounge - Arco",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1os6vf000dl5vklm9s2sxv",
+    "nom": "Pouf - Arco Lounge",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1os82k000fl5vkxzzcfkae",
+    "nom": "Banquette - Arco",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1os9ak000hl5vkwb4c4gmh",
+    "nom": "Coussins - Arco",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ose49000pl5vk7bd4s54s",
+    "nom": "Table basse - Square",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osgj5000tl5vk4zmhzay8",
+    "nom": "Table basse - Giro",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osfbp000rl5vk3mlp5nie",
+    "nom": "Table basse - Galet",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1oshq5000vl5vkzrwtn831",
+    "nom": "Fauteuil - Ergostar Ultra",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osj2o000xl5vkl9y7dext",
+    "nom": "Fauteuil - Ergostar Ultra Velvet",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osk9z000zl5vkvh6e82b7",
+    "nom": "Fauteuil - Heavy",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1oslhb0011l5vkokvnwtg7",
+    "nom": "Fauteuil - Tecsy Concept",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osmpj0013l5vkev2mul1b",
+    "nom": "Fauteuil - Tecsy Alto",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osnx20015l5vkfoo3tr9o",
+    "nom": "Fauteuil - Tecsy Chic",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osp550017l5vkaggwu3lw",
+    "nom": "Fauteuil - Tecsy Platinium",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otyeq0039l5vksvq9cz19",
+    "nom": "Fauteuil - Tecsy White",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osqdb0019l5vk674emj1x",
+    "nom": "Fauteuil - Proseat V2",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osrkp001bl5vk5gkfu85s",
+    "nom": "Option repose jambe - Proseat V2",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osssp001dl5vklrcgsgn1",
+    "nom": "Fauteuil - Lando",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osu01001fl5vkpy7x3ttj",
+    "nom": "Appui-tête - Lando",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otb740027l5vkatmp9lvj",
+    "nom": "Fauteuil - Loops",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot9zm0025l5vkyhq0uu1u",
+    "nom": "Chaise - Loops",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otces0029l5vk890ztzdd",
+    "nom": "Chaise haute - Loops",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otdmj002bl5vk25swj97x",
+    "nom": "Tabouret - Loops",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otvzv0035l5vk05y5tfnm",
+    "nom": "Siège - Budget",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otx730037l5vkbolvzcdt",
+    "nom": "Siège - Steno",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot50m001xl5vktqo7hgqz",
+    "nom": "Chaise - Coigny Eco",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot68f001zl5vk8k4pyigs",
+    "nom": "Chaise - Coigny Max",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot7kk0021l5vko4mrjf3i",
+    "nom": "Chaise - Coigny-color",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot8rz0023l5vkp1zkyzr6",
+    "nom": "Chaise - Coigny-mili",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot3sv001vl5vked1s3b5v",
+    "nom": "Kit tablette écritoire - Coigny Eco",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot1d6001rl5vktekxkyxp",
+    "nom": "Paire d'accoudoirs - Coigny",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot2l3001tl5vkoncrq41w",
+    "nom": "Lot de 4 attaches - Coigny",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osvc2001hl5vke0o6h1aa",
+    "nom": "Chaise - Khong",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1oswjj001jl5vkqhwgj289",
+    "nom": "Chaise - Tecseat Learning",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osyy9001nl5vkspee3jpx",
+    "nom": "Chaise - Tecseat Learning Meeting",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ot05s001pl5vkc7nbfv2q",
+    "nom": "Chaise - Tecseat Learning Etudiant",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osai7000jl5vkt2jp9wu7",
+    "nom": "Coque - Tecseat Learning A Composer",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osbpf000ll5vkrh0phqyn",
+    "nom": "Poutre - Tecseat Learning A Composer",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1oscwq000nl5vkuhtq18fp",
+    "nom": "Tablette - Tecseat Learning A Composer",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1osxqr001ll5vkcpjc0mp5",
+    "nom": "Placet - Tecseat Learning Tecsup",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otzms003bl5vkvszk2gb5",
+    "nom": "Fauteuil - Scott",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ou0us003dl5vkpwkretao",
+    "nom": "Fauteuil - Scotty",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmscblre500607krolaug5s0g",
+    "nom": "Fauteuil - Amy",
+    "descriptif": "",
+    "sectionsDevis": []
+  },
+  {
+    "id": "cmu1ou230003fl5vkbad5zofh",
+    "nom": "Fauteuil - Bristol",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ou7u9003ll5vkov2n0fbj",
+    "nom": "Fauteuil - Cheyenne",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ou3am003hl5vkf8kmsfiy",
+    "nom": "Fauteuil - Liberty",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ou4i5003jl5vkr1b1zapu",
+    "nom": "Appui-tête - Liberty",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1oteur002dl5vk7rtcaljf",
+    "nom": "Chaise - Beez",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otg1z002fl5vkj2unpps0",
+    "nom": "Chaise haute - Beez",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1oth9h002hl5vkgqrs94z7",
+    "nom": "Mange debout - Beez",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otl10002nl5vkn2q773s2",
+    "nom": "Chaise - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otm8a002pl5vkxpodql3d",
+    "nom": "Chaise - Verano Restauration Classique",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otr1t002xl5vkk3dt78zp",
+    "nom": "Banc - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otihj002jl5vkyyyra9ip",
+    "nom": "Table basse - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otonb002tl5vkyaw2kcfk",
+    "nom": "Table - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ottgg0031l5vkto8mk3nq",
+    "nom": "Table - Verano Restauration",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otnfq002rl5vka3omfko3",
+    "nom": "Table - Verano Restauration Classique",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1ots92002zl5vka3o97utj",
+    "nom": "Mange debout - Verano Restauration",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otunq0033l5vkl7eyh6c8",
+    "nom": "Pouf - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otjtn002ll5vk9qh323ur",
+    "nom": "Coussin - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  },
+  {
+    "id": "cmu1otpuo002vl5vk06b6bmqr",
+    "nom": "Support de pot - Verano",
+    "descriptif": null,
+    "sectionsDevis": null
+  }
+]

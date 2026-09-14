@@ -1,0 +1,202 @@
+[
+  {
+    "id": "cmsc8ng2p003m7kroap82f66o",
+    "nom": "Table basse Galet OfficePro",
+    "slug": "table-basse-galet-officepro",
+    "publie": false,
+    "images": [],
+    "imageUrl": null,
+    "declinaisons": [
+      {
+        "id": "h5ima",
+        "valeurs": {
+          "taille": "Petite"
+        },
+        "prixTarifHT": "125",
+        "prixVenteHT": "",
+        "prixVerrouille": false,
+        "referenceFournisseur": "GAL01BLA"
+      },
+      {
+        "id": "goxza",
+        "valeurs": {
+          "taille": "Allongée"
+        },
+        "prixTarifHT": "170",
+        "prixVenteHT": "",
+        "prixVerrouille": false,
+        "referenceFournisseur": "GAL02BLA"
+      }
+    ],
+    "axesDeclinaisons": [
+      {
+        "id": "taille",
+        "nom": "Taille",
+        "valeurs": [
+          "Petite",
+          "Allongée"
+        ]
+      }
+    ],
+    "descriptif": "",
+    "sectionsDevis": [],
+    "gamme": {
+      "nom": "Galet OfficePro"
+    },
+    "categories": [
+      {
+        "slug": "tables"
+      }
+    ],
+    "sousCategories": [
+      {
+        "slug": "tables-basses"
+      }
+    ],
+    "optionsLiees": [],
+    "optionPour": [],
+    "produitsLies": [],
+    "liePour": [],
+    "favoris": []
+  },
+  {
+    "id": "cmsc84xe800357krob1mqnelr",
+    "nom": "Pouf Arco",
+    "slug": "pouf-arco",
+    "publie": false,
+    "images": [],
+    "imageUrl": null,
+    "declinaisons": [
+      {
+        "id": "s048q",
+        "valeurs": {},
+        "prixTarifHT": "115",
+        "prixVenteHT": "",
+        "prixVerrouille": false,
+        "referenceFournisseur": "ARC07.."
+      }
+    ],
+    "axesDeclinaisons": [],
+    "descriptif": "",
+    "sectionsDevis": [],
+    "gamme": {
+      "nom": "Arco"
+    },
+    "categories": [
+      {
+        "slug": "sieges"
+      }
+    ],
+    "sousCategories": [
+      {
+        "slug": "accueil"
+      }
+    ],
+    "optionsLiees": [],
+    "optionPour": [],
+    "produitsLies": [],
+    "liePour": [],
+    "favoris": []
+  },
+  {
+    "id": "cmsc84i9b00337kro7wx4hvpm",
+    "nom": "Fauteuil lounge Arco",
+    "slug": "fauteuil-lounge-arco",
+    "publie": false,
+    "images": [],
+    "imageUrl": null,
+    "declinaisons": [
+      {
+        "id": "bnnrn",
+        "valeurs": {},
+        "prixTarifHT": "315",
+        "prixVenteHT": "",
+        "prixVerrouille": false,
+        "referenceFournisseur": "ARC08.."
+      }
+    ],
+    "axesDeclinaisons": [],
+    "descriptif": "",
+    "sectionsDevis": [],
+    "gamme": {
+      "nom": "Arco"
+    },
+    "categories": [
+      {
+        "slug": "sieges"
+      }
+    ],
+    "sousCategories": [
+      {
+        "slug": "accueil"
+      }
+    ],
+    "optionsLiees": [],
+    "optionPour": [],
+    "produitsLies": [],
+    "liePour": [],
+    "favoris": []
+  },
+  {
+    "id": "cmsc85dws00377krocc4yp1wl",
+    "nom": "Banquette - Arco",
+    "slug": "banquette-arco",
+    "publie": false,
+    "images": [
+      "https://res.cloudinary.com/f1n7qoqv/image/upload/v1785720236/z4ehv5vx1l0ho0brwx8u.webp",
+      "https://res.cloudinary.com/f1n7qoqv/image/upload/v1789343199/coteburo/cadre/oxma9iyawmwvzprcnzvm.jpg",
+      "https://res.cloudinary.com/f1n7qoqv/image/upload/v1789343201/coteburo/cadre/ythnp3q0no6ibr10fy6l.jpg",
+      "https://res.cloudinary.com/f1n7qoqv/image/upload/v1789343202/coteburo/cadre/tk21w5vd2f6vuy8pig3v.jpg",
+      "https://res.cloudinary.com/f1n7qoqv/image/upload/v1785720238/sxrtiwzy1ehltqi2ey0u.webp"
+    ],
+    "imageUrl": "https://res.cloudinary.com/f1n7qoqv/image/upload/v1785720236/z4ehv5vx1l0ho0brwx8u.webp",
+    "declinaisons": [],
+    "axesDeclinaisons": [],
+    "descriptif": "<p>La banquette Arco apporte une assise d'appoint élégante et chaleureuse aux espaces d'accueil, salles d'attente et coins détente. Habillée d'un tissu non feu beige lin, elle joue la carte de la sobriété avec ses courbes douces et sa fine structure en acier noir, qui créent un contraste contemporain. Livrée avec deux coussins 45 × 45 cm au choix, elle se coordonne naturellement avec le petit fauteuil Arco pour composer un ensemble d'accueil harmonieux.</p>",
+    "sectionsDevis": [
+      {
+        "id": "m3tu633",
+        "titre": "Conception",
+        "contenu": "<ul><li><p>Structure en acier noir</p></li></ul><ul><li><p>Assise et dossier garnis, courbes enveloppantes</p></li><li><p>Design épuré, coordonné à la collection Arco</p></li></ul><p></p>"
+      },
+      {
+        "id": "o3lyrao",
+        "titre": "Revêtement",
+        "contenu": "<ul><li><p>Tissu non feu (norme BS 5852)</p></li></ul><ul><li><p>Coloris banquette : Beige lin</p></li><li><p>Entretien facile</p></li></ul><p></p>"
+      },
+      {
+        "id": "sd0nsgs",
+        "titre": "Coussins inclus",
+        "contenu": "<ul><li><p>2 coussins 45 × 45 cm fournis</p></li></ul><ul><li><p>Couleur au choix : Safran, Gris poivre, Bleu nuit, Beige lin, Vert anglais, Terracotta</p></li></ul><p></p>"
+      },
+      {
+        "id": "fne6uo3",
+        "titre": "Dimensions",
+        "contenu": "<ul><li><p>Largeur : 124 cm (130 cm au sol)</p></li></ul><ul><li><p>Profondeur : 53 cm</p></li><li><p>Hauteur totale : 83,5 cm · hauteur d'assise : 35 cm</p></li></ul><p></p>"
+      },
+      {
+        "id": "yuz6pag",
+        "titre": "Garanties & normes",
+        "contenu": "<ul><li><p>Garantie 2 ans</p></li></ul><ul><li><p>Certifications ISO 9001, ISO 14001, BS 5852</p></li></ul><p></p>"
+      }
+    ],
+    "gamme": {
+      "nom": "Arco"
+    },
+    "categories": [
+      {
+        "slug": "sieges"
+      }
+    ],
+    "sousCategories": [
+      {
+        "slug": "accueil"
+      }
+    ],
+    "optionsLiees": [],
+    "optionPour": [],
+    "produitsLies": [],
+    "liePour": [],
+    "favoris": []
+  }
+]
