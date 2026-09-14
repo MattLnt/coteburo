@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { envoyerDevis, envoyerDevisClient } from "@/lib/emails";
+import { prixDepuisBase, clePrixLigne } from "@/lib/catalogue";
 
 export const runtime = "nodejs";
 
@@ -34,6 +35,8 @@ export async function POST(req) {
           // La référence catalogue distingue une ligne produit d'une ligne
           // libre : sans elle, l'admin traite tout comme une ligne libre.
           codeRacine: a.codeRacine || null,
+          vitrineId: a.vitrineId || null,
+          declinaisonId: a.declinaisonId || null,
           carteSlug: a.carteSlug || null,
           designation: a.designation || "",
           gammeNom: a.gammeNom || null,
@@ -48,6 +51,28 @@ export async function POST(req) {
           prixIndicatif: a.prixIndicatif ?? null,
         }))
       : [];
+
+    // Le prix affiché sur la fiche est calculé dans le navigateur : il n'engage
+    // rien. On le recalcule depuis la base avant de l'écrire dans le devis,
+    // comme le fait déjà le paiement — sinon un panier vieux de plusieurs mois
+    // (ou modifié à la main) fixerait le montant d'un document commercial.
+    const prixBase = await prixDepuisBase(articles);
+    for (const a of articles) {
+      const resolu = a.vitrineId ? prixBase.get(clePrixLigne(a.vitrineId, a.declinaisonId)) : null;
+      if (resolu && resolu.motif == null) {
+        a.prixHT = resolu.prixHT ?? 0;
+      } else {
+        // Pas de référence exploitable (ligne d'un ancien panier, produit
+        // dépublié, déclinaison supprimée) : on laisse la ligne, à 0. Le
+        // commercial la chiffre au lieu de reprendre un montant invérifiable.
+        a.prixHT = 0;
+        a.motifPrix = resolu?.motif || "ligne sans référence catalogue";
+      }
+      // Les emails affichent prixIndicatif : on l'aligne sur le prix vérifié
+      // pour que le client, le commercial et la base voient le même montant.
+      // Une ligne non résolue repasse en « Sur devis » plutôt qu'en 0 €.
+      a.prixIndicatif = a.motifPrix ? null : (resolu?.prixHT ?? null);
+    }
 
     const payload = {
       prenom: d.prenom.trim(),
@@ -85,6 +110,9 @@ export async function POST(req) {
           lignes: {
             create: articles.map((a, i) => ({
               codeRacine: a.codeRacine,
+              // Trace de l'article d'origine : permet de rechiffrer la ligne
+              // depuis le catalogue au lieu de la retaper.
+              vitrineId: a.vitrineId,
               designation: a.designation,
               gammeNom: a.gammeNom,
               // Les finitions choisies sont recopiées dans la config : le
@@ -95,7 +123,7 @@ export async function POST(req) {
               ].filter(Boolean).join(" · ") || null,
               imageUrl: a.image,
               quantite: a.quantite,
-              prixHT: a.prixIndicatif ?? 0,
+              prixHT: a.prixHT,
               ordre: i,
             })),
           },

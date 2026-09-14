@@ -204,7 +204,7 @@ export default function FicheProduitLibre({ data }) {
 
   const ajouterAuDevisAussi = () => {
     if (!declinaisonFinale || !finitionsOK) return;
-    addDevis({ codeRacine: declinaisonFinale.id, gammeSlug, carteSlug: carte.slug, designation: carte.nom, gammeNom, image: images[0] || null, config: libelleDeclinaison() || null, prixIndicatif: prixHT }, qte);
+    addDevis({ codeRacine: declinaisonFinale.id, vitrineId: carte.id, declinaisonId: declinaisonFinale.id, gammeSlug, carteSlug: carte.slug, designation: carte.nom, gammeNom, image: images[0] || null, config: libelleDeclinaison() || null, prixIndicatif: prixHT }, qte);
     setAjouteDevis(true); setTimeout(() => setAjouteDevis(false), 2000);
   };
 

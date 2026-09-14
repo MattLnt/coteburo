@@ -282,6 +282,8 @@ export default function FicheProduit({ data }) {
     if (!peutDemanderDevis) return;
     addDevis({
       codeRacine: referenceFinale?.codeRacine || null,
+      vitrineId: carte.id,
+      declinaisonId: declinaisonFinale ? declinaisonFinale.id : null,
       gammeSlug, carteSlug: carte.slug,
       designation: referenceFinale ? referenceFinale.designation : `${carte.nom} (${gammeNom})`,
       gammeNom,

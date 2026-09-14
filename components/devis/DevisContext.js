@@ -22,18 +22,24 @@ export function DevisProvider({ children }) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch {}
   }, [items, loaded]);
 
-  // Identifiant d'une ligne devis = produit + config (finition/options)
-  const lineId = (codeRacine, config) => `${codeRacine}::${config || "_"}`;
+  // Identifiant d'une ligne devis = produit + config (finition/options).
+  // vitrineId entre dans la clé : deux fiches différentes peuvent partager une
+  // référence nulle et la même config, sans être le même article.
+  const lineId = (vitrineId, codeRacine, config) => `${vitrineId || codeRacine}::${config || "_"}`;
 
   const addDevis = useCallback((item, quantite = 1) => {
     setItems((prev) => {
-      const id = lineId(item.codeRacine, item.config);
+      const id = lineId(item.vitrineId, item.codeRacine, item.config);
       const existing = prev.find((it) => it.id === id);
       if (existing) {
         return prev.map((it) => it.id === id ? { ...it, quantite: it.quantite + quantite } : it);
       }
       return [...prev, {
         id,
+        // De quoi refaire le prix côté serveur : sans ces deux champs, la
+        // demande de devis part avec le seul prix du navigateur.
+        vitrineId: item.vitrineId || null,
+        declinaisonId: item.declinaisonId || null,
         codeRacine: item.codeRacine || null,          // peut être null si pas de config résolue
         gammeSlug: item.gammeSlug || null,
         carteSlug: item.carteSlug || null,

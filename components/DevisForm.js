@@ -90,6 +90,12 @@ export default function DevisForm() {
     setEnvoi(true);
     try {
       const articles = items.map((it) => ({
+        // Références catalogue : c'est à partir d'elles que le serveur
+        // recalcule le prix. prixIndicatif ne sert plus qu'à l'affichage.
+        vitrineId: it.vitrineId,
+        declinaisonId: it.declinaisonId,
+        codeRacine: it.codeRacine,
+        carteSlug: it.carteSlug,
         designation: it.designation,
         gammeNom: it.gammeNom,
         config: it.config,
