@@ -191,7 +191,7 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
       </Group>
 
       {/* Prix — s'applique automatiquement, sans bouton */}
-      <Group title="Prix">
+      <Group title="Prix" last={!aDimensions}>
         <div className="pt-1 flex items-center gap-2">
           <input type="number" value={prixMin} onChange={(e) => setPrixMin(e.target.value)} placeholder="Min"
             className="w-full rounded-lg border border-line px-2.5 py-2 text-[13px] outline-none focus:border-orange" />
@@ -203,7 +203,7 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
 
       {/* Dimensions (cm) — s'appliquent automatiquement */}
       {aDimensions && (
-        <Group title="Dimensions (cm)">
+        <Group title="Dimensions (cm)" last>
           <div className="flex flex-col gap-3 pt-1">
             {lignesDim.map(([label, bornes, vMin, sMin, vMax, sMax]) => (
               (bornes?.max != null) && (
@@ -228,15 +228,6 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
         </Group>
       )}
 
-      {/* Coloris — visuel seul, pas de donnée pour l'instant */}
-      <Group title="Coloris" last disabled>
-        <div className="flex flex-wrap gap-2.5 pt-1">
-          {["#23262A", "#F0661B", "#3C6E8F", "#7E8B6A", "#B8B2A6", "#9C3B36"].map((c) => (
-            <span key={c} className="h-[26px] w-[26px] rounded-full ring-1 ring-line opacity-35 cursor-not-allowed" style={{ background: c }} title="Bientôt disponible" />
-          ))}
-        </div>
-      </Group>
-
       {actif && (
         <button onClick={reinitialiser} className="w-full text-center text-[13px] font-semibold text-orange py-2">
           Réinitialiser les filtres
@@ -246,12 +237,11 @@ export default function CatalogueFilters({ filtres, valeurs, onFiltresChange, va
   );
 }
 
-function Group({ title, children, last, disabled }) {
+function Group({ title, children, last }) {
   return (
-    <div className={`py-5 ${last ? "" : "border-b border-line/70"} ${disabled ? "opacity-45" : ""}`}>
+    <div className={`py-5 ${last ? "" : "border-b border-line/70"}`}>
       <h4 className="font-display font-bold text-[15px] flex items-center gap-2">
         {title}
-        {disabled && <span className="text-[10px] font-semibold uppercase tracking-wide text-ink-soft bg-surface-2 rounded-full px-2 py-0.5">Bientôt</span>}
       </h4>
       <div className="mt-3 flex flex-col gap-2.5">{children}</div>
     </div>
