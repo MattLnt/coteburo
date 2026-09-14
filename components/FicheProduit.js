@@ -7,6 +7,11 @@ import GalerieProduit from "@/components/GalerieProduit";
 import FavoriButton from "@/components/FavoriButton";
 import { useOptionsAcheteur } from "@/components/OptionsAcheteur";
 
+// Pastilles montrees quand une categorie de coloris est repliee. Assez pour
+// donner le ton de la palette, pas assez pour noyer la fiche : certaines
+// categories comptent 85 coloris, et une fiche en cumule jusqu a 157.
+const APERCU_COLORIS = 6;
+
 const fmt0 = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`);
 const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
@@ -99,6 +104,9 @@ export default function FicheProduit({ data }) {
   const [qte, setQte] = useState(1);
   const [ajoute, setAjoute] = useState(false);
   const [ajouteDevis, setAjouteDevis] = useState(false);
+  // Une seule categorie de coloris depliee a la fois — en ouvrir une referme
+  // la precedente.
+  const [paletteOuverte, setPaletteOuverte] = useState(null);
 
   // Coloris rattachés aux valeurs d'un axe (finitionsParValeur).
   //
@@ -153,6 +161,19 @@ export default function FicheProduit({ data }) {
         .map((x) => x.f),
     }));
   }, [groupesFinition, carte.finitionsProduit, groupesValeur]);
+
+  // Prix « des » d une categorie de coloris : le plus bas des declinaisons qui
+  // la portent, en tenant compte des autres axes deja repondus. Ces categories
+  // sont tarifaires — les afficher evite que le client decouvre l ecart apres
+  // avoir choisi sa couleur.
+  const prixValeurAxe = (axeId, valeur) => {
+    const prix = declinaisons
+      .filter((d) => d.valeurs?.[axeId] === valeur
+        && Object.entries(reponses).every(([k, v]) => k === axeId || d.valeurs?.[k] === v))
+      .map((d) => d.prixHT)
+      .filter((x) => x != null && x > 0);
+    return prix.length ? Math.min(...prix) : null;
+  };
 
   const dejaTraites = useMemo(() => new Set(historique.map((h) => h.axeId)), [historique]);
 
@@ -348,17 +369,31 @@ export default function FicheProduit({ data }) {
                     // retrait, pour que le client voie ce qu'il a écarté.
                     const valeurBloc = bloc.items[0]?.valeurAxe ?? null;
                     const blocEcarte = valeurRetenue != null && valeurBloc != null && valeurBloc !== valeurRetenue;
+
+                    // Replié par défaut : une seule catégorie peut être ouverte,
+                    // sinon on retombe sur les 157 pastilles d'un coup.
+                    const clePalette = `${g.id}::${bloc.cle}`;
+                    const ouvert = paletteOuverte === clePalette;
+                    const repliable = valeurBloc != null && bloc.items.length > APERCU_COLORIS;
+                    const visibles = repliable && !ouvert ? bloc.items.slice(0, APERCU_COLORIS) : bloc.items;
+                    const prixCategorie = valeurBloc != null && g.axeId ? prixValeurAxe(g.axeId, valeurBloc) : null;
+
                     return (
                       <div key={`${g.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-4" : ""}>
                         {bloc.nom && (
                           <div className="flex items-center gap-2.5 mb-2.5">
                             <span className={`text-[10.5px] lg:text-[11.5px] font-semibold uppercase tracking-[0.06em] ${blocEcarte ? "text-ink-soft/45" : "text-ink-soft"}`}>{bloc.nom}</span>
+                            {prixCategorie != null && (
+                              <span className={`text-[10.5px] lg:text-[11.5px] font-semibold normal-case tracking-normal shrink-0 ${blocEcarte ? "text-ink-soft/45" : "text-ink"}`}>
+                                dès {fmt(prixCategorie)}
+                              </span>
+                            )}
                             {blocEcarte && <span className="text-[10px] text-ink-soft/45 normal-case tracking-normal">non retenu</span>}
                             <span className="flex-1 h-px bg-line" />
                           </div>
                         )}
                         <div className={`flex flex-wrap gap-2.5 lg:gap-3 ${blocEcarte ? "opacity-40" : ""}`}>
-                          {bloc.items.map((f) => {
+                          {visibles.map((f) => {
                             const actif = selectionneeId === f.id;
                             return (
                               <button key={f.id} type="button" disabled={blocEcarte}
@@ -372,6 +407,14 @@ export default function FicheProduit({ data }) {
                             );
                           })}
                         </div>
+
+                        {repliable && !blocEcarte && (
+                          <button type="button"
+                            onClick={() => setPaletteOuverte(ouvert ? null : clePalette)}
+                            className="mt-2.5 text-[11.5px] lg:text-[12.5px] font-semibold text-orange-dark hover:text-orange">
+                            {ouvert ? "Replier" : `Voir les ${bloc.items.length} coloris`}
+                          </button>
+                        )}
                       </div>
                     );
                   })}
