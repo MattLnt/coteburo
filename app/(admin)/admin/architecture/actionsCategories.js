@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -11,6 +13,7 @@ function slugify(s) {
 }
 
 export async function getCategoriesAdmin() {
+  await exigerAdmin();
   const marque = (await prisma.marque.findFirst({ where: { slug: "buronomic" } })) || (await prisma.marque.findFirst());
   if (!marque) return [];
 
@@ -43,6 +46,7 @@ export async function getCategoriesAdmin() {
 }
 
 export async function creerCategorie(nom, icone) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
 
@@ -65,6 +69,7 @@ export async function creerCategorie(nom, icone) {
 }
 
 export async function renommerCategorie(id, nom) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
   await prisma.categorie.update({ where: { id }, data: { nom: nomPropre } });
@@ -74,6 +79,7 @@ export async function renommerCategorie(id, nom) {
 }
 
 export async function changerIconeCategorie(id, icone) {
+  await exigerAdmin();
   await prisma.categorie.update({ where: { id }, data: { icone } });
   revalidatePath("/admin/architecture");
   revalidatePath("/", "layout");
@@ -84,6 +90,7 @@ export async function changerIconeCategorie(id, icone) {
 // sélectionnables comme options/accessoires d'autres produits (et l'onglet Options
 // est masqué pour les produits qui appartiennent à une telle catégorie).
 export async function basculerOptionCategorie(id, valeur) {
+  await exigerAdmin();
   await prisma.categorie.update({ where: { id }, data: { estOption: !!valeur } });
   revalidatePath("/admin/architecture");
   revalidatePath("/", "layout");
@@ -93,6 +100,7 @@ export async function basculerOptionCategorie(id, valeur) {
 // Suppression d'une catégorie — bloquée si des produits y sont encore rattachés
 // (directement, ou via l'une de ses sous-catégories), pour ne jamais laisser un produit sans URL valide.
 export async function supprimerCategorie(id) {
+  await exigerAdmin();
   const categorie = await prisma.categorie.findUnique({
     where: { id },
     include: {
@@ -115,6 +123,7 @@ export async function supprimerCategorie(id) {
 }
 
 export async function creerSousCategorie(categorieId, nom) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
 
@@ -134,6 +143,7 @@ export async function creerSousCategorie(categorieId, nom) {
 }
 
 export async function renommerSousCategorie(id, nom) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
   await prisma.sousCategorie.update({ where: { id }, data: { nom: nomPropre } });
@@ -143,6 +153,7 @@ export async function renommerSousCategorie(id, nom) {
 }
 
 export async function supprimerSousCategorie(id) {
+  await exigerAdmin();
   const sc = await prisma.sousCategorie.findUnique({ where: { id }, include: { _count: { select: { vitrines: true } } } });
   if (!sc) return { ok: false, error: "Sous-catégorie introuvable." };
   if (sc._count.vitrines > 0) {

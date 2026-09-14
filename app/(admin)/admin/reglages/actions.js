@@ -1,8 +1,11 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function getReglages() {
+  await exigerAdmin();
   let r = await prisma.reglages.findUnique({ where: { id: 1 } });
   if (!r) {
     r = await prisma.reglages.create({ data: { id: 1, tva: 0.2, remiseGlobale: 0.2, margeGlobale: 0.3 } });
@@ -11,10 +14,12 @@ export async function getReglages() {
 }
 
 export async function getPaliersInstallation() {
+  await exigerAdmin();
   return prisma.palierInstallation.findMany({ orderBy: { seuilMax: "asc" } });
 }
 
 export async function updateReglages(data) {
+  await exigerAdmin();
   const toPct = (v) => {
     if (v === "" || v == null) return 0;
     const n = parseFloat(String(v).replace(",", "."));
@@ -66,6 +71,7 @@ export async function updateReglages(data) {
 // Remplace intégralement la liste des paliers (suppression + recréation) — simple et sûr,
 // aucun autre modèle ne référence PalierInstallation.id.
 export async function sauverPaliersInstallation(paliers) {
+  await exigerAdmin();
   const propres = (paliers || [])
     .map((p) => ({
       seuilMax: parseFloat(String(p.seuilMax).replace(",", ".")),

@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { chargerCatalogueAdmin } from "@/lib/catalogueAdmin";
 import { montantTVA, TVA_DEFAUT } from "@/lib/tva";
@@ -37,6 +39,7 @@ function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, frai
 }
 
 export async function enregistrerDevis(id, data) {
+  await exigerAdmin();
   const lignes = Array.isArray(data.lignes) ? data.lignes : [];
   const reglages = await prisma.reglages.findUnique({ where: { id: 1 }, select: { tva: true } });
   const totaux = calculerTotaux({
@@ -100,6 +103,7 @@ export async function enregistrerDevis(id, data) {
 }
 
 export async function changerStatutDevis(id, statut) {
+  await exigerAdmin();
   const data = { statut };
   if (["accepte", "refuse"].includes(statut)) data.dateReponse = new Date();
   await prisma.devis.update({ where: { id }, data });
@@ -109,6 +113,7 @@ export async function changerStatutDevis(id, statut) {
 }
 
 export async function supprimerDevis(id) {
+  await exigerAdmin();
   await prisma.devis.delete({ where: { id } });
   revalidatePath("/admin/devis");
   return { ok: true };
@@ -118,12 +123,14 @@ export async function supprimerDevis(id) {
 // partagent desormais le meme chargeur et le meme filtrage : lib/catalogueAdmin.
 // Le devis garde les accessoires, une ligne d accotoir y est legitime.
 export async function chargerCatalogueDevis() {
+  await exigerAdmin();
   return chargerCatalogueAdmin({ exclureOptions: false });
 }
 
 // Envoi du devis au client : génère le PDF, l'attache à l'email, pose la
 // date de validité et bascule le statut.
 export async function envoyerDevisAuClient(id) {
+  await exigerAdmin();
   const devis = await prisma.devis.findUnique({
     where: { id },
     include: { lignes: { orderBy: { ordre: "asc" } } },

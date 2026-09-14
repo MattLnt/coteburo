@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -11,6 +13,7 @@ function slugify(s) {
 }
 
 export async function getGammeEdition(id) {
+  await exigerAdmin();
   const gamme = await prisma.gamme.findUnique({
     where: { id },
     include: {
@@ -61,6 +64,7 @@ export async function getGammeEdition(id) {
 // catégorie qui compte pour l'URL est celle du produit, et le mode de vente se choisit
 // désormais à la création de chaque produit, pas au niveau de la gamme entière).
 export async function sauverInfosGamme(id, data) {
+  await exigerAdmin();
   const { nom, descriptif, descriptionTech, imageUrl, images, marqueId } = data;
   await prisma.gamme.update({
     where: { id },
@@ -82,6 +86,7 @@ export async function sauverInfosGamme(id, data) {
 /* ─────────────── CARTES (vitrines) ─────────────── */
 
 export async function getVitrinesGamme(gammeId) {
+  await exigerAdmin();
   const vitrines = await prisma.produitVitrine.findMany({
     where: { gammeId },
     orderBy: [{ ordre: "asc" }, { nom: "asc" }],
@@ -101,6 +106,7 @@ export async function getVitrinesGamme(gammeId) {
 }
 
 export async function renommerVitrine(id, nom) {
+  await exigerAdmin();
   await prisma.produitVitrine.update({ where: { id }, data: { nom: nom?.trim() || "Sans nom" } });
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
@@ -108,6 +114,7 @@ export async function renommerVitrine(id, nom) {
 }
 
 export async function toggleVitrinePublication(id, publie) {
+  await exigerAdmin();
   await prisma.produitVitrine.update({ where: { id }, data: { publie } });
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
@@ -115,6 +122,7 @@ export async function toggleVitrinePublication(id, publie) {
 }
 
 export async function toggleVitrineDevis(id, venteSurDevis) {
+  await exigerAdmin();
   await prisma.produitVitrine.update({ where: { id }, data: { venteSurDevis } });
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
@@ -122,6 +130,7 @@ export async function toggleVitrineDevis(id, venteSurDevis) {
 }
 
 export async function reordonnerVitrines(gammeId, idsOrdonnes) {
+  await exigerAdmin();
   await prisma.$transaction(
     idsOrdonnes.map((id, index) => prisma.produitVitrine.update({ where: { id }, data: { ordre: index } }))
   );
@@ -130,6 +139,7 @@ export async function reordonnerVitrines(gammeId, idsOrdonnes) {
 }
 
 export async function supprimerVitrine(id) {
+  await exigerAdmin();
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   await prisma.produit.updateMany({ where: { vitrineId: id }, data: { vitrineId: null } });
   await prisma.produitVitrine.delete({ where: { id } });
@@ -138,6 +148,7 @@ export async function supprimerVitrine(id) {
 }
 
 export async function creerVitrine(gammeId, { nom, venteSurDevis }) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
 
@@ -165,6 +176,7 @@ export async function creerVitrine(gammeId, { nom, venteSurDevis }) {
 /* ─────────────── FINITIONS ─────────────── */
 
 export async function getFinitionsGamme(gammeId) {
+  await exigerAdmin();
   const groupes = await prisma.groupeFinition.findMany({
     where: { gammeId },
     orderBy: { ordre: "asc" },
@@ -181,12 +193,14 @@ export async function getFinitionsGamme(gammeId) {
 }
 
 export async function renommerFinition(id, nom) {
+  await exigerAdmin();
   const f = await prisma.finition.update({ where: { id }, data: { nom: nom?.trim() || "Sans nom" }, select: { groupe: { select: { gammeId: true } } } });
   revalidatePath(`/admin/architecture/${f.groupe.gammeId}`);
   return { ok: true };
 }
 
 export async function majFinitionImage(id, { imageUrl, couleur }) {
+  await exigerAdmin();
   const f = await prisma.finition.update({
     where: { id },
     data: { imageUrl: imageUrl ?? null, couleur: couleur ?? null },
@@ -197,6 +211,7 @@ export async function majFinitionImage(id, { imageUrl, couleur }) {
 }
 
 export async function renommerGroupeFinition(id, nom) {
+  await exigerAdmin();
   const g = await prisma.groupeFinition.update({ where: { id }, data: { nom: nom?.trim() || "Sans nom" }, select: { gammeId: true } });
   revalidatePath(`/admin/architecture/${g.gammeId}`);
   return { ok: true };

@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -11,10 +13,12 @@ function slugify(str) {
 }
 
 export async function getRealisations() {
+  await exigerAdmin();
   return prisma.realisation.findMany({ orderBy: [{ ordre: "asc" }, { createdAt: "desc" }] });
 }
 
 export async function getRealisation(id) {
+  await exigerAdmin();
   const r = await prisma.realisation.findUnique({
     where: { id },
     include: { produitsLies: { select: { id: true, nom: true, imageUrl: true } } },
@@ -25,6 +29,7 @@ export async function getRealisation(id) {
 
 // Liste légère de tous les produits publiés, pour le sélecteur "Produits liés" dans l'admin
 export async function getProduitsPourLiaison() {
+  await exigerAdmin();
   const vitrines = await prisma.produitVitrine.findMany({
     where: { publie: true, gamme: { publie: true } },
     orderBy: { nom: "asc" },
@@ -34,6 +39,7 @@ export async function getProduitsPourLiaison() {
 }
 
 export async function createRealisation(data) {
+  await exigerAdmin();
   const base = slugify(data.titre || "realisation");
   let slug = base;
   let i = 1;
@@ -59,6 +65,7 @@ export async function createRealisation(data) {
 }
 
 export async function updateRealisationInfos(id, data) {
+  await exigerAdmin();
   await prisma.realisation.update({
     where: { id },
     data: {
@@ -77,6 +84,7 @@ export async function updateRealisationInfos(id, data) {
 
 // Sauvegarde unique pour tout le contenu détaillé (récit, citation, galerie, avant/après, carnet, produits liés)
 export async function sauverRealisationComplete(id, data) {
+  await exigerAdmin();
   const {
     recit, citationTexte, citationAuteur, citationPoste,
     galerie, avantImageUrl, apresImageUrl, carnetChantier, produitsLiesIds,
@@ -103,6 +111,7 @@ export async function sauverRealisationComplete(id, data) {
 }
 
 export async function deleteRealisation(id) {
+  await exigerAdmin();
   await prisma.realisation.delete({ where: { id } });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
@@ -110,6 +119,7 @@ export async function deleteRealisation(id) {
 }
 
 export async function toggleRealisationPublie(id, publie) {
+  await exigerAdmin();
   await prisma.realisation.update({ where: { id }, data: { publie: !!publie } });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");

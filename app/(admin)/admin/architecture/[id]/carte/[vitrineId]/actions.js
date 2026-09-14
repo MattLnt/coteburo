@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { chargerCatalogueAdmin } from "@/lib/catalogueAdmin";
 import { revalidatePath } from "next/cache";
@@ -12,6 +14,7 @@ function slugify(s) {
 }
 
 export async function getCarteEdition(vitrineId) {
+  await exigerAdmin();
   const vitrine = await prisma.produitVitrine.findUnique({
     where: { id: vitrineId },
     include: {
@@ -104,6 +107,7 @@ export async function getCarteEdition(vitrineId) {
 // catégorie marquée "estOption". On exclut le produit courant (un accessoire ne peut pas
 // se lier à lui-même). Prix indicatif : prix unique si sansDeclinaisons, sinon le mini des déclinaisons.
 export async function getOptionsDisponibles(vitrineId) {
+  await exigerAdmin();
   const vitrines = await prisma.produitVitrine.findMany({
     where: {
       id: { not: vitrineId },
@@ -140,6 +144,7 @@ export async function getOptionsDisponibles(vitrineId) {
 
 // ─────────── SAUVEGARDE UNIQUE : tout en un clic ───────────
 export async function sauverCarteComplete(vitrineId, data) {
+  await exigerAdmin();
   const {
     nom, descriptif, imageUrl, images,
     sectionsDevis, prixAPartir,
@@ -271,6 +276,7 @@ export async function sauverCarteComplete(vitrineId, data) {
 
 // ─────────── Changement de gamme d'un produit déjà créé ───────────
 export async function getGammesPourRecherche() {
+  await exigerAdmin();
   return prisma.gamme.findMany({
     orderBy: { nom: "asc" },
     select: { id: true, nom: true },
@@ -278,6 +284,7 @@ export async function getGammesPourRecherche() {
 }
 
 export async function changerGammeProduit(vitrineId, { gammeId, nouvelleGammeNom }) {
+  await exigerAdmin();
   let gammeIdFinal = gammeId || null;
 
   if (!gammeIdFinal) {
@@ -321,6 +328,7 @@ export async function changerGammeProduit(vitrineId, { gammeId, nouvelleGammeNom
 /* ─────────────── FINITIONS DU PRODUIT (rattachées à la vitrine, pas à la gamme) ─────────────── */
 
 export async function getFinitionsProduit(vitrineId) {
+  await exigerAdmin();
   const groupes = await prisma.groupeFinition.findMany({
     where: { vitrineId },
     orderBy: { ordre: "asc" },
@@ -347,6 +355,7 @@ async function gammeIdDeGroupe(groupeId) {
 }
 
 export async function creerGroupeFinitionProduit(vitrineId, nom) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
 
@@ -361,6 +370,7 @@ export async function creerGroupeFinitionProduit(vitrineId, nom) {
 }
 
 export async function creerFinitionProduit(groupeId, nom) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
 
@@ -375,6 +385,7 @@ export async function creerFinitionProduit(groupeId, nom) {
 }
 
 export async function renommerFinitionProduit(id, nom) {
+  await exigerAdmin();
   const f = await prisma.finition.update({
     where: { id }, data: { nom: nom?.trim() || "Sans nom" },
     select: { groupe: { select: { vitrineId: true, vitrine: { select: { gammeId: true } } } } },
@@ -385,6 +396,7 @@ export async function renommerFinitionProduit(id, nom) {
 }
 
 export async function majFinitionImageProduit(id, { imageUrl, couleur }) {
+  await exigerAdmin();
   const f = await prisma.finition.update({
     where: { id },
     data: { imageUrl: imageUrl ?? null, couleur: couleur ?? null },
@@ -396,6 +408,7 @@ export async function majFinitionImageProduit(id, { imageUrl, couleur }) {
 }
 
 export async function renommerGroupeFinitionProduit(id, nom) {
+  await exigerAdmin();
   const g = await prisma.groupeFinition.update({
     where: { id }, data: { nom: nom?.trim() || "Sans nom" },
     select: { vitrineId: true, vitrine: { select: { gammeId: true } } },
@@ -405,6 +418,7 @@ export async function renommerGroupeFinitionProduit(id, nom) {
 }
 
 export async function supprimerGroupeFinitionProduit(id) {
+  await exigerAdmin();
   const g = await prisma.groupeFinition.findUnique({ where: { id }, select: { vitrineId: true, vitrine: { select: { gammeId: true } } } });
   await prisma.groupeFinition.delete({ where: { id } });
   if (g?.vitrine?.gammeId && g.vitrineId) revalidatePath(`/admin/architecture/${g.vitrine.gammeId}/carte/${g.vitrineId}`);
@@ -412,6 +426,7 @@ export async function supprimerGroupeFinitionProduit(id) {
 }
 
 export async function supprimerFinitionProduit(id) {
+  await exigerAdmin();
   const f = await prisma.finition.findUnique({ where: { id }, select: { groupe: { select: { vitrineId: true, vitrine: { select: { gammeId: true } } } } } });
   await prisma.finition.delete({ where: { id } });
   const gammeId = f?.groupe?.vitrine?.gammeId, vitrineId = f?.groupe?.vitrineId;
@@ -421,5 +436,6 @@ export async function supprimerFinitionProduit(id) {
 // Catalogue du selecteur de produits lies : sans les accessoires, qui n ont
 // rien a faire dans une suggestion « Vous aimerez aussi ».
 export async function chargerCatalogueProduitsLies() {
+  await exigerAdmin();
   return chargerCatalogueAdmin({ exclureOptions: true });
 }

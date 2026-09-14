@@ -1,5 +1,7 @@
 "use server";
 
+import { exigerAdmin } from "@/lib/session";
+
 // Médiathèque locale : parcourir un dossier du disque depuis l'admin, et en
 // envoyer des images sur Cloudinary sans passer par l'explorateur de fichiers.
 //
@@ -13,7 +15,6 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join, resolve, relative, extname, basename, sep } from "node:path";
 import sharp from "sharp";
-import { auth } from "@/auth";
 
 const IMAGES = [".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".avif"];
 const VIGNETTE = 180;
@@ -34,17 +35,13 @@ function resoudre(relatif) {
   return cible;
 }
 
-async function admin() {
-  const session = await auth();
-  return !!session?.user;
-}
-
 export async function mediathequeActive() {
+  await exigerAdmin();
   return !!racine();
 }
 
 export async function listerDossier(relatif = "") {
-  if (!(await admin())) return { ok: false, error: "Accès refusé." };
+  await exigerAdmin();
   const base = racine();
   if (!base) return { ok: false, error: "MEDIATHEQUE_LOCALE n'est pas défini." };
   const cible = resoudre(relatif);
@@ -89,7 +86,7 @@ export async function listerDossier(relatif = "") {
 // sur les lettres et chiffres seuls, et on retient le dossier le mieux fourni
 // en images parmi ceux qui correspondent.
 export async function cheminSuggere(gammeNom) {
-  if (!(await admin())) return null;
+  await exigerAdmin();
   const base = racine();
   if (!base || !gammeNom) return null;
 
@@ -133,7 +130,7 @@ export async function cheminSuggere(gammeNom) {
 
 // Aperçu : on ne renvoie jamais le fichier d'origine, qui peut peser 20 Mo.
 export async function vignetteLocale(relatif) {
-  if (!(await admin())) return null;
+  await exigerAdmin();
   const cible = resoudre(relatif);
   if (!cible) return null;
   try {
@@ -154,7 +151,7 @@ export async function vignetteLocale(relatif) {
 // L'identifiant reprend le chemin dans la médiathèque : deux envois du même
 // fichier écrasent au lieu de créer un doublon, et le nom reste lisible.
 export async function importerImagesLocales(relatifs = []) {
-  if (!(await admin())) return { ok: false, error: "Accès refusé." };
+  await exigerAdmin();
   if (!CLOUD || !PRESET) return { ok: false, error: "Clés Cloudinary absentes." };
 
   const urls = [];

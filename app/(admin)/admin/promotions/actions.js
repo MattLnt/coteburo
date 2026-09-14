@@ -1,8 +1,11 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function createPromotion(data) {
+  await exigerAdmin();
   const nom = data.nom?.trim();
   if (!nom) return { ok: false, error: "Le nom est requis." };
 
@@ -36,6 +39,7 @@ export async function createPromotion(data) {
 }
 
 export async function updatePromotion(id, data) {
+  await exigerAdmin();
   const valeur = parseFloat(String(data.valeur).replace(",", ".")) || 0;
 
   await prisma.promotion.update({
@@ -67,6 +71,7 @@ export async function updatePromotion(id, data) {
 }
 
 export async function deletePromotion(id) {
+  await exigerAdmin();
   await prisma.promotion.delete({ where: { id } });
   revalidatePath("/admin/promotions");
   revalidatePath("/", "layout");
@@ -74,6 +79,7 @@ export async function deletePromotion(id) {
 }
 
 export async function togglePromotion(id, actif) {
+  await exigerAdmin();
   await prisma.promotion.update({ where: { id }, data: { actif } });
   revalidatePath("/admin/promotions");
   revalidatePath("/", "layout");

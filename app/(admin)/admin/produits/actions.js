@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -11,6 +13,7 @@ function slugify(s) {
 }
 
 export async function getGammesPourRecherche() {
+  await exigerAdmin();
   return prisma.gamme.findMany({
     orderBy: { nom: "asc" },
     select: { id: true, nom: true },
@@ -18,6 +21,7 @@ export async function getGammesPourRecherche() {
 }
 
 export async function creerProduitRapide({ nomProduit, gammeId, nouvelleGammeNom, venteSurDevis }) {
+  await exigerAdmin();
   const nomProduitPropre = (nomProduit || "").trim();
   if (!nomProduitPropre) return { ok: false, error: "Le nom du produit est obligatoire." };
 
@@ -73,6 +77,7 @@ export async function creerProduitRapide({ nomProduit, gammeId, nouvelleGammeNom
 }
 
 export async function supprimerLigneProduit({ mode, carteId, declinaisonId }) {
+  await exigerAdmin();
   if (mode === "boutique" && declinaisonId) {
     const vitrine = await prisma.produitVitrine.findUnique({ where: { id: carteId }, select: { declinaisons: true, gammeId: true } });
     if (!vitrine) return { ok: false, error: "Produit introuvable." };
@@ -94,6 +99,7 @@ export async function supprimerLigneProduit({ mode, carteId, declinaisonId }) {
 }
 
 export async function toggleProduitPublie(carteId, publie) {
+  await exigerAdmin();
   const vitrine = await prisma.produitVitrine.update({
     where: { id: carteId },
     data: { publie: !!publie },
@@ -106,6 +112,7 @@ export async function toggleProduitPublie(carteId, publie) {
 }
 
 export async function renommerProduit(carteId, nom) {
+  await exigerAdmin();
   const nettoye = (nom || "").trim();
   if (!carteId || !nettoye) return { ok: false, error: "Nom invalide." };
   try {

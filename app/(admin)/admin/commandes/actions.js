@@ -1,9 +1,12 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { envoyerMajStatut } from "@/lib/emails";
 
 export async function getCommandes() {
+  await exigerAdmin();
   return prisma.commande.findMany({
     orderBy: { createdAt: "desc" },
     include: { lignes: true },
@@ -11,6 +14,7 @@ export async function getCommandes() {
 }
 
 export async function getCommande(id) {
+  await exigerAdmin();
   return prisma.commande.findUnique({
     where: { id },
     include: { lignes: true },
@@ -18,6 +22,7 @@ export async function getCommande(id) {
 }
 
 export async function updateStatutCommande(id, statut) {
+  await exigerAdmin();
   const statutsValides = ["en_attente", "payee", "en_preparation", "expediee", "livree", "annulee", "echec_paiement"];
   if (!statutsValides.includes(statut)) return { ok: false };
 

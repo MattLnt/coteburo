@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -11,14 +13,17 @@ function slugify(str) {
 }
 
 export async function getArticles() {
+  await exigerAdmin();
   return prisma.article.findMany({ orderBy: { createdAt: "desc" } });
 }
 
 export async function getArticle(id) {
+  await exigerAdmin();
   return prisma.article.findUnique({ where: { id } });
 }
 
 export async function createArticle(data) {
+  await exigerAdmin();
   const base = slugify(data.titre || "article");
   let slug = base;
   let i = 1;
@@ -43,6 +48,7 @@ export async function createArticle(data) {
 }
 
 export async function updateArticle(id, data) {
+  await exigerAdmin();
   await prisma.article.update({
     where: { id },
     data: {
@@ -62,6 +68,7 @@ export async function updateArticle(id, data) {
 }
 
 export async function deleteArticle(id) {
+  await exigerAdmin();
   await prisma.article.delete({ where: { id } });
   revalidatePath("/admin/articles");
   revalidatePath("/conseils");
@@ -69,6 +76,7 @@ export async function deleteArticle(id) {
 }
 
 export async function toggleArticlePublie(id, publie) {
+  await exigerAdmin();
   await prisma.article.update({ where: { id }, data: { publie: !!publie } });
   revalidatePath("/admin/articles");
   revalidatePath("/conseils");

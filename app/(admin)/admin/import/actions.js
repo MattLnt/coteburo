@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -58,6 +60,7 @@ const SUFFIXE = " - NEW";
 const cleNom = (nom) => slugify((nom || "").replace(SUFFIXE, ""));
 
 export async function getContexteImport() {
+  await exigerAdmin();
   const [gammes, categories, palettes] = await Promise.all([
     prisma.gamme.findMany({
       orderBy: { nom: "asc" },
@@ -422,6 +425,7 @@ async function preparer(texteJson, gammeParDefautId, gammeParDefautNom) {
 }
 
 export async function analyserImport({ json, gammeId, nouvelleGammeNom }) {
+  await exigerAdmin();
   const gamme = gammeId
     ? await prisma.gamme.findUnique({ where: { id: gammeId }, select: { nom: true } })
     : null;
@@ -438,6 +442,7 @@ export async function analyserImport({ json, gammeId, nouvelleGammeNom }) {
 }
 
 export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
+  await exigerAdmin();
   let gammeIdFinal = gammeId || null;
   let gammeNomFinal = null;
 

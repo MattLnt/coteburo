@@ -1,5 +1,7 @@
 "use server";
 
+import { exigerAdmin } from "@/lib/session";
+
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -8,6 +10,7 @@ import { revalidatePath } from "next/cache";
 // fournir la liste des images et à enregistrer les URL détourées.
 
 export async function getProduitsAvecImages(marqueSlug) {
+  await exigerAdmin();
   const produits = await prisma.produitVitrine.findMany({
     where: {
       ...(marqueSlug ? { gamme: { marque: { slug: marqueSlug } } } : {}),
@@ -46,6 +49,7 @@ export async function getProduitsAvecImages(marqueSlug) {
 }
 
 export async function getMarques() {
+  await exigerAdmin();
   const marques = await prisma.marque.findMany({
     orderBy: { nom: "asc" },
     select: {
@@ -63,6 +67,7 @@ export async function getMarques() {
 // détourées ont une nouvelle URL Cloudinary, les autres gardent
 // l'ancienne. La vignette reste la première.
 export async function enregistrerImages(produitId, images) {
+  await exigerAdmin();
   if (!Array.isArray(images) || !images.length) {
     return { ok: false, message: "Liste d'images vide." };
   }

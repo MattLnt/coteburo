@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -9,6 +11,7 @@ import { revalidatePath } from "next/cache";
 
 // ---- Lecture ----
 export async function getFinitionsAdmin() {
+  await exigerAdmin();
   const [palettes, orphelines] = await Promise.all([
     prisma.paletteFinition.findMany({
       orderBy: [{ ordre: "asc" }, { nom: "asc" }],
@@ -24,6 +27,7 @@ export async function getFinitionsAdmin() {
 
 // Liste plate (pour le sélecteur côté produit)
 export async function getFinitionsModeles() {
+  await exigerAdmin();
   return prisma.finitionModele.findMany({
     orderBy: [{ paletteId: "asc" }, { ordre: "asc" }, { nom: "asc" }],
     include: { palette: { select: { nom: true, marque: true } } },
@@ -32,6 +36,7 @@ export async function getFinitionsModeles() {
 
 // ---- Palettes ----
 export async function creerPalette({ nom, marque }) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
   const max = await prisma.paletteFinition.aggregate({ _max: { ordre: true } });
@@ -43,6 +48,7 @@ export async function creerPalette({ nom, marque }) {
 }
 
 export async function renommerPalette(id, { nom, marque }) {
+  await exigerAdmin();
   await prisma.paletteFinition.update({
     where: { id },
     data: { nom: (nom || "").trim(), marque: (marque || "").trim() || null },
@@ -52,6 +58,7 @@ export async function renommerPalette(id, { nom, marque }) {
 }
 
 export async function supprimerPalette(id) {
+  await exigerAdmin();
   // Les finitions de la palette ne sont pas supprimées : elles deviennent "orphelines"
   // (paletteId = null grâce à onDelete: SetNull).
   await prisma.paletteFinition.delete({ where: { id } });
@@ -61,6 +68,7 @@ export async function supprimerPalette(id) {
 
 // ---- Finitions modèles ----
 export async function creerFinition({ nom, couleur, imageUrl, paletteId }) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
   const max = await prisma.finitionModele.aggregate({
@@ -81,6 +89,7 @@ export async function creerFinition({ nom, couleur, imageUrl, paletteId }) {
 }
 
 export async function majFinition(id, { nom, couleur, imageUrl, paletteId }) {
+  await exigerAdmin();
   const data = {};
   if (nom !== undefined) data.nom = (nom || "").trim();
   if (couleur !== undefined) data.couleur = (couleur || "").trim() || null;
@@ -92,6 +101,7 @@ export async function majFinition(id, { nom, couleur, imageUrl, paletteId }) {
 }
 
 export async function supprimerFinition(id) {
+  await exigerAdmin();
   await prisma.finitionModele.delete({ where: { id } });
   revalidatePath("/admin/architecture");
   return { ok: true };
@@ -106,6 +116,7 @@ export async function supprimerFinition(id) {
 // d'une même option, en admin comme sur la fiche publique.
 // ─────────────────────────────────────────────────────────────
 export async function importerFinitionsVersProduit(vitrineId, { groupeNom, finitionModeleIds }) {
+  await exigerAdmin();
   if (!vitrineId) return { ok: false, error: "Produit manquant." };
   const ids = Array.isArray(finitionModeleIds) ? finitionModeleIds : [];
   if (ids.length === 0) return { ok: false, error: "Sélectionne au moins une finition." };
@@ -143,6 +154,7 @@ export async function importerFinitionsVersProduit(vitrineId, { groupeNom, finit
 
 // Réordonne les finitions d'un produit (ou d'une palette) : ordre = position dans la liste.
 export async function reordonnerFinitionsProduit(orderedIds) {
+  await exigerAdmin();
   const ids = Array.isArray(orderedIds) ? orderedIds : [];
   if (ids.length === 0) return { ok: true };
   await prisma.$transaction(ids.map((id, i) => prisma.finition.update({ where: { id }, data: { ordre: i } })));
@@ -151,6 +163,7 @@ export async function reordonnerFinitionsProduit(orderedIds) {
 
 // Importe des finitions de la bibliothèque DANS un groupe existant (copie nom+couleur+imageUrl).
 export async function importerFinitionsDansGroupe(groupeId, finitionModeleIds) {
+  await exigerAdmin();
   if (!groupeId) return { ok: false, error: "Groupe manquant." };
   const ids = Array.isArray(finitionModeleIds) ? finitionModeleIds : [];
   if (ids.length === 0) return { ok: false, error: "Sélectionne au moins une finition." };

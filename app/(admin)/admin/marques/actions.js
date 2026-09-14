@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -7,6 +9,7 @@ function slugify(s) {
 }
 
 export async function createMarque(data) {
+  await exigerAdmin();
   const nom = data.nom?.trim();
   if (!nom) return { ok: false, error: "Le nom est requis." };
 
@@ -31,6 +34,7 @@ export async function createMarque(data) {
 }
 
 export async function updateMarque(id, data) {
+  await exigerAdmin();
   const remise = parseFloat(String(data.remise).replace(",", ".")) || 0;
 
   await prisma.marque.update({
@@ -48,6 +52,7 @@ export async function updateMarque(id, data) {
 }
 
 export async function deleteMarque(id) {
+  await exigerAdmin();
   const count = await prisma.produit.count({ where: { marqueId: id } });
   if (count > 0) {
     return { ok: false, error: `Impossible : ${count} produit(s) rattaché(s) à cette marque.` };

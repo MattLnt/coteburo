@@ -1,9 +1,12 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
 // Liste des clients — regroupés par email de commande (avec ou sans compte créé).
 // Le prénom/nom/société affichés viennent de la commande la plus récente pour cet email.
 export async function getClients() {
+  await exigerAdmin();
   const commandes = await prisma.commande.findMany({
     orderBy: { createdAt: "desc" },
     select: {
@@ -55,6 +58,7 @@ export async function getClients() {
 
 // Fiche complète d'un client — toutes ses commandes + stats, à partir de son email.
 export async function getClientDetail(email) {
+  await exigerAdmin();
   const emailLower = email.toLowerCase();
 
   const commandes = await prisma.commande.findMany({

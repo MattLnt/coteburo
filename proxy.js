@@ -9,19 +9,27 @@ import { authConfig } from "@/auth.config";
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
-  const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
 
   const isLoginPage = pathname === "/admin/login";
   const isAdminRoute = pathname.startsWith("/admin");
 
-  // Sur une route admin (hors login) sans être connecté → redirige vers le login
-  if (isAdminRoute && !isLoginPage && !isLoggedIn) {
+  // Être connecté ne suffit pas : l'inscription est ouverte à tous, et un
+  // compte client n'a rien à faire dans l'administration. C'est le rôle qui
+  // décide.
+  const estAdmin = req.auth?.user?.role === "ADMIN";
+
+  // Sur une route admin (hors login) sans être administrateur → login
+  if (isAdminRoute && !isLoginPage && !estAdmin) {
     return NextResponse.redirect(new URL("/admin/login", req.nextUrl));
   }
 
-  // Déjà connecté et sur la page de login → redirige vers le dashboard
-  if (isLoginPage && isLoggedIn) {
+  // Déjà administrateur et sur la page de login → tableau de bord.
+  //
+  // La condition porte sur le rôle et non sur la seule connexion : un client
+  // connecté était renvoyé ici vers /admin, que le layout renvoyait vers
+  // /admin/login, en boucle jusqu'à ce que le navigateur abandonne.
+  if (isLoginPage && estAdmin) {
     return NextResponse.redirect(new URL("/admin", req.nextUrl));
   }
 

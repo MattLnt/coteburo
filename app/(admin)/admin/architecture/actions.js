@@ -1,4 +1,6 @@
 "use server";
+
+import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -11,6 +13,7 @@ function slugify(s) {
 }
 
 export async function getGammesAdmin() {
+  await exigerAdmin();
   const gammes = await prisma.gamme.findMany({
     orderBy: [{ ordre: "asc" }, { nom: "asc" }],
     include: {
@@ -35,6 +38,7 @@ export async function getGammesAdmin() {
 }
 
 export async function togglePublicationGamme(id, publie) {
+  await exigerAdmin();
   await prisma.gamme.update({ where: { id }, data: { publie } });
   revalidatePath("/admin/architecture");
   return { ok: true };
@@ -44,6 +48,7 @@ export async function togglePublicationGamme(id, publie) {
 // (produits, finitions, favoris liés). Bloquée si d'anciens produits (import Buronomic) y sont
 // encore rattachés, pour éviter un comportement imprévisible côté base de données.
 export async function supprimerGamme(id) {
+  await exigerAdmin();
   const gamme = await prisma.gamme.findUnique({
     where: { id },
     select: {
@@ -68,6 +73,7 @@ export async function supprimerGamme(id) {
 /* ─────────────── CRÉATION D'UNE GAMME ─────────────── */
 
 export async function getDonneesCreationGamme() {
+  await exigerAdmin();
   const marques = await prisma.marque.findMany({ orderBy: { nom: "asc" }, select: { id: true, nom: true, slug: true } });
   const marqueParDefaut = marques.find((m) => m.slug === "buronomic") || marques[0] || null;
   const categories = marqueParDefaut
@@ -77,10 +83,12 @@ export async function getDonneesCreationGamme() {
 }
 
 export async function getCategoriesDeMarque(marqueId) {
+  await exigerAdmin();
   return prisma.categorie.findMany({ where: { marqueId }, orderBy: { ordre: "asc" }, select: { id: true, nom: true } });
 }
 
 export async function creerGamme({ nom, marqueId, categorieIds }) {
+  await exigerAdmin();
   const nomPropre = (nom || "").trim();
   if (!nomPropre) return { ok: false, error: "Le nom est obligatoire." };
   if (!marqueId) return { ok: false, error: "La marque est obligatoire." };
