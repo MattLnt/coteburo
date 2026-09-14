@@ -137,6 +137,7 @@ async function main() {
   const dossiers = (await readdir(RACINE, { withFileTypes: true })).filter((e) => e.isDirectory()).map((e) => e.name);
   const parVitrine = new Map();
   let total = 0, orphelins = 0, ambiances = 0;
+  const orphelinsParDossier = {};
 
   for (const d of dossiers) {
     if (DEMANDEES.length && !DEMANDEES.some((n) => norm(d).includes(norm(n)))) continue;
@@ -145,7 +146,7 @@ async function main() {
       const base = basename(f, extname(f));
       const code = base.split("_")[0].toUpperCase();
       const v = index.find((x) => code.startsWith(x.ref))?.v;
-      if (!v) { orphelins++; continue; }
+      if (!v) { orphelins++; orphelinsParDossier[d] = (orphelinsParDossier[d] || 0) + 1; continue; }
       const amb = estAmbiance(f);
       if (amb) ambiances++;
       const publicId = `coteburo/buronomic/${v.gamme.slug}/${nettoyer(base)}`;
@@ -157,6 +158,34 @@ async function main() {
   console.log(`${total} captures · ${parVitrine.size} fiches concernées · ${orphelins} sans fiche · ${ambiances} ambiances\n`);
 
   if (!APPLIQUER) {
+    // Taux, avant d'écrire quoi que ce soit.
+    let avecLibelle = 0, sansLibelle = 0;
+    const parGamme = {};
+    for (const { v, images } of parVitrine.values()) {
+      for (const i of images) {
+        if (i.ambiance) continue;
+        if (libelleDe(i.base)) avecLibelle++; else sansLibelle++;
+      }
+      parGamme[v.gamme.slug] ??= { fiches: 0, images: 0 };
+      parGamme[v.gamme.slug].fiches++;
+      parGamme[v.gamme.slug].images += images.length;
+    }
+    const retenues = avecLibelle + sansLibelle + ambiances;
+    console.log(`Images retenues : ${retenues}`);
+    console.log(`   avec pastille        : ${avecLibelle}  (${Math.round(avecLibelle / retenues * 100)} %)`);
+    console.log(`   vue de base          : ${sansLibelle}`);
+    console.log(`   ambiances            : ${ambiances}`);
+    console.log(`
+Répartition par gamme (${Object.keys(parGamme).length} gammes) :`);
+    Object.entries(parGamme).sort((a, b) => b[1].images - a[1].images).slice(0, 12)
+      .forEach(([g, d]) => console.log(`   ${String(d.images).padStart(4)} images  ${String(d.fiches).padStart(3)} fiches  ${g}`));
+    if (orphelinsParDossier && Object.keys(orphelinsParDossier).length) {
+      console.log(`
+Captures sans fiche, par dossier :`);
+      Object.entries(orphelinsParDossier).sort((a, b) => b[1] - a[1]).slice(0, 10)
+        .forEach(([d, n]) => console.log(`   ${String(n).padStart(4)}  ${d}`));
+    }
+    console.log("");
     let n = 0;
     for (const { v, images } of parVitrine.values()) {
       if (n++ >= 5) break;
