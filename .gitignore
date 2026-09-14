@@ -42,3 +42,7 @@ next-env.d.ts
 
 /app/generated/prisma
 prisma/buronomic_import.json
+
+# Tarif OfficePro : source fournisseur et extraction regenerable.
+TARIF_GENERAL_COMPLET_OFFICEPRO_SEATING_2026.pdf
+prisma/officepro-tarif.json
