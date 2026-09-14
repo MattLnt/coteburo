@@ -8,6 +8,10 @@ const GAP = 12;
 const HAUTEUR_COLONNE = VIGNETTES_VISIBLES * HAUTEUR_VIGNETTE + (VIGNETTES_VISIBLES - 1) * GAP;
 const PAS_SCROLL = HAUTEUR_VIGNETTE + GAP;
 
+// Deplacement horizontal minimal pour qu un geste compte comme un balayage.
+// Trop bas, un defilement vertical un peu oblique ferait changer la photo.
+const SEUIL_BALAYAGE = 45;
+
 // Une photo d'ambiance montre le produit en situation : elle doit
 // remplir le cadre, le décor faisant partie de l'image. On les reconnaît
 // à leur nom de fichier, les catalogues fournisseurs les préfixant ainsi.
@@ -128,8 +132,40 @@ export default function GalerieProduit({ images = [], alt = "" }) {
     color: "#5c616a", flexShrink: 0,
   });
 
+  // ── Balayage tactile ──
+  // On ne touche jamais à preventDefault : le défilement vertical de la page
+  // doit rester libre. C'est touch-action: pan-y qui dit au navigateur que
+  // l'horizontale nous revient — sans lui, un balayage déclencherait le
+  // « précédent/suivant » du navigateur au lieu de changer de photo.
+  const debutToucher = useRef(null);
+
+  const onTouchStart = (e) => {
+    const t = e.touches[0];
+    debutToucher.current = { x: t.clientX, y: t.clientY };
+  };
+
+  const onTouchEnd = (e) => {
+    const debut = debutToucher.current;
+    debutToucher.current = null;
+    if (!debut || images.length < 2) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - debut.x;
+    const dy = t.clientY - debut.y;
+    // Geste franchement horizontal seulement : en deçà, c'est un défilement
+    // vertical ou un simple appui, et changer d'image serait intempestif.
+    if (Math.abs(dx) < SEUIL_BALAYAGE || Math.abs(dx) <= Math.abs(dy)) return;
+    setImgActive((i) => {
+      const suivant = i + (dx < 0 ? 1 : -1);
+      return Math.min(images.length - 1, Math.max(0, suivant));
+    });
+  };
+
   const imagePrincipale = (
-    <div className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)]">
+    <div
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      style={{ touchAction: "pan-y" }}
+      className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)]">
       {urlActive ? (
         <img src={urlActive} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain" : "object-cover"}`} />
       ) : (
