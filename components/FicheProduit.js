@@ -100,22 +100,48 @@ export default function FicheProduit({ data }) {
   const [ajoute, setAjoute] = useState(false);
   const [ajouteDevis, setAjouteDevis] = useState(false);
 
-  // Groupes de finitions rattachés aux valeurs d'axe choisies (finitionsParValeur).
+  // Coloris rattachés aux valeurs d'un axe (finitionsParValeur).
+  //
+  // La palette ENTIÈRE est montée dès l'ouverture, toutes valeurs confondues :
+  // c'est elle qui donne envie, et l'attendre derrière une question d'axe la
+  // rendait invisible sur la moitié des sièges. Chaque coloris garde la valeur
+  // d'axe dont il vient ; une fois cette valeur choisie, les autres sont grisés
+  // plutôt que retirés, pour que le client voie ce qu'il écarte.
+  //
+  // Ces valeurs sont des catégories tarifaires (« Tissu B », « Tissu C »…) :
+  // paletteNom les sépare en sous-blocs étiquetés, si bien que le grisage porte
+  // sur des blocs entiers et reste lisible.
   const groupesValeur = useMemo(() => {
     const out = [];
     for (const a of axes) {
-      const val = reponses[a.id];
-      const fins = val && a.finitionsParValeur ? a.finitionsParValeur[val] : null;
-      if (fins && fins.length) {
-        out.push({
-          id: `axe:${a.id}:${val}`,
-          nom: `${a.nom} — ${val}`,
-          finitions: fins.map((f, i) => ({ id: f.id || `${a.id}:${val}:${i}`, nom: f.nom, couleur: f.couleur || null, imageUrl: f.imageUrl || null, paletteNom: f.paletteNom || null })),
+      const fpv = a.finitionsParValeur || {};
+      const valeurs = Object.keys(fpv).filter((k) => Array.isArray(fpv[k]) && fpv[k].length);
+      if (!valeurs.length) continue;
+
+      const finitions = [];
+      const vus = new Set();
+      for (const val of valeurs) {
+        fpv[val].forEach((f, i) => {
+          const id = f.id || `${a.id}:${val}:${i}`;
+          if (vus.has(id)) return;
+          vus.add(id);
+          finitions.push({
+            id, nom: f.nom,
+            couleur: f.couleur || null,
+            imageUrl: f.imageUrl || null,
+            paletteNom: f.paletteNom || null,
+            valeurAxe: val,
+          });
         });
       }
+      // « Coloris » et non le nom de l'axe : celui-ci titre déjà la question
+      // juste en dessous, et deux blocs homonymes — l'un de pastilles, l'autre
+      // de boutons — se lisent mal. Aucune fiche n'a deux axes porteurs de
+      // coloris, le titre reste donc sans ambiguïté.
+      out.push({ id: `axe:${a.id}`, nom: "Coloris", axeId: a.id, axeNom: a.nom, finitions });
     }
     return out;
-  }, [axes, reponses]);
+  }, [axes]);
 
   const finitionsAVoter = useMemo(() => {
     const groupes = [...(groupesFinition || []), ...((carte.finitionsProduit) || []), ...groupesValeur];
@@ -176,15 +202,26 @@ export default function FicheProduit({ data }) {
     setHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
     setReponses((r) => ({ ...r, [axeId]: valeur }));
     setPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
-    setFinitionsSel((f) => {
-      const n = { ...f };
-      Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${axeId}:`)) delete n[k]; });
-      return n;
-    });
+    // Le coloris deja choisi peut appartenir a une autre valeur d axe : on le
+    // libere. choisirColoris le repose juste apres quand le choix vient d une
+    // pastille, si bien que cliquer une couleur ne s annule pas lui-meme.
+    setFinitionsSel((f) => { const n = { ...f }; delete n[`axe:${axeId}`]; return n; });
   };
 
   const choisirFinition = (groupeId, finitionId) => {
     setFinitionsSel((f) => ({ ...f, [groupeId]: finitionId }));
+  };
+
+  // Un coloris n appartient qu a une seule valeur d axe : le choisir repond donc
+  // a la question. Sans cela le client choisirait une couleur puis devrait
+  // repondre un axe qui peut la contredire.
+  const choisirColoris = (g, f) => {
+    if (g.axeId && f.valeurAxe && reponses[g.axeId] !== f.valeurAxe) {
+      // axeNom et non g.nom : le recapitulatif doit lire « Categorie de
+      // revetement : C », pas « Coloris : C ».
+      choisirValeur(g.axeId, g.axeNom || g.nom, f.valeurAxe);
+    }
+    choisirFinition(g.id, f.id);
   };
 
   const popDerniereReponse = () => {
@@ -193,7 +230,7 @@ export default function FicheProduit({ data }) {
       const last = h[h.length - 1];
       setReponses((r) => { const n = { ...r }; delete n[last.axeId]; return n; });
       setPrefValeurs((p) => { const n = { ...p }; delete n[last.axeId]; return n; });
-      setFinitionsSel((f) => { const n = { ...f }; Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${last.axeId}:`)) delete n[k]; }); return n; });
+      setFinitionsSel((f) => { const n = { ...f }; delete n[`axe:${last.axeId}`]; return n; });
       return h.slice(0, -1);
     });
   };
@@ -296,40 +333,48 @@ export default function FicheProduit({ data }) {
             <FavoriButton vitrineId={carte.id} initial={!!favori} connecte={!!connecte} variant="text" />
           </div>
 
-          {carte.descriptif && (
-            <div className="text-ink-soft mt-3 lg:mt-4 leading-relaxed prose prose-sm max-w-none text-[13px] lg:text-base" dangerouslySetInnerHTML={{ __html: carte.descriptif }} />
-          )}
-
           {/* ── Blocs de configuration ── */}
           <div className="flex flex-col gap-2 lg:gap-0 mt-4 lg:mt-6 lg:pt-6 lg:border-t lg:border-line">
             {finitionsAVoter.map((g) => {
               const selectionneeId = finitionsSel[g.id];
               const blocs = sousBlocsPalette(g.finitions);
+              // Valeur d'axe retenue, s'il s'agit d'un groupe de coloris par valeur.
+              const valeurRetenue = g.axeId ? reponses[g.axeId] : null;
               return (
                 <Bloc key={g.id} titre={g.nom} aChoisir={!selectionneeId}>
-                  {blocs.map((bloc, bi) => (
-                    <div key={`${g.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-4" : ""}>
-                      {bloc.nom && (
-                        <div className="flex items-center gap-2.5 mb-2.5">
-                          <span className="text-[10.5px] lg:text-[11.5px] font-semibold text-ink-soft uppercase tracking-[0.06em]">{bloc.nom}</span>
-                          <span className="flex-1 h-px bg-line" />
+                  {blocs.map((bloc, bi) => {
+                    // Un sous-bloc entier devient indisponible dès que l'axe est
+                    // tranché sur une autre catégorie : on le garde visible, en
+                    // retrait, pour que le client voie ce qu'il a écarté.
+                    const valeurBloc = bloc.items[0]?.valeurAxe ?? null;
+                    const blocEcarte = valeurRetenue != null && valeurBloc != null && valeurBloc !== valeurRetenue;
+                    return (
+                      <div key={`${g.id}-${bloc.cle}-${bi}`} className={bi > 0 ? "mt-4" : ""}>
+                        {bloc.nom && (
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className={`text-[10.5px] lg:text-[11.5px] font-semibold uppercase tracking-[0.06em] ${blocEcarte ? "text-ink-soft/45" : "text-ink-soft"}`}>{bloc.nom}</span>
+                            {blocEcarte && <span className="text-[10px] text-ink-soft/45 normal-case tracking-normal">non retenu</span>}
+                            <span className="flex-1 h-px bg-line" />
+                          </div>
+                        )}
+                        <div className={`flex flex-wrap gap-2.5 lg:gap-3 ${blocEcarte ? "opacity-40" : ""}`}>
+                          {bloc.items.map((f) => {
+                            const actif = selectionneeId === f.id;
+                            return (
+                              <button key={f.id} type="button" disabled={blocEcarte}
+                                onClick={() => choisirColoris(g, f)} title={blocEcarte ? `${f.nom} — indisponible avec « ${valeurRetenue} »` : f.nom}
+                                className={`flex flex-col items-center gap-1.5 w-[52px] ${blocEcarte ? "cursor-not-allowed" : ""}`}>
+                                <span className={`rounded-full border-2 overflow-hidden transition block w-[42px] h-[42px] ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                                  {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
+                                </span>
+                                <span className={`text-[10px] lg:text-[11px] text-center leading-tight ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
+                              </button>
+                            );
+                          })}
                         </div>
-                      )}
-                      <div className="flex flex-wrap gap-2.5 lg:gap-3">
-                        {bloc.items.map((f) => {
-                          const actif = selectionneeId === f.id;
-                          return (
-                            <button key={f.id} type="button" onClick={() => choisirFinition(g.id, f.id)} title={f.nom} className="flex flex-col items-center gap-1.5 w-[52px]">
-                              <span className={`rounded-full border-2 overflow-hidden transition block w-[42px] h-[42px] ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
-                                {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
-                              </span>
-                              <span className={`text-[10px] lg:text-[11px] text-center leading-tight ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>
-                            </button>
-                          );
-                        })}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </Bloc>
               );
             })}
@@ -454,6 +499,13 @@ export default function FicheProduit({ data }) {
               <span className="text-ink-soft text-[10px] lg:text-[12px]">sur devis</span>
             </div>
           </div>
+
+          {/* Le descriptif ferme la colonne : place avant la configuration, il
+              repoussait la palette de coloris sous la ligne de flottaison sur
+              telephone — 58 fiches publiees depassent 600 caracteres ici. */}
+          {carte.descriptif && (
+            <div className="text-ink-soft mt-5 lg:mt-8 leading-relaxed prose prose-sm max-w-none text-[13px] lg:text-base" dangerouslySetInnerHTML={{ __html: carte.descriptif }} />
+          )}
         </div>
       </div>
 
