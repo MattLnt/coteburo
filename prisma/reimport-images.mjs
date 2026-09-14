@@ -215,7 +215,13 @@ Captures sans fiche, par dossier :`);
 
   let envoyees = 0, rognees = 0, echecs = 0;
   for (const { v, images } of parVitrine.values()) {
+    // Les vues nommées passent devant : triée par nom de fichier, la vue de
+    // base sans suffixe arrivait première et la fiche s'ouvrait sur une photo
+    // sans pastille. Partition stable, l'ordre alphabétique des décors tient.
+    const rang = (i) => (!i.ambiance && libelleDe(i.base) ? 0 : 1);
+    images.sort((a, b) => rang(a) - rang(b));
     const urls = [];
+    let vignette = null;
     for (const img of images) {
       try {
         let buffer;
@@ -226,7 +232,11 @@ Captures sans fiche, par dossier :`);
           buffer = r.buffer;
           if (!r.inchange) rognees++;
         }
-        urls.push(await envoyer(buffer, img.publicId));
+        const url = await envoyer(buffer, img.publicId);
+        urls.push(url);
+        // La vignette du catalogue garde la vue de base, photo canonique du
+        // produit — c'est la galerie seule qui s'ouvre sur un décor nommé.
+        if (!vignette && !img.ambiance && !libelleDe(img.base)) vignette = url;
         envoyees++;
       } catch (e) {
         echecs++;
@@ -234,7 +244,7 @@ Captures sans fiche, par dossier :`);
       }
     }
     if (urls.length) {
-      await prisma.produitVitrine.update({ where: { id: v.id }, data: { images: urls, imageUrl: urls[0] } });
+      await prisma.produitVitrine.update({ where: { id: v.id }, data: { images: urls, imageUrl: vignette || urls[0] } });
       console.log(`   ✓ ${v.nom} — ${urls.length} images`);
     }
   }

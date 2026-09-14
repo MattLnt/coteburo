@@ -28,7 +28,7 @@ const MOTS_AMBIANCE = ["amb_", "amb-", "ambiance", "_amb", "bodegon"];
 // Une ambiance n'est pas une déclinaison de finition : pas de pastille.
 const libelleFinition = (url) => {
   if (!url || estAmbiance(url)) return null;
-  const fichier = decodeURIComponent(url.split("/").pop() || "").replace(/.[a-z0-9]+$/i, "");
+  const fichier = decodeURIComponent(url.split("/").pop() || "").replace(/\.[a-z0-9]+$/i, "");
   const jetons = fichier.split("_").slice(1).map((t) => t.replace(/-/g, " ").trim()).filter(Boolean);
   return jetons.length ? jetons.join(" · ") : null;
 };
@@ -191,9 +191,11 @@ export default function GalerieProduit({ images = [], alt = "" }) {
       )}
 
       {/* Pastille du coloris — dit quelle finition la photo montre. Placée en
-          haut, la pagination occupant le bas sur mobile. */}
+          haut, la pagination occupant le bas sur mobile.
+          Fond sombre et opaque : les packshots sont détourés sur blanc, une
+          pastille claire s'y dissolvait faute de contour perceptible. */}
       {libelleActive && (
-        <span className="absolute top-2.5 left-2.5 rounded-full bg-white/92 backdrop-blur-sm border border-line px-2.5 py-1 text-[10.5px] lg:text-[11.5px] font-semibold text-ink shadow-[0_1px_4px_rgba(33,36,40,0.08)] max-w-[calc(100%-20px)] truncate">
+        <span className="absolute top-2.5 left-2.5 rounded-full bg-ink/88 px-2.5 py-1 text-[10.5px] lg:text-[11.5px] font-semibold text-white shadow-[0_1px_6px_rgba(33,36,40,0.25)] max-w-[calc(100%-20px)] truncate">
           {libelleActive}
         </span>
       )}
