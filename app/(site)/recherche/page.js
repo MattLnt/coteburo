@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
-import { calculerPrixMini, urlProduit, getFiltresCatalogue } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getFiltresCatalogue, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
 import RechercheClient from "@/components/RechercheClient";
 
 export const dynamic = "force-dynamic";
@@ -46,49 +45,9 @@ export default async function RecherchePage({ searchParams }) {
   ]);
   const categorieIds = categoriesMatch.map((c) => c.id);
   const sousCategorieIds = sousCategoriesMatch.map((s) => s.id);
-  const categorieSlugsTexte = categoriesMatch.map((c) => c.slug);
-  const sousCategorieSlugsTexte = sousCategoriesMatch.map((s) => s.slug);
 
-  // ── Ancien système : Produit ──
-  const [produitsAnciens, promosActives] = await Promise.all([
-    prisma.produit.findMany({
-      where: {
-        publie: true,
-        OR: [
-          { designation: { contains: query, mode: "insensitive" } },
-          { gamme: { contains: query, mode: "insensitive" } },
-          { codeRacine: { contains: query, mode: "insensitive" } },
-          { marque: { nom: { contains: query, mode: "insensitive" } } },
-          ...(categorieSlugsTexte.length ? [{ categorie: { in: categorieSlugsTexte } }] : []),
-          ...(sousCategorieSlugsTexte.length ? [{ sousCategorie: { in: sousCategorieSlugsTexte } }] : []),
-        ],
-      },
-      include: { marque: { select: { nom: true, slug: true } } },
-      orderBy: { designation: "asc" },
-    }),
-    getPromotionsActives(),
-  ]);
+  const marge = await getMargeGlobale();
 
-  const resultatsAnciens = produitsAnciens.map((p) => {
-    const { prixFinal, prixBase, enPromo, promoPct } = appliquerPromotions(p, promosActives);
-    return {
-      id: `ancien:${p.codeRacine}`,
-      href: `/produit/${p.slug || p.codeRacine}`,
-      nom: p.designation,
-      gammeNom: p.gamme,
-      brand: p.marque?.nom || null,
-      imageUrl: p.images?.[0] || null,
-      prix: prixFinal,
-      prixAffiche: fmt(prixFinal),
-      oldPrice: enPromo ? fmt(prixBase) : null,
-      promo: enPromo ? `-${promoPct}%` : null,
-      categorieSlug: p.categorie || null,
-      sousCategorieSlug: p.sousCategorie || null,
-      marqueSlug: p.marque?.slug || null,
-    };
-  });
-
-  // ── Nouveau système : ProduitVitrine ──
   const vitrines = await prisma.produitVitrine.findMany({
     where: {
       publie: true,
@@ -100,7 +59,6 @@ export default async function RecherchePage({ searchParams }) {
       ],
     },
     include: {
-      produits: { select: { prixVenteHT: true, prixPublicHT: true } },
       gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { slug: true } } } },
       categories: { select: { slug: true }, take: 1 },
       sousCategories: { select: { slug: true }, take: 1 },
@@ -110,7 +68,7 @@ export default async function RecherchePage({ searchParams }) {
 
   const resultatsNouveaux = vitrines.map((v) => {
     const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
-    const prixMini = calculerPrixMini(v, surDevis);
+    const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
     return {
       id: `vitrine:${v.id}`,
       href: urlProduit({ categorieSlug: v.categories[0]?.slug || null, sousCategorieSlug: v.sousCategories[0]?.slug || null, slug: v.slug }),
@@ -128,7 +86,7 @@ export default async function RecherchePage({ searchParams }) {
     };
   });
 
-  const resultats = [...resultatsNouveaux, ...resultatsAnciens].sort((a, b) => (a.nom || "").localeCompare(b.nom || ""));
+  const resultats = [...resultatsNouveaux].sort((a, b) => (a.nom || "").localeCompare(b.nom || ""));
 
   return (
     <main>

@@ -1,23 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import PromoBandCarousel from "@/components/PromoBandCarousel";
-import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 import { getFavorisContext } from "@/lib/favoris";
 import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
 export default async function PromoBand() {
-  const [produitsAnciens, promosActives, favCtx, vitrines] = await Promise.all([
-    prisma.produit.findMany({
-      where: { publie: true },
-      include: { marque: { select: { nom: true } } },
-    }),
-    getPromotionsActives(),
+  const [favCtx, vitrines] = await Promise.all([
     getFavorisContext(),
     prisma.produitVitrine.findMany({
       where: { publie: true, gamme: { publie: true }, promoPct: { not: null } },
       include: {
-        produits: { select: { prixVenteHT: true, prixPublicHT: true, prixVerrouille: true } },
         gamme: { select: { venteSurDevis: true } },
         categories: { select: { slug: true }, take: 1 },
         sousCategories: { select: { slug: true }, take: 1 },
@@ -25,31 +18,11 @@ export default async function PromoBand() {
     }),
   ]);
 
-  const enPromoAnciens = produitsAnciens
-    .map((p) => {
-      const calc = appliquerPromotions(p, promosActives);
-      return { p, calc };
-    })
-    .filter(({ calc }) => calc.enPromo)
-    .map(({ p, calc }) => ({
-      id: `ancien:${p.codeRacine}`,
-      href: `/produit/${p.slug || p.codeRacine}`,
-      codeRacine: p.codeRacine,
-      estNouveau: false,
-      brand: p.marque?.nom,
-      name: p.designation,
-      attr: p.gamme,
-      images: p.images,
-      price: fmt(calc.prixFinal),
-      oldPrice: fmt(calc.prixBase),
-      promo: `-${calc.promoPct}%`,
-    }));
-
   // Sans la marge, calculerPrixMini retombe sur les montants stockés : le
   // bandeau promo calculait donc sa remise sur un prix de base périmé.
   const marge = await getMargeGlobale();
 
-  const enPromoNouveaux = vitrines
+  const enPromo = vitrines
     .map((v) => {
       const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
       const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
@@ -69,9 +42,9 @@ export default async function PromoBand() {
       price: fmt(calc.prixFinal),
       oldPrice: fmt(calc.prixBase),
       promo: `-${calc.promoPct}%`,
-    }));
+    }))
+    .slice(0, 9);
 
-  const enPromo = [...enPromoNouveaux, ...enPromoAnciens].slice(0, 9);
   if (enPromo.length === 0) return null;
 
   return <PromoBandCarousel promos={enPromo} favorisCodes={favCtx.favorisCodes} favorisVitrines={favCtx.favorisVitrines} connecte={favCtx.connecte} />;

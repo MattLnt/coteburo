@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
-import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 import { calculerTousLesFrais } from "@/lib/frais";
 import { prixVenteEffectif } from "@/lib/prixDeclinaison";
 
@@ -84,17 +83,10 @@ export async function POST(req) {
     }
 
     // ── Recharge les vrais prix depuis la base — jamais confiance au client.
-    // Trois cas : l'ancien système (Produit, par codeRacine), le nouveau (ProduitVitrine
-    // + déclinaisons OU prix fixe, par vitrineId), et les options inline (optionsAdditionnelles). ──
-    const itemsAnciens = items.filter((it) => it.type !== "nouveau" && !it.optionId);
-
-    const codes = [...new Set(itemsAnciens.map((it) => it.codeRacine))];
-    const produitsAnciens = codes.length > 0
-      ? await prisma.produit.findMany({ where: { codeRacine: { in: codes }, publie: true }, include: { marque: { select: { nom: true } } } })
-      : [];
-    const produitsAnciensMap = Object.fromEntries(produitsAnciens.map((p) => [p.codeRacine, p]));
-
-    // Toutes les fiches concernées : produits "nouveau" ET produits parents des options.
+    // Deux cas : la fiche (ProduitVitrine + déclinaisons OU prix fixe, par
+    // vitrineId) et les options inline (optionsAdditionnelles). ──
+    //
+    // Toutes les fiches concernées : produits du panier ET parents des options.
     const vitrineIds = [...new Set(items.filter((it) => it.vitrineId).map((it) => it.vitrineId))];
     const vitrines = vitrineIds.length > 0
       ? await prisma.produitVitrine.findMany({
@@ -108,8 +100,6 @@ export async function POST(req) {
     // non verrouillées, exactement comme sur la fiche produit publique.
     const reglagesPrix = await prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true } });
     const margeGlobale = reglagesPrix?.margeGlobale ?? 0.3;
-
-    const promosActives = await getPromotionsActives();
 
     const lignes = [];
     for (const it of items) {
@@ -153,7 +143,7 @@ export async function POST(req) {
         continue;
       }
 
-      if (it.type === "nouveau") {
+      {
         const v = vitrinesMap[it.vitrineId];
         if (!v) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
 
@@ -192,20 +182,6 @@ export async function POST(req) {
             imageUrl: v.imageUrl || null,
           });
         }
-      } else {
-        const p = produitsAnciensMap[it.codeRacine];
-        if (!p) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
-        const { prixFinal } = appliquerPromotions(p, promosActives);
-        lignes.push({
-          codeRacine: p.codeRacine,
-          referenceFournisseur: p.codeRacine,
-          designation: p.designation,
-          marque: p.marque?.nom || null,
-          finition: it.finition || null,
-          prixHT: prixFinal,
-          quantite,
-          imageUrl: p.images?.[0] || null,
-        });
       }
     }
 

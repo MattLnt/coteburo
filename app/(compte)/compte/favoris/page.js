@@ -2,7 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import FavorisGrille from "./FavorisGrille";
-import { urlProduit, calculerPrixMini } from "@/lib/catalogue";
+import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Mes favoris · Côté BURO" };
@@ -18,39 +18,23 @@ export default async function FavorisPage() {
     where: { userId },
     orderBy: { createdAt: "desc" },
   });
-  const codesAnciens = favoris.map((f) => f.codeRacine).filter(Boolean);
   const vitrineIds = favoris.map((f) => f.vitrineId).filter(Boolean);
-
-  // ── Ancien système ──
-  const produitsAnciens = codesAnciens.length
-    ? await prisma.produit.findMany({ where: { codeRacine: { in: codesAnciens }, publie: true } })
-    : [];
-  const itemsAnciens = produitsAnciens.map((p) => ({
-    id: `ancien:${p.codeRacine}`,
-    codeRacine: p.codeRacine,
-    href: `/produit/${p.slug || p.codeRacine}`,
-    designation: p.designation,
-    gamme: p.gamme,
-    imageUrl: p.images?.[0] || null,
-    prixPublicHT: p.prixPublicHT,
-    prixVenteHT: p.prixVenteHT,
-  }));
 
   // ── Nouveau système ──
   const vitrines = vitrineIds.length
     ? await prisma.produitVitrine.findMany({
         where: { id: { in: vitrineIds }, publie: true, gamme: { publie: true } },
         include: {
-          produits: { select: { prixVenteHT: true, prixPublicHT: true } },
           gamme: { select: { nom: true, venteSurDevis: true } },
           categories: { select: { slug: true }, take: 1 },
           sousCategories: { select: { slug: true }, take: 1 },
         },
       })
     : [];
+  const marge = await getMargeGlobale();
   const itemsNouveaux = vitrines.map((v) => {
     const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
-    const prixMini = calculerPrixMini(v, surDevis);
+    const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
     return {
       id: `vitrine:${v.id}`,
       vitrineId: v.id,
@@ -65,7 +49,6 @@ export default async function FavorisPage() {
   // Ré-ordonne selon l'ordre réel des favoris (plus récent d'abord)
   const items = favoris
     .map((f) => {
-      if (f.codeRacine) return itemsAnciens.find((it) => it.codeRacine === f.codeRacine);
       return itemsNouveaux.find((it) => it.vitrineId === f.vitrineId);
     })
     .filter(Boolean);

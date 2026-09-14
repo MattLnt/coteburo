@@ -3,7 +3,6 @@ import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "@/components/dashboard/ImageUploader";
 import TiptapEditor from "@/components/dashboard/TiptapEditor";
-import SelecteurOptions from "@/components/dashboard/SelecteurOptions";
 import SectionsDescriptives from "./SectionsDescriptives";
 import DeclinaisonsBoutique from "./DeclinaisonsBoutique";
 import OptionsAdditionnelles from "./OptionsAdditionnelles";
@@ -63,7 +62,6 @@ export default function CarteEditForm({ carte }) {
   const [menuOuvert, setMenuOuvert] = useState(false);
 
   const surDevis = carte.gammeForceDevis || venteSurDevis;
-  const utiliseAncienSysteme = (carte.produits || []).length > 0;
   const estProduitOption = !!carte.estProduitOption;
 
   const categoriesChoisies = carte.categoriesDisponibles.filter((c) => categorieIds.includes(c.id));
@@ -200,9 +198,6 @@ export default function CarteEditForm({ carte }) {
     labelCourt: "Prix",
     compteur: surDevis ? "Devis" : (sansDeclinaisons ? (prixUniqueEffectif != null ? "✓" : null) : (nbDeclinaisons > 0 ? `${nbPrixRemplis}/${nbDeclinaisons}` : null)),
   });
-  if (!surDevis && utiliseAncienSysteme) {
-    tabs.push({ val: "ancien", labelLong: "Ancien sélecteur", labelCourt: "Ancien sélecteur", compteur: null });
-  }
 
   const ongletCourant = tabs.find((t) => t.val === onglet) || tabs[0];
   const indexCourant = tabs.findIndex((t) => t.val === onglet) + 1;
@@ -477,7 +472,6 @@ export default function CarteEditForm({ carte }) {
           onChangeLignes={(l) => { setDeclinaisonsLignes(l); dirty(); }}
           prixAPartir={prixAPartir}
           onChangePrixAPartir={(p) => { setPrixAPartir(p); dirty(); }}
-          prixMiniAuto={carte.prixMiniAuto}
           promoPct={promoPct}
           promoDebut={promoDebut}
           promoFin={promoFin}
@@ -493,12 +487,6 @@ export default function CarteEditForm({ carte }) {
         />
       )}
 
-      {onglet === "ancien" && (
-        <div style={card}>
-          <p style={{ fontSize: 13, color: "#9aa0a8", margin: "0 0 18px" }}>Cette carte contient encore des produits de l'ancien import. Cet onglet disparaîtra une fois la base purgée.</p>
-          <SelecteurOptions produits={carte.produits} />
-        </div>
-      )}
     </>
   );
 

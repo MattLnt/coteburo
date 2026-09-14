@@ -2,7 +2,6 @@
 import { useState, useMemo } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useDevis } from "@/components/devis/DevisContext";
-import { identifierAxesEtOptions, resoudreSelection, prochaineEtapeProduit, compterEtapesRestantes } from "@/lib/optionsProduit";
 import { prochainAxe, compterAxesRestants, resoudreDeclinaison } from "@/lib/declinaisonsLibres";
 import GalerieProduit from "@/components/GalerieProduit";
 import FavoriButton from "@/components/FavoriButton";
@@ -66,16 +65,14 @@ export default function FicheProduit({ data }) {
   const { addItem } = useCart();
   const { addDevis } = useDevis();
   const { carte, groupesFinition, gammeNom, gammeSlug, surDevis, favori, connecte } = data;
-  const produits = carte.produits || [];
   const images = carte.images?.length ? carte.images : [];
   const axesDecl = carte.axesDeclinaisons || [];
   const declLignes = carte.declinaisons || [];
 
   // Produit vendu à PRIX FIXE. sansDeclinaisons vient de l'admin et fait foi ;
-  // le repli sur l'absence de produits et d'axes couvre les fiches qui n'ont
-  // simplement rien à configurer.
+  // le repli sur l'absence d'axes couvre les fiches qui n'ont rien à configurer.
   const sansDeclinaisons = !!carte.sansDeclinaisons;
-  const prixFixe = sansDeclinaisons || (produits.length === 0 && axesDecl.length === 0);
+  const prixFixe = sansDeclinaisons || axesDecl.length === 0;
 
   // Options / accessoires — logique partagée avec FicheProduitLibre
   const { optionsUI, totalOptions, optionsOK, ajouterOptions } = useOptionsAcheteur({
@@ -89,29 +86,18 @@ export default function FicheProduit({ data }) {
     [groupesFinition, carte.finitionsProduit]
   );
 
-  const identifs = useMemo(() => identifierAxesEtOptions(produits), [produits]);
-
-  const [historique, setHistorique] = useState([]);
-  const [selection, setSelection] = useState({});
-  const [optionsReponses, setOptionsReponses] = useState({});
-  const [prefAxes, setPrefAxes] = useState({});
-  const [prefOptions, setPrefOptions] = useState({});
   const [declHistorique, setDeclHistorique] = useState([]);
   const [declReponses, setDeclReponses] = useState({});
   const [declPrefValeurs, setDeclPrefValeurs] = useState({});
   const [finitionsSel, setFinitionsSel] = useState({});
-  const [phase, setPhase] = useState("config"); // config | declinaison | recap
+  // declinaison | recap — on démarre sur les axes s'il y en a, sinon directement
+  // sur le récapitulatif.
+  const [phase, setPhase] = useState(axesDecl.length > 0 ? "declinaison" : "recap");
   const [qte, setQte] = useState(1);
   const [ajoute, setAjoute] = useState(false);
   const [ajouteDevis, setAjouteDevis] = useState(false);
 
-  const dejaTraites = useMemo(() => new Set(historique.map((h) => h.cle)), [historique]);
   const dejaTraitesDecl = useMemo(() => new Set(declHistorique.map((h) => h.axeId)), [declHistorique]);
-
-  const etapeCourante = useMemo(() => {
-    if (phase === "config") return prochaineEtapeProduit(identifs, produits, selection, optionsReponses, dejaTraites);
-    return null;
-  }, [phase, identifs, produits, selection, optionsReponses, dejaTraites]);
 
   const etapeDeclCourante = useMemo(() => {
     if (phase === "declinaison") return prochainAxe(axesDecl, declLignes, declReponses, dejaTraitesDecl);
@@ -119,19 +105,10 @@ export default function FicheProduit({ data }) {
   }, [phase, axesDecl, declLignes, declReponses, dejaTraitesDecl]);
 
   useMemo(() => {
-    if (phase === "config" && etapeCourante === null) {
-      setPhase(axesDecl.length > 0 ? "declinaison" : "recap");
-    }
-  }, [phase, etapeCourante, axesDecl.length]);
-
-  useMemo(() => {
     if (phase === "declinaison" && etapeDeclCourante === null) {
       setPhase("recap");
     }
   }, [phase, etapeDeclCourante]);
-
-  const { match } = useMemo(() => resoudreSelection(produits, selection, optionsReponses), [produits, selection, optionsReponses]);
-  const produitFinal = match || (produits.length === 1 ? produits[0] : null);
 
   const { match: declMatch } = useMemo(() => resoudreDeclinaison(declLignes, declReponses), [declLignes, declReponses]);
   // En prix unique, aucune déclinaison ne peut faire le prix — pas même celle
@@ -142,39 +119,21 @@ export default function FicheProduit({ data }) {
     ? null
     : declMatch || (declLignes.length === 1 && axesDecl.length > 0 ? declLignes[0] : null);
 
-  const prixResolu = produitFinal
-    ? (produitFinal.prixVenteHT ?? produitFinal.prixPublicHT)
-    : declinaisonFinale
-    ? Number(declinaisonFinale.prixVenteHT)
-    : carte.prixMini;
+  const prixResolu = declinaisonFinale ? Number(declinaisonFinale.prixVenteHT) : carte.prixMini;
   const prixAffiche = surDevis ? (carte.prixAPartir ?? prixResolu) : prixResolu;
   const ttc = !surDevis && prixAffiche != null ? prixAffiche * 1.2 : null;
 
-  const referenceFinale = produitFinal
-    ? { codeRacine: produitFinal.codeRacine, designation: produitFinal.designation }
-    : declinaisonFinale
+  const referenceFinale = declinaisonFinale
     ? { codeRacine: declinaisonFinale.id, designation: carte.nom }
     : (prixFixe && prixAffiche != null)
     ? { codeRacine: carte.id, designation: carte.nom }
     : null;
 
-  const nbConfigRepondu = historique.length;
-  const nbConfigRestant = phase === "config" ? compterEtapesRestantes(identifs, produits, selection, optionsReponses, dejaTraites) : 0;
   const nbDeclRepondu = declHistorique.length;
-  const nbDeclRestant = phase === "declinaison" ? compterAxesRestants(axesDecl, declLignes, declReponses, dejaTraitesDecl) : (phase === "config" ? axesDecl.length : 0);
-  const etapeActuelleNum = nbConfigRepondu + nbDeclRepondu;
-  const etapeTotalNum = nbConfigRepondu + nbConfigRestant + nbDeclRepondu + nbDeclRestant;
+  const nbDeclRestant = phase === "declinaison" ? compterAxesRestants(axesDecl, declLignes, declReponses, dejaTraitesDecl) : 0;
+  const etapeActuelleNum = nbDeclRepondu;
+  const etapeTotalNum = nbDeclRepondu + nbDeclRestant;
 
-  const choisirAxe = (key, label, value) => {
-    setHistorique((h) => [...h, { cle: `axe:${key}`, type: "axe", key, label, valeurChoisie: value }]);
-    setSelection((s) => ({ ...s, [key]: value }));
-    setPrefAxes((p) => ({ ...p, [key]: value }));
-  };
-  const choisirOption = (key, label, val) => {
-    setHistorique((h) => [...h, { cle: `option:${key}`, type: "option", key, label, valeurChoisie: val }]);
-    setOptionsReponses((o) => ({ ...o, [key]: val }));
-    setPrefOptions((p) => ({ ...p, [key]: val }));
-  };
   const choisirDecl = (axeId, nomAxe, valeur) => {
     setDeclHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
     setDeclReponses((r) => ({ ...r, [axeId]: valeur }));
@@ -182,21 +141,6 @@ export default function FicheProduit({ data }) {
   };
   const choisirFinition = (groupeId, finitionId) => {
     setFinitionsSel((f) => ({ ...f, [groupeId]: finitionId }));
-  };
-
-  const popDerniereConfig = () => {
-    setHistorique((h) => {
-      if (h.length === 0) return h;
-      const last = h[h.length - 1];
-      if (last.type === "axe") {
-        setSelection((s) => { const n = { ...s }; delete n[last.key]; return n; });
-        setPrefAxes((p) => { const n = { ...p }; delete n[last.key]; return n; });
-      } else {
-        setOptionsReponses((o) => { const n = { ...o }; delete n[last.key]; return n; });
-        setPrefOptions((p) => { const n = { ...p }; delete n[last.key]; return n; });
-      }
-      return h.slice(0, -1);
-    });
   };
 
   const popDerniereDeclReponse = () => {
@@ -210,32 +154,16 @@ export default function FicheProduit({ data }) {
   };
 
   const reculer = () => {
-    if (phase === "declinaison") {
-      if (declHistorique.length > 0) {
-        popDerniereDeclReponse();
-      } else {
-        popDerniereConfig();
-        setPhase("config");
-      }
+    if (declHistorique.length > 0) {
+      popDerniereDeclReponse();
+      if (phase === "recap") setPhase("declinaison");
       return;
     }
-    if (phase === "recap") {
-      if (declHistorique.length > 0) {
-        popDerniereDeclReponse();
-        setPhase("declinaison");
-      } else if (historique.length > 0) {
-        popDerniereConfig();
-        setPhase("config");
-      } else {
-        setPhase(axesDecl.length > 0 ? "declinaison" : "config");
-      }
-      return;
-    }
-    popDerniereConfig();
+    if (phase === "recap" && axesDecl.length > 0) setPhase("declinaison");
   };
 
   const libelleConfig = () => {
-    const parts = historique.map((h) => `${h.label}: ${h.type === "option" ? (h.valeurChoisie ? "Oui" : "Non") : h.valeurChoisie}`);
+    const parts = [];
     for (const h of declHistorique) parts.push(`${h.nom}: ${h.valeur}`);
     for (const g of finitionsAVoter) {
       const f = g.finitions.find((x) => x.id === finitionsSel[g.id]);
@@ -250,30 +178,18 @@ export default function FicheProduit({ data }) {
 
   const ajouterPanier = () => {
     if (!peutAjouter) return;
-    const itemPourPanier = produitFinal
-      ? {
-          type: "ancien",
-          codeRacine: produitFinal.codeRacine,
-          slug: carte.slug,
-          categorieSlug: carte.categorieSlug || null,
-          sousCategorieSlug: carte.sousCategorieSlug || null,
-          designation: produitFinal.designation,
-          marque: "Buronomic",
-          image: images[0] || null,
-          prix: prixAffiche,
-        }
-      : {
-          type: "nouveau",
-          vitrineId: carte.id,
-          declinaisonId: declinaisonFinale ? declinaisonFinale.id : null,
-          slug: carte.slug,
-          categorieSlug: carte.categorieSlug || null,
-          sousCategorieSlug: carte.sousCategorieSlug || null,
-          designation: carte.nom,
-          marque: "Buronomic",
-          image: images[0] || null,
-          prix: prixAffiche,
-        };
+    const itemPourPanier = {
+      type: "nouveau",
+      vitrineId: carte.id,
+      declinaisonId: declinaisonFinale ? declinaisonFinale.id : null,
+      slug: carte.slug,
+      categorieSlug: carte.categorieSlug || null,
+      sousCategorieSlug: carte.sousCategorieSlug || null,
+      designation: carte.nom,
+      marque: "Buronomic",
+      image: images[0] || null,
+      prix: prixAffiche,
+    };
     const parentId = addItem(itemPourPanier, libelleConfig() || null, qte);
     ajouterOptions(parentId);
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
@@ -299,7 +215,7 @@ export default function FicheProduit({ data }) {
   const gros = (actif) => `px-3.5 lg:px-4 py-2.5 rounded-xl border text-[12.5px] lg:text-[13.5px] font-medium transition ${
     actif ? "border-orange bg-orange-tint text-orange-dark" : "border-line text-ink hover:border-orange/50 hover:bg-surface-2"}`;
 
-  const peutReculer = historique.length > 0 || declHistorique.length > 0 || (phase !== "config" && !prixFixe);
+  const peutReculer = declHistorique.length > 0 || !prixFixe;
   const totalGeneral = (prixAffiche != null ? prixAffiche * qte : 0) + totalOptions;
 
   const selecteurQte = (
@@ -372,28 +288,6 @@ export default function FicheProduit({ data }) {
               );
             })}
 
-            {phase === "config" && etapeCourante?.type === "axe" && (
-              <Bloc titre={etapeCourante.label} aChoisir>
-                <div className="flex flex-wrap gap-2">
-                  {etapeCourante.axe.valeurs.map((v) => {
-                    const actif = prefAxes[etapeCourante.key] === v.value;
-                    return (
-                      <button key={v.value} onClick={() => choisirAxe(etapeCourante.key, etapeCourante.label, v.value)} className={gros(actif)}>{v.label}</button>
-                    );
-                  })}
-                </div>
-              </Bloc>
-            )}
-
-            {phase === "config" && etapeCourante?.type === "option" && (
-              <Bloc titre={`${etapeCourante.label} ?`} aChoisir>
-                <div className="flex gap-2">
-                  <button onClick={() => choisirOption(etapeCourante.key, etapeCourante.label, true)} className={gros(prefOptions[etapeCourante.key] === true)}>Oui</button>
-                  <button onClick={() => choisirOption(etapeCourante.key, etapeCourante.label, false)} className={gros(prefOptions[etapeCourante.key] === false)}>Non</button>
-                </div>
-              </Bloc>
-            )}
-
             {phase === "declinaison" && etapeDeclCourante && (
               <Bloc titre={etapeDeclCourante.axe.nom} aChoisir>
                 <div className="flex flex-wrap gap-2">
@@ -418,12 +312,6 @@ export default function FicheProduit({ data }) {
                       <span className="text-ink font-medium text-right">{referenceFinale.designation}</span>
                     </div>
                   )}
-                  {historique.map((h) => (
-                    <div key={h.cle} className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] flex justify-between gap-4">
-                      <span className="text-ink-soft">{h.label}</span>
-                      <span className="text-ink font-medium">{h.type === "option" ? (h.valeurChoisie ? "Oui" : "Non") : h.valeurChoisie}</span>
-                    </div>
-                  ))}
                   {declHistorique.map((h) => (
                     <div key={h.axeId} className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] flex justify-between gap-4">
                       <span className="text-ink-soft">{h.nom}</span>
@@ -444,7 +332,7 @@ export default function FicheProduit({ data }) {
                       </div>
                     ) : null;
                   })}
-                  {surDevis && historique.length === 0 && declHistorique.length === 0 && (
+                  {surDevis && declHistorique.length === 0 && (
                     <div className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] text-ink-soft">Aucune préférence renseignée — un conseiller vous accompagnera.</div>
                   )}
                 </div>

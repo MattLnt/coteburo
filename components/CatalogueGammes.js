@@ -62,7 +62,7 @@ export default function CatalogueGammes({ gammes, categories, categorieInitiale 
                 <div className="p-4 pb-[18px] flex flex-col flex-1">
                   <span className="text-orange text-[11px] font-bold tracking-[0.14em] uppercase">{g.categorieNom}</span>
                   <span className="font-display font-bold text-ink text-[16.5px] leading-tight mt-1.5 mb-1">{g.nom}</span>
-                  <span className="text-ink-soft text-[12.5px] mt-auto">{g.nbProduits} référence{g.nbProduits > 1 ? "s" : ""}</span>
+                  <span className="text-ink-soft text-[12.5px] mt-auto">{g.nbCartes} référence{g.nbCartes > 1 ? "s" : ""}</span>
                 </div>
               </Link>
             ))}

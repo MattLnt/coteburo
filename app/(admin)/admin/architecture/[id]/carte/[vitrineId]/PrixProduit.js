@@ -3,7 +3,7 @@ import { prixVenteEffectif } from "@/lib/prixDeclinaison";
 
 const fmt2 = (n) => (n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
-export default function PrixProduit({ surDevis, gammeForceDevis, venteSurDevis, onChangeVenteSurDevis, axes, lignes, onChangeLignes, prixAPartir, onChangePrixAPartir, prixMiniAuto, promoPct, promoDebut, promoFin, onChangePromo, margeGlobale, sansDeclinaisons, prixUnitaireTarifHT, onChangePrixUnitaireTarif, prixUnitaireHT, onChangePrixUnitaire, prixUnitaireVerrouille, onChangePrixUnitaireVerrouille }) {
+export default function PrixProduit({ surDevis, gammeForceDevis, venteSurDevis, onChangeVenteSurDevis, axes, lignes, onChangeLignes, prixAPartir, onChangePrixAPartir, promoPct, promoDebut, promoFin, onChangePromo, margeGlobale, sansDeclinaisons, prixUnitaireTarifHT, onChangePrixUnitaireTarif, prixUnitaireHT, onChangePrixUnitaire, prixUnitaireVerrouille, onChangePrixUnitaireVerrouille }) {
   const majPrixTarif = (ligneId, val) => {
     onChangeLignes(lignes.map((l) => (l.id === ligneId ? { ...l, prixTarifHT: val } : l)));
   };
@@ -111,12 +111,6 @@ export default function PrixProduit({ surDevis, gammeForceDevis, venteSurDevis, 
             <input value={prixAPartir} onChange={(e) => onChangePrixAPartir(e.target.value)}
               placeholder="ex : 490" inputMode="decimal" style={{ ...input, maxWidth: 200 }} />
             <span style={{ fontSize: 13.5, color: "#5c616a" }}>€ HT</span>
-            {prixMiniAuto != null && (
-              <button type="button" onClick={() => onChangePrixAPartir(String(Math.round(prixMiniAuto)))}
-                style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #ece8e0", background: "#faf8f4", cursor: "pointer", fontSize: 12.5, color: "#f0661b", fontWeight: 600 }}>
-                Suggérer {Math.round(prixMiniAuto)} € (prix mini)
-              </button>
-            )}
           </div>
           <p style={{ fontSize: 12.5, color: "#9aa0a8", margin: "10px 0 0" }}>Laisser vide pour n'afficher aucun prix sur la fiche.</p>
         </div>

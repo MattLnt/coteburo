@@ -18,21 +18,10 @@ export async function getCarteEdition(vitrineId) {
       categories: { select: { id: true, estOption: true } },
       sousCategories: { select: { id: true } },
       optionsLiees: { select: { id: true } },
-      produits: {
-        orderBy: { designation: "asc" },
-        select: {
-          codeRacine: true, designation: true,
-          prixPublicHT: true, prixVenteHT: true,
-          longueur: true, hauteur: true, profondeur: true, plateau: true, pied: true, options: true,
-          _count: { select: { variantes: true } },
-        },
-      },
     },
   });
   if (!vitrine) return null;
 
-  const prixListe = vitrine.produits.map((p) => p.prixVenteHT ?? p.prixPublicHT).filter((x) => x != null && x > 0);
-  const prixMiniAuto = prixListe.length ? Math.min(...prixListe) : null;
   const surDevisEffectif = vitrine.gamme.venteSurDevis || vitrine.venteSurDevis;
 
   // Catégories GLOBALES (toutes marques confondues) : la taxonomie catégorie > sous-catégorie
@@ -86,7 +75,6 @@ export async function getCarteEdition(vitrineId) {
     hauteurMax: vitrine.hauteurMax ?? "",
     profondeurMin: vitrine.profondeurMin ?? "",
     profondeurMax: vitrine.profondeurMax ?? "",
-    prixMiniAuto,
     margeGlobale,
     gammeId: vitrine.gamme.id,
     gammeNom: vitrine.gamme.nom,
@@ -104,13 +92,6 @@ export async function getCarteEdition(vitrineId) {
     categoriesDisponibles: categories.map((c) => ({
       id: c.id, nom: c.nom,
       sousCategories: c.sousCategories,
-    })),
-    produits: vitrine.produits.map((p) => ({
-      codeRacine: p.codeRacine, designation: p.designation,
-      prixPublicHT: p.prixPublicHT, prixVenteHT: p.prixVenteHT,
-      longueur: p.longueur, hauteur: p.hauteur, profondeur: p.profondeur,
-      plateau: p.plateau, pied: p.pied, options: p.options || [],
-      nbVariantes: p._count.variantes,
     })),
   };
 }
