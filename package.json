@@ -41,6 +41,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "exceljs": "^4.4.0",
     "tailwindcss": "^4"
   }
 }
