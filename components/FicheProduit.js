@@ -197,7 +197,20 @@ export default function FicheProduit({ data }) {
   // Prix arrêtés par le serveur, promo comprise — la fiche lit, elle ne calcule
   // plus. Sur devis, le « à partir de » saisi par l'admin prime : la déclinaison
   // ne sert alors qu'à configurer, pas à engager.
-  const prixDeclinaison = declinaisonFinale ? declinaisonFinale.prixHT : carte.prixMini;
+  // « À partir de » resserré au fil des réponses : une fois le Tissu D choisi,
+  // afficher encore le minimum global (celui du Tissu B) annoncerait un prix
+  // devenu inatteignable. On prend le plus bas des déclinaisons encore
+  // compatibles avec ce qui a déjà été répondu.
+  const prixMiniCourant = useMemo(() => {
+    const compat = declinaisons.filter((d) =>
+      Object.entries(reponses).every(([k, v]) => d.valeurs?.[k] === v));
+    const prix = compat.map((d) => d.prixHT).filter((x) => x != null && x > 0);
+    return prix.length ? Math.min(...prix) : null;
+  }, [declinaisons, reponses]);
+
+  const prixDeclinaison = declinaisonFinale
+    ? declinaisonFinale.prixHT
+    : (prixMiniCourant ?? carte.prixMini);
   const prixAffiche = surDevis ? (carte.prixAPartir ?? prixDeclinaison) : prixDeclinaison;
   const prixBarre = surDevis
     ? null
