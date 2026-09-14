@@ -78,6 +78,10 @@ export async function accepterDevis(token, { finitions, client }) {
       marque: l.marque || null,
       finition: [l.config, textesFinitions].filter(Boolean).join(" · ") || null,
       prixHT: l.prixHT,
+      // L'éco-participation suit la ligne jusqu'à la facture : la loi
+      // impose qu'elle y figure distinctement, et elle a été figée au
+      // moment du chiffrage.
+      ecoContribution: l.ecoContribution || 0,
       quantite: l.quantite,
       imageUrl: l.imageUrl || null,
     };
@@ -101,13 +105,16 @@ export async function accepterDevis(token, { finitions, client }) {
       codePostal: client.codePostal.trim(),
       ville: client.ville.trim(),
       pays: "France",
-      // Les totaux sont ceux du devis : frais déjà inclus dans totalHT côté
-      // devis, on les reporte pour l'affichage sans double comptage.
+      // Les totaux sont ceux du devis. Les frais et l'éco-participation
+      // sont déjà compris dans totalHT : on les reporte pour que la
+      // facture puisse en détailler le calcul, sans les additionner
+      // une seconde fois.
       totalHT: devis.totalHT,
       totalTVA: devis.totalTVA,
       totalTTC: devis.totalTTC,
-      fraisLivraison: 0,
-      fraisInstallation: 0,
+      totalEcoPart: devis.totalEcoPart || 0,
+      fraisLivraison: devis.fraisLivraison || 0,
+      fraisInstallation: devis.fraisInstallation || 0,
       avecInstallation: devis.fraisInstallation > 0,
       userId: user?.id || null,
       paye: false,
