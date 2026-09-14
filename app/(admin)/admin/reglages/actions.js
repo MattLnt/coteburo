@@ -47,8 +47,9 @@ export async function updateReglages(data) {
       francoPort: toNum(data.francoPort),
       bandeauActif: !!data.bandeauActif,
       bandeauTexte: str(data.bandeauTexte),
+      // Le message du bandeau se rédige dans la campagne, pas ici : la colonne
+      // bandeauPromoTexte reste en base mais n'est plus ni lue ni écrite.
       bandeauPromoActif: !!data.bandeauPromoActif,
-      bandeauPromoTexte: str(data.bandeauPromoTexte),
       instagram: str(data.instagram),
       facebook: str(data.facebook),
       linkedin: str(data.linkedin),

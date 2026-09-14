@@ -12,6 +12,7 @@ export async function createPromotion(data) {
   const promo = await prisma.promotion.create({
     data: {
       nom,
+      messageBandeau: (data.messageBandeau || "").trim() || null,
       typeRemise: data.typeRemise === "montant" ? "montant" : "pourcentage",
       valeur,
       dateDebut: data.dateDebut ? new Date(data.dateDebut) : null,
@@ -41,6 +42,7 @@ export async function updatePromotion(id, data) {
     where: { id },
     data: {
       nom: data.nom?.trim() || undefined,
+      messageBandeau: (data.messageBandeau || "").trim() || null,
       typeRemise: data.typeRemise === "montant" ? "montant" : "pourcentage",
       valeur,
       dateDebut: data.dateDebut ? new Date(data.dateDebut) : null,

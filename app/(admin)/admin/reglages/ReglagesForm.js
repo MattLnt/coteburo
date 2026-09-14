@@ -50,7 +50,6 @@ export function ReglagesForm({ reglages, paliersInitiaux, campagnes = [] }) {
     bandeauActif: !!reglages.bandeauActif,
     bandeauTexte: reglages.bandeauTexte || "",
     bandeauPromoActif: !!reglages.bandeauPromoActif,
-    bandeauPromoTexte: reglages.bandeauPromoTexte || "",
     instagram: reglages.instagram || "",
     facebook: reglages.facebook || "",
     linkedin: reglages.linkedin || "",
@@ -337,23 +336,23 @@ export function ReglagesForm({ reglages, paliersInitiaux, campagnes = [] }) {
 
             {form.bandeauPromoActif && (
               <div style={{ background: campagnes.length ? "#f4f8f2" : "#fdf3e8", border: `1px solid ${campagnes.length ? "#d8e6d2" : "#f2d9b8"}`,
-                borderRadius: 10, padding: "11px 13px", marginBottom: 14, fontSize: 13, color: "#5c616a", lineHeight: 1.5 }}>
+                borderRadius: 10, padding: "11px 13px", fontSize: 13, color: "#5c616a", lineHeight: 1.5 }}>
                 {campagnes.length ? (
                   <>
-                    <strong style={{ color: "#23262a" }}>Campagne annoncée :</strong>{" "}
+                    <strong style={{ color: "#23262a" }}>Message affiché :</strong>{" "}
                     {campagnes.map((c) => c.libelle).join(" · ")}
-                    <div style={{ marginTop: 4 }}>Le bandeau disparaîtra tout seul à la fin de la campagne.</div>
+                    <div style={{ marginTop: 4 }}>
+                      Il se rédige dans la campagne, page Promotions, et disparaît tout seul à la fin de celle-ci.
+                    </div>
                   </>
                 ) : (
                   <>
                     <strong style={{ color: "#23262a" }}>Aucune campagne en cours.</strong>{" "}
-                    Seul le texte libre ci-dessous s'affichera. Pour annoncer une remise, créez une campagne dans Promotions.
+                    Le bandeau reste masqué tant qu&apos;il n&apos;y a rien à annoncer. Créez une campagne dans Promotions et rédigez-y son message.
                   </>
                 )}
               </div>
             )}
-
-            <Field label="Texte libre (facultatif)" value={form.bandeauPromoTexte} onChange={(v) => set("bandeauPromoTexte", v)} placeholder="Livraison offerte jusqu'au 30 septembre" />
           </div>
         </div>
       )}

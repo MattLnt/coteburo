@@ -25,6 +25,7 @@ const toInputDate = (d) => {
 
 export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel, titre }) {
   const [nom, setNom] = useState(initial?.nom || "");
+  const [messageBandeau, setMessageBandeau] = useState(initial?.messageBandeau || "");
   const [typeRemise, setTypeRemise] = useState(initial?.typeRemise || "pourcentage");
   const [valeur, setValeur] = useState(initial?.valeur?.toString() || "");
   const [dateDebut, setDateDebut] = useState(toInputDate(initial?.dateDebut));
@@ -51,7 +52,7 @@ export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel
     if (!valeur || parseFloat(valeur) <= 0) { setError("La valeur de remise doit être supérieure à 0."); return; }
     if (categories.length === 0 && ciblesSel.length === 0) { setError("Ciblez au moins une catégorie ou un produit."); return; }
     setSaving(true);
-    const res = await onSubmit({ nom, typeRemise, valeur, dateDebut, dateFin, actif, categories, cibles: ciblesSel });
+    const res = await onSubmit({ nom, messageBandeau, typeRemise, valeur, dateDebut, dateFin, actif, categories, cibles: ciblesSel });
     setSaving(false);
     if (res && !res.ok) setError(res.error || "Erreur lors de l'enregistrement.");
   };
@@ -93,6 +94,16 @@ export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel
           <div style={card}>
             <label style={labelStyle}>Nom de la campagne</label>
             <input style={{ ...inputStyle, marginBottom: 16 }} value={nom} onChange={(e) => setNom(e.target.value)} placeholder="ex : Soldes d'été" autoFocus />
+
+            {/* Message du bandeau : rédigé ici, la campagne étant seule à savoir
+                ce qu'elle annonce. Il disparaît du site avec elle. */}
+            <label style={labelStyle}>Message du bandeau</label>
+            <input style={inputStyle} value={messageBandeau} onChange={(e) => setMessageBandeau(e.target.value)}
+              placeholder="ex : −10 % sur les cabines acoustiques jusqu'au 30 septembre" />
+            <p style={{ fontSize: 11.5, color: "#5c616a", margin: "6px 0 16px", lineHeight: 1.45 }}>
+              Affiché en haut du site tant que la campagne est en cours, si le bandeau est activé dans les Réglages.
+              Laissé vide, c&apos;est la remise chiffrée qui s&apos;affiche.
+            </p>
 
             <label style={labelStyle}>Remise</label>
             <div style={{ display: "flex", gap: 8 }}>

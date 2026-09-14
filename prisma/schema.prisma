@@ -251,6 +251,9 @@ model Promotion {
   dateDebut  DateTime?
   dateFin    DateTime?
   actif      Boolean            @default(true)
+  // Message affiché dans le bandeau du site. Rédigé avec la campagne : c'est
+  // elle qui sait ce qu'elle annonce, pas les réglages généraux.
+  messageBandeau String?
   categories String[]           @default([])
   createdAt  DateTime           @default(now())
   produits   PromotionProduit[]

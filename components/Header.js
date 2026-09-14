@@ -115,14 +115,8 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
           lui-meme quand la campagne expire, sans intervention. */}
       {bandeauPromo && (
         <div className="bg-orange text-white text-[11.5px] sm:text-[13.5px] font-semibold">
-          <div className="mx-auto max-w-[1400px] px-5 sm:px-7 min-h-[34px] sm:min-h-[38px] py-1.5 flex items-center justify-center gap-2 sm:gap-3 text-center flex-wrap">
-            {bandeauPromo.promo && (
-              <Link href={bandeauPromo.promo.href} className="underline underline-offset-2 hover:no-underline">
-                {bandeauPromo.promo.message}
-              </Link>
-            )}
-            {bandeauPromo.promo && bandeauPromo.texte && <span className="opacity-60">·</span>}
-            {bandeauPromo.texte && <span className="font-medium">{bandeauPromo.texte}</span>}
+          <div className="mx-auto max-w-[1400px] px-5 sm:px-7 min-h-[34px] sm:min-h-[38px] py-1.5 flex items-center justify-center text-center">
+            {bandeauPromo.message}
           </div>
         </div>
       )}

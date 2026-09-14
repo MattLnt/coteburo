@@ -13,10 +13,11 @@ export default async function ReglagesPage() {
     getCampagnesActives(),
   ]);
 
-  // De quoi afficher, à côté de l'interrupteur, ce que le bandeau annoncera.
+  // De quoi afficher, à côté de l'interrupteur, le message qui sortira
+  // réellement — celui rédigé dans la campagne, ou la remise chiffrée à défaut.
   const campagnesLisibles = campagnes
     .filter((c) => c.valeur > 0)
-    .map((c) => ({ id: c.id, libelle: `${c.nom} (${libelleRemise(c)})` }));
+    .map((c) => ({ id: c.id, libelle: (c.messageBandeau || "").trim() || libelleRemise(c) }));
 
   return (
     <>
