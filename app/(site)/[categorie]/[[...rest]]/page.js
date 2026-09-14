@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { getCarteFrontParCategorie, urlProduit } from "@/lib/catalogue";
 import { getFavorisContext } from "@/lib/favoris";
 import FicheProduit from "@/components/FicheProduit";
-import FicheProduitLibre from "@/components/FicheProduitLibre";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +42,6 @@ export default async function ProduitPage({ params }) {
   const favori = favCtx.favorisVitrines.includes(data.carte.id);
 
   const payload = JSON.parse(JSON.stringify({ ...data, favori, connecte: favCtx.connecte }));
-  const estDeclinaisonLibre = !payload.surDevis && (payload.carte.axesDeclinaisons || []).length > 0;
 
   return (
     <main>
@@ -69,11 +67,7 @@ export default async function ProduitPage({ params }) {
 
       {/* pb : place laissée à la barre d'achat fixe en bas d'écran */}
       <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-[120px] lg:pb-16">
-        {estDeclinaisonLibre ? (
-          <FicheProduitLibre data={payload} />
-        ) : (
-          <FicheProduit data={payload} />
-        )}
+        <FicheProduit data={payload} />
       </section>
 
       {/* Vous aimerez aussi — autres produits de la même catégorie, jamais "de la même gamme" */}

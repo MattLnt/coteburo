@@ -2,13 +2,13 @@
 import { useState, useMemo } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useDevis } from "@/components/devis/DevisContext";
-import { prochainAxe, compterAxesRestants, resoudreDeclinaison } from "@/lib/declinaisonsLibres";
+import { resoudreDeclinaison, prochainAxe, compterAxesRestants } from "@/lib/declinaisonsLibres";
 import GalerieProduit from "@/components/GalerieProduit";
 import FavoriButton from "@/components/FavoriButton";
 import { useOptionsAcheteur } from "@/components/OptionsAcheteur";
 
-const fmt0 = (n) => (n == null ? null : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`);
-const fmt2 = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
+const fmt0 = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`);
+const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 
 // Découpe les finitions d'un groupe en sous-blocs par palette d'origine,
 // en conservant l'ordre. Les finitions sans palette forment un bloc sans titre.
@@ -26,7 +26,7 @@ function sousBlocsPalette(finitions) {
   return blocs;
 }
 
-// Bloc de configuration — carte blanche qui isole chaque choix.
+// Bloc de configuration — carte blanche qui isole chaque choix sur mobile.
 function Bloc({ titre, aChoisir, children }) {
   return (
     <div className="rounded-2xl bg-surface border border-line lg:border-transparent lg:bg-transparent p-4 lg:p-0 lg:mt-6">
@@ -39,8 +39,7 @@ function Bloc({ titre, aChoisir, children }) {
   );
 }
 
-// Section descriptive repliable — tout déroulé, ça faisait beaucoup de texte
-// entre la configuration et la suite de la page.
+// Section descriptive repliable sur mobile.
 function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
   const [ouvert, setOuvert] = useState(!!ouvertParDefaut);
   return (
@@ -61,72 +60,101 @@ function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
   );
 }
 
+// Fiche produit unique — elle couvre les trois modes de vente :
+//   • déclinaisons libres : des axes à choisir, un prix par combinaison
+//   • prix fixe           : aucun axe, un seul prix (sansDeclinaisons)
+//   • sur devis           : les axes servent à configurer, le prix reste indicatif
+//
+// Elle remplace le couple FicheProduit / FicheProduitLibre, qui divergeait :
+// seul « Libre » savait lire les finitions rattachées aux valeurs d'axe
+// (finitionsParValeur) et trier les coloris par leur champ ordre, seul
+// « Classique » gérait le prix fixe et le sur-devis. Les deux moteurs sont ici.
 export default function FicheProduit({ data }) {
   const { addItem } = useCart();
   const { addDevis } = useDevis();
   const { carte, groupesFinition, gammeNom, gammeSlug, surDevis, favori, connecte } = data;
+
   const images = carte.images?.length ? carte.images : [];
-  const axesDecl = carte.axesDeclinaisons || [];
-  const declLignes = carte.declinaisons || [];
+  const axes = carte.axesDeclinaisons || [];
+  const declinaisons = carte.declinaisons || [];
 
-  // Produit vendu à PRIX FIXE. sansDeclinaisons vient de l'admin et fait foi ;
-  // le repli sur l'absence d'axes couvre les fiches qui n'ont rien à configurer.
+  // Vendu à PRIX FIXE : sansDeclinaisons vient de l'admin et fait foi ; le repli
+  // sur l'absence d'axes couvre les fiches qui n'ont rien à configurer.
   const sansDeclinaisons = !!carte.sansDeclinaisons;
-  const prixFixe = sansDeclinaisons || axesDecl.length === 0;
+  const prixFixe = sansDeclinaisons || axes.length === 0;
 
-  // Options / accessoires — logique partagée avec FicheProduitLibre
   const { optionsUI, totalOptions, optionsOK, ajouterOptions } = useOptionsAcheteur({
     options: carte.optionsAdditionnelles,
     carte,
     addItem,
   });
 
-  const finitionsAVoter = useMemo(
-    () => [...(groupesFinition || []), ...((carte.finitionsProduit) || [])],
-    [groupesFinition, carte.finitionsProduit]
-  );
-
-  const [declHistorique, setDeclHistorique] = useState([]);
-  const [declReponses, setDeclReponses] = useState({});
-  const [declPrefValeurs, setDeclPrefValeurs] = useState({});
+  const [historique, setHistorique] = useState([]);
+  const [reponses, setReponses] = useState({});
+  const [prefValeurs, setPrefValeurs] = useState({});
   const [finitionsSel, setFinitionsSel] = useState({});
-  // declinaison | recap — on démarre sur les axes s'il y en a, sinon directement
+  // config | recap — on démarre sur les axes s'il y en a, sinon directement
   // sur le récapitulatif.
-  const [phase, setPhase] = useState(axesDecl.length > 0 ? "declinaison" : "recap");
+  const [phase, setPhase] = useState(axes.length > 0 ? "config" : "recap");
   const [qte, setQte] = useState(1);
   const [ajoute, setAjoute] = useState(false);
   const [ajouteDevis, setAjouteDevis] = useState(false);
 
-  const dejaTraitesDecl = useMemo(() => new Set(declHistorique.map((h) => h.axeId)), [declHistorique]);
+  // Groupes de finitions rattachés aux valeurs d'axe choisies (finitionsParValeur).
+  const groupesValeur = useMemo(() => {
+    const out = [];
+    for (const a of axes) {
+      const val = reponses[a.id];
+      const fins = val && a.finitionsParValeur ? a.finitionsParValeur[val] : null;
+      if (fins && fins.length) {
+        out.push({
+          id: `axe:${a.id}:${val}`,
+          nom: `${a.nom} — ${val}`,
+          finitions: fins.map((f, i) => ({ id: f.id || `${a.id}:${val}:${i}`, nom: f.nom, couleur: f.couleur || null, imageUrl: f.imageUrl || null, paletteNom: f.paletteNom || null })),
+        });
+      }
+    }
+    return out;
+  }, [axes, reponses]);
 
-  const etapeDeclCourante = useMemo(() => {
-    if (phase === "declinaison") return prochainAxe(axesDecl, declLignes, declReponses, dejaTraitesDecl);
+  const finitionsAVoter = useMemo(() => {
+    const groupes = [...(groupesFinition || []), ...((carte.finitionsProduit) || []), ...groupesValeur];
+    return groupes.map((g) => ({
+      ...g,
+      finitions: [...(g.finitions || [])]
+        .map((f, i) => ({ f, i }))
+        .sort((a, b) => ((a.f.ordre ?? a.i) - (b.f.ordre ?? b.i)))
+        .map((x) => x.f),
+    }));
+  }, [groupesFinition, carte.finitionsProduit, groupesValeur]);
+
+  const dejaTraites = useMemo(() => new Set(historique.map((h) => h.axeId)), [historique]);
+
+  const etapeCourante = useMemo(() => {
+    if (phase === "config") return prochainAxe(axes, declinaisons, reponses, dejaTraites);
     return null;
-  }, [phase, axesDecl, declLignes, declReponses, dejaTraitesDecl]);
+  }, [phase, axes, declinaisons, reponses, dejaTraites]);
 
   useMemo(() => {
-    if (phase === "declinaison" && etapeDeclCourante === null) {
-      setPhase("recap");
-    }
-  }, [phase, etapeDeclCourante]);
+    if (phase === "config" && etapeCourante === null) setPhase("recap");
+  }, [phase, etapeCourante]);
 
-  const { match: declMatch } = useMemo(() => resoudreDeclinaison(declLignes, declReponses), [declLignes, declReponses]);
-  // En prix unique, aucune déclinaison ne peut faire le prix — pas même celle
-  // que resoudreDeclinaison « résout » toute seule quand il n'en reste qu'une
-  // et qu'aucune question n'a été posée (filtrer sur zéro réponse laisse tout
-  // passer). Sans ce garde-fou, une ligne résiduelle écrase le prix unique.
-  const declinaisonFinale = sansDeclinaisons
-    ? null
-    : declMatch || (declLignes.length === 1 && axesDecl.length > 0 ? declLignes[0] : null);
+  const { match } = useMemo(() => resoudreDeclinaison(declinaisons, reponses), [declinaisons, reponses]);
+  // Sans axe, aucune déclinaison n'est choisissable — et resoudreDeclinaison en
+  // « résout » pourtant une dès qu'il n'en reste qu'une, y compris avant toute
+  // question (filtrer sur zéro réponse laisse tout passer). Sans ce garde-fou,
+  // une ligne résiduelle écraserait le prix unique.
+  const declinaisonFinale =
+    axes.length > 0 ? match || (declinaisons.length === 1 ? declinaisons[0] : null) : null;
 
-  // Prix arrêtés par le serveur, promo comprise — la fiche n'en calcule aucun,
-  // elle lit celui de la déclinaison choisie. C'est ce qui garantit qu'elle
-  // affiche le montant que le paiement facturera.
-  // Sur devis, le « à partir de » saisi par l'admin prime sur le prix de la
-  // déclinaison choisie : celle-ci ne sert qu'à configurer, pas à engager.
+  // Prix arrêtés par le serveur, promo comprise — la fiche lit, elle ne calcule
+  // plus. Sur devis, le « à partir de » saisi par l'admin prime : la déclinaison
+  // ne sert alors qu'à configurer, pas à engager.
   const prixDeclinaison = declinaisonFinale ? declinaisonFinale.prixHT : carte.prixMini;
   const prixAffiche = surDevis ? (carte.prixAPartir ?? prixDeclinaison) : prixDeclinaison;
-  const prixBarre = declinaisonFinale
+  const prixBarre = surDevis
+    ? null
+    : declinaisonFinale
     ? (declinaisonFinale.enPromo ? declinaisonFinale.prixBase : null)
     : (carte.enPromo ? carte.prixMiniBase : null);
   // TODO : 20 % en dur ici comme dans le panier, la commande et le paiement,
@@ -139,47 +167,50 @@ export default function FicheProduit({ data }) {
     ? { codeRacine: carte.id, designation: carte.nom }
     : null;
 
-  const nbDeclRepondu = declHistorique.length;
-  const nbDeclRestant = phase === "declinaison" ? compterAxesRestants(axesDecl, declLignes, declReponses, dejaTraitesDecl) : 0;
-  const etapeActuelleNum = nbDeclRepondu;
-  const etapeTotalNum = nbDeclRepondu + nbDeclRestant;
+  const nbRepondu = historique.length;
+  const nbRestant = phase === "config" ? compterAxesRestants(axes, declinaisons, reponses, dejaTraites) : 0;
+  const etapeActuelleNum = nbRepondu;
+  const etapeTotalNum = nbRepondu + nbRestant;
 
-  const choisirDecl = (axeId, nomAxe, valeur) => {
-    setDeclHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
-    setDeclReponses((r) => ({ ...r, [axeId]: valeur }));
-    setDeclPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
+  const choisirValeur = (axeId, nomAxe, valeur) => {
+    setHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
+    setReponses((r) => ({ ...r, [axeId]: valeur }));
+    setPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
+    setFinitionsSel((f) => {
+      const n = { ...f };
+      Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${axeId}:`)) delete n[k]; });
+      return n;
+    });
   };
+
   const choisirFinition = (groupeId, finitionId) => {
     setFinitionsSel((f) => ({ ...f, [groupeId]: finitionId }));
   };
 
-  const popDerniereDeclReponse = () => {
-    setDeclHistorique((h) => {
+  const popDerniereReponse = () => {
+    setHistorique((h) => {
       if (h.length === 0) return h;
       const last = h[h.length - 1];
-      setDeclReponses((r) => { const n = { ...r }; delete n[last.axeId]; return n; });
-      setDeclPrefValeurs((p) => { const n = { ...p }; delete n[last.axeId]; return n; });
+      setReponses((r) => { const n = { ...r }; delete n[last.axeId]; return n; });
+      setPrefValeurs((p) => { const n = { ...p }; delete n[last.axeId]; return n; });
+      setFinitionsSel((f) => { const n = { ...f }; Object.keys(n).forEach((k) => { if (k.startsWith(`axe:${last.axeId}:`)) delete n[k]; }); return n; });
       return h.slice(0, -1);
     });
   };
 
   const reculer = () => {
-    if (declHistorique.length > 0) {
-      popDerniereDeclReponse();
-      if (phase === "recap") setPhase("declinaison");
-      return;
-    }
-    if (phase === "recap" && axesDecl.length > 0) setPhase("declinaison");
+    if (historique.length === 0) return;
+    popDerniereReponse();
+    setPhase("config");
   };
 
   const libelleConfig = () => {
-    const parts = [];
-    for (const h of declHistorique) parts.push(`${h.nom}: ${h.valeur}`);
+    const parts = historique.map((h) => h.valeur);
     for (const g of finitionsAVoter) {
       const f = g.finitions.find((x) => x.id === finitionsSel[g.id]);
-      if (f) parts.push(`${g.nom}: ${f.paletteNom ? `${f.paletteNom} ${f.nom}` : f.nom}`);
+      if (f) parts.push(f.paletteNom ? `${f.paletteNom} ${f.nom}` : f.nom);
     }
-    return parts.join(" · ");
+    return parts.join(" / ");
   };
 
   const finitionsOK = finitionsAVoter.length === 0 || finitionsAVoter.every((g) => finitionsSel[g.id]);
@@ -188,22 +219,25 @@ export default function FicheProduit({ data }) {
 
   const ajouterPanier = () => {
     if (!peutAjouter) return;
-    const itemPourPanier = {
-      type: "nouveau",
-      vitrineId: carte.id,
-      declinaisonId: declinaisonFinale ? declinaisonFinale.id : null,
-      slug: carte.slug,
-      categorieSlug: carte.categorieSlug || null,
-      sousCategorieSlug: carte.sousCategorieSlug || null,
-      designation: carte.nom,
-      marque: "Buronomic",
-      image: images[0] || null,
-      prix: prixAffiche,
-    };
-    const parentId = addItem(itemPourPanier, libelleConfig() || null, qte);
+    const parentId = addItem(
+      {
+        type: "nouveau",
+        vitrineId: carte.id,
+        declinaisonId: declinaisonFinale ? declinaisonFinale.id : null,
+        slug: carte.slug,
+        categorieSlug: carte.categorieSlug || null,
+        sousCategorieSlug: carte.sousCategorieSlug || null,
+        designation: carte.nom,
+        marque: "Buronomic",
+        image: images[0] || null,
+        prix: prixAffiche,
+      },
+      libelleConfig() || null, qte
+    );
     ajouterOptions(parentId);
     setAjoute(true); setTimeout(() => setAjoute(false), 2000);
   };
+
   const ajouterAuDevis = () => {
     if (!peutDemanderDevis) return;
     addDevis({
@@ -218,14 +252,13 @@ export default function FicheProduit({ data }) {
       finitions: [],
       prixIndicatif: prixAffiche,
     }, qte);
-    setAjouteDevis(true);
-    setTimeout(() => setAjouteDevis(false), 2000);
+    setAjouteDevis(true); setTimeout(() => setAjouteDevis(false), 2000);
   };
 
   const gros = (actif) => `px-3.5 lg:px-4 py-2.5 rounded-xl border text-[12.5px] lg:text-[13.5px] font-medium transition ${
     actif ? "border-orange bg-orange-tint text-orange-dark" : "border-line text-ink hover:border-orange/50 hover:bg-surface-2"}`;
 
-  const peutReculer = declHistorique.length > 0 || !prixFixe;
+  const peutReculer = historique.length > 0;
   const totalGeneral = (prixAffiche != null ? prixAffiche * qte : 0) + totalOptions;
 
   const selecteurQte = (
@@ -250,14 +283,14 @@ export default function FicheProduit({ data }) {
           {(!surDevis || prixAffiche != null) && (
             <div className="flex items-end gap-2.5 lg:gap-3 mt-3 lg:mt-5">
               {(surDevis || !referenceFinale) && <span className="text-ink-soft text-[13px] lg:text-[15px] mb-0.5 lg:mb-1">à partir de</span>}
-              <span className="font-display font-bold text-[26px] lg:text-3xl">{surDevis ? fmt0(prixAffiche) : fmt2(prixAffiche)}</span>
+              <span className="font-display font-bold text-[26px] lg:text-3xl">{surDevis ? fmt0(prixAffiche) : fmt(prixAffiche)}</span>
               {prixBarre != null && (
-                <span className="text-ink-soft line-through text-[15px] lg:text-base mb-0.5 lg:mb-1">{fmt2(prixBarre)}</span>
+                <span className="text-ink-soft line-through text-[15px] lg:text-base mb-0.5 lg:mb-1">{fmt(prixBarre)}</span>
               )}
               <span className="text-ink-soft text-[13px] lg:text-base mb-0.5 lg:mb-1">HT</span>
             </div>
           )}
-          {ttc != null && <p className="text-[11.5px] lg:text-[13px] text-ink-soft mt-1">{fmt2(ttc)} TTC</p>}
+          {ttc != null && <p className="text-[11.5px] lg:text-[13px] text-ink-soft mt-1">{fmt(ttc)} TTC</p>}
 
           <div className="mt-3 lg:mt-4">
             <FavoriButton vitrineId={carte.id} initial={!!favori} connecte={!!connecte} variant="text" />
@@ -301,15 +334,19 @@ export default function FicheProduit({ data }) {
               );
             })}
 
-            {phase === "declinaison" && etapeDeclCourante && (
-              <Bloc titre={etapeDeclCourante.axe.nom} aChoisir>
+            {phase === "config" && etapeCourante && (
+              <Bloc titre={etapeCourante.axe.nom} aChoisir>
                 <div className="flex flex-wrap gap-2">
-                  {etapeDeclCourante.valeurs.map((v) => {
-                    const actif = declPrefValeurs[etapeDeclCourante.axe.id] === v;
-                    return (
-                      <button key={v} onClick={() => choisirDecl(etapeDeclCourante.axe.id, etapeDeclCourante.axe.nom, v)} className={gros(actif)}>{v}</button>
-                    );
-                  })}
+                  {(() => {
+                    const ordre = etapeCourante.axe.valeurs || [];
+                    const rang = (v) => { const i = ordre.indexOf(v); return i === -1 ? 9999 : i; };
+                    return [...etapeCourante.valeurs].sort((a, b) => rang(a) - rang(b)).map((v) => {
+                      const actif = prefValeurs[etapeCourante.axe.id] === v;
+                      return (
+                        <button key={v} onClick={() => choisirValeur(etapeCourante.axe.id, etapeCourante.axe.nom, v)} className={gros(actif)}>{v}</button>
+                      );
+                    });
+                  })()}
                 </div>
               </Bloc>
             )}
@@ -319,13 +356,11 @@ export default function FicheProduit({ data }) {
             {phase === "recap" && (referenceFinale || surDevis) && (
               <Bloc titre="Votre configuration">
                 <div className="rounded-xl border border-line divide-y divide-line overflow-hidden">
-                  {referenceFinale && (
-                    <div className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] flex justify-between gap-4">
-                      <span className="text-ink-soft">Modèle</span>
-                      <span className="text-ink font-medium text-right">{referenceFinale.designation}</span>
-                    </div>
-                  )}
-                  {declHistorique.map((h) => (
+                  <div className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] flex justify-between gap-4">
+                    <span className="text-ink-soft">Modèle</span>
+                    <span className="text-ink font-medium text-right">{carte.nom}</span>
+                  </div>
+                  {historique.map((h) => (
                     <div key={h.axeId} className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] flex justify-between gap-4">
                       <span className="text-ink-soft">{h.nom}</span>
                       <span className="text-ink font-medium">{h.valeur}</span>
@@ -345,7 +380,7 @@ export default function FicheProduit({ data }) {
                       </div>
                     ) : null;
                   })}
-                  {surDevis && declHistorique.length === 0 && (
+                  {surDevis && historique.length === 0 && (
                     <div className="px-3.5 py-2.5 text-[12.5px] lg:text-[13.5px] text-ink-soft">Aucune préférence renseignée — un conseiller vous accompagnera.</div>
                   )}
                 </div>
@@ -442,7 +477,7 @@ export default function FicheProduit({ data }) {
           <div className="min-w-0">
             <p className="text-[10.5px] text-ink-soft">{surDevis ? "Prix indicatif" : "Total HT"}</p>
             <p className="font-display font-bold text-[19px] text-ink leading-tight">
-              {surDevis ? fmt0(prixAffiche) : fmt2(totalGeneral)}
+              {surDevis ? fmt0(prixAffiche) : fmt(totalGeneral)}
             </p>
           </div>
           {!surDevis && selecteurQte}
