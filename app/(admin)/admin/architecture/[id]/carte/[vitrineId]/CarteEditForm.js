@@ -7,6 +7,7 @@ import SectionsDescriptives from "./SectionsDescriptives";
 import DeclinaisonsBoutique from "./DeclinaisonsBoutique";
 import OptionsAdditionnelles from "./OptionsAdditionnelles";
 import SelecteurOptionsLiees from "./SelecteurOptionsLiees";
+import SelecteurProduitsLies from "./SelecteurProduitsLies";
 import FinitionsProduit from "./FinitionsProduit";
 import PrixProduit from "./PrixProduit";
 import { prixUnitaire } from "@/lib/prixCatalogue";
@@ -46,6 +47,7 @@ export default function CarteEditForm({ carte }) {
   const [referenceUnitaire, setReferenceUnitaire] = useState(carte.referenceUnitaire ?? "");
   const [optionsAdditionnelles, setOptionsAdditionnelles] = useState(carte.optionsAdditionnelles ?? []);
   const [optionsLieesIds, setOptionsLieesIds] = useState(carte.optionsLieesIds ?? []);
+  const [produitsLiesIds, setProduitsLiesIds] = useState(carte.produitsLiesIds ?? []);
 
   const [largeurMin, setLargeurMin] = useState(carte.largeurMin ?? "");
   const [largeurMax, setLargeurMax] = useState(carte.largeurMax ?? "");
@@ -155,6 +157,7 @@ export default function CarteEditForm({ carte }) {
         referenceUnitaire,
         optionsAdditionnelles,
         optionsLieesIds,
+        produitsLiesIds,
         largeurMin: largeurMin === "" ? null : Number(largeurMin),
         largeurMax: largeurMax === "" ? null : Number(largeurMax),
         hauteurMin: hauteurMin === "" ? null : Number(hauteurMin),
@@ -191,6 +194,7 @@ export default function CarteEditForm({ carte }) {
   ];
   if (!estProduitOption) {
     tabs.push({ val: "options", labelLong: `Options${nbOptionsTotal > 0 ? ` (${nbOptionsTotal})` : ""}`, labelCourt: "Options", compteur: nbOptionsTotal || null });
+    tabs.push({ val: "lies", labelLong: `Produits liés${produitsLiesIds.length > 0 ? ` (${produitsLiesIds.length})` : ""}`, labelCourt: "Produits liés", compteur: produitsLiesIds.length || null });
   }
   tabs.push({
     val: "prix",
@@ -447,6 +451,19 @@ export default function CarteEditForm({ carte }) {
 
       {onglet === "finitions" && (
         <FinitionsProduit vitrineId={carte.id} />
+      )}
+
+      {onglet === "lies" && !estProduitOption && (
+        <div style={card}>
+          <label style={label}>Produits liés</label>
+          <SelecteurProduitsLies
+            vitrineId={carte.id}
+            gammeId={carte.gammeId}
+            sousCategorieId={sousCategoriePrincipaleId || null}
+            selectedIds={produitsLiesIds}
+            onChange={(ids) => { setProduitsLiesIds(ids); dirty(); }}
+          />
+        </div>
       )}
 
       {onglet === "options" && !estProduitOption && (

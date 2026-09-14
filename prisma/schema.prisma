@@ -491,6 +491,10 @@ model ProduitVitrine {
   promotions                PromotionVitrine[]
   optionsLiees              ProduitVitrine[] @relation("ProduitOptions")
   optionPour                ProduitVitrine[] @relation("ProduitOptions")
+  // Produits suggeres sur la fiche (bloc « Vous aimerez aussi »). Distincts
+  // des optionsLiees, qui sont des accessoires vendus AVEC le produit.
+  produitsLies              ProduitVitrine[] @relation("ProduitsLies")
+  liePour                   ProduitVitrine[] @relation("ProduitsLies")
 
   @@unique([gammeId, slug])
   @@index([gammeId])

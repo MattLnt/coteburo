@@ -1,5 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { chargerCatalogueAdmin } from "@/lib/catalogueAdmin";
 import { revalidatePath } from "next/cache";
 
 function slugify(s) {
@@ -18,6 +19,7 @@ export async function getCarteEdition(vitrineId) {
       categories: { select: { id: true, estOption: true } },
       sousCategories: { select: { id: true } },
       optionsLiees: { select: { id: true } },
+      produitsLies: { select: { id: true } },
     },
   });
   if (!vitrine) return null;
@@ -52,6 +54,7 @@ export async function getCarteEdition(vitrineId) {
     venteSurDevis: vitrine.venteSurDevis,
     bestSeller: vitrine.bestSeller,
     enAvant: vitrine.enAvant,
+    produitsLiesIds: vitrine.produitsLies.map((p) => p.id),
     promoPct: vitrine.promoPct ?? "",
     promoDebut: vitrine.promoDebut ? vitrine.promoDebut.toISOString().slice(0, 10) : "",
     promoFin: vitrine.promoFin ? vitrine.promoFin.toISOString().slice(0, 10) : "",
@@ -141,7 +144,7 @@ export async function sauverCarteComplete(vitrineId, data) {
     nom, descriptif, imageUrl, images,
     sectionsDevis, prixAPartir,
     sansDeclinaisons, prixUnitaireTarifHT, prixUnitaireHT, prixUnitaireVerrouille, referenceUnitaire, optionsAdditionnelles,
-    optionsLieesIds,
+    optionsLieesIds, produitsLiesIds,
     largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax,
     axesDeclinaisons, declinaisons,
     categorieIds, sousCategorieIds, categoriePrincipaleId, sousCategoriePrincipaleId,
@@ -230,6 +233,9 @@ export async function sauverCarteComplete(vitrineId, data) {
         : [],
       // Accessoires liés (produits) — remplace entièrement la liste par la sélection courante
       optionsLiees: { set: optLieesIds.map((id) => ({ id })) },
+      // Six au maximum : au-dela le bloc « Vous aimerez aussi » devient une
+      // seconde grille de catalogue. Coupe ici aussi, pas seulement dans l UI.
+      produitsLies: { set: (Array.isArray(produitsLiesIds) ? produitsLiesIds : []).slice(0, 6).map((id) => ({ id })) },
       largeurMin: toEntier(largeurMin),
       largeurMax: toEntier(largeurMax),
       hauteurMin: toEntier(hauteurMin),
@@ -411,4 +417,9 @@ export async function supprimerFinitionProduit(id) {
   const gammeId = f?.groupe?.vitrine?.gammeId, vitrineId = f?.groupe?.vitrineId;
   if (gammeId && vitrineId) revalidatePath(`/admin/architecture/${gammeId}/carte/${vitrineId}`);
   return { ok: true };
+}
+// Catalogue du selecteur de produits lies : sans les accessoires, qui n ont
+// rien a faire dans une suggestion « Vous aimerez aussi ».
+export async function chargerCatalogueProduitsLies() {
+  return chargerCatalogueAdmin({ exclureOptions: true });
 }

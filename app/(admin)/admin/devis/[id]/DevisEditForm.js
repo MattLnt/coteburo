@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useTransition, useEffect } from "react";
+import { filtrerProduitsAdmin } from "@/lib/catalogueAdmin";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { montantTVA, libelleTVA, TVA_DEFAUT } from "@/lib/tva";
@@ -127,16 +128,11 @@ export default function DevisEditForm({ devis, tauxTva = TVA_DEFAUT }) {
     return () => { document.body.style.overflow = ""; };
   }, [panneauOuvert]);
 
-  const produitsFiltres = useMemo(() => {
-    if (!catalogue) return [];
-    const q = norm(recherche.trim());
-    return catalogue.produits.filter((p) => {
-      if (catId && p.categorieId !== catId) return false;
-      if (sousCatId && p.sousCategorieId !== sousCatId) return false;
-      if (q && !norm(`${p.nom} ${p.gammeNom}`).includes(q)) return false;
-      return true;
-    });
-  }, [catalogue, recherche, catId, sousCatId]);
+  // Meme regle de filtrage que le selecteur de produits lies d une fiche.
+  const produitsFiltres = useMemo(
+    () => filtrerProduitsAdmin(catalogue?.produits, { recherche, categorieId: catId, sousCategorieId: sousCatId }),
+    [catalogue, recherche, catId, sousCatId]
+  );
 
   const catActive = catalogue?.categories.find((c) => c.id === catId) || null;
 
