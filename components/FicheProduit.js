@@ -234,13 +234,35 @@ export default function FicheProduit({ data }) {
   const etapeTotalNum = nbRepondu + nbRestant;
 
   const choisirValeur = (axeId, nomAxe, valeur) => {
-    setHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
-    setReponses((r) => ({ ...r, [axeId]: valeur }));
-    setPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
     // Le coloris deja choisi peut appartenir a une autre valeur d axe : on le
     // libere. choisirColoris le repose juste apres quand le choix vient d une
     // pastille, si bien que cliquer une couleur ne s annule pas lui-meme.
-    setFinitionsSel((f) => { const n = { ...f }; delete n[`axe:${axeId}`]; return n; });
+    const deja = historique.findIndex((e) => e.axeId === axeId);
+
+    if (deja < 0) {
+      setHistorique((h) => [...h, { axeId, nom: nomAxe, valeur }]);
+      setReponses((r) => ({ ...r, [axeId]: valeur }));
+      setPrefValeurs((p) => ({ ...p, [axeId]: valeur }));
+      setFinitionsSel((f) => { const n = { ...f }; delete n[`axe:${axeId}`]; return n; });
+      return;
+    }
+
+    // Axe deja repondu : on le rejoue sur place. Les reponses posterieures ont
+    // ete prises sous l ancienne valeur et peuvent la contredire — on les
+    // retire, comme un « Retour » jusqu a cet axe suivi d un autre choix.
+    const posterieurs = historique.slice(deja + 1);
+    const oublier = (obj, prefixe = "") => {
+      const n = { ...obj };
+      delete n[`${prefixe}${axeId}`];
+      for (const e of posterieurs) delete n[`${prefixe}${e.axeId}`];
+      return n;
+    };
+    setHistorique([...historique.slice(0, deja), { axeId, nom: nomAxe, valeur }]);
+    setReponses((r) => ({ ...oublier(r), [axeId]: valeur }));
+    setPrefValeurs((p) => ({ ...oublier(p), [axeId]: valeur }));
+    setFinitionsSel((f) => oublier(f, "axe:"));
+    // Un axe retire doit etre repose : l effet ne fait que config -> recap.
+    if (posterieurs.length) setPhase("config");
   };
 
   const choisirFinition = (groupeId, finitionId) => {
@@ -382,9 +404,11 @@ export default function FicheProduit({ data }) {
               return (
                 <Bloc key={g.id} titre={g.nom} aChoisir={!selectionneeId}>
                   {blocs.map((bloc, bi) => {
-                    // Un sous-bloc entier devient indisponible dès que l'axe est
-                    // tranché sur une autre catégorie : on le garde visible, en
-                    // retrait, pour que le client voie ce qu'il a écarté.
+                    // Un sous-bloc passe en retrait dès que l'axe est tranché sur
+                    // une autre catégorie, pour que le client voie ce qu'il a
+                    // écarté — mais il reste cliquable : choisir un tissu d'une
+                    // autre catégorie rebascule la sélection, sans imposer un
+                    // « Retour » au préalable.
                     const valeurBloc = bloc.items[0]?.valeurAxe ?? null;
                     const blocEcarte = valeurRetenue != null && valeurBloc != null && valeurBloc !== valeurRetenue;
 
@@ -406,17 +430,17 @@ export default function FicheProduit({ data }) {
                                 dès {fmt(prixCategorie)}
                               </span>
                             )}
-                            {blocEcarte && <span className="text-[10px] text-ink-soft/45 normal-case tracking-normal">non retenu</span>}
+                            {blocEcarte && <span className="text-[10px] text-ink-soft/45 normal-case tracking-normal">cliquer pour basculer</span>}
                             <span className="flex-1 h-px bg-line" />
                           </div>
                         )}
-                        <div className={`flex flex-wrap gap-2.5 lg:gap-3 ${blocEcarte ? "opacity-40" : ""}`}>
+                        <div className={`flex flex-wrap gap-2.5 lg:gap-3 transition-opacity ${blocEcarte ? "opacity-50 hover:opacity-100" : ""}`}>
                           {visibles.map((f) => {
                             const actif = selectionneeId === f.id;
                             return (
-                              <button key={f.id} type="button" disabled={blocEcarte}
-                                onClick={() => choisirColoris(g, f)} title={blocEcarte ? `${f.nom} — indisponible avec « ${valeurRetenue} »` : f.nom}
-                                className={`flex flex-col items-center gap-1.5 w-[52px] ${blocEcarte ? "cursor-not-allowed" : ""}`}>
+                              <button key={f.id} type="button"
+                                onClick={() => choisirColoris(g, f)} title={blocEcarte ? `${f.nom} — bascule sur « ${bloc.nom || valeurBloc} »` : f.nom}
+                                className="flex flex-col items-center gap-1.5 w-[52px]">
                                 <span className={`rounded-full border-2 overflow-hidden transition block w-[42px] h-[42px] ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
                                   {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
                                 </span>
@@ -426,7 +450,7 @@ export default function FicheProduit({ data }) {
                           })}
                         </div>
 
-                        {repliable && !blocEcarte && (
+                        {repliable && (
                           <button type="button"
                             onClick={() => setPaletteOuverte(ouvert ? null : clePalette)}
                             className="mt-2.5 text-[11.5px] lg:text-[12.5px] font-semibold text-orange-dark hover:text-orange">
