@@ -38,6 +38,17 @@ export default function MonDevisClient({ devis, finitionsParVitrine, telephone, 
   const dejaAccepte = devis.statut === "accepte";
   const dejaRefuse = devis.statut === "refuse" || etape === "refuse";
 
+  // Le sous-total des produits seuls. L'éco-participation et les frais
+  // sont déjà compris dans totalHT : les détailler permet au client de
+  // suivre le calcul sans qu'on additionne deux fois.
+  const sousTotal = devis.lignes.reduce((s, l) => s + l.prixHT * l.quantite, 0);
+
+  // L'éco-participation est une taxe de recyclage reversée à
+  // l'éco-organisme, sans marge. La loi impose de l'afficher à part.
+  const totalEco = devis.totalEcoPart != null
+    ? devis.totalEcoPart
+    : devis.lignes.reduce((s, l) => s + (l.ecoContribution || 0) * l.quantite, 0);
+
   // Groupes de finitions à choisir, ligne par ligne
   const lignesAvecFinitions = useMemo(() => {
     return devis.lignes.map((l) => ({
@@ -398,7 +409,10 @@ export default function MonDevisClient({ devis, finitionsParVitrine, telephone, 
                 <p className="font-semibold text-ink text-[13px] leading-snug">{l.designation}</p>
                 {l.config && <p className="text-[11px] text-ink-soft mt-0.5">{l.config}</p>}
                 <div className="flex items-center justify-between gap-3 mt-1.5">
-                  <span className="text-[11px] text-ink-soft">Qté {l.quantite}</span>
+                  <span className="text-[11px] text-ink-soft">
+                    Qté {l.quantite}
+                    {l.ecoContribution > 0 && ` · éco-part. ${euro(l.ecoContribution)}`}
+                  </span>
                   <span className="font-semibold text-ink text-[13.5px] whitespace-nowrap">{euro(l.prixHT * l.quantite)}</span>
                 </div>
               </div>
@@ -407,12 +421,42 @@ export default function MonDevisClient({ devis, finitionsParVitrine, telephone, 
         ))}
 
         <div className="px-4 sm:px-5 py-4 border-t border-line bg-surface-2/50">
-          <div className="flex justify-between text-[12.5px] mb-1.5"><span className="text-ink-soft">Total HT</span><span className="font-semibold">{euro(devis.totalHT)}</span></div>
+          <div className="flex justify-between text-[12.5px] mb-1.5">
+            <span className="text-ink-soft">Sous-total produits</span><span className="font-semibold">{euro(sousTotal)}</span>
+          </div>
+          {totalEco > 0 && (
+            <div className="flex justify-between text-[12.5px] mb-1.5">
+              <span className="text-ink-soft">Éco-participation</span><span className="font-semibold">{euro(totalEco)}</span>
+            </div>
+          )}
+          {devis.fraisLivraison > 0 && (
+            <div className="flex justify-between text-[12.5px] mb-1.5">
+              <span className="text-ink-soft">Livraison</span><span className="font-semibold">{euro(devis.fraisLivraison)}</span>
+            </div>
+          )}
+          {devis.fraisInstallation > 0 && (
+            <div className="flex justify-between text-[12.5px] mb-1.5">
+              <span className="text-ink-soft">Montage et installation</span><span className="font-semibold">{euro(devis.fraisInstallation)}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-[12.5px] mb-1.5 pt-2 border-t border-line">
+            <span className="text-ink-soft">Total HT</span><span className="font-semibold">{euro(devis.totalHT)}</span>
+          </div>
           <div className="flex justify-between text-[12.5px] mb-2.5"><span className="text-ink-soft">TVA (20 %)</span><span className="font-semibold">{euro(devis.totalTVA)}</span></div>
           <div className="flex justify-between items-center pt-2.5 border-t border-line">
             <span className="font-display font-bold text-[14.5px]">Total TTC</span>
             <span className="font-display font-bold text-[19px] text-orange">{euro(devis.totalTTC)}</span>
           </div>
+
+          {/* La mention accompagne le montant : le client doit savoir à
+              quoi correspond cette ligne qu'il ne peut pas négocier. */}
+          {totalEco > 0 && (
+            <p className="text-[10.5px] text-ink-soft/75 leading-relaxed mt-3.5">
+              L&apos;éco-participation est une contribution obligatoire au recyclage du
+              mobilier professionnel. Elle est reversée intégralement à l&apos;éco-organisme
+              agréé et ne fait l&apos;objet d&apos;aucune marge.
+            </p>
+          )}
         </div>
       </div>
 
