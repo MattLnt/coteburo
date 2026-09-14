@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { inscrireClient } from "@/app/(compte)/compte/actions";
 import ModalMotDePasseOublie from "@/components/ModalMotDePasseOublie";
 
@@ -45,7 +45,11 @@ export default function CompteAuth({ mode }) {
     } else {
       const login = await signIn("credentials", { email: form.email, password: form.password, redirect: false });
       if (login?.error) { setErreur("Email ou mot de passe incorrect."); setEnvoi(false); return; }
-      router.push("/compte"); router.refresh();
+      // Un administrateur qui se connecte ici atterrissait dans l'espace
+      // client, vide et trompeur : on l'envoie chez lui.
+      const session = await getSession();
+      router.push(session?.user?.role === "ADMIN" ? "/admin" : "/compte");
+      router.refresh();
     }
   };
 
