@@ -329,12 +329,16 @@ export default function FicheProduit({ data }) {
 
   return (
     <div>
+      {/* min-w-0 sur les deux colonnes : un élément de grille vaut min-width:auto
+          par défaut et refuse donc de descendre sous la largeur intrinsèque de
+          son contenu. La photo principale imposait ainsi ~920 px de large à la
+          colonne, sur un écran de 360 — toute la page défilait latéralement. */}
       <div className="grid lg:grid-cols-2 gap-5 lg:gap-10 items-start">
-        <div className="lg:sticky lg:top-[260px]">
+        <div className="min-w-0 lg:sticky lg:top-[260px]">
           <GalerieProduit images={images} alt={carte.nom} />
         </div>
 
-        <div>
+        <div className="min-w-0">
           <p className="text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.14em] text-orange">{gammeNom}</p>
           <h1 className="font-display font-bold text-[24px] sm:text-3xl lg:text-4xl mt-1.5 lg:mt-2 leading-tight">{carte.nom}</h1>
 
