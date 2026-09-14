@@ -1,5 +1,12 @@
-import { auth } from "@/auth";
+import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
+import { authConfig } from "@/auth.config";
+
+// On instancie NextAuth à partir de la configuration SANS base : le middleware
+// ne fait que relire un JWT déjà émis. Importer auth.js à la place lui
+// faisait embarquer le client Prisma et ses moteurs de requête — 80 Mo pour
+// une vérification de jeton.
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
