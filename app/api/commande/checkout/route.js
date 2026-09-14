@@ -6,6 +6,8 @@ import { stripe } from "@/lib/stripe";
 import { calculerTousLesFrais } from "@/lib/frais";
 import { prixVitrine } from "@/lib/prixCatalogue";
 import { montantTVA, TVA_DEFAUT } from "@/lib/tva";
+import { getCampagnesActives } from "@/lib/promotions";
+import { attacherCampagnes } from "@/lib/catalogue";
 
 // Génère un numéro de commande lisible : CB-2026-0001
 async function genererNumero() {
@@ -71,9 +73,14 @@ export async function POST(req) {
     const vitrines = vitrineIds.length > 0
       ? await prisma.produitVitrine.findMany({
           where: { id: { in: vitrineIds }, publie: true },
-          include: { gamme: { include: { marque: { select: { nom: true } } } } },
+          include: {
+            gamme: { include: { marque: { select: { nom: true } } } },
+            // Pour appliquer les campagnes qui visent une categorie entiere.
+            categories: { select: { slug: true } },
+          },
         })
       : [];
+    attacherCampagnes(vitrines, await getCampagnesActives());
     const vitrinesMap = Object.fromEntries(vitrines.map((v) => [v.id, v]));
 
     // Marge globale actuelle — pour recalculer le vrai prix de vente des déclinaisons

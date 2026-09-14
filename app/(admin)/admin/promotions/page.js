@@ -29,8 +29,8 @@ export default async function PromotionsPage() {
       </div>
 
       <PromotionsManager
-        promotions={JSON.parse(JSON.stringify(promotions))}
-        produits={JSON.parse(JSON.stringify(produits))}
+        promotions={JSON.parse(JSON.stringify(promotionsPlates))}
+        cibles={JSON.parse(JSON.stringify(ciblesPlates))}
       />
     </>
   );

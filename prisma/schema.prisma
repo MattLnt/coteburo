@@ -250,8 +250,12 @@ model Promotion {
   categories String[]           @default([])
   createdAt  DateTime           @default(now())
   produits   PromotionProduit[]
+  vitrines   PromotionVitrine[]
 }
 
+// Ancien ciblage, par codeRacine du modèle Produit — table vide depuis la
+// migration vers ProduitVitrine. Conservée le temps de vérifier que plus rien
+// ne s'y réfère ; remplacée par PromotionVitrine.
 model PromotionProduit {
   promotionId String
   codeRacine  String
@@ -259,6 +263,18 @@ model PromotionProduit {
 
   @@id([promotionId, codeRacine])
   @@index([codeRacine])
+}
+
+// Ciblage d'une campagne sur des fiches précises. Une campagne peut aussi
+// viser des catégories entières, via Promotion.categories.
+model PromotionVitrine {
+  promotionId String
+  vitrineId   String
+  promotion   Promotion      @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  vitrine     ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+
+  @@id([promotionId, vitrineId])
+  @@index([vitrineId])
 }
 
 model Commande {
@@ -472,6 +488,7 @@ model ProduitVitrine {
   gamme                     Gamme            @relation(fields: [gammeId], references: [id], onDelete: Cascade)
   categories                Categorie[]      @relation("VitrineCategories")
   sousCategories            SousCategorie[]  @relation("VitrineSousCategories")
+  promotions                PromotionVitrine[]
   optionsLiees              ProduitVitrine[] @relation("ProduitOptions")
   optionPour                ProduitVitrine[] @relation("ProduitOptions")
 

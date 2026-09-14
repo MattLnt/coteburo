@@ -22,9 +22,9 @@ export async function createPromotion(data) {
   });
 
   // Produits ciblés
-  if (Array.isArray(data.produits) && data.produits.length > 0) {
-    await prisma.promotionProduit.createMany({
-      data: data.produits.map((codeRacine) => ({ promotionId: promo.id, codeRacine })),
+  if (Array.isArray(data.cibles) && data.cibles.length > 0) {
+    await prisma.promotionVitrine.createMany({
+      data: data.cibles.map((vitrineId) => ({ promotionId: promo.id, vitrineId })),
       skipDuplicates: true,
     });
   }
@@ -51,10 +51,10 @@ export async function updatePromotion(id, data) {
   });
 
   // On remplace la liste des produits ciblés
-  await prisma.promotionProduit.deleteMany({ where: { promotionId: id } });
-  if (Array.isArray(data.produits) && data.produits.length > 0) {
-    await prisma.promotionProduit.createMany({
-      data: data.produits.map((codeRacine) => ({ promotionId: id, codeRacine })),
+  await prisma.promotionVitrine.deleteMany({ where: { promotionId: id } });
+  if (Array.isArray(data.cibles) && data.cibles.length > 0) {
+    await prisma.promotionVitrine.createMany({
+      data: data.cibles.map((vitrineId) => ({ promotionId: id, vitrineId })),
       skipDuplicates: true,
     });
   }

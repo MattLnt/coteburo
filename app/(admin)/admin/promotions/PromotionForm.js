@@ -23,7 +23,7 @@ const toInputDate = (d) => {
   return date.toISOString().slice(0, 10);
 };
 
-export function PromotionForm({ initial, produits, onSubmit, onCancel, submitLabel, titre }) {
+export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel, titre }) {
   const [nom, setNom] = useState(initial?.nom || "");
   const [typeRemise, setTypeRemise] = useState(initial?.typeRemise || "pourcentage");
   const [valeur, setValeur] = useState(initial?.valeur?.toString() || "");
@@ -31,27 +31,27 @@ export function PromotionForm({ initial, produits, onSubmit, onCancel, submitLab
   const [dateFin, setDateFin] = useState(toInputDate(initial?.dateFin));
   const [actif, setActif] = useState(initial?.actif ?? true);
   const [categories, setCategories] = useState(initial?.categories || []);
-  const [produitsSel, setProduitsSel] = useState(initial?.produits?.map((p) => p.codeRacine) || []);
+  const [ciblesSel, setCiblesSel] = useState(initial?.cibles?.map((p) => p.vitrineId) || []);
   const [search, setSearch] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  // Le sélecteur de produits est optionnel et occupe beaucoup de hauteur : replié par défaut.
-  const [produitsOuvert, setProduitsOuvert] = useState(false);
+  // Le sélecteur de cibles est optionnel et occupe beaucoup de hauteur : replié par défaut.
+  const [ciblesOuvert, setCiblesOuvert] = useState(false);
 
   const toggleCat = (v) => setCategories((c) => c.includes(v) ? c.filter((x) => x !== v) : [...c, v]);
-  const toggleProd = (code) => setProduitsSel((p) => p.includes(code) ? p.filter((x) => x !== code) : [...p, code]);
+  const toggleProd = (code) => setCiblesSel((p) => p.includes(code) ? p.filter((x) => x !== code) : [...p, code]);
 
   const filtered = search.trim()
-    ? produits.filter((p) => (p.designation + " " + p.codeRacine + " " + (p.gamme || "")).toLowerCase().includes(search.toLowerCase())).slice(0, 60)
-    : produits.slice(0, 40);
+    ? cibles.filter((p) => (p.nom + " " + p.vitrineId + " " + (p.gammeNom || "")).toLowerCase().includes(search.toLowerCase())).slice(0, 60)
+    : cibles.slice(0, 40);
 
   const submit = async () => {
     setError("");
     if (!nom.trim()) { setError("Le nom est requis."); return; }
     if (!valeur || parseFloat(valeur) <= 0) { setError("La valeur de remise doit être supérieure à 0."); return; }
-    if (categories.length === 0 && produitsSel.length === 0) { setError("Ciblez au moins une catégorie ou un produit."); return; }
+    if (categories.length === 0 && ciblesSel.length === 0) { setError("Ciblez au moins une catégorie ou un produit."); return; }
     setSaving(true);
-    const res = await onSubmit({ nom, typeRemise, valeur, dateDebut, dateFin, actif, categories, produits: produitsSel });
+    const res = await onSubmit({ nom, typeRemise, valeur, dateDebut, dateFin, actif, categories, cibles: ciblesSel });
     setSaving(false);
     if (res && !res.ok) setError(res.error || "Erreur lors de l'enregistrement.");
   };
@@ -59,19 +59,19 @@ export function PromotionForm({ initial, produits, onSubmit, onCancel, submitLab
   return (
     <div>
       <style>{`
-        /* Mobile : tout empilé, cibles produits repliables, boutons en fin de formulaire.
-           Desktop : deux colonnes et sélecteur de produits toujours ouvert. */
+        /* Mobile : tout empilé, cibles cibles repliables, boutons en fin de formulaire.
+           Desktop : deux colonnes et sélecteur de cibles toujours ouvert. */
         .pf-grille { display: flex; flex-direction: column; gap: 10px; }
         .pf-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .pf-produits-entete { display: flex; }
-        .pf-produits-corps { display: none; }
-        .pf-produits-corps.ouvert { display: block; }
+        .pf-cibles-entete { display: flex; }
+        .pf-cibles-corps { display: none; }
+        .pf-cibles-corps.ouvert { display: block; }
         .pf-liste { max-height: 320px; }
         @media (min-width: 1024px) {
           .pf-grille { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
           .pf-colonne { display: flex; flex-direction: column; gap: 20px; }
-          .pf-produits-entete { display: none; }
-          .pf-produits-corps { display: block; }
+          .pf-cibles-entete { display: none; }
+          .pf-cibles-corps { display: block; }
           .pf-liste { min-height: 420px; max-height: 640px; }
         }
       `}</style>
@@ -164,36 +164,36 @@ export function PromotionForm({ initial, produits, onSubmit, onCancel, submitLab
         <div style={{ ...card, padding: 0, display: "flex", flexDirection: "column" }}>
           <button
             type="button"
-            className="pf-produits-entete"
-            onClick={() => setProduitsOuvert((v) => !v)}
+            className="pf-cibles-entete"
+            onClick={() => setCiblesOuvert((v) => !v)}
             style={{ width: "100%", alignItems: "center", justifyContent: "space-between", padding: "13px 16px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}
           >
             <span>
               <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: "#23262a" }}>Produits ciblés</span>
               <span style={{ display: "block", fontSize: 11, color: "#9aa0a8", marginTop: 2 }}>
-                {produitsSel.length} sélectionné{produitsSel.length > 1 ? "s" : ""} · optionnel
+                {ciblesSel.length} sélectionné{ciblesSel.length > 1 ? "s" : ""} · optionnel
               </span>
             </span>
-            <span style={{ color: produitsOuvert ? "#d9551a" : "#9aa0a8", display: "flex", flexShrink: 0, transform: produitsOuvert ? "rotate(180deg)" : "none", transition: "transform .15s" }}>
+            <span style={{ color: ciblesOuvert ? "#d9551a" : "#9aa0a8", display: "flex", flexShrink: 0, transform: ciblesOuvert ? "rotate(180deg)" : "none", transition: "transform .15s" }}>
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="m6 9 6 6 6-6" /></svg>
             </span>
           </button>
 
-          <div className={`pf-produits-corps${produitsOuvert ? " ouvert" : ""}`} style={{ padding: 16, paddingTop: 0 }}>
+          <div className={`pf-cibles-corps${ciblesOuvert ? " ouvert" : ""}`} style={{ padding: 16, paddingTop: 0 }}>
             <p style={{ ...labelStyle, marginTop: 16 }}>
-              Produits ciblés — {produitsSel.length} sélectionné{produitsSel.length > 1 ? "s" : ""}
+              Produits ciblés — {ciblesSel.length} sélectionné{ciblesSel.length > 1 ? "s" : ""}
             </p>
             <input style={{ ...inputStyle, marginBottom: 10 }} value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Rechercher un produit…" />
             <div className="pf-liste" style={{ overflowY: "auto", border: "1px solid #ece8e0", borderRadius: 12, background: "#faf8f4" }}>
               {filtered.length === 0 ? (
                 <p style={{ fontSize: 13, color: "#9aa0a8", padding: 20, margin: 0, textAlign: "center" }}>Aucun produit trouvé.</p>
               ) : filtered.map((p) => {
-                const sel = produitsSel.includes(p.codeRacine);
+                const sel = ciblesSel.includes(p.vitrineId);
                 return (
-                  <label key={p.codeRacine} style={{ display: "flex", alignItems: "center", gap: 11, padding: "11px 14px", cursor: "pointer", borderBottom: "1px solid #f0ece4", background: sel ? "#fff6f0" : "transparent" }}>
-                    <input type="checkbox" checked={sel} onChange={() => toggleProd(p.codeRacine)} style={{ width: 16, height: 16, accentColor: "#f0661b", flexShrink: 0 }} />
-                    <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, color: "#23262a", lineHeight: 1.3 }}>{p.designation}</span>
-                    <span style={{ fontSize: 11, color: "#9aa0a8", flexShrink: 0 }}>{p.codeRacine}</span>
+                  <label key={p.vitrineId} style={{ display: "flex", alignItems: "center", gap: 11, padding: "11px 14px", cursor: "pointer", borderBottom: "1px solid #f0ece4", background: sel ? "#fff6f0" : "transparent" }}>
+                    <input type="checkbox" checked={sel} onChange={() => toggleProd(p.vitrineId)} style={{ width: 16, height: 16, accentColor: "#f0661b", flexShrink: 0 }} />
+                    <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, color: "#23262a", lineHeight: 1.3 }}>{p.nom}</span>
+                    <span style={{ fontSize: 11, color: "#9aa0a8", flexShrink: 0 }}>{p.vitrineId}</span>
                   </label>
                 );
               })}

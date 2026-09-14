@@ -21,11 +21,11 @@ function etatCampagne(promo) {
   return { label: "En cours", color: "#1f7a52", bg: "#d8f0e4" };
 }
 
-function PromoCard({ promo, produits, onEdit }) {
+function PromoCard({ promo, cibles, onEdit }) {
   const router = useRouter();
   const etat = etatCampagne(promo);
   const remise = promo.typeRemise === "montant" ? `−${promo.valeur} €` : `−${promo.valeur} %`;
-  const nbProduits = promo.produits?.length || 0;
+  const nbCibles = promo.cibles?.length || 0;
 
   const toggle = async () => { await togglePromotion(promo.id, !promo.actif); router.refresh(); };
   const remove = async () => {
@@ -62,10 +62,10 @@ function PromoCard({ promo, produits, onEdit }) {
         {promo.categories?.map((c) => (
           <span key={c} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{CAT_LABELS[c] || c}</span>
         ))}
-        {nbProduits > 0 && (
-          <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{nbProduits} produit{nbProduits > 1 ? "s" : ""}</span>
+        {nbCibles > 0 && (
+          <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{nbCibles} produit{nbCibles > 1 ? "s" : ""}</span>
         )}
-        {(!promo.categories?.length && !nbProduits) && (
+        {(!promo.categories?.length && !nbCibles) && (
           <span style={{ fontSize: 12, color: "#9aa0a8" }}>Aucune cible</span>
         )}
       </div>
@@ -89,7 +89,7 @@ function PromoCard({ promo, produits, onEdit }) {
   );
 }
 
-export function PromotionsManager({ promotions, produits }) {
+export function PromotionsManager({ promotions, cibles }) {
   const router = useRouter();
   const [mode, setMode] = useState(null); // null | "create" | promo.id (edit)
 
@@ -108,7 +108,7 @@ export function PromotionsManager({ promotions, produits }) {
   // Formulaire de création
   if (mode === "create") {
     return (
-      <PromotionForm produits={produits} onSubmit={handleCreate} onCancel={() => setMode(null)} submitLabel="Créer la campagne" titre="Nouvelle campagne" />
+      <PromotionForm cibles={cibles} onSubmit={handleCreate} onCancel={() => setMode(null)} submitLabel="Créer la campagne" titre="Nouvelle campagne" />
     );
   }
 
@@ -117,7 +117,7 @@ export function PromotionsManager({ promotions, produits }) {
     const promo = promotions.find((p) => p.id === mode);
     if (promo) {
       return (
-        <PromotionForm initial={promo} produits={produits} onSubmit={handleUpdate(promo.id)} onCancel={() => setMode(null)} submitLabel="Enregistrer" titre={promo.nom} />
+        <PromotionForm initial={promo} cibles={cibles} onSubmit={handleUpdate(promo.id)} onCancel={() => setMode(null)} submitLabel="Enregistrer" titre={promo.nom} />
       );
     }
   }
@@ -156,7 +156,7 @@ export function PromotionsManager({ promotions, produits }) {
       ) : (
         <div className="pr-grille">
           {promotions.map((p) => (
-            <PromoCard key={p.id} promo={p} produits={produits} onEdit={() => setMode(p.id)} />
+            <PromoCard key={p.id} promo={p} cibles={cibles} onEdit={() => setMode(p.id)} />
           ))}
         </div>
       )}
