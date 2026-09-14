@@ -12,9 +12,9 @@ const FILTERS = [
   { key: "accueil", label: "Accueil" },
 ];
 
-export default function ProductSelectionFilters({ produits, favorisCodes = [], connecte = false }) {
+export default function ProductSelectionFilters({ produits, favorisVitrines = [], connecte = false }) {
   const [active, setActive] = useState("tous");
-  const favSet = useMemo(() => new Set(favorisCodes), [favorisCodes]);
+  const favSet = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
   const shown = active === "tous" ? produits : produits.filter((p) => p.cat === active);
 
   const filtresVisibles = FILTERS.filter((f) => f.key === "tous" || produits.some((p) => p.cat === f.key));
@@ -45,10 +45,10 @@ export default function ProductSelectionFilters({ produits, favorisCodes = [], c
         <div className="px-5 sm:px-7 grid gap-3 sm:gap-5 grid-cols-2 [grid-template-columns:repeat(2,minmax(0,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(270px,1fr))]">
           {shown.map((p) => (
             <ProductCard
-              key={p.codeRacine}
-              href={`/produit/${p.slug || p.codeRacine}`}
-              codeRacine={p.codeRacine}
-              favori={favSet.has(p.codeRacine)}
+              key={p.vitrineId}
+              href={p.href}
+              vitrineId={p.vitrineId}
+              favori={favSet.has(p.vitrineId)}
               connecte={connecte}
               brand={p.brand}
               name={p.name}

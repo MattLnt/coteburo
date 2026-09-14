@@ -51,6 +51,7 @@ export async function getCarteEdition(vitrineId) {
     publie: vitrine.publie,
     venteSurDevis: vitrine.venteSurDevis,
     bestSeller: vitrine.bestSeller,
+    enAvant: vitrine.enAvant,
     promoPct: vitrine.promoPct ?? "",
     promoDebut: vitrine.promoDebut ? vitrine.promoDebut.toISOString().slice(0, 10) : "",
     promoFin: vitrine.promoFin ? vitrine.promoFin.toISOString().slice(0, 10) : "",
@@ -144,7 +145,7 @@ export async function sauverCarteComplete(vitrineId, data) {
     largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax,
     axesDeclinaisons, declinaisons,
     categorieIds, sousCategorieIds, categoriePrincipaleId, sousCategoriePrincipaleId,
-    bestSeller, promoPct, promoDebut, promoFin,
+    bestSeller, enAvant, promoPct, promoDebut, promoFin,
     venteSurDevis, publie,
   } = data;
 
@@ -246,6 +247,7 @@ export async function sauverCarteComplete(vitrineId, data) {
       categoriePrincipaleId: principaleId,
       sousCategoriePrincipaleId: sousPrincipaleId,
       bestSeller: !!bestSeller,
+      enAvant: !!enAvant,
       promoPct: toNum(promoPct),
       promoDebut: toDate(promoDebut),
       promoFin: toDate(promoFin),

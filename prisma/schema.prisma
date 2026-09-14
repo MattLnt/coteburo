@@ -440,6 +440,9 @@ model ProduitVitrine {
   updatedAt                 DateTime         @updatedAt
   venteSurDevis             Boolean          @default(true)
   bestSeller                Boolean          @default(false)
+  // Mise en avant dans la section « Notre sélection » de la page d'accueil,
+  // indépendante de bestSeller qui alimente le carrousel Best-sellers.
+  enAvant                   Boolean          @default(false)
   promoPct                  Float?
   promoDebut                DateTime?
   promoFin                  DateTime?

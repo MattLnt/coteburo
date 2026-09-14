@@ -28,6 +28,7 @@ export default function CarteEditForm({ carte }) {
     carte.sousCategoriePrincipaleId || (carte.sousCategorieIds || [])[0] || ""
   );
   const [bestSeller, setBestSeller] = useState(!!carte.bestSeller);
+  const [enAvant, setEnAvant] = useState(!!carte.enAvant);
   const [promoPct, setPromoPct] = useState(carte.promoPct ?? "");
   const [promoDebut, setPromoDebut] = useState(carte.promoDebut || "");
   const [promoFin, setPromoFin] = useState(carte.promoFin || "");
@@ -169,6 +170,7 @@ export default function CarteEditForm({ carte }) {
         categoriePrincipaleId,
         sousCategoriePrincipaleId,
         bestSeller,
+        enAvant,
         promoPct,
         promoDebut,
         promoFin,
@@ -372,6 +374,15 @@ export default function CarteEditForm({ carte }) {
                 <span style={{ fontSize: 14.5, fontWeight: 600, color: "#23262a", display: "block" }}>Best-seller</span>
                 <span style={{ fontSize: 12.5, color: "#9aa0a8", display: "block", marginTop: 4, lineHeight: 1.5 }}>
                   Affiche ce produit dans le carrousel « Meilleures ventes » de la page d'accueil.
+                </span>
+              </span>
+            </label>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 13, cursor: "pointer", padding: "16px 18px", borderRadius: 14, marginTop: 10, border: "1.5px solid " + (enAvant ? "#f0661b" : "#f0ece4"), background: enAvant ? "#fef4ee" : "#faf8f4" }}>
+              <input type="checkbox" checked={enAvant} onChange={(e) => { setEnAvant(e.target.checked); dirty(); }} style={{ width: 19, height: 19, accentColor: "#f0661b", marginTop: 1 }} />
+              <span>
+                <span style={{ fontSize: 14.5, fontWeight: 600, color: "#23262a", display: "block" }}>Notre sélection</span>
+                <span style={{ fontSize: 12.5, color: "#9aa0a8", display: "block", marginTop: 4, lineHeight: 1.5 }}>
+                  Affiche ce produit dans la section « Le meilleur de chaque rayon » de la page d&apos;accueil, classé par catégorie.
                 </span>
               </span>
             </label>
@@ -621,6 +632,7 @@ export default function CarteEditForm({ carte }) {
               {ligneRecap("Mode", true, surDevis ? "Sur devis" : "Boutique")}
               {estProduitOption && ligneRecap("Type", true, "Accessoire")}
               {ligneRecap("Best-seller", bestSeller, bestSeller ? "Oui" : "Non")}
+              {ligneRecap("Notre sélection", enAvant, enAvant ? "Oui" : "Non")}
               {ligneRecap("Promotion", !!promoPct, promoPct ? `-${promoPct}%` : "Aucune")}
               {ligneRecap("Catégorie(s)", categorieIds.length > 0, nomsCategories || "Non définie")}
               {categorieIds.length > 0 && ligneRecap("Catégorie URL", !!categoriePrincipaleId, nomPrincipale || "—")}
