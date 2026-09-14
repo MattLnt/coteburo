@@ -120,7 +120,7 @@ async function main() {
     where: { gamme: { marque: { slug: "buronomic" } } },
     select: {
       id: true, nom: true, referenceUnitaire: true, declinaisons: true,
-      gamme: { select: { slug: true } },
+      gamme: { select: { slug: true, nom: true } },
     },
   });
 
@@ -134,6 +134,28 @@ async function main() {
   for (const v of vitrines) for (const r of refsDe(v)) index.push({ ref: r, v });
   index.sort((a, b) => b.ref.length - a.ref.length);
 
+  // Le préfixe seul ne désigne pas une vitrine : 47 références sont partagées
+  // par plusieurs fiches — « DQ35 » est à la fois la table de réunion Astro et
+  // le bureau carré manager Astro Direction, « BT56 » le multiposte Astrolite
+  // et son jumeau Partage. À égalité de longueur, l'ordre de la requête
+  // tranchait, et toutes les captures d'une gamme partaient chez l'autre.
+  //
+  // Le dossier porte l'information : on cherche d'abord dans sa gamme, et on
+  // ne retombe sur l'index global qu'à défaut — les accessoires sont rangés
+  // ailleurs que dans le dossier du produit qu'ils accompagnent.
+  //
+  // Deux dossiers coexistent pour les gammes composées : « Astro Direction »,
+  // créé par le script d'arborescence, et « Astro-Direction », créé par le
+  // script de capture qui remplace les espaces par des tirets. On compare donc
+  // sur les seules lettres et chiffres, comme l'import de photos d'origine.
+  const cleDossier = (s) => norm(s).replace(/[^a-z0-9]/g, "");
+  const indexParGamme = new Map();
+  for (const e of index) {
+    const cle = cleDossier(e.v.gamme.nom);
+    if (!indexParGamme.has(cle)) indexParGamme.set(cle, []);
+    indexParGamme.get(cle).push(e);
+  }
+
   const dossiers = (await readdir(RACINE, { withFileTypes: true })).filter((e) => e.isDirectory()).map((e) => e.name);
   const parVitrine = new Map();
   let total = 0, orphelins = 0, ambiances = 0;
@@ -141,11 +163,12 @@ async function main() {
 
   for (const d of dossiers) {
     if (DEMANDEES.length && !DEMANDEES.some((n) => norm(d).includes(norm(n)))) continue;
+    const local = indexParGamme.get(cleDossier(d)) || [];
     for (const f of await fichiersDe(join(RACINE, d, "_captures"))) {
       total++;
       const base = basename(f, extname(f));
       const code = base.split("_")[0].toUpperCase();
-      const v = index.find((x) => code.startsWith(x.ref))?.v;
+      const v = (local.find((x) => code.startsWith(x.ref)) || index.find((x) => code.startsWith(x.ref)))?.v;
       if (!v) { orphelins++; orphelinsParDossier[d] = (orphelinsParDossier[d] || 0) + 1; continue; }
       const amb = estAmbiance(f);
       if (amb) ambiances++;
