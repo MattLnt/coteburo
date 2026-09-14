@@ -12,16 +12,22 @@ const nb = (v) => {
 // Non exportée : dans un fichier "use server", tout export doit être une
 // fonction asynchrone. L'admin refait le même calcul côté client pour
 // l'affichage en direct ; c'est celui-ci qui est enregistré.
+//
+// L'éco-contribution est totalisée à part : la loi impose qu'elle figure
+// distinctement sur le document, et elle ne subit pas la remise — c'est
+// une taxe que Côté BURO paie au fabricant et refacture à l'identique.
 function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, fraisInstallation }) {
   const sousTotal = (lignes || []).reduce((s, l) => s + nb(l.prixHT) * (parseInt(l.quantite, 10) || 0), 0);
+  const totalEcoPart = (lignes || []).reduce((s, l) => s + nb(l.ecoContribution) * (parseInt(l.quantite, 10) || 0), 0);
   const remise = remiseType === "montant"
     ? Math.min(nb(remiseValeur), sousTotal)
     : sousTotal * (nb(remiseValeur) / 100);
-  const totalHT = sousTotal - remise + nb(fraisLivraison) + nb(fraisInstallation);
+  const totalHT = sousTotal - remise + totalEcoPart + nb(fraisLivraison) + nb(fraisInstallation);
   const totalTVA = totalHT * 0.2;
   return {
     sousTotal,
     remise,
+    totalEcoPart: Math.round(totalEcoPart * 100) / 100,
     totalHT: Math.round(totalHT * 100) / 100,
     totalTVA: Math.round(totalTVA * 100) / 100,
     totalTTC: Math.round((totalHT + totalTVA) * 100) / 100,
@@ -55,6 +61,7 @@ export async function enregistrerDevis(id, data) {
         fraisInstallation: nb(data.fraisInstallation),
         noteClient: data.noteClient?.trim() || null,
         noteInterne: data.noteInterne?.trim() || null,
+        totalEcoPart: totaux.totalEcoPart,
         totalHT: totaux.totalHT,
         totalTVA: totaux.totalTVA,
         totalTTC: totaux.totalTTC,
@@ -71,6 +78,10 @@ export async function enregistrerDevis(id, data) {
             config: l.config || null,
             imageUrl: l.imageUrl || null,
             prixHT: nb(l.prixHT),
+            // Le montant est figé à la vente : si le fabricant révise son
+            // barème l'an prochain, un devis émis aujourd'hui garde le
+            // sien, comme pour le prix.
+            ecoContribution: nb(l.ecoContribution),
             quantite: parseInt(l.quantite, 10) || 1,
             ordre: i,
           })),
@@ -133,11 +144,22 @@ export async function chargerCatalogueDevis() {
       id: d.id,
       libelle: libelle(d),
       prixHT: Number(d.prixVenteHT) || 0,
+      // Le tarif Buronomic porte l'éco-contribution sur chaque
+      // déclinaison : on la remonte pour qu'elle suive le produit
+      // jusque dans la ligne de devis.
+      ecoContribution: Number(d.ecoContribution) || 0,
+      referenceFournisseur: d.referenceFournisseur || null,
     }));
 
     const prix = declinaisons.length > 0
       ? Math.min(...declinaisons.map((d) => d.prixHT).filter((p) => p > 0))
       : (v.prixUnitaireHT ?? null);
+
+    // Pour un produit à prix unique, l'éco-contribution n'est pas dans
+    // les déclinaisons : on prend celle de la première si elle existe.
+    const ecoUnitaire = declinaisons.length
+      ? (declinaisons.find((d) => d.ecoContribution > 0)?.ecoContribution ?? 0)
+      : 0;
 
     return {
       id: v.id,
@@ -153,6 +175,7 @@ export async function chargerCatalogueDevis() {
       sousCategorieSlug: v.sousCategories[0]?.slug || null,
       prixMini: Number.isFinite(prix) ? prix : null,
       prixUnitaire: v.prixUnitaireHT ?? null,
+      ecoUnitaire,
       declinaisons,
     };
   });

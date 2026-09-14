@@ -278,6 +278,9 @@ model Commande {
   totalHT           Float
   totalTVA          Float
   totalTTC          Float
+  // Somme des éco-contributions des lignes, affichée distinctement sur
+  // la facture comme la loi l'impose.
+  totalEcoPart      Float           @default(0)
   fraisLivraison    Float           @default(0)
   fraisInstallation Float           @default(0)
   avecInstallation  Boolean         @default(false)
@@ -305,6 +308,10 @@ model LigneCommande {
   quantite             Int
   imageUrl             String?
   referenceFournisseur String?
+  // Éco-contribution unitaire, reprise du tarif fournisseur. La loi
+  // impose qu'elle figure distinctement sur la facture, sans marge :
+  // Côté BURO la paie au fabricant et la refacture à l'identique.
+  ecoContribution      Float    @default(0)
   commande             Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
 
   @@index([commandeId])
@@ -348,6 +355,9 @@ model Devis {
   totalHT           Float?
   totalTVA          Float?
   totalTTC          Float?
+  // Somme des éco-contributions des lignes. Stockée à part pour
+  // l'afficher sur le document sans avoir à la recalculer.
+  totalEcoPart      Float   @default(0)
   fraisLivraison    Float   @default(0)
   fraisInstallation Float   @default(0)
   // Remise globale : "pourcentage" ou "montant" — remiseValeur s'interprète
@@ -393,6 +403,10 @@ model LigneDevis {
   imageUrl    String?
   prixHT      Float   @default(0)
   quantite    Int     @default(1)
+  // Éco-contribution unitaire, reprise du tarif fournisseur. Elle ne
+  // subit pas la marge — c'est une taxe refacturée telle quelle — et
+  // doit apparaître distinctement sur le document.
+  ecoContribution Float @default(0)
   ordre       Int     @default(0)
   devis       Devis   @relation(fields: [devisId], references: [id], onDelete: Cascade)
 
