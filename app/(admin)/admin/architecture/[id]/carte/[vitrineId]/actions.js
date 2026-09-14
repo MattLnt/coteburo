@@ -254,8 +254,12 @@ export async function sauverCarteComplete(vitrineId, data) {
       hauteurMax: toEntier(hauteurMax),
       profondeurMin: toEntier(profondeurMin),
       profondeurMax: toEntier(profondeurMax),
-      axesDeclinaisons: Array.isArray(axesDeclinaisons) ? axesDeclinaisons : [],
-      declinaisons: Array.isArray(declinaisons) ? declinaisons : [],
+      // En prix unique, le prix vient de prixUnitaire* : les axes et les lignes
+      // de déclinaisons n'ont plus de sens. Les laisser en base en fait des
+      // résidus invisibles depuis l'admin, que la fiche publique prenait ensuite
+      // pour le vrai prix. On purge donc au moment où le mode est enregistré.
+      axesDeclinaisons: sansDeclinaisons || !Array.isArray(axesDeclinaisons) ? [] : axesDeclinaisons,
+      declinaisons: sansDeclinaisons || !Array.isArray(declinaisons) ? [] : declinaisons,
       categories: { set: catIds.map((id) => ({ id })) },
       sousCategories: { set: sousCatIds.map((id) => ({ id })) },
       categoriePrincipaleId: principaleId,

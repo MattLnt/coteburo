@@ -71,10 +71,11 @@ export default function FicheProduit({ data }) {
   const axesDecl = carte.axesDeclinaisons || [];
   const declLignes = carte.declinaisons || [];
 
-  // Produit vendu à PRIX FIXE : aucun produit de l'ancien système et aucun axe de choix.
-  // On teste l'absence d'AXES et non de déclinaisons : un produit basculé en prix fixe
-  // peut garder des lignes de déclinaisons résiduelles en base, inutilisables sans axe.
-  const prixFixe = produits.length === 0 && axesDecl.length === 0;
+  // Produit vendu à PRIX FIXE. sansDeclinaisons vient de l'admin et fait foi ;
+  // le repli sur l'absence de produits et d'axes couvre les fiches qui n'ont
+  // simplement rien à configurer.
+  const sansDeclinaisons = !!carte.sansDeclinaisons;
+  const prixFixe = sansDeclinaisons || (produits.length === 0 && axesDecl.length === 0);
 
   // Options / accessoires — logique partagée avec FicheProduitLibre
   const { optionsUI, totalOptions, optionsOK, ajouterOptions } = useOptionsAcheteur({
@@ -133,7 +134,13 @@ export default function FicheProduit({ data }) {
   const produitFinal = match || (produits.length === 1 ? produits[0] : null);
 
   const { match: declMatch } = useMemo(() => resoudreDeclinaison(declLignes, declReponses), [declLignes, declReponses]);
-  const declinaisonFinale = declMatch || (declLignes.length === 1 && axesDecl.length > 0 ? declLignes[0] : null);
+  // En prix unique, aucune déclinaison ne peut faire le prix — pas même celle
+  // que resoudreDeclinaison « résout » toute seule quand il n'en reste qu'une
+  // et qu'aucune question n'a été posée (filtrer sur zéro réponse laisse tout
+  // passer). Sans ce garde-fou, une ligne résiduelle écrase le prix unique.
+  const declinaisonFinale = sansDeclinaisons
+    ? null
+    : declMatch || (declLignes.length === 1 && axesDecl.length > 0 ? declLignes[0] : null);
 
   const prixResolu = produitFinal
     ? (produitFinal.prixVenteHT ?? produitFinal.prixPublicHT)

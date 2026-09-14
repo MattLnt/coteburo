@@ -123,7 +123,12 @@ export default function FicheProduitLibre({ data }) {
   }, [phase, etapeCourante]);
 
   const { match } = useMemo(() => resoudreDeclinaison(declinaisons, reponses), [declinaisons, reponses]);
-  const declinaisonFinale = match || (declinaisons.length === 1 ? declinaisons[0] : null);
+  // Même garde-fou que FicheProduit : sans axe, aucune déclinaison n'est
+  // choisissable, et resoudreDeclinaison en « résout » pourtant une dès qu'il
+  // n'en reste qu'une — y compris avant toute question. Le prix repasserait
+  // alors devant le prix unique, et le « à partir de » disparaîtrait à tort.
+  const declinaisonFinale =
+    axes.length > 0 ? match || (declinaisons.length === 1 ? declinaisons[0] : null) : null;
   const prixHT = declinaisonFinale ? declinaisonFinale.prixVenteHT : (declinaisons.length ? Math.min(...declinaisons.map((d) => Number(d.prixVenteHT) || 0)) : null);
   const ttc = prixHT != null ? prixHT * 1.2 : null;
 
