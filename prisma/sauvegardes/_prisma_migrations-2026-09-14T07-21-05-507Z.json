@@ -1,0 +1,332 @@
+[
+  {
+    "id": "d3287cdf-1f49-452a-b25b-aaf8adfcb3f1",
+    "checksum": "6d50b7a5b34a837872ca0d57fec3b5172166932ba2ff48910edf8e9c56cf535b",
+    "finished_at": "2026-06-12T23:54:06.349Z",
+    "migration_name": "20260612235404_init",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-12T23:54:05.507Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "179db1e0-bd4e-46e5-8d80-5b86b67f1494",
+    "checksum": "1eb52a98156d141b1f46151276aeee3e8af96a07ac693e169b9006f25473a172",
+    "finished_at": "2026-06-26T04:53:49.319Z",
+    "migration_name": "20260626045347_add_user",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T04:53:48.490Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "a2789576-1bbf-43f7-a49b-5c1662f58b03",
+    "checksum": "497ad1e4432c3cae7ec47f15b74bd13916b2a02e28195be7e2be6e222924b055",
+    "finished_at": "2026-06-26T05:41:59.985Z",
+    "migration_name": "20260626054158_add_prix_achat",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T05:41:59.161Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "861808a6-4624-48e0-8c0c-785d388875a5",
+    "checksum": "e1a936fb4323a634d9a9c59c199973ab1c4574c3ddf418950533e4a726e051f6",
+    "finished_at": "2026-06-26T07:03:27.993Z",
+    "migration_name": "20260626070326_add_images_galerie",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T07:03:27.155Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "1d6cc903-ba4c-4bbd-9df4-1bc70f7986cb",
+    "checksum": "346ae5c2a731f011c14c5bc63326477b64633ba700e43d68463df4727e931931",
+    "finished_at": "2026-06-26T07:45:12.450Z",
+    "migration_name": "20260626074510_reglages_enrichis",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T07:45:11.633Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "7bbe3022-a7a1-43b7-8e32-ebf838a32f97",
+    "checksum": "e3a0fd7dce0d9be40807e8d57209ed3955f4640833c61cad1ffba1130076d279",
+    "finished_at": "2026-06-26T08:10:40.223Z",
+    "migration_name": "20260626081038_marque_logo",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T08:10:39.399Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "4ca92ef5-bfdc-4517-9be8-f60b23842e3e",
+    "checksum": "339383fdc8b3c084b7b03256b918d77b51d925a43da9f759961cab270035a96c",
+    "finished_at": "2026-06-26T08:18:25.911Z",
+    "migration_name": "20260626081824_add_promotions",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T08:18:25.062Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "0f010d77-63b7-4365-a80d-c22dc2993126",
+    "checksum": "cbc13dcaf5650355a5fabc58d9a273a516817071da3d3678fdfaad1d316d78cf",
+    "finished_at": "2026-06-26T08:38:24.308Z",
+    "migration_name": "20260626083822_produit_mise_en_avant",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T08:38:23.472Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "5b089f89-878b-4456-adfc-758f7d61ff91",
+    "checksum": "b8a5a2ffcd2d876c85daf5422e2cfb886b99e70cfbac6992c338a986e8520b3b",
+    "finished_at": "2026-06-26T16:03:29.380Z",
+    "migration_name": "20260626160327_add_sous_categorie",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-06-26T16:03:28.524Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "ca96775d-550c-4d72-baf8-3f5045f726bd",
+    "checksum": "46f737247da685ce28af24d96684f0945f94481772b5b32954b25ba4a3786095",
+    "finished_at": "2026-07-06T02:58:20.910Z",
+    "migration_name": "20260706025820_add_commandes",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-06T02:58:20.474Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "766d82ee-5437-4029-9777-7d20bf07296e",
+    "checksum": "eb860284f409ba8dce70c7078c0feab3b16bfc4bbf96ae9de264a41f70668b39",
+    "finished_at": "2026-07-06T06:45:58.521Z",
+    "migration_name": "20260706064555_add_article",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-06T06:45:57.059Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "b5e04108-742b-4395-b721-036b2122f53a",
+    "checksum": "6ebed1f309d13508d0ab103db32aafe3cd86e7255dcfd82ac828a82a56174c2e",
+    "finished_at": "2026-07-06T07:57:17.342Z",
+    "migration_name": "20260706075714_add_favori",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-06T07:57:16.101Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "f9cb9f6d-6c90-4f68-88cc-77fb5a502f6f",
+    "checksum": "01b6e018a9adc84fd0e353d1cfccf0a72fbe26df60ff2f6169e00c3441250417",
+    "finished_at": "2026-07-07T04:35:36.185Z",
+    "migration_name": "20260707043533_add_gammes_categories_finitions",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-07T04:35:34.760Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "0c00c82e-a611-4412-a8d3-b8ec0fd266d5",
+    "checksum": "614a537bb286c2ca1e1878e44e0940e6520a2cf653559a9eda6af7d49655daeb",
+    "finished_at": "2026-07-07T06:30:54.412Z",
+    "migration_name": "20260707063053_add_produit_vitrine",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-07T06:30:53.969Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "74ab8e7d-2c44-4d40-bfa1-5cfdd96615d3",
+    "checksum": "04712dc75ee2bf9475736b7dcb12b8c2b5704b1f3007067279f4c0773fb90cf0",
+    "finished_at": "2026-07-07T06:51:55.999Z",
+    "migration_name": "20260707065155_gamme_categories_m2m",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-07T06:51:55.554Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "af020a22-003c-44d5-996c-7053f50cba29",
+    "checksum": "9c404f15ded48958764b947c1b726abd6d169aa953a527249c94bb052b064218",
+    "finished_at": "2026-07-07T19:47:05.681Z",
+    "migration_name": "20260707194704_produit_attributs",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-07T19:47:05.239Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "81c3f498-828a-4543-96b9-302c2c8aa9c2",
+    "checksum": "d41764d9165fe9849ea929e65852101e5d9dc60698e1784608f89f4b049ae4a5",
+    "finished_at": "2026-07-08T03:17:20.176Z",
+    "migration_name": "20260708031719_marges",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-08T03:17:19.725Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "e348061c-8f7e-499b-b713-b9494388d7f7",
+    "checksum": "24e33103ab6b2ced7ccbde248455532347fbb8539a393c15fb0a7dfed93a3198",
+    "finished_at": "2026-07-08T03:50:45.650Z",
+    "migration_name": "20260708035044_sections_devis",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-08T03:50:45.135Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "cf2b8e68-17ee-4e5e-aa98-eac2cea2a483",
+    "checksum": "e7f18f055f7b8cec9363694a9b936ae60d6a81912188e34ad14c35adf453de81",
+    "finished_at": "2026-07-08T05:25:09.673Z",
+    "migration_name": "20260708052508_souscategories",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-08T05:25:09.007Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "1010b1bf-092e-4090-a289-3fadcc7df283",
+    "checksum": "73108304e0404eebd9926d4dc2ffba709d621f581ddf80d6e97a9308abb47713",
+    "finished_at": "2026-07-08T19:56:16.191Z",
+    "migration_name": "20260708195615_options_informatives",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-08T19:56:15.747Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "1a0538d4-c06e-465a-8873-936651cda4d9",
+    "checksum": "75ddebc4a044bf1283847ddae5ba83eaff9b5388ab70f719bf26546f52fab29b",
+    "finished_at": "2026-07-09T19:32:11.348Z",
+    "migration_name": "20260709193210_declinaisons_libres",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-09T19:32:10.924Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "7f69dcca-fd07-4056-956b-c0b90f07ea26",
+    "checksum": "1de207c565e52946299c3bd300da4eb48d16b50f1aa413c5cc1bbbd2013d1eb4",
+    "finished_at": "2026-07-10T03:57:43.626Z",
+    "migration_name": "20260710035742_finitions_par_produit",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-10T03:57:43.199Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "01a08da2-c7f6-4ef1-9421-97c1e043d0ab",
+    "checksum": "5d59040cb78235bb34faf804a80078e8ae92383c875aa7f42099d4c9eff7783d",
+    "finished_at": "2026-07-20T17:56:47.958Z",
+    "migration_name": "20260720175647_ajoute_bestseller_vitrine",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-20T17:56:47.502Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "7838aa40-4713-494e-8bc4-394984dba07c",
+    "checksum": "49476bbe6f5b595a4821e046dd1ecce6c7f7dda02abe80fef98416ad3baf293d",
+    "finished_at": "2026-07-20T18:05:21.096Z",
+    "migration_name": "20260720180520_ajoute_promo_vitrine",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-20T18:05:20.630Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "4c33af9f-5dff-4232-8db1-e79e40641e62",
+    "checksum": "5fd7c5eca269f83f4a54514e46f1df1259f7659dcd53416ecfa290f4462bdabc",
+    "finished_at": "2026-07-20T19:18:39.407Z",
+    "migration_name": "20260720191838_favoris_deux_systemes",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-20T19:18:38.944Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "263c4a8e-9272-4066-988f-e337832c6006",
+    "checksum": "d12106815bfd7d6006294b03fa1ee90e8200ffe18a8075c9d6aaeb9722174adc",
+    "finished_at": "2026-07-20T20:22:18.813Z",
+    "migration_name": "20260720202217_frais_livraison_installation",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-20T20:22:18.357Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "44ccf8fc-cbeb-4117-a517-2dfb3b1cb25b",
+    "checksum": "4f5d14efe83fe7aaa53fd794a8c05bc2bce37c56c59d6904a1222c35b064d448",
+    "finished_at": "2026-07-20T20:25:48.511Z",
+    "migration_name": "20260720202547_paliers_frais_configurables",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-20T20:25:48.065Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "170d174a-fb86-41dd-ac80-f38ccde1ee0a",
+    "checksum": "eabadb8beabbca698a8e71e5188e24fb960791b54e4426570bdf4103d2b2f503",
+    "finished_at": "2026-07-20T22:02:16.654Z",
+    "migration_name": "20260720220215_realisation_detail_complet",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-20T22:02:16.205Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "4aea0d88-895c-47c2-911a-7f5cdecfb05b",
+    "checksum": "4a46c993204735a27c3ba101a8d1778c7fccd2a7bac50b2ad6e86fd76c693c35",
+    "finished_at": "2026-07-21T01:58:18.809Z",
+    "migration_name": "20260721015817_reset_password_token",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-21T01:58:18.342Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "899ccecd-4e1a-490a-b04f-966c9cbf6816",
+    "checksum": "46adfd7c9f807f41dc05c5a3795ab2ad289cd80de07027cbf993abdec89a2b52",
+    "finished_at": "2026-07-21T03:35:50.372Z",
+    "migration_name": "20260721033549_categorie_icone",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-21T03:35:49.913Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "f1e4a5c7-69c7-4473-9cf4-ab41ec0f84d2",
+    "checksum": "a3f218b3d2b3555253f0707cc9d6a417f7ab35772ea3bb5019c97b5f8ac457ff",
+    "finished_at": "2026-07-23T03:35:11.336Z",
+    "migration_name": "20260723033510_ligne_commande_reference_fournisseur",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-07-23T03:35:10.895Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "daf7984a-9123-454c-951e-e9e1f85fa1cd",
+    "checksum": "980de66d63a47ddb11b330630984be5407eb7353bee2e144aa6aed208b4d9df0",
+    "finished_at": "2026-08-02T14:18:45.485Z",
+    "migration_name": "20260802141844_produit_categorie_principale",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-08-02T14:18:45.046Z",
+    "applied_steps_count": 1
+  },
+  {
+    "id": "049f2046-7cfe-4936-a1e8-b4ee7c3d366b",
+    "checksum": "bb283bdfc05ccee2a5c4b8caa25bbcb73146f8c2cc9b01d039004dc8435b5bca",
+    "finished_at": "2026-08-02T14:39:02.387Z",
+    "migration_name": "20260802143901_produit_souscategorie_principale",
+    "logs": null,
+    "rolled_back_at": null,
+    "started_at": "2026-08-02T14:39:01.944Z",
+    "applied_steps_count": 1
+  }
+]
