@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { calculerTousLesFrais } from "@/lib/frais";
 import { prixVitrine } from "@/lib/prixCatalogue";
+import { montantTVA, TVA_DEFAUT } from "@/lib/tva";
 
 // Génère un numéro de commande lisible : CB-2026-0001
 async function genererNumero() {
@@ -77,8 +78,9 @@ export async function POST(req) {
 
     // Marge globale actuelle — pour recalculer le vrai prix de vente des déclinaisons
     // non verrouillées, exactement comme sur la fiche produit publique.
-    const reglagesPrix = await prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true } });
+    const reglagesPrix = await prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true, tva: true } });
     const margeGlobale = reglagesPrix?.margeGlobale ?? 0.3;
+    const tauxTva = reglagesPrix?.tva ?? TVA_DEFAUT;
 
     const lignes = [];
     for (const it of items) {
@@ -158,7 +160,7 @@ export async function POST(req) {
     }
 
     const totalHT = lignes.reduce((s, l) => s + l.prixHT * l.quantite, 0);
-    const totalTVA = totalHT * 0.2;
+    const totalTVA = montantTVA(totalHT, tauxTva);
     const totalTTC = totalHT + totalTVA;
 
     // Frais recalculés côté serveur uniquement

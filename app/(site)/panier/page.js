@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useTauxTva } from "@/components/TauxTvaContext";
+import { montantTVA, libelleTVA } from "@/lib/tva";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/components/cart/CartContext";
@@ -12,8 +14,9 @@ const ICONE_POUBELLE = (<><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2
 
 export default function PanierPage() {
   const { items, totalHT, prixLigneAffichee, updateQuantite, removeItem, loaded } = useCart();
+  const tauxTva = useTauxTva();
 
-  const tva = totalHT * 0.2;
+  const tva = montantTVA(totalHT, tauxTva);
   const totalTTCProduits = totalHT + tva;
 
   const [frais, setFrais] = useState(null); // { fraisLivraison, seuilLivraisonGratuite }
@@ -187,7 +190,7 @@ export default function PanierPage() {
               <span className="font-semibold">{fmt(totalHT)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-ink-soft">TVA (20 %)</span>
+              <span className="text-ink-soft">{libelleTVA(tauxTva)}</span>
               <span className="font-semibold">{fmt(tva)}</span>
             </div>
             <div className="flex justify-between">

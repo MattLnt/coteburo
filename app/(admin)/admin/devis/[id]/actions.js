@@ -1,5 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { montantTVA, TVA_DEFAUT } from "@/lib/tva";
 import { revalidatePath } from "next/cache";
 
 const nb = (v) => {
@@ -16,14 +17,14 @@ const nb = (v) => {
 // L'éco-contribution est totalisée à part : la loi impose qu'elle figure
 // distinctement sur le document, et elle ne subit pas la remise — c'est
 // une taxe que Côté BURO paie au fabricant et refacture à l'identique.
-function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, fraisInstallation }) {
+function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, fraisInstallation, tauxTva }) {
   const sousTotal = (lignes || []).reduce((s, l) => s + nb(l.prixHT) * (parseInt(l.quantite, 10) || 0), 0);
   const totalEcoPart = (lignes || []).reduce((s, l) => s + nb(l.ecoContribution) * (parseInt(l.quantite, 10) || 0), 0);
   const remise = remiseType === "montant"
     ? Math.min(nb(remiseValeur), sousTotal)
     : sousTotal * (nb(remiseValeur) / 100);
   const totalHT = sousTotal - remise + totalEcoPart + nb(fraisLivraison) + nb(fraisInstallation);
-  const totalTVA = totalHT * 0.2;
+  const totalTVA = montantTVA(totalHT, tauxTva);
   return {
     sousTotal,
     remise,
@@ -36,8 +37,10 @@ function calculerTotaux({ lignes, remiseType, remiseValeur, fraisLivraison, frai
 
 export async function enregistrerDevis(id, data) {
   const lignes = Array.isArray(data.lignes) ? data.lignes : [];
+  const reglages = await prisma.reglages.findUnique({ where: { id: 1 }, select: { tva: true } });
   const totaux = calculerTotaux({
     lignes,
+    tauxTva: reglages?.tva ?? TVA_DEFAUT,
     remiseType: data.remiseType,
     remiseValeur: data.remiseValeur,
     fraisLivraison: data.fraisLivraison,

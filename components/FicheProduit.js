@@ -6,6 +6,8 @@ import { resoudreDeclinaison, prochainAxe, compterAxesRestants } from "@/lib/dec
 import GalerieProduit from "@/components/GalerieProduit";
 import FavoriButton from "@/components/FavoriButton";
 import { useOptionsAcheteur } from "@/components/OptionsAcheteur";
+import { useTauxTva } from "@/components/TauxTvaContext";
+import { ajouterTVA } from "@/lib/tva";
 
 // Pastilles montrees quand une categorie de coloris est repliee. Assez pour
 // donner le ton de la palette, pas assez pour noyer la fiche : certaines
@@ -76,6 +78,7 @@ function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
 // « Classique » gérait le prix fixe et le sur-devis. Les deux moteurs sont ici.
 export default function FicheProduit({ data }) {
   const { addItem } = useCart();
+  const tauxTva = useTauxTva();
   const { addDevis } = useDevis();
   const { carte, groupesFinition, gammeNom, gammeSlug, surDevis, favori, connecte } = data;
 
@@ -217,9 +220,7 @@ export default function FicheProduit({ data }) {
     : declinaisonFinale
     ? (declinaisonFinale.enPromo ? declinaisonFinale.prixBase : null)
     : (carte.enPromo ? carte.prixMiniBase : null);
-  // TODO : 20 % en dur ici comme dans le panier, la commande et le paiement,
-  // alors que Reglages.tva est réglable dans l'admin. À unifier séparément.
-  const ttc = !surDevis && prixAffiche != null ? prixAffiche * 1.2 : null;
+  const ttc = !surDevis && prixAffiche != null ? ajouterTVA(prixAffiche, tauxTva) : null;
 
   const referenceFinale = declinaisonFinale
     ? { codeRacine: declinaisonFinale.id, designation: carte.nom }

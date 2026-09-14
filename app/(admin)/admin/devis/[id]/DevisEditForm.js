@@ -2,6 +2,7 @@
 import { useState, useMemo, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { montantTVA, libelleTVA, TVA_DEFAUT } from "@/lib/tva";
 import ModalConfirmation from "@/components/dashboard/ModalConfirmation";
 import { enregistrerDevis, changerStatutDevis, supprimerDevis, chargerCatalogueDevis, envoyerDevisAuClient } from "./actions";
 
@@ -59,7 +60,7 @@ function Section({ titre, sousTitre, ouvertParDefaut, children }) {
   );
 }
 
-export default function DevisEditForm({ devis }) {
+export default function DevisEditForm({ devis, tauxTva = TVA_DEFAUT }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -184,7 +185,7 @@ export default function DevisEditForm({ devis }) {
       ? Math.min(nb(form.remiseValeur), sousTotal)
       : sousTotal * (nb(form.remiseValeur) / 100);
     const totalHT = sousTotal - remise + totalEco + nb(form.fraisLivraison) + nb(form.fraisInstallation);
-    const totalTVA = totalHT * 0.2;
+    const totalTVA = montantTVA(totalHT, tauxTva);
     return { sousTotal, remise, totalEco, totalHT, totalTVA, totalTTC: totalHT + totalTVA };
   }, [lignes, form]);
 
@@ -494,7 +495,7 @@ export default function DevisEditForm({ devis }) {
             </div>
           )}
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5, marginBottom: 10 }}>
-            <span style={{ color: "#9aa0a8" }}>TVA (20 %)</span><span style={{ color: "#23262a", fontWeight: 600 }}>{euro(totaux.totalTVA)}</span>
+            <span style={{ color: "#9aa0a8" }}>{libelleTVA(tauxTva)}</span><span style={{ color: "#23262a", fontWeight: 600 }}>{euro(totaux.totalTVA)}</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f2efe9" }}>
             <span style={{ fontSize: 14.5, fontWeight: 700, color: "#23262a" }}>Total TTC</span>

@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useTauxTva } from "@/components/TauxTvaContext";
+import { montantTVA, libelleTVA } from "@/lib/tva";
 import Link from "next/link";
 import { useSession, signIn } from "next-auth/react";
 import { loadStripe } from "@stripe/stripe-js";
@@ -32,6 +34,7 @@ const MODES = [
 export default function CommandePage() {
   const { data: session, status: sessionStatus } = useSession();
   const { items, totalHT, prixLigneAffichee, loaded } = useCart();
+  const tauxTva = useTauxTva();
   const [form, setForm] = useState({
     email: "", telephone: "", prenom: "", nom: "", societe: "",
     adresse: "", complement: "", codePostal: "", ville: "", pays: "France",
@@ -116,7 +119,7 @@ export default function CommandePage() {
     return () => window.removeEventListener("popstate", onPop);
   }, [etape]);
 
-  const tva = totalHT * 0.2;
+  const tva = montantTVA(totalHT, tauxTva);
   const totalTTCProduits = totalHT + tva;
 
   useEffect(() => {
@@ -255,7 +258,7 @@ export default function CommandePage() {
   const lignesTotaux = (
     <div className="flex flex-col gap-2 sm:gap-2.5 text-[12.5px] sm:text-sm">
       <div className="flex justify-between"><span className="text-ink-soft">Sous-total HT</span><span className="font-semibold">{fmt(totalHT)}</span></div>
-      <div className="flex justify-between"><span className="text-ink-soft">TVA (20 %)</span><span className="font-semibold">{fmt(tva)}</span></div>
+      <div className="flex justify-between"><span className="text-ink-soft">{libelleTVA(tauxTva)}</span><span className="font-semibold">{fmt(tva)}</span></div>
       <div className="flex justify-between">
         <span className="text-ink-soft">Livraison</span>
         {chargementFrais ? <span className="text-ink-soft">…</span> : fraisLivraison === 0 ? (

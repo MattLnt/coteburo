@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { libelleTVA, tauxDepuisMontants } from "@/lib/tva";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -169,7 +170,7 @@ export default async function DetailCommandePage({ params }) {
           {/* Totaux */}
           <div className="border-t border-line px-4 sm:px-6 py-4 flex flex-col gap-1.5 sm:gap-2">
             <div className="flex justify-between text-[12.5px] sm:text-sm"><span className="text-ink-soft">Sous-total HT</span><span className="font-semibold">{euro(c.totalHT)}</span></div>
-            <div className="flex justify-between text-[12.5px] sm:text-sm"><span className="text-ink-soft">TVA (20 %)</span><span className="font-semibold">{euro(c.totalTVA)}</span></div>
+            <div className="flex justify-between text-[12.5px] sm:text-sm"><span className="text-ink-soft">{libelleTVA(tauxDepuisMontants(c.totalHT, c.totalTVA))}</span><span className="font-semibold">{euro(c.totalTVA)}</span></div>
             <div className="flex justify-between items-center pt-2.5 border-t border-line mt-1">
               <span className="font-display font-bold text-[14px] sm:text-base">Total TTC</span>
               <span className="font-display font-bold text-[18px] sm:text-lg text-orange">{euro(c.totalTTC)}</span>

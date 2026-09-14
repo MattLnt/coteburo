@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+import { libelleTVA, tauxDepuisMontants } from "@/lib/tva";
 import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -442,7 +443,7 @@ export default function MonDevisClient({ devis, finitionsParVitrine, telephone, 
           <div className="flex justify-between text-[12.5px] mb-1.5 pt-2 border-t border-line">
             <span className="text-ink-soft">Total HT</span><span className="font-semibold">{euro(devis.totalHT)}</span>
           </div>
-          <div className="flex justify-between text-[12.5px] mb-2.5"><span className="text-ink-soft">TVA (20 %)</span><span className="font-semibold">{euro(devis.totalTVA)}</span></div>
+          <div className="flex justify-between text-[12.5px] mb-2.5"><span className="text-ink-soft">{libelleTVA(tauxDepuisMontants(devis.totalHT, devis.totalTVA))}</span><span className="font-semibold">{euro(devis.totalTVA)}</span></div>
           <div className="flex justify-between items-center pt-2.5 border-t border-line">
             <span className="font-display font-bold text-[14.5px]">Total TTC</span>
             <span className="font-display font-bold text-[19px] text-orange">{euro(devis.totalTTC)}</span>
