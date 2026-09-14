@@ -47,6 +47,8 @@ export async function updateReglages(data) {
       francoPort: toNum(data.francoPort),
       bandeauActif: !!data.bandeauActif,
       bandeauTexte: str(data.bandeauTexte),
+      bandeauPromoActif: !!data.bandeauPromoActif,
+      bandeauPromoTexte: str(data.bandeauPromoTexte),
       instagram: str(data.instagram),
       facebook: str(data.facebook),
       linkedin: str(data.linkedin),

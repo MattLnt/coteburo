@@ -158,6 +158,10 @@ model Reglages {
   adresse                String?
   bandeauActif           Boolean  @default(false)
   bandeauTexte           String?
+  // Bandeau PROMOTIONNEL, distinct du bandeau ci-dessus qui porte l adresse
+  // et le telephone. Il annonce une campagne en cours et disparait avec elle.
+  bandeauPromoActif      Boolean  @default(false)
+  bandeauPromoTexte      String?
   delaiLivraison         String?
   email                  String?
   facebook               String?

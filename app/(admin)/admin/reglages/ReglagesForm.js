@@ -49,6 +49,8 @@ export function ReglagesForm({ reglages, paliersInitiaux }) {
     fraisLivraison: (reglages.fraisLivraison ?? 59).toString(),
     bandeauActif: !!reglages.bandeauActif,
     bandeauTexte: reglages.bandeauTexte || "",
+    bandeauPromoActif: !!reglages.bandeauPromoActif,
+    bandeauPromoTexte: reglages.bandeauPromoTexte || "",
     instagram: reglages.instagram || "",
     facebook: reglages.facebook || "",
     linkedin: reglages.linkedin || "",

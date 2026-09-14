@@ -7,11 +7,13 @@ import { TauxTvaProvider } from "@/components/TauxTvaContext";
 import { DevisProvider } from "@/components/devis/DevisContext";
 import { getReglagesPublic } from "@/lib/reglages";
 import { getCategoriesMenu } from "@/lib/catalogue";
+import { getBandeauPromo } from "@/lib/bandeau";
 
 export default async function SiteLayout({ children }) {
-  const [reglages, categoriesMenu] = await Promise.all([
+  const [reglages, categoriesMenu, bandeauPromo] = await Promise.all([
     getReglagesPublic(),
     getCategoriesMenu(),
+    getBandeauPromo(),
   ]);
   const reglagesSafe = JSON.parse(JSON.stringify(reglages));
   const categoriesSafe = JSON.parse(JSON.stringify(categoriesMenu));
@@ -22,7 +24,7 @@ export default async function SiteLayout({ children }) {
         <TauxTvaProvider taux={reglagesSafe.tva}>
         <CartProvider>
           <ScrollToTop />
-          <Header reglages={reglagesSafe} categories={categoriesSafe} />
+          <Header reglages={reglagesSafe} categories={categoriesSafe} bandeauPromo={bandeauPromo} />
           {children}
           <Footer reglages={reglagesSafe} />
           </CartProvider>

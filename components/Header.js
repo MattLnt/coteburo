@@ -29,7 +29,7 @@ const CAT_ACCROCHE = {
 // Icône par défaut si une catégorie n'a pas encore d'icône choisie en admin
 const ICONE_PAR_DEFAUT = (<><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M9 9h.01M15 9h.01M9 15c1 1 5 1 6 0" /></>);
 
-export default function Header({ reglages = {}, categories = [] }) {
+export default function Header({ reglages = {}, categories = [], bandeauPromo = null }) {
   const { count } = useCart();
   const { count: countDevis } = useDevis();
   const { data: session, status: sessionStatus } = useSession();
@@ -110,6 +110,22 @@ export default function Header({ reglages = {}, categories = [] }) {
           </div>
         </div>
       </div>
+
+      {/* Bandeau promotionnel — adosse aux campagnes : il disparait de
+          lui-meme quand la campagne expire, sans intervention. */}
+      {bandeauPromo && (
+        <div className="bg-orange text-white text-[11.5px] sm:text-[13.5px] font-semibold">
+          <div className="mx-auto max-w-[1400px] px-5 sm:px-7 min-h-[34px] sm:min-h-[38px] py-1.5 flex items-center justify-center gap-2 sm:gap-3 text-center flex-wrap">
+            {bandeauPromo.promo && (
+              <Link href={bandeauPromo.promo.href} className="underline underline-offset-2 hover:no-underline">
+                {bandeauPromo.promo.message}
+              </Link>
+            )}
+            {bandeauPromo.promo && bandeauPromo.texte && <span className="opacity-60">·</span>}
+            {bandeauPromo.texte && <span className="font-medium">{bandeauPromo.texte}</span>}
+          </div>
+        </div>
+      )}
 
       <div className="bg-bg border-b border-line">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-7 h-[62px] lg:h-[78px] flex items-center gap-4 lg:gap-6">
