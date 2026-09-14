@@ -122,7 +122,10 @@ export default function FicheProduit({ data }) {
   // Prix arrêtés par le serveur, promo comprise — la fiche n'en calcule aucun,
   // elle lit celui de la déclinaison choisie. C'est ce qui garantit qu'elle
   // affiche le montant que le paiement facturera.
-  const prixAffiche = declinaisonFinale ? declinaisonFinale.prixHT : carte.prixMini;
+  // Sur devis, le « à partir de » saisi par l'admin prime sur le prix de la
+  // déclinaison choisie : celle-ci ne sert qu'à configurer, pas à engager.
+  const prixDeclinaison = declinaisonFinale ? declinaisonFinale.prixHT : carte.prixMini;
+  const prixAffiche = surDevis ? (carte.prixAPartir ?? prixDeclinaison) : prixDeclinaison;
   const prixBarre = declinaisonFinale
     ? (declinaisonFinale.enPromo ? declinaisonFinale.prixBase : null)
     : (carte.enPromo ? carte.prixMiniBase : null);
