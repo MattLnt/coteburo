@@ -1,14 +1,22 @@
 import { Icon } from "@/components/dashboard/Icon";
 import { getReglages, getPaliersInstallation } from "./actions";
+import { getCampagnesActives } from "@/lib/promotions";
+import { libelleRemise } from "@/lib/bandeau";
 import { ReglagesForm } from "./ReglagesForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function ReglagesPage() {
-  const [reglages, paliers] = await Promise.all([
+  const [reglages, paliers, campagnes] = await Promise.all([
     getReglages(),
     getPaliersInstallation(),
+    getCampagnesActives(),
   ]);
+
+  // De quoi afficher, à côté de l'interrupteur, ce que le bandeau annoncera.
+  const campagnesLisibles = campagnes
+    .filter((c) => c.valeur > 0)
+    .map((c) => ({ id: c.id, libelle: `${c.nom} (${libelleRemise(c)})` }));
 
   return (
     <>
@@ -22,7 +30,7 @@ export default async function ReglagesPage() {
         </div>
       </div>
 
-      <ReglagesForm reglages={JSON.parse(JSON.stringify(reglages))} paliersInitiaux={JSON.parse(JSON.stringify(paliers))} />
+      <ReglagesForm reglages={JSON.parse(JSON.stringify(reglages))} paliersInitiaux={JSON.parse(JSON.stringify(paliers))} campagnes={campagnesLisibles} />
     </>
   );
 }

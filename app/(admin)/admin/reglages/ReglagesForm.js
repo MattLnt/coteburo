@@ -30,7 +30,7 @@ function Field({ label, value, onChange, placeholder, hint, ...rest }) {
 
 function uid() { return Math.random().toString(36).slice(2, 9); }
 
-export function ReglagesForm({ reglages, paliersInitiaux }) {
+export function ReglagesForm({ reglages, paliersInitiaux, campagnes = [] }) {
   const router = useRouter();
   const [onglet, setOnglet] = useState("general");
   const [menuOuvert, setMenuOuvert] = useState(false);
@@ -325,6 +325,36 @@ export function ReglagesForm({ reglages, paliersInitiaux }) {
             {interrupteur(form.bandeauActif, () => set("bandeauActif", !form.bandeauActif), "Afficher le bandeau", form.bandeauActif ? "Visible sur tout le site" : "Masqué")}
           </div>
           <Field label="Texte du bandeau" value={form.bandeauTexte} onChange={(v) => set("bandeauTexte", v)} placeholder="Showroom Aix-en-Provence — 645 rue Mayor de Montricher" />
+
+          {/* Bandeau promotionnel — distinct du précédent, qui porte l'adresse
+              du showroom et le téléphone. Celui-ci annonce une remise, et se
+              masque de lui-même quand la campagne expire. */}
+          <div style={{ borderTop: "1px solid #eceae5", margin: "22px 0 0", paddingTop: 18 }}>
+            <CardHead title="Bandeau promotionnel" sub="Annonce une remise en cours, au-dessus de l'en-tête." />
+            <div style={{ marginBottom: 14 }}>
+              {interrupteur(form.bandeauPromoActif, () => set("bandeauPromoActif", !form.bandeauPromoActif), "Afficher le bandeau promotionnel", form.bandeauPromoActif ? "Visible sur tout le site" : "Masqué")}
+            </div>
+
+            {form.bandeauPromoActif && (
+              <div style={{ background: campagnes.length ? "#f4f8f2" : "#fdf3e8", border: `1px solid ${campagnes.length ? "#d8e6d2" : "#f2d9b8"}`,
+                borderRadius: 10, padding: "11px 13px", marginBottom: 14, fontSize: 13, color: "#5c616a", lineHeight: 1.5 }}>
+                {campagnes.length ? (
+                  <>
+                    <strong style={{ color: "#23262a" }}>Campagne annoncée :</strong>{" "}
+                    {campagnes.map((c) => c.libelle).join(" · ")}
+                    <div style={{ marginTop: 4 }}>Le bandeau disparaîtra tout seul à la fin de la campagne.</div>
+                  </>
+                ) : (
+                  <>
+                    <strong style={{ color: "#23262a" }}>Aucune campagne en cours.</strong>{" "}
+                    Seul le texte libre ci-dessous s'affichera. Pour annoncer une remise, créez une campagne dans Promotions.
+                  </>
+                )}
+              </div>
+            )}
+
+            <Field label="Texte libre (facultatif)" value={form.bandeauPromoTexte} onChange={(v) => set("bandeauPromoTexte", v)} placeholder="Livraison offerte jusqu'au 30 septembre" />
+          </div>
         </div>
       )}
 
