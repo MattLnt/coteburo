@@ -5,16 +5,22 @@ import { PromotionsManager } from "./PromotionsManager";
 export const dynamic = "force-dynamic";
 
 export default async function PromotionsPage() {
-  const [promotions, produits] = await Promise.all([
+  // Les campagnes ciblent des fiches vitrine. L'ancien sélecteur lisait la
+  // table Produit, vide depuis la migration, et n'affichait donc jamais rien.
+  const [promotions, vitrines] = await Promise.all([
     prisma.promotion.findMany({
-      include: { produits: { select: { codeRacine: true } } },
+      include: { vitrines: { select: { vitrineId: true } } },
       orderBy: { createdAt: "desc" },
     }),
-    prisma.produit.findMany({
-      select: { codeRacine: true, designation: true, gamme: true },
-      orderBy: { designation: "asc" },
+    prisma.produitVitrine.findMany({
+      where: { publie: true },
+      select: { id: true, nom: true, gamme: { select: { nom: true } } },
+      orderBy: { nom: "asc" },
     }),
   ]);
+
+  const cibles = vitrines.map((v) => ({ vitrineId: v.id, nom: v.nom, gammeNom: v.gamme?.nom || null }));
+  const promotionsPlates = promotions.map((p) => ({ ...p, cibles: p.vitrines }));
 
   return (
     <>
@@ -30,7 +36,7 @@ export default async function PromotionsPage() {
 
       <PromotionsManager
         promotions={JSON.parse(JSON.stringify(promotionsPlates))}
-        cibles={JSON.parse(JSON.stringify(ciblesPlates))}
+        cibles={JSON.parse(JSON.stringify(cibles))}
       />
     </>
   );
