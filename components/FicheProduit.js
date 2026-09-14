@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useDevis } from "@/components/devis/DevisContext";
 import { resoudreDeclinaison, prochainAxe, compterAxesRestants } from "@/lib/declinaisonsLibres";
@@ -13,6 +13,49 @@ import { ajouterTVA } from "@/lib/tva";
 // donner le ton de la palette, pas assez pour noyer la fiche : certaines
 // categories comptent 85 coloris, et une fiche en cumule jusqu a 157.
 const APERCU_COLORIS = 6;
+
+// Agrandissement du coloris au survol. Une pastille de 42 px donne la teinte
+// mais rien de la matiere : un tisse, un grain, un cuir s y ressemblent tous.
+const APERCU_TAILLE = 180;
+const APERCU_LIBELLE = 26;
+// Au doigt, il n y a pas de survol : l apercu vient au maintien. Assez long
+// pour ne pas se declencher sur un appui ordinaire, assez court pour qu on
+// ne croie pas l ecran fige.
+const APPUI_LONG = 350;
+// Fenetre pendant laquelle les evenements souris qui suivent un toucher sont
+// tenus pour de la compatibilite, et non pour un vrai survol.
+const DELAI_SOURIS = 700;
+
+// Apercu ancre en position fixe et borne a l ecran. Centre sans borne sur une
+// pastille de bord, il deborderait — la fiche s est deja fait reprendre pour
+// un debordement horizontal sur mobile.
+function ApercuColoris({ apercu }) {
+  if (!apercu) return null;
+
+  const MARGE = 8;
+  const hauteur = APERCU_TAILLE + APERCU_LIBELLE;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  const x = Math.min(Math.max(MARGE, apercu.x - APERCU_TAILLE / 2), Math.max(MARGE, vw - APERCU_TAILLE - MARGE));
+  // Au-dessus par defaut : le doigt ou le curseur masquerait un apercu pose
+  // dessous. En bas d ecran, on bascule.
+  const dessus = apercu.haut - hauteur - 12 >= MARGE;
+  const y = dessus ? apercu.haut - hauteur - 12 : Math.min(apercu.bas + 12, Math.max(MARGE, vh - hauteur - MARGE));
+
+  return (
+    <div
+      className="fixed z-50 pointer-events-none rounded-2xl border border-line bg-surface overflow-hidden shadow-[0_8px_28px_rgba(33,36,40,0.18)]"
+      style={{ left: x, top: y, width: APERCU_TAILLE }}>
+      {apercu.imageUrl ? (
+        <img src={apercu.imageUrl} alt="" className="block w-full object-cover" style={{ height: APERCU_TAILLE }} />
+      ) : (
+        <span className="block w-full" style={{ height: APERCU_TAILLE, background: apercu.couleur || "#e8e3da" }} />
+      )}
+      <span className="block px-2.5 text-[11.5px] font-semibold text-ink text-center truncate leading-[26px]">{apercu.nom}</span>
+    </div>
+  );
+}
 
 const fmt0 = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`);
 const fmt = (n) => (n == null ? "—" : `${Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
@@ -110,6 +153,11 @@ export default function FicheProduit({ data }) {
   // Une seule categorie de coloris depliee a la fois — en ouvrir une referme
   // la precedente.
   const [paletteOuverte, setPaletteOuverte] = useState(null);
+  // Agrandissement du coloris survole ou maintenu.
+  const [apercu, setApercu] = useState(null);
+  const minuterieAppui = useRef(null);
+  const appuiLongFait = useRef(false);
+  const dernierToucher = useRef(0);
 
   // Coloris rattachés aux valeurs d'un axe (finitionsParValeur).
   //
@@ -263,6 +311,42 @@ export default function FicheProduit({ data }) {
     setFinitionsSel((f) => oublier(f, "axe:"));
     // Un axe retire doit etre repose : l effet ne fait que config -> recap.
     if (posterieurs.length) setPhase("config");
+  };
+
+  const ouvrirApercu = (el, f) => {
+    const r = el.getBoundingClientRect();
+    setApercu({ nom: f.nom, imageUrl: f.imageUrl, couleur: f.couleur, x: r.left + r.width / 2, haut: r.top, bas: r.bottom });
+  };
+
+  const fermerApercu = () => {
+    clearTimeout(minuterieAppui.current);
+    minuterieAppui.current = null;
+    setApercu(null);
+  };
+
+  // Apres un toucher, le navigateur emet des evenements souris de
+  // compatibilite — dont un mouseenter qui rouvrait l apercu juste referme.
+  // On ignore donc le survol dans la foulee d un toucher.
+  const finToucher = () => {
+    dernierToucher.current = Date.now();
+    fermerApercu();
+  };
+
+  const survoler = (el, f) => {
+    if (Date.now() - dernierToucher.current < DELAI_SOURIS) return;
+    ouvrirApercu(el, f);
+  };
+
+  // Le maintien tient lieu de survol au doigt. Un balayage ou un appui bref
+  // l annule — sans quoi l apercu s ouvrirait en faisant defiler la page.
+  const demarrerAppui = (el, f) => {
+    dernierToucher.current = Date.now();
+    appuiLongFait.current = false;
+    clearTimeout(minuterieAppui.current);
+    minuterieAppui.current = setTimeout(() => {
+      appuiLongFait.current = true;
+      ouvrirApercu(el, f);
+    }, APPUI_LONG);
   };
 
   const choisirFinition = (groupeId, finitionId) => {
@@ -439,8 +523,22 @@ export default function FicheProduit({ data }) {
                             const actif = selectionneeId === f.id;
                             return (
                               <button key={f.id} type="button"
-                                onClick={() => choisirColoris(g, f)} title={blocEcarte ? `${f.nom} — bascule sur « ${bloc.nom || valeurBloc} »` : f.nom}
-                                className="flex flex-col items-center gap-1.5 w-[52px]">
+                                onClick={() => {
+                                  // Un maintien sert à regarder la matière, pas
+                                  // à choisir : le clic qui suit est ignoré.
+                                  if (appuiLongFait.current) { appuiLongFait.current = false; return; }
+                                  choisirColoris(g, f);
+                                }}
+                                onMouseEnter={(e) => survoler(e.currentTarget, f)}
+                                onMouseLeave={fermerApercu}
+                                onTouchStart={(e) => demarrerAppui(e.currentTarget, f)}
+                                onTouchMove={finToucher}
+                                onTouchEnd={finToucher}
+                                onTouchCancel={finToucher}
+                                onContextMenu={(e) => e.preventDefault()}
+                                title={blocEcarte ? `${f.nom} — bascule sur « ${bloc.nom || valeurBloc} »` : f.nom}
+                                style={{ WebkitTouchCallout: "none" }}
+                                className="flex flex-col items-center gap-1.5 w-[52px] select-none">
                                 <span className={`rounded-full border-2 overflow-hidden transition block w-[42px] h-[42px] ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
                                   {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
                                 </span>
@@ -646,6 +744,8 @@ export default function FicheProduit({ data }) {
           )}
         </div>
       </div>
+
+      <ApercuColoris apercu={apercu} />
     </div>
   );
 }
