@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { limiter, adresseDe, reponseTropDeRequetes } from "@/lib/limiteDebit";
 import { randomBytes } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { envoyerDevis, envoyerDevisClient } from "@/lib/emails";
@@ -20,6 +21,10 @@ async function genererNumero() {
 }
 
 export async function POST(req) {
+  // Chaque demande declenche deux emails, l'un a la societe, l'autre au client.
+  const debit = limiter(`devis:${adresseDe(req)}`, 5, 10 * 60_000);
+  if (!debit.ok) return reponseTropDeRequetes(debit.retenteDans);
+
   try {
     const d = await req.json();
 

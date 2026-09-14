@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { limiter, adresseDe, reponseTropDeRequetes } from "@/lib/limiteDebit";
 import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { envoyerReinitialisationMotDePasse } from "@/lib/emails";
@@ -6,6 +7,10 @@ import { envoyerReinitialisationMotDePasse } from "@/lib/emails";
 export const runtime = "nodejs";
 
 export async function POST(req) {
+  // Chaque demande envoie un email a une adresse qu'on ne choisit pas.
+  const debit = limiter(`mdp-oublie:${adresseDe(req)}`, 5, 15 * 60_000);
+  if (!debit.ok) return reponseTropDeRequetes(debit.retenteDans);
+
   try {
     const { email } = await req.json();
     if (!email?.trim()) {

@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
+import { limiter, adresseDe, reponseTropDeRequetes } from "@/lib/limiteDebit";
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
 export async function POST(req) {
+  // Un client se trompe de numero deux ou trois fois, pas vingt : au-dela c'est une enumeration.
+  const debit = limiter(`suivi:${adresseDe(req)}`, 20, 10 * 60_000);
+  if (!debit.ok) return reponseTropDeRequetes(debit.retenteDans);
+
   try {
     const { numero, email } = await req.json();
 

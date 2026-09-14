@@ -9,6 +9,10 @@ import { montantTVA, TVA_DEFAUT } from "@/lib/tva";
 import { getCampagnesActives } from "@/lib/promotions";
 import { attacherCampagnes } from "@/lib/catalogue";
 
+// Quantité maximale par ligne de commande en ligne. Au-delà, c'est un projet
+// d'aménagement : il se chiffre en devis, pas au panier.
+const QUANTITE_MAX = 200;
+
 // Génère un numéro de commande lisible : CB-2026-0001
 async function genererNumero() {
   const annee = new Date().getFullYear();
@@ -91,7 +95,10 @@ export async function POST(req) {
 
     const lignes = [];
     for (const it of items) {
-      const quantite = Math.max(1, parseInt(it.quantite) || 1);
+      // Le plancher était posé, pas le plafond : rien n'empêchait une commande
+      // de 999 999 unités, créée en base avant même le paiement. Au-delà de
+      // QUANTITE_MAX, c'est un projet d'aménagement — il passe par un devis.
+      const quantite = Math.min(QUANTITE_MAX, Math.max(1, parseInt(it.quantite) || 1));
 
       // ── Option additionnelle inline : prix vérifié depuis optionsAdditionnelles de la fiche parente ──
       if (it.optionId) {

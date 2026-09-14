@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
+import { limiter, adresseDe, reponseTropDeRequetes } from "@/lib/limiteDebit";
 import { envoyerContact } from "@/lib/emails";
 
 export const runtime = "nodejs";
 
 export async function POST(req) {
+  // Un visiteur n'ecrit pas cinq fois en dix minutes ; un robot, si.
+  const debit = limiter(`contact:${adresseDe(req)}`, 5, 10 * 60_000);
+  if (!debit.ok) return reponseTropDeRequetes(debit.retenteDans);
+
   try {
     const { nom, email, telephone, sujet, message } = await req.json();
 
