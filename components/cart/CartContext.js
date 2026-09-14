@@ -64,7 +64,10 @@ export function CartProvider({ children }) {
         designation: produit.designation,
         marque: produit.marque || null,
         image: produit.image || null,
-        prix: produit.prix,          // prix unitaire HT (déjà calculé avec promo)
+        // Prix d AFFICHAGE uniquement. Le paiement et le devis le recalculent
+        // depuis la base et ne lisent jamais cette valeur : un panier garde en
+        // localStorage un montant qui peut avoir vieilli de plusieurs mois.
+        prixAffichage: produit.prix,
         finition: finition || null,
         quantite,
         parentId: produit.parentId || null,   // si renseigné → c'est une option rattachée à un produit
@@ -95,10 +98,14 @@ export function CartProvider({ children }) {
   const clear = useCallback(() => setItems([]), []);
 
   const count = items.reduce((sum, it) => sum + it.quantite, 0);
-  const totalHT = items.reduce((sum, it) => sum + it.prix * it.quantite, 0);
+  // Total indicatif, cote navigateur. Le montant facture est celui que
+  // /api/commande/checkout recalcule. prix : ancien nom, pour les paniers
+  // deja enregistres en localStorage avant le renommage.
+  const prixLigneAffichee = (it) => it.prixAffichage ?? it.prix ?? 0;
+  const totalHT = items.reduce((sum, it) => sum + prixLigneAffichee(it) * it.quantite, 0);
 
   return (
-    <CartContext.Provider value={{ items, count, totalHT, loaded, open, setOpen, addItem, removeItem, updateQuantite, clear }}>
+    <CartContext.Provider value={{ items, count, totalHT, prixLigneAffichee, loaded, open, setOpen, addItem, removeItem, updateQuantite, clear }}>
       {children}
     </CartContext.Provider>
   );

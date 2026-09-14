@@ -119,8 +119,15 @@ export default function FicheProduit({ data }) {
     ? null
     : declMatch || (declLignes.length === 1 && axesDecl.length > 0 ? declLignes[0] : null);
 
-  const prixResolu = declinaisonFinale ? Number(declinaisonFinale.prixVenteHT) : carte.prixMini;
-  const prixAffiche = surDevis ? (carte.prixAPartir ?? prixResolu) : prixResolu;
+  // Prix arrêtés par le serveur, promo comprise — la fiche n'en calcule aucun,
+  // elle lit celui de la déclinaison choisie. C'est ce qui garantit qu'elle
+  // affiche le montant que le paiement facturera.
+  const prixAffiche = declinaisonFinale ? declinaisonFinale.prixHT : carte.prixMini;
+  const prixBarre = declinaisonFinale
+    ? (declinaisonFinale.enPromo ? declinaisonFinale.prixBase : null)
+    : (carte.enPromo ? carte.prixMiniBase : null);
+  // TODO : 20 % en dur ici comme dans le panier, la commande et le paiement,
+  // alors que Reglages.tva est réglable dans l'admin. À unifier séparément.
   const ttc = !surDevis && prixAffiche != null ? prixAffiche * 1.2 : null;
 
   const referenceFinale = declinaisonFinale
@@ -241,6 +248,9 @@ export default function FicheProduit({ data }) {
             <div className="flex items-end gap-2.5 lg:gap-3 mt-3 lg:mt-5">
               {(surDevis || !referenceFinale) && <span className="text-ink-soft text-[13px] lg:text-[15px] mb-0.5 lg:mb-1">à partir de</span>}
               <span className="font-display font-bold text-[26px] lg:text-3xl">{surDevis ? fmt0(prixAffiche) : fmt2(prixAffiche)}</span>
+              {prixBarre != null && (
+                <span className="text-ink-soft line-through text-[15px] lg:text-base mb-0.5 lg:mb-1">{fmt2(prixBarre)}</span>
+              )}
               <span className="text-ink-soft text-[13px] lg:text-base mb-0.5 lg:mb-1">HT</span>
             </div>
           )}

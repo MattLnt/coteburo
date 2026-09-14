@@ -11,7 +11,7 @@ const ICONE_MEUBLE = (<><path d="M7 11V6a2.5 2.5 0 0 1 2.5-2.5h5A2.5 2.5 0 0 1 1
 const ICONE_POUBELLE = (<><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" /></>);
 
 export default function PanierPage() {
-  const { items, totalHT, updateQuantite, removeItem, loaded } = useCart();
+  const { items, totalHT, prixLigneAffichee, updateQuantite, removeItem, loaded } = useCart();
 
   const tva = totalHT * 0.2;
   const totalTTCProduits = totalHT + tva;
@@ -108,8 +108,8 @@ export default function PanierPage() {
         <div className="flex items-center justify-between gap-3 mt-3 pt-2.5 sm:pt-3 border-t border-line sm:border-none">
           {selecteurQte(it)}
           <div className="text-right">
-            <p className="font-display font-bold text-ink text-[15px] sm:text-base">{fmt(it.prix * it.quantite)} <span className="text-[10.5px] sm:text-[12px] font-normal text-ink-soft">HT</span></p>
-            {it.quantite > 1 && <p className="text-[10.5px] sm:text-[12px] text-ink-soft mt-0.5">{fmt(it.prix)} l&apos;unité</p>}
+            <p className="font-display font-bold text-ink text-[15px] sm:text-base">{fmt(prixLigneAffichee(it) * it.quantite)} <span className="text-[10.5px] sm:text-[12px] font-normal text-ink-soft">HT</span></p>
+            {it.quantite > 1 && <p className="text-[10.5px] sm:text-[12px] text-ink-soft mt-0.5">{fmt(prixLigneAffichee(it))} l&apos;unité</p>}
           </div>
         </div>
       </div>
@@ -138,7 +138,7 @@ export default function PanierPage() {
           {/* Sur desktop, quantité et prix restent sur la même ligne */}
           <div className="hidden sm:flex items-center gap-3 shrink-0">
             {selecteurQte(it, true)}
-            <p className="font-display font-bold text-ink text-[14px] whitespace-nowrap min-w-[92px] text-right">{fmt(it.prix * it.quantite)} <span className="text-[11px] font-normal text-ink-soft">HT</span></p>
+            <p className="font-display font-bold text-ink text-[14px] whitespace-nowrap min-w-[92px] text-right">{fmt(prixLigneAffichee(it) * it.quantite)} <span className="text-[11px] font-normal text-ink-soft">HT</span></p>
           </div>
 
           {boutonSuppr(it, true)}
@@ -147,7 +147,7 @@ export default function PanierPage() {
         {/* Sur mobile, quantité et prix passent en dessous */}
         <div className="sm:hidden flex items-center justify-between gap-3 mt-2.5 pt-2 border-t border-line">
           {selecteurQte(it, true)}
-          <p className="font-display font-bold text-ink text-[13.5px] whitespace-nowrap">{fmt(it.prix * it.quantite)} <span className="text-[10px] font-normal text-ink-soft">HT</span></p>
+          <p className="font-display font-bold text-ink text-[13.5px] whitespace-nowrap">{fmt(prixLigneAffichee(it) * it.quantite)} <span className="text-[10px] font-normal text-ink-soft">HT</span></p>
         </div>
       </div>
     </div>

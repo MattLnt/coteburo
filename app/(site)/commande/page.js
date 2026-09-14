@@ -31,7 +31,7 @@ const MODES = [
 
 export default function CommandePage() {
   const { data: session, status: sessionStatus } = useSession();
-  const { items, totalHT, loaded } = useCart();
+  const { items, totalHT, prixLigneAffichee, loaded } = useCart();
   const [form, setForm] = useState({
     email: "", telephone: "", prenom: "", nom: "", societe: "",
     adresse: "", complement: "", codePostal: "", ville: "", pays: "France",
@@ -283,7 +283,7 @@ export default function CommandePage() {
             {it.finition && <p className="text-[11px] sm:text-[12px] text-ink-soft line-clamp-1">{it.finition}</p>}
             <p className="text-[11px] sm:text-[12px] text-ink-soft">Qté : {it.quantite}</p>
           </div>
-          <span className="font-semibold whitespace-nowrap">{fmt(it.prix * it.quantite)}</span>
+          <span className="font-semibold whitespace-nowrap">{fmt(prixLigneAffichee(it) * it.quantite)}</span>
         </div>
       ))}
     </div>

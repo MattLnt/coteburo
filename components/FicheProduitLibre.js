@@ -129,7 +129,13 @@ export default function FicheProduitLibre({ data }) {
   // alors devant le prix unique, et le « à partir de » disparaîtrait à tort.
   const declinaisonFinale =
     axes.length > 0 ? match || (declinaisons.length === 1 ? declinaisons[0] : null) : null;
-  const prixHT = declinaisonFinale ? declinaisonFinale.prixVenteHT : (declinaisons.length ? Math.min(...declinaisons.map((d) => Number(d.prixVenteHT) || 0)) : null);
+  // Prix arretes par le serveur, promo comprise : la fiche lit, elle ne calcule
+  // plus. carte.prixMini porte deja le « a partir de ».
+  const prixHT = declinaisonFinale ? declinaisonFinale.prixHT : carte.prixMini;
+  const prixBarre = declinaisonFinale
+    ? (declinaisonFinale.enPromo ? declinaisonFinale.prixBase : null)
+    : (carte.enPromo ? carte.prixMiniBase : null);
+  // TODO : 20 % en dur, comme ailleurs, alors que Reglages.tva est reglable.
   const ttc = prixHT != null ? prixHT * 1.2 : null;
 
   const nbRepondu = historique.length;
@@ -236,6 +242,9 @@ export default function FicheProduitLibre({ data }) {
           <div className="flex items-end gap-2.5 lg:gap-3 mt-3 lg:mt-5">
             {!declinaisonFinale && <span className="text-ink-soft text-[13px] lg:text-[15px] mb-0.5 lg:mb-1">à partir de</span>}
             <span className="font-display font-bold text-[26px] lg:text-3xl">{fmt(prixHT)}</span>
+            {prixBarre != null && (
+              <span className="text-ink-soft line-through text-[15px] lg:text-base mb-0.5 lg:mb-1">{fmt(prixBarre)}</span>
+            )}
             <span className="text-ink-soft text-[13px] lg:text-base mb-0.5 lg:mb-1">HT</span>
           </div>
           {ttc != null && <p className="text-[11.5px] lg:text-[13px] text-ink-soft mt-1">{fmt(ttc)} TTC</p>}
