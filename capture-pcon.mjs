@@ -198,11 +198,15 @@ export const AXE_MATIERE = [
   "finition plateau",
   "finition top box",
   "finition top",
+  // Sur les armoires à portes coulissantes Quiétude, « Finition intérieure »
+  // gouverne les portes et « Finition structure » le caisson. Le libellé
+  // trompe : c'est bien la façade qu'on voit. Elle passe donc devant, les
+  // portes étant l'essentiel visuel du produit.
+  "finition intérieure",
   "finition structure",
   "finition voile de fond suspendu",
   "finition écran",
   "finition séparateur",
-  "finition intérieure",
   "finition extérieure",
   "revêtement",
   "finition b-box",
@@ -222,6 +226,11 @@ export const AXE_MATIERE = [
 // propose des configurations de tiroirs, pas des teintes. Le croiser
 // coûtait deux décors sur huit sans montrer de finition supplémentaire.
 export const AXE_STRUCTURE = [
+  // Quand « Finition intérieure » a pris la matière, « Finition structure »
+  // reste disponible comme second axe : on croise alors les portes et le
+  // caisson. Là où elle est seule, elle est retenue comme matière et ne peut
+  // plus être candidate ici — choisirCandidat écarte la propriété déjà prise.
+  "finition structure",
   "piétement",
   "piètement",
   "finition pieds",
