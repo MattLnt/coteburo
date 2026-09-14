@@ -40,22 +40,40 @@ const typeDe = (designation) => {
   return best;
 };
 
-// Nom de la fiche : le type suivi de la gamme, sans répéter un mot que les
-// deux portent — « Banquette Arco Banquette » et « Fauteuil lounge Arco
-// Lounge » bégayaient.
-const nomFiche = (type, gamme) => {
-  // Le type s'écrit en minuscules, la gamme garde ses capitales : chaque mot
-  // conserve la casse de sa source, et le premier gagne en cas de doublon.
-  const mots = [...joli(type).split(/\s+/), ...gamme.split(/\s+/)];
+// Ce que le libellé du tarif dit en plus de la gamme et du type : « ARCO CHIC »
+// porte « CHIC », qui distingue une ligne de revêtement. Deux libellés ainsi
+// qualifiés font deux fiches — le client cherche une chauffeuse, et la Chic
+// n'est pas la même.
+const MOTS_TYPE = new Set(TYPES.flatMap((t) => t.split(/\s+/)).map(norm));
+
+const qualifiantDe = (libelle, gamme, type) => {
+  const retirer = new Set([...gamme.split(/\s+/), ...(type || "").split(/\s+/)].map(norm));
+  return libelle
+    .split(/\s+/)
+    // Un mot de type dans le libellé — « ARCO COUSSIN », « TECSEAT POUTRE » —
+    // dit le produit, pas sa variante : il ne qualifie rien.
+    .filter((m) => m && !retirer.has(norm(m)) && !MOTS_TYPE.has(norm(m)))
+    .map(joli)
+    .join(" ");
+};
+
+// Nom de la fiche, à la forme Buronomic : « Bureau plan droit - Astro », donc
+// « Chauffeuse - Arco ». Un mot porté par le type comme par la gamme n'est pas
+// répété : « Banquette - Arco Banquette » bégaierait.
+const nomFiche = (type, gamme, qualifiant) => {
   const vus = new Set();
-  const gardes = [];
-  for (const m of mots) {
+  const garder = (mots) => mots.filter((m) => {
     const k = norm(m);
-    if (!k || vus.has(k)) continue;
+    if (!k || vus.has(k)) return false;
     vus.add(k);
-    gardes.push(m);
-  }
-  return gardes.join(" ");
+    return true;
+  });
+  const g = garder(joli(type).split(/\s+/)).join(" ");
+  const qual = qualifiant ? qualifiant.split(/\s+/) : [];
+  // « Scotty » dérive de « Scott » : le dire deux fois n'apprend rien.
+  const gam = gamme.split(/\s+/).filter((m) => !qual.some((q) => norm(q) !== norm(m) && norm(q).startsWith(norm(m))));
+  const d = garder([...gam, ...qual]).join(" ");
+  return d ? `${g} - ${d}` : g;
 };
 
 // Valeurs d'axe lues dans la désignation.
@@ -91,13 +109,15 @@ async function main() {
   for (const l of retenues) {
     const type = typeDe(l.designation);
     if (!type) sansType.push(l);
-    const cle = `${l.gammeCatalogue.nom} ‖ ${type || l.designation}`;
+    const qualifiant = qualifiantDe(l.gamme, l.gammeCatalogue.nom, type);
+    const cle = `${l.gammeCatalogue.nom} ‖ ${qualifiant} ‖ ${type || l.designation}`;
     if (!fiches.has(cle)) {
       fiches.set(cle, {
         gamme: l.gammeCatalogue.nom,
         surDevis: !!l.gammeCatalogue.surDevis,
         type: type || null,
-        nom: type ? nomFiche(type, l.gammeCatalogue.nom) : joli(l.designation),
+        qualifiant: qualifiant || null,
+        nom: type ? nomFiche(type, l.gammeCatalogue.nom, qualifiant) : joli(l.designation),
         espace: l.section,
         emplacement: (type && EMPLACEMENTS_PAR_TYPE[type]) || ESPACES[l.section] || null,
         pageCatalogue: l.pageCatalogue,
@@ -124,6 +144,30 @@ async function main() {
       };
     });
     f.axes = Object.entries(axes).map(([id, vals]) => ({ id, valeurs: [...vals] }));
+
+    // Deux axes qui disent la même chose n'en font qu'un : sur le pouf Arco,
+    // « structure » vaut BLEUE/NOIRE/VERTE là où « coloris » vaut BLEU/GRIS/
+    // VERT — même information, deux fois. On écarte l'axe dont les valeurs se
+    // déduisent une à une d'un autre, en gardant le coloris, plus parlant.
+    const redondant = (a, b) => {
+      const m = new Map();
+      for (const d of f.declinaisons) {
+        const va = d.valeurs[a], vb = d.valeurs[b];
+        if (va == null || vb == null) return false;
+        if (m.has(va) && m.get(va) !== vb) return false;
+        m.set(va, vb);
+      }
+      return m.size === new Set([...m.values()]).size;
+    };
+    f.axesEcartes = [];
+    for (const a of [...f.axes]) {
+      if (a.id === "coloris") continue;
+      if (f.axes.some((b) => b.id === "coloris") && redondant(a.id, "coloris")) {
+        f.axes = f.axes.filter((x) => x.id !== a.id);
+        f.declinaisons.forEach((d) => delete d.valeurs[a.id]);
+        f.axesEcartes.push(a.id);
+      }
+    }
     f.prixMini = Math.min(...f.declinaisons.map((d) => d.prixTarifHT).filter((p) => p != null).concat(Infinity));
     if (!isFinite(f.prixMini)) f.prixMini = null;
     delete f.lignes;
