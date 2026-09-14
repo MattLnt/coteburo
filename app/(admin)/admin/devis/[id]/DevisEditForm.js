@@ -63,7 +63,12 @@ export default function DevisEditForm({ devis }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const [lignes, setLignes] = useState(devis.lignes.map((l) => ({ ...l, prixHT: String(l.prixHT), quantite: String(l.quantite) })));
+  const [lignes, setLignes] = useState(devis.lignes.map((l) => ({
+    ...l,
+    prixHT: String(l.prixHT),
+    quantite: String(l.quantite),
+    ecoContribution: String(l.ecoContribution ?? 0),
+  })));
   const [form, setForm] = useState({
     adresse: devis.adresse || "",
     complement: devis.complement || "",
@@ -100,7 +105,7 @@ export default function DevisEditForm({ devis }) {
   };
   const supprimerLigne = (i) => { setLignes((ls) => ls.filter((_, j) => j !== i)); setSaved(false); setMessage(null); };
   const ajouterLigneLibre = () => {
-    setLignes((ls) => [...ls, { id: `new-${Date.now()}`, designation: "", config: null, imageUrl: null, prixHT: "0", quantite: "1", codeRacine: null, vitrineId: null }]);
+    setLignes((ls) => [...ls, { id: `new-${Date.now()}`, designation: "", config: null, imageUrl: null, prixHT: "0", ecoContribution: "0", quantite: "1", codeRacine: null, vitrineId: null }]);
     setSaved(false); setMessage(null);
   };
 
@@ -144,6 +149,10 @@ export default function DevisEditForm({ devis }) {
     const p = produitOuvert;
     if (!p) return;
     const prix = declChoisie ? declChoisie.prixHT : (p.prixUnitaire ?? 0);
+    // L'éco-participation suit la déclinaison : elle est figée à la vente,
+    // comme le prix. Un devis émis aujourd'hui garde son montant même si
+    // le fabricant révise son barème l'an prochain.
+    const eco = declChoisie ? (declChoisie.ecoContribution ?? 0) : (p.ecoUnitaire ?? 0);
     setLignes((ls) => [...ls, {
       id: `new-${Date.now()}`,
       vitrineId: p.id,
@@ -155,6 +164,7 @@ export default function DevisEditForm({ devis }) {
       config: declChoisie ? declChoisie.libelle : null,
       imageUrl: p.imageUrl,
       prixHT: String(prix),
+      ecoContribution: String(eco),
       quantite: String(qteAjout),
       slug: p.slug,
       categorieSlug: p.categorieSlug,
@@ -167,12 +177,15 @@ export default function DevisEditForm({ devis }) {
 
   const totaux = useMemo(() => {
     const sousTotal = lignes.reduce((s, l) => s + nb(l.prixHT) * (parseInt(l.quantite, 10) || 0), 0);
+    // L'éco-participation ne subit pas la remise : c'est une taxe
+    // reversée à l'identique, sur laquelle Côté BURO ne peut rien céder.
+    const totalEco = lignes.reduce((s, l) => s + nb(l.ecoContribution) * (parseInt(l.quantite, 10) || 0), 0);
     const remise = form.remiseType === "montant"
       ? Math.min(nb(form.remiseValeur), sousTotal)
       : sousTotal * (nb(form.remiseValeur) / 100);
-    const totalHT = sousTotal - remise + nb(form.fraisLivraison) + nb(form.fraisInstallation);
+    const totalHT = sousTotal - remise + totalEco + nb(form.fraisLivraison) + nb(form.fraisInstallation);
     const totalTVA = totalHT * 0.2;
-    return { sousTotal, remise, totalHT, totalTVA, totalTTC: totalHT + totalTVA };
+    return { sousTotal, remise, totalEco, totalHT, totalTVA, totalTTC: totalHT + totalTVA };
   }, [lignes, form]);
 
   const enregistrer = async () => {
@@ -237,6 +250,7 @@ export default function DevisEditForm({ devis }) {
   const infosProjet = [devis.typeProjet, devis.surface, devis.delai, devis.budget].filter(Boolean);
   const telLink = devis.telephone ? `tel:${devis.telephone.replace(/\s/g, "")}` : null;
   const prixAjout = declChoisie ? declChoisie.prixHT : (produitOuvert?.prixUnitaire ?? 0);
+  const ecoAjout = declChoisie ? (declChoisie.ecoContribution ?? 0) : (produitOuvert?.ecoUnitaire ?? 0);
   const dejaEnvoye = ["envoye", "paiement_en_cours", "accepte", "refuse", "expire"].includes(devis.statut);
   // Modifier un devis déjà accepté fausserait la commande déjà passée.
   const verrouille = devis.statut === "accepte";
@@ -390,7 +404,7 @@ export default function DevisEditForm({ devis }) {
               </div>
 
               <div style={{ display: "flex", gap: 7, alignItems: "flex-end" }}>
-                <div style={{ width: 62 }}>
+                <div style={{ width: 58 }}>
                   <label style={mini}>Qté</label>
                   <input style={{ ...champ, padding: "8px 10px" }} value={l.quantite} onChange={(e) => setLigne(i, "quantite", e.target.value)} inputMode="numeric" disabled={verrouille} />
                 </div>
@@ -398,7 +412,13 @@ export default function DevisEditForm({ devis }) {
                   <label style={mini}>Prix unitaire HT</label>
                   <input style={{ ...champ, padding: "8px 10px" }} value={l.prixHT} onChange={(e) => setLigne(i, "prixHT", e.target.value)} inputMode="decimal" disabled={verrouille} />
                 </div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#23262a", margin: 0, paddingBottom: 9, whiteSpace: "nowrap", minWidth: 78, textAlign: "right" }}>{euro(totalLigne)}</p>
+                {/* Modifiable : le barème du fabricant peut évoluer, et
+                    une ligne libre — transport, prestation — n'en a pas. */}
+                <div style={{ width: 78 }}>
+                  <label style={mini} title="Éco-participation unitaire">Éco-part. €</label>
+                  <input style={{ ...champ, padding: "8px 10px" }} value={l.ecoContribution ?? "0"} onChange={(e) => setLigne(i, "ecoContribution", e.target.value)} inputMode="decimal" disabled={verrouille} />
+                </div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#23262a", margin: 0, paddingBottom: 9, whiteSpace: "nowrap", minWidth: 72, textAlign: "right" }}>{euro(totalLigne)}</p>
               </div>
             </div>
           );
@@ -455,6 +475,12 @@ export default function DevisEditForm({ devis }) {
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5, marginBottom: 7 }}>
               <span style={{ color: "#9aa0a8" }}>Remise {form.remiseType === "pourcentage" ? `${nb(form.remiseValeur)} %` : ""}</span>
               <span style={{ color: "#d9551a", fontWeight: 600 }}>− {euro(totaux.remise)}</span>
+            </div>
+          )}
+          {totaux.totalEco > 0 && (
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5, marginBottom: 7 }}>
+              <span style={{ color: "#9aa0a8" }} title="Reversée à l'éco-organisme, sans marge">Éco-participation</span>
+              <span style={{ color: "#23262a", fontWeight: 600 }}>{euro(totaux.totalEco)}</span>
             </div>
           )}
           {nb(form.fraisLivraison) > 0 && (
@@ -643,7 +669,12 @@ export default function DevisEditForm({ devis }) {
                                 background: actif ? "#fce6d6" : "#fff",
                               }}>
                               <span style={{ fontSize: 13.5, color: actif ? "#d9551a" : "#23262a", fontWeight: actif ? 700 : 400, minWidth: 0 }}>{d.libelle}</span>
-                              <span style={{ fontSize: 14, fontWeight: 700, color: actif ? "#d9551a" : "#23262a", whiteSpace: "nowrap" }}>{euro0(d.prixHT)}</span>
+                              <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", flexShrink: 0 }}>
+                                <span style={{ fontSize: 14, fontWeight: 700, color: actif ? "#d9551a" : "#23262a", whiteSpace: "nowrap" }}>{euro0(d.prixHT)}</span>
+                                {d.ecoContribution > 0 && (
+                                  <span style={{ fontSize: 10, color: "#9aa0a8", whiteSpace: "nowrap", marginTop: 1 }}>+ {euro(d.ecoContribution)} éco</span>
+                                )}
+                              </span>
                             </button>
                           );
                         })}
@@ -665,7 +696,7 @@ export default function DevisEditForm({ devis }) {
                   </div>
                   <button onClick={confirmerAjout}
                     style={{ width: "100%", padding: 13, borderRadius: 999, background: "#f0661b", color: "#fff", border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
-                    Ajouter au devis · {euro0(prixAjout * qteAjout)}
+                    Ajouter au devis · {euro0((prixAjout + ecoAjout) * qteAjout)}
                   </button>
                 </div>
               </>
