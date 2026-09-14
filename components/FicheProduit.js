@@ -16,7 +16,11 @@ const APERCU_COLORIS = 6;
 
 // Agrandissement du coloris au survol. Une pastille de 42 px donne la teinte
 // mais rien de la matiere : un tisse, un grain, un cuir s y ressemblent tous.
-const APERCU_TAILLE = 180;
+//
+// Les sources ne se valent pas : les coloris de la table Finition font
+// 1000 px de cote et passent sans peine, les 144 tissus Sokoa portes par les
+// axes font 96 px de mediane et sont donc etires. Taille choisie a 200 px.
+const APERCU_TAILLE = 200;
 const APERCU_LIBELLE = 26;
 // Au doigt, il n y a pas de survol : l apercu vient au maintien. Assez long
 // pour ne pas se declencher sur un appui ordinaire, assez court pour qu on

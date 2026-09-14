@@ -42,6 +42,3 @@ next-env.d.ts
 
 /app/generated/prisma
 prisma/buronomic_import.json
-# Classeur de renommage Sokoa : regenerable, et il grossit de ses vignettes.
-prisma/sokoa-packshots.xlsx
-prisma/sokoa-renommage.json
