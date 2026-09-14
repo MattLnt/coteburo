@@ -1,10 +1,11 @@
 import { PageLegale, Section, Placeholder } from "@/components/PageLegale";
+import { SOCIETE, adresseUneLigne } from "@/lib/societe";
 
 export const metadata = { title: "Conditions Générales de Vente" };
 
 export default function CGVPage() {
   return (
-    <PageLegale titre="Conditions Générales de Vente" maj="à compléter">
+    <PageLegale titre="Conditions Générales de Vente" maj="15 septembre 2026">
       <Section titre="Article 1 — Objet et champ d'application">
         <p>Les présentes Conditions Générales de Vente (CGV) régissent les ventes de mobilier et d&apos;équipements de bureau conclues entre la société Côté BURO (ci-après « le Vendeur ») et tout client (ci-après « le Client ») via le site coteburo.fr. Toute commande implique l&apos;acceptation sans réserve des présentes CGV.</p>
         <p>Le Vendeur se réserve le droit de modifier ses CGV à tout moment. Les CGV applicables sont celles en vigueur à la date de la commande.</p>
@@ -41,6 +42,7 @@ export default function CGVPage() {
         <p>Conformément à l&apos;article L.221-18 du Code de la consommation, le Client particulier (non professionnel) dispose d&apos;un délai de <strong>14 jours</strong> à compter de la réception des produits pour exercer son droit de rétractation, sans avoir à justifier de motif.</p>
         <p>Ce droit ne s&apos;applique pas aux biens confectionnés selon les spécifications du Client ou nettement personnalisés (article L.221-28 du Code de la consommation), ce qui concerne notamment les produits avec finitions personnalisées.</p>
         <p>Les frais de retour sont à la charge du Client. Le produit doit être retourné dans son état et son emballage d&apos;origine. Le remboursement intervient dans les 14 jours suivant la récupération du bien.</p>
+        <p>Pour exercer ce droit, le Client peut écrire à {SOCIETE.email} ou utiliser le formulaire type reproduit à l&apos;article 11.</p>
       </Section>
 
       <Section titre="Article 8 — Garanties">
@@ -49,13 +51,33 @@ export default function CGVPage() {
       </Section>
 
       <Section titre="Article 9 — Réclamations et médiation">
-        <p>Pour toute réclamation, le Client peut contacter le Vendeur à contact@coteburo.fr ou au 07 81 02 06 31.</p>
+        <p>Pour toute réclamation, le Client peut contacter le Vendeur à {SOCIETE.email} ou au {SOCIETE.telephone}.</p>
         <p>Conformément à l&apos;article L.612-1 du Code de la consommation, le Client consommateur peut recourir gratuitement à un médiateur de la consommation : <Placeholder>coordonnées du médiateur à compléter</Placeholder>.</p>
-        <p>Le Client peut également recourir à la plateforme européenne de règlement en ligne des litiges : ec.europa.eu/consumers/odr</p>
       </Section>
 
       <Section titre="Article 10 — Droit applicable et litiges">
         <p>Les présentes CGV sont soumises au droit français. En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux compétents seront ceux du ressort du siège social du Vendeur, sous réserve des dispositions légales impératives applicables aux consommateurs.</p>
+      </Section>
+
+      {/* Formulaire type de rétractation — obligatoire au titre de l'article
+          L.221-5, dans la forme fixée par l'annexe à l'article R.221-1. */}
+      <Section titre="Article 11 — Formulaire type de rétractation">
+        <p>Le présent formulaire n&apos;est à compléter et renvoyer que si le Client souhaite se rétracter de sa commande, hors exceptions prévues à l&apos;article 7.</p>
+        <div className="mt-4 rounded-xl border border-line bg-surface-2 p-5 text-[13.5px] leading-relaxed">
+          <p className="mb-3">
+            À l&apos;attention de {SOCIETE.nom}, {adresseUneLigne()} — {SOCIETE.email}
+          </p>
+          <p className="mb-3">
+            Je vous notifie par la présente ma rétractation du contrat portant sur la vente du bien ci-dessous :
+          </p>
+          <p className="mb-1">Commandé le : ………………………………  Reçu le : ………………………………</p>
+          <p className="mb-1">Numéro de commande : ………………………………</p>
+          <p className="mb-1">Désignation du ou des produits : ………………………………</p>
+          <p className="mb-1">Nom du consommateur : ………………………………</p>
+          <p className="mb-1">Adresse du consommateur : ………………………………</p>
+          <p className="mb-1">Signature du consommateur (uniquement en cas de notification sur papier) : ………………………………</p>
+          <p className="mt-3">Date : ………………………………</p>
+        </div>
       </Section>
     </PageLegale>
   );

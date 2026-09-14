@@ -1,13 +1,14 @@
 import { PageLegale, Section, Placeholder } from "@/components/PageLegale";
+import { SOCIETE, adresseUneLigne } from "@/lib/societe";
 
 export const metadata = { title: "Politique de confidentialité" };
 
 export default function ConfidentialitePage() {
   return (
-    <PageLegale titre="Politique de confidentialité" sousTitre="Protection de vos données personnelles" maj="à compléter">
+    <PageLegale titre="Politique de confidentialité" sousTitre="Protection de vos données personnelles" maj="15 septembre 2026">
       <Section titre="1. Responsable du traitement">
-        <p>Le responsable du traitement des données personnelles collectées sur coteburo.fr est la société <strong>Côté BURO</strong>, dont le siège social est situé TECH&apos;INDUS — Bât D, Porte 8, 645 rue Mayor de Montricher, 13290 Aix-en-Provence.</p>
-        <p>Contact pour toute question relative à vos données : contact@coteburo.fr</p>
+        <p>Le responsable du traitement des données personnelles collectées sur coteburo.fr est la société <strong>{SOCIETE.nom}</strong>, {SOCIETE.formeCourte} au capital de {SOCIETE.capital}, dont le siège social est situé {adresseUneLigne()}.</p>
+        <p>Contact pour toute question relative à vos données : {SOCIETE.email}</p>
       </Section>
 
       <Section titre="2. Données collectées">
@@ -41,6 +42,15 @@ export default function ConfidentialitePage() {
         <p>Vos données ne sont jamais vendues ni cédées à des tiers à des fins commerciales.</p>
       </Section>
 
+      {/* Obligation d'information de l'article 13.1.f du RGPD : le transfert
+          hors Union européenne doit être annoncé, avec le mécanisme qui
+          l'encadre. Nos quatre sous-traitants techniques sont américains. */}
+      <Section titre="5 bis. Transferts hors Union européenne">
+        <p>Stripe, Resend, Vercel et Railway sont des sociétés établies aux États-Unis. Certaines de vos données y sont donc hébergées ou traitées, hors de l&apos;Union européenne.</p>
+        <p>Ces transferts sont encadrés soit par la certification de ces prestataires au <em>Data Privacy Framework</em> UE–États-Unis, soit par les clauses contractuelles types adoptées par la Commission européenne, qui offrent des garanties appropriées au sens de l&apos;article 46 du RGPD.</p>
+        <p>Vous pouvez obtenir une copie de ces garanties en écrivant à {SOCIETE.email}.</p>
+      </Section>
+
       <Section titre="6. Durée de conservation">
         <p>Vos données de commande sont conservées pour la durée nécessaire au traitement puis archivées conformément aux obligations légales (notamment 10 ans pour les documents comptables). Les données de contact sont conservées <Placeholder>durée à préciser, ex : 3 ans</Placeholder> après le dernier contact.</p>
       </Section>
@@ -55,7 +65,7 @@ export default function ConfidentialitePage() {
           • Droit d&apos;opposition<br />
           • Droit à la portabilité de vos données
         </p>
-        <p>Pour exercer ces droits, contactez-nous à contact@coteburo.fr. Vous pouvez également introduire une réclamation auprès de la CNIL (cnil.fr).</p>
+        <p>Pour exercer ces droits, contactez-nous à {SOCIETE.email}. Vous pouvez également introduire une réclamation auprès de la CNIL (cnil.fr).</p>
       </Section>
 
       <Section titre="8. Cookies">
