@@ -1,5 +1,7 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { MediathequeLocale } from "./MediathequeLocale";
+import { mediathequeActive } from "@/app/(admin)/admin/architecture/actionsMediatheque";
 import imageCompression from "browser-image-compression";
 import { removeBackground } from "@imgly/background-removal";
 import { Icon } from "./Icon";
@@ -17,6 +19,13 @@ export function ImageUploader({ images = [], onChange }) {
   const [enAttente, setEnAttente] = useState(null);  // fichiers sélectionnés, en attente du choix détourage
   const [detourageIndex, setDetourageIndex] = useState(null); // index de l'image en cours de détourage a posteriori
   const inputRef = useRef(null);
+
+  // Médiathèque du disque : disponible seulement là où le dossier de visuels
+  // existe, c'est-à-dire en local. Le serveur de production n'a pas ces
+  // fichiers, le bouton n'y apparaît donc pas.
+  const [mediatheque, setMediatheque] = useState(false);
+  const [mediathequeOuverte, setMediathequeOuverte] = useState(false);
+  useEffect(() => { mediathequeActive().then(setMediatheque).catch(() => {}); }, []);
 
   // ─── Traitements ───
   const detourerBlobOuFichier = async (source) => {
@@ -182,9 +191,25 @@ export function ImageUploader({ images = [], onChange }) {
       </button>
       <input ref={inputRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFilesSelected(e.target.files)} />
 
+      {mediatheque && (
+        <button type="button" onClick={() => setMediathequeOuverte(true)} disabled={occupe}
+          style={{ width: "100%", marginTop: 8, padding: "11px", borderRadius: 10, border: "1px solid #e8e3da", background: "#fff",
+            cursor: occupe ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, color: "#5c616a", fontSize: 13 }}>
+          <Icon name="layers" size={17} color="#9aa0a8" />
+          <span style={{ fontWeight: 600 }}>Piocher dans les visuels fournisseurs</span>
+        </button>
+      )}
+
       <p style={{ fontSize: 12, color: "#9aa0a8", marginTop: 8 }}>
         Astuce : le bouton ✂️ sur chaque image retire le fond après coup, une par une.
       </p>
+
+      {mediathequeOuverte && (
+        <MediathequeLocale
+          onFermer={() => setMediathequeOuverte(false)}
+          onAjouter={(urls) => onChange([...images, ...urls])}
+        />
+      )}
 
       {error && <p style={{ fontSize: 12.5, color: "#d9551a", marginTop: 8 }}>{error}</p>}
 
