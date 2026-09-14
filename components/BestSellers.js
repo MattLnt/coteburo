@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import BestSellersCarousel from "@/components/BestSellersCarousel";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, urlProduit } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -19,7 +19,7 @@ export default async function BestSellers() {
     prisma.produitVitrine.findMany({
       where: { publie: true, bestSeller: true, gamme: { publie: true } },
       include: {
-        produits: { select: { prixVenteHT: true, prixPublicHT: true } },
+        produits: { select: { prixVenteHT: true, prixPublicHT: true, prixVerrouille: true } },
         gamme: { select: { venteSurDevis: true } },
         categories: { select: { slug: true }, take: 1 },
         sousCategories: { select: { slug: true }, take: 1 },
@@ -46,9 +46,14 @@ export default async function BestSellers() {
     };
   });
 
+  // Sans la marge, calculerPrixMini retombe sur les montants stockés : le
+  // carrousel affichait un prix figé là où la carte du catalogue suivait les
+  // Réglages.
+  const marge = await getMargeGlobale();
+
   const formattedNouveaux = vitrines.map((v) => {
     const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
-    const prixMini = calculerPrixMini(v, surDevis);
+    const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
     return {
       id: `vitrine:${v.id}`,
       href: urlProduit({ categorieSlug: v.categories[0]?.slug || null, sousCategorieSlug: v.sousCategories[0]?.slug || null, slug: v.slug }),

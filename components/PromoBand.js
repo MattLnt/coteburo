@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import PromoBandCarousel from "@/components/PromoBandCarousel";
 import { getPromotionsActives, appliquerPromotions } from "@/lib/promotions";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, appliquerPromoVitrine, urlProduit } from "@/lib/catalogue";
+import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -17,7 +17,7 @@ export default async function PromoBand() {
     prisma.produitVitrine.findMany({
       where: { publie: true, gamme: { publie: true }, promoPct: { not: null } },
       include: {
-        produits: { select: { prixVenteHT: true, prixPublicHT: true } },
+        produits: { select: { prixVenteHT: true, prixPublicHT: true, prixVerrouille: true } },
         gamme: { select: { venteSurDevis: true } },
         categories: { select: { slug: true }, take: 1 },
         sousCategories: { select: { slug: true }, take: 1 },
@@ -45,10 +45,14 @@ export default async function PromoBand() {
       promo: `-${calc.promoPct}%`,
     }));
 
+  // Sans la marge, calculerPrixMini retombe sur les montants stockés : le
+  // bandeau promo calculait donc sa remise sur un prix de base périmé.
+  const marge = await getMargeGlobale();
+
   const enPromoNouveaux = vitrines
     .map((v) => {
       const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
-      const prixMini = calculerPrixMini(v, surDevis);
+      const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
       const calc = appliquerPromoVitrine(v, prixMini);
       return { v, calc };
     })
