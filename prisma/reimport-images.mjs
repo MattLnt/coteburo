@@ -1,214 +1,215 @@
 import "dotenv/config";
-import { readdir, stat } from "node:fs/promises";
+import { readdir, writeFile, mkdir } from "node:fs/promises";
 import { join, extname, basename } from "node:path";
 import { PrismaClient } from "@prisma/client";
+import sharp from "sharp";
 
-// Réimport des images sources, avec un nom déterministe.
+// Réimport des captures Buronomic, avec un nom de fichier porteur.
 //
-// Trois problèmes se règlent d'un coup, parce qu'ils ont la même cause — le
-// preset Cloudinary non signé attribue un identifiant aléatoire :
+// Trois problèmes ont la même cause — le preset Cloudinary non signé attribue
+// un identifiant aléatoire, et le nom d'origine est perdu :
 //
-//  1. Le décor du fichier (« BX995N_Blanc_Chêne-fil.png ») est perdu à
-//     l'envoi ; impossible d'afficher une pastille de coloris sur la photo.
+//  1. Le décor du fichier (« ED705N_Blanc_Chêne-fil.png ») disparaît, donc
+//     rien à afficher en pastille sur la photo.
 //  2. /admin/detourage nomme ses fichiers « …_cadre.jpg » puis teste
 //     url.includes("_cadre") pour ne pas retraiter. L'identifiant aléatoire
-//     écrase ce nom : le garde-fou ne se déclenche jamais et chaque passage
+//     écrase ce nom : le garde-fou ne se déclenche jamais, et chaque passage
 //     duplique les images.
 //  3. estAmbiance() cherche « amb_ » ou « bodegon » dans l'URL, en vain.
 //
-// Un public_id déterministe les résout tous les trois : l'envoi écrase au lieu
-// de dupliquer, et le nom porte l'information jusqu'à la fiche.
+// Un public_id déterministe les règle tous les trois : l'envoi écrase au lieu
+// de dupliquer, et le nom porte le libellé jusqu'à la galerie. Aucun
+// rapprochement avec le nuancier : le nom du fichier fait foi.
 //
-//   node prisma/reimport-images.mjs              → simulation, n'écrit rien
-//   node prisma/reimport-images.mjs --appliquer  → recadre et envoie
-//
-// Sans argument, les deux marques. Avec, seulement les gammes nommées.
+//   node prisma/reimport-images.mjs                      → simulation
+//   node prisma/reimport-images.mjs Cohésion --appliquer → une gamme, pour de vrai
+//   node prisma/reimport-images.mjs --appliquer          → tout
 
 const prisma = new PrismaClient();
 const APPLIQUER = process.argv.includes("--appliquer");
 const DEMANDEES = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 
-const MEDIAS = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS";
-const RACINE_BURONOMIC = join(MEDIAS, "Buronomic");
-const RACINE_SOKOA = join(MEDIAS, "Sokoa", "fichiers_sokoa");
+const RACINE = "C:/Users/pages/Bureau/Matt/projets/COTEBURO-MEDIAS/Buronomic";
+const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 const IMAGES = [".png", ".jpg", ".jpeg", ".webp"];
 
-// Une photo d'ambiance montre le produit en situation. Elle ne doit être ni
-// rognée — le décor fait partie de l'image — ni étiquetée d'un coloris.
+// Reprend à l'identique les réglages de /admin/detourage, pour que le rendu
+// soit le même des deux côtés.
+const MARGE = 0.04;       // marge autour du produit, en part de sa plus grande dimension
+const SEUIL_FOND = 244;   // au-delà, le pixel est du fond ; les captures pCon ont un blanc dégradé
+const DEJA_PLEIN = 0.92;  // le produit remplit déjà le cadre : rien à rogner
+
+// Une ambiance montre le produit en situation : ni rognage — le décor fait
+// partie de l'image — ni pastille.
 const MOTS_AMBIANCE = ["amb_", "amb-", "ambiance", "_amb", "bodegon"];
 
 const norm = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-const slug = (s) => norm(s).replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const estAmbiance = (nom) => MOTS_AMBIANCE.some((m) => norm(nom).includes(m));
 
-// « BX995N_Blanc_Chêne-fil » → { code: "BX995N", decor: "Blanc Chêne fil" }
-function decouper(nomFichier) {
-  const base = basename(nomFichier, extname(nomFichier));
-  const parts = base.split("_");
-  return {
-    base,
-    code: parts[0].trim().toUpperCase(),
-    // Un fichier peut porter plusieurs finitions : « _Blanc_Chêne-fil » =
-    // piètement blanc ET plateau chêne fil. Chaque jeton est testé à part.
-    jetons: parts.slice(1).map((t) => t.replace(/-/g, " ").trim()).filter(Boolean),
-  };
-}
+// Le nom est conservé tel quel, accents compris : c'est lui qui porte le
+// libellé de la pastille. Seuls les caractères gênants dans une URL sautent.
+const nettoyer = (s) => s.trim().replace(/\s+/g, "-").replace(/[?&#%\\/]/g, "");
+
+// « ED705N_Blanc_Chêne-fil » → « Blanc · Chêne fil »
+const libelleDe = (base) => base.split("_").slice(1).map((t) => t.replace(/-/g, " ").trim()).filter(Boolean).join(" · ");
 
 async function fichiersDe(dossier) {
   try {
-    const entrees = await readdir(dossier, { withFileTypes: true });
-    return entrees
+    return (await readdir(dossier, { withFileTypes: true }))
       .filter((e) => e.isFile() && IMAGES.includes(extname(e.name).toLowerCase()))
-      .map((e) => e.name)
-      .sort();
+      .map((e) => e.name).sort();
+  } catch { return []; }
+}
+
+// Rogne les marges uniformes et centre le produit dans un carré blanc.
+// Même règle que le navigateur : seuil 244, marge 4 %, JPEG qualité 92.
+async function rogner(chemin) {
+  const entree = sharp(chemin).flatten({ background: "#ffffff" }); // la transparence devient blanche
+  const { width: w0, height: h0 } = await entree.metadata();
+  const tel_quel = async () => ({ buffer: await entree.clone().jpeg({ quality: 92 }).toBuffer(), inchange: true });
+
+  let rogne;
+  try {
+    // threshold = 255 − SEUIL_FOND : l'écart toléré au blanc pur.
+    rogne = await entree.clone()
+      .trim({ background: "#ffffff", threshold: 255 - SEUIL_FOND })
+      .toBuffer({ resolveWithObject: true });
   } catch {
-    return [];
+    return tel_quel();
   }
+
+  const { width: w, height: h } = rogne.info;
+  if (!w || !h || (w > w0 * DEJA_PLEIN && h > h0 * DEJA_PLEIN)) return tel_quel();
+
+  const marge = Math.round(Math.max(w, h) * MARGE);
+  const cote = Math.max(w, h) + marge * 2;
+  const hautMarge = Math.round((cote - h) / 2);
+  const gaucheMarge = Math.round((cote - w) / 2);
+
+  const buffer = await sharp(rogne.data)
+    .extend({
+      top: hautMarge, bottom: cote - h - hautMarge,
+      left: gaucheMarge, right: cote - w - gaucheMarge,
+      background: "#ffffff",
+    })
+    .jpeg({ quality: 92 })
+    .toBuffer();
+
+  return { buffer, inchange: false, avant: `${w0}×${h0}`, apres: `${cote}×${cote}` };
+}
+
+async function envoyer(buffer, publicId) {
+  const form = new FormData();
+  form.append("file", new Blob([buffer], { type: "image/jpeg" }), "image.jpg");
+  form.append("upload_preset", PRESET);
+  // Le cœur du correctif : sans public_id, Cloudinary invente un identifiant
+  // et le libellé est perdu.
+  form.append("public_id", publicId);
+  const rep = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`, { method: "POST", body: form });
+  const data = await rep.json().catch(() => ({}));
+  if (!rep.ok || !data.secure_url) throw new Error(data?.error?.message || `HTTP ${rep.status}`);
+  return data.secure_url;
 }
 
 async function main() {
   console.log(APPLIQUER ? "═══ MODE RÉEL ═══\n" : "═══ SIMULATION — rien n'est écrit ═══\n");
+  if (APPLIQUER && (!CLOUD || !PRESET)) { console.log("Clés Cloudinary absentes du .env."); return; }
 
-  // ── Index des références → fiche, toutes marques ──
-  // Le fichier porte la référence du configurateur (« DH507N »), la base celle
-  // du catalogue (« DH50 ») : on rattache par préfixe, la plus longue d'abord.
   const vitrines = await prisma.produitVitrine.findMany({
+    where: { gamme: { marque: { slug: "buronomic" } } },
     select: {
       id: true, nom: true, referenceUnitaire: true, declinaisons: true,
-      gamme: { select: { id: true, nom: true, slug: true, marque: { select: { slug: true } } } },
+      gamme: { select: { slug: true } },
     },
   });
 
   const refsDe = (v) => {
-    const decl = Array.isArray(v.declinaisons) ? v.declinaisons : [];
-    return [
-      ...(v.referenceUnitaire ? [v.referenceUnitaire] : []),
-      ...decl.map((d) => d.referenceFournisseur).filter(Boolean),
-    ].map((r) => String(r).trim().toUpperCase());
+    const d = Array.isArray(v.declinaisons) ? v.declinaisons : [];
+    return [...(v.referenceUnitaire ? [v.referenceUnitaire] : []), ...d.map((x) => x.referenceFournisseur).filter(Boolean)]
+      .map((r) => String(r).trim().toUpperCase()).filter(Boolean);
   };
+  // Références les plus longues d'abord : « ED733 » doit l'emporter sur « ED73 ».
+  const index = [];
+  for (const v of vitrines) for (const r of refsDe(v)) index.push({ ref: r, v });
+  index.sort((a, b) => b.ref.length - a.ref.length);
 
-  const indexRefs = [];
-  for (const v of vitrines) for (const r of refsDe(v)) if (r) indexRefs.push({ ref: r, v });
-  indexRefs.sort((a, b) => b.ref.length - a.ref.length);
+  const dossiers = (await readdir(RACINE, { withFileTypes: true })).filter((e) => e.isDirectory()).map((e) => e.name);
+  const parVitrine = new Map();
+  let total = 0, orphelins = 0, ambiances = 0;
 
-  const trouverParCode = (code, marqueSlug) => {
-    const c = code.toUpperCase();
-    return indexRefs.find((x) => c.startsWith(x.ref) && x.v.gamme.marque?.slug === marqueSlug)?.v || null;
-  };
-
-  // ── Finitions connues, pour savoir si un suffixe est vraiment un coloris ──
-  const finitions = await prisma.finition.findMany({ select: { nom: true } });
-  const nomsFinition = new Set(finitions.map((f) => norm(f.nom)));
-  // « R4E — Beige » doit aussi se reconnaître sous « Beige ».
-  for (const f of finitions) {
-    const apresTiret = f.nom.split(/[—–-]/).pop();
-    if (apresTiret) nomsFinition.add(norm(apresTiret));
-  }
-
-  // ── Recensement des sources ──
-  const lots = [];
-
-  const dossiersBuro = (await readdir(RACINE_BURONOMIC, { withFileTypes: true }).catch(() => []))
-    .filter((e) => e.isDirectory()).map((e) => e.name);
-  for (const d of dossiersBuro) {
+  for (const d of dossiers) {
     if (DEMANDEES.length && !DEMANDEES.some((n) => norm(d).includes(norm(n)))) continue;
-    for (const f of await fichiersDe(join(RACINE_BURONOMIC, d, "_captures"))) {
-      lots.push({ marque: "buronomic", dossier: d, chemin: join(RACINE_BURONOMIC, d, "_captures", f), fichier: f });
+    for (const f of await fichiersDe(join(RACINE, d, "_captures"))) {
+      total++;
+      const base = basename(f, extname(f));
+      const code = base.split("_")[0].toUpperCase();
+      const v = index.find((x) => code.startsWith(x.ref))?.v;
+      if (!v) { orphelins++; continue; }
+      const amb = estAmbiance(f);
+      if (amb) ambiances++;
+      const publicId = `coteburo/buronomic/${v.gamme.slug}/${nettoyer(base)}`;
+      if (!parVitrine.has(v.id)) parVitrine.set(v.id, { v, images: [] });
+      parVitrine.get(v.id).images.push({ chemin: join(RACINE, d, "_captures", f), publicId, base, ambiance: amb });
     }
   }
 
-  const dossiersSokoa = (await readdir(RACINE_SOKOA, { withFileTypes: true }).catch(() => []))
-    .filter((e) => e.isDirectory()).map((e) => e.name);
-  for (const d of dossiersSokoa) {
-    if (DEMANDEES.length && !DEMANDEES.some((n) => norm(d).includes(norm(n)))) continue;
-    for (const f of await fichiersDe(join(RACINE_SOKOA, d))) {
-      lots.push({ marque: "sokoa", dossier: d, chemin: join(RACINE_SOKOA, d), fichier: f });
+  console.log(`${total} captures · ${parVitrine.size} fiches concernées · ${orphelins} sans fiche · ${ambiances} ambiances\n`);
+
+  if (!APPLIQUER) {
+    let n = 0;
+    for (const { v, images } of parVitrine.values()) {
+      if (n++ >= 5) break;
+      console.log(v.nom);
+      for (const i of images.slice(0, 4)) {
+        const l = libelleDe(i.base);
+        const suffixe = i.ambiance ? "[ambiance : ni rognage ni pastille]" : l ? `pastille « ${l} »` : "(vue de base)";
+        console.log(`   ${i.publicId}   ${suffixe}`);
+      }
+      if (images.length > 4) console.log(`   … ${images.length - 4} autres`);
+    }
+    console.log("\nSimulation terminée. Relancer avec --appliquer.");
+    return;
+  }
+
+  // Les URLs actuelles sont remplacees en base : on les sauvegarde d abord,
+  // les anciens assets restant par ailleurs sur Cloudinary.
+  await mkdir("prisma/sauvegardes", { recursive: true });
+  const avant = await prisma.produitVitrine.findMany({
+    where: { id: { in: [...parVitrine.keys()] } },
+    select: { id: true, nom: true, images: true, imageUrl: true },
+  });
+  const fichierSauv = `prisma/sauvegardes/images-avant-reimport-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
+  await writeFile(fichierSauv, JSON.stringify(avant, null, 2), "utf8");
+  console.log(`Sauvegarde des URLs actuelles : ${fichierSauv}  (${avant.length} fiches)
+`);
+
+  let envoyees = 0, rognees = 0, echecs = 0;
+  for (const { v, images } of parVitrine.values()) {
+    const urls = [];
+    for (const img of images) {
+      try {
+        let buffer;
+        if (img.ambiance) {
+          buffer = await sharp(img.chemin).flatten({ background: "#ffffff" }).jpeg({ quality: 92 }).toBuffer();
+        } else {
+          const r = await rogner(img.chemin);
+          buffer = r.buffer;
+          if (!r.inchange) rognees++;
+        }
+        urls.push(await envoyer(buffer, img.publicId));
+        envoyees++;
+      } catch (e) {
+        echecs++;
+        console.log(`   ✗ ${img.base} : ${e.message}`);
+      }
+    }
+    if (urls.length) {
+      await prisma.produitVitrine.update({ where: { id: v.id }, data: { images: urls, imageUrl: urls[0] } });
+      console.log(`   ✓ ${v.nom} — ${urls.length} images`);
     }
   }
-
-  // ── Analyse ──
-  const gammesParSlug = new Map();
-  for (const v of vitrines) if (v.gamme) gammesParSlug.set(v.gamme.slug, v.gamme);
-
-  const res = {
-    total: lots.length, apparies: 0, orphelins: [], ambiances: 0,
-    parMarque: {}, avecDecor: 0, decorReconnu: 0, decorPartiel: 0, decorInconnu: {}, publicIds: new Map(), collisions: [],
-  };
-
-  for (const l of lots) {
-    const { base, code, jetons } = decouper(l.fichier);
-    const ambiance = estAmbiance(l.fichier);
-    if (ambiance) res.ambiances++;
-
-    res.parMarque[l.marque] ??= { total: 0, apparies: 0, ambiances: 0 };
-    res.parMarque[l.marque].total++;
-    if (ambiance) res.parMarque[l.marque].ambiances++;
-
-    const v = trouverParCode(code, l.marque);
-    if (!v) { res.orphelins.push(l); continue; }
-    res.apparies++;
-    res.parMarque[l.marque].apparies++;
-
-    // Pastille : jamais sur une ambiance, et seulement si le suffixe est un
-    // coloris connu — « avec échancrure » ou « patins » sont des variantes de
-    // configuration, les étiqueter « coloris » serait faux.
-    if (jetons.length && !ambiance) {
-      res.avecDecor++;
-      const reconnus = jetons.filter((j) => nomsFinition.has(norm(j)));
-      if (reconnus.length === jetons.length) res.decorReconnu++;
-      else if (reconnus.length > 0) res.decorPartiel++;
-      for (const j of jetons) if (!nomsFinition.has(norm(j))) res.decorInconnu[j] = (res.decorInconnu[j] || 0) + 1;
-    }
-
-    const publicId = `coteburo/${l.marque}/${v.gamme.slug}/${slug(base)}`;
-    // Un meme accessoire est range dans plusieurs dossiers de gamme : deux
-    // sources pour un identifiant ne posent probleme QUE si les fichiers
-    // different. La taille sert d indice, suffisant ici.
-    const taille = (await stat(join(l.chemin, l.fichier)).catch(() => null))?.size ?? 0;
-    const vu = res.publicIds.get(publicId);
-    if (vu && vu.taille !== taille) res.collisions.push({ publicId, a: vu.src, b: join(l.chemin, l.fichier) });
-    res.publicIds.set(publicId, { src: join(l.chemin, l.fichier), taille });
-  }
-
-  // ── Rapport ──
-  console.log(`Fichiers sources analysés : ${res.total}`);
-  console.log(`  appariés à une fiche    : ${res.apparies}  (${Math.round(res.apparies / res.total * 100)} %)`);
-  console.log(`  sans fiche              : ${res.orphelins.length}`);
-  console.log(`  ambiances (ni rognage, ni pastille) : ${res.ambiances}`);
-  console.log("");
-  for (const [m, d] of Object.entries(res.parMarque))
-    console.log(`  ${m.padEnd(10)} ${String(d.total).padStart(5)} fichiers  ${String(d.apparies).padStart(5)} apparies (${Math.round(d.apparies/d.total*100)} %)  ${String(d.ambiances).padStart(4)} ambiances`);
-
-  console.log(`\nPastille de coloris, sur les ${res.apparies} images appariées :`);
-  console.log(`  suffixe présent            : ${res.avecDecor}`);
-  console.log(`  tous jetons reconnus       : ${res.decorReconnu}  ← pastille sûre`);
-  console.log(`  partiellement reconnus     : ${res.decorPartiel}  ← pastille sur la partie connue`);
-  const nbInconnus = Object.values(res.decorInconnu).reduce((a, b) => a + b, 0);
-  console.log(`  suffixe non reconnu        : ${nbInconnus}  ← variantes de configuration`);
-  console.log(`  sans suffixe (vue de base) : ${res.apparies - res.avecDecor}`);
-
-  if (nbInconnus) {
-    console.log(`\n  Principaux suffixes NON reconnus :`);
-    Object.entries(res.decorInconnu).sort((a, b) => b[1] - a[1]).slice(0, 12)
-      .forEach(([d, n]) => console.log(`     ${String(n).padStart(4)}  ${d}`));
-  }
-
-  console.log(`\nIdentifiants Cloudinary : ${res.publicIds.size} uniques pour ${res.apparies} images`);
-  console.log(`  collisions réelles (contenus différents)    : ${res.collisions.length}`);
-  res.collisions.slice(0, 5).forEach((c) => console.log(`     ${c.publicId}`));
-
-  if (res.orphelins.length) {
-    const parDossier = {};
-    for (const o of res.orphelins) parDossier[`${o.marque}/${o.dossier}`] = (parDossier[`${o.marque}/${o.dossier}`] || 0) + 1;
-    console.log(`\nFichiers sans fiche correspondante, par dossier :`);
-    Object.entries(parDossier).sort((a, b) => b[1] - a[1]).slice(0, 12)
-      .forEach(([d, n]) => console.log(`     ${String(n).padStart(4)}  ${d}`));
-  }
-
-  console.log(`\nExemples d'identifiants proposés :`);
-  [...res.publicIds.keys()].slice(0, 6).forEach((k) => console.log(`     ${k}`));
-
-  if (!APPLIQUER) console.log(`\nSimulation terminée — aucun envoi, aucune écriture en base.`);
+  console.log(`\n${envoyees} envoyées · ${rognees} rognées · ${echecs} échecs`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); }).finally(() => prisma.$disconnect());

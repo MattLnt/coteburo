@@ -17,6 +17,21 @@ const SEUIL_BALAYAGE = 45;
 // à leur nom de fichier, les catalogues fournisseurs les préfixant ainsi.
 const MOTS_AMBIANCE = ["amb_", "amb-", "ambiance", "_amb", "bodegon"];
 
+// Libellé du coloris, lu dans le nom du fichier.
+//
+// Les captures du configurateur le portent : « BX995N_Blanc_Chêne-fil.png »
+// = piètement blanc, plateau chêne fil. Le réimport conserve ce nom dans
+// l'identifiant Cloudinary, si bien qu'il suffit de le relire — aucun
+// rapprochement avec le nuancier n'est nécessaire.
+//
+// Le premier segment est la référence produit, pas un décor : on le laisse.
+// Une ambiance n'est pas une déclinaison de finition : pas de pastille.
+const libelleFinition = (url) => {
+  if (!url || estAmbiance(url)) return null;
+  const fichier = decodeURIComponent(url.split("/").pop() || "").replace(/.[a-z0-9]+$/i, "");
+  const jetons = fichier.split("_").slice(1).map((t) => t.replace(/-/g, " ").trim()).filter(Boolean);
+  return jetons.length ? jetons.join(" · ") : null;
+};
 const estAmbiance = (url) => {
   const nom = decodeURIComponent(url || "").toLowerCase();
   return MOTS_AMBIANCE.some((m) => nom.includes(m));
@@ -123,6 +138,7 @@ export default function GalerieProduit({ images = [], alt = "" }) {
   // une image affichée entière avec des marges vaut mieux qu'un produit
   // rogné le temps du chargement.
   const modeActive = (urlActive && modes[urlActive]) || "contain";
+  const libelleActive = libelleFinition(urlActive);
   const avecScroll = images.length > VIGNETTES_VISIBLES;
 
   const styleFleche = (actif) => ({
@@ -174,6 +190,13 @@ export default function GalerieProduit({ images = [], alt = "" }) {
         </div>
       )}
 
+      {/* Pastille du coloris — dit quelle finition la photo montre. Placée en
+          haut, la pagination occupant le bas sur mobile. */}
+      {libelleActive && (
+        <span className="absolute top-2.5 left-2.5 rounded-full bg-white/92 backdrop-blur-sm border border-line px-2.5 py-1 text-[10.5px] lg:text-[11.5px] font-semibold text-ink shadow-[0_1px_4px_rgba(33,36,40,0.08)] max-w-[calc(100%-20px)] truncate">
+          {libelleActive}
+        </span>
+      )}
       {/* Pagination par points — mobile uniquement, la colonne de vignettes
           n'existe pas sur un écran étroit. */}
       {images.length > 1 && (
