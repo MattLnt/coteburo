@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { MediathequeLocale } from "./MediathequeLocale";
-import { mediathequeActive } from "@/app/(admin)/admin/architecture/actionsMediatheque";
+import { mediathequeActive, cheminSuggere } from "@/app/(admin)/admin/architecture/actionsMediatheque";
 import imageCompression from "browser-image-compression";
 import { removeBackground } from "@imgly/background-removal";
 import { Icon } from "./Icon";
@@ -12,7 +12,7 @@ const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 // Au-delà de ce seuil, on compresse avant l'envoi (Cloudinary unsigned plafonne à 10 Mo).
 const SEUIL_COMPRESSION_MO = 3;
 
-export function ImageUploader({ images = [], onChange }) {
+export function ImageUploader({ images = [], onChange, gammeNom = null }) {
   const [uploading, setUploading] = useState(false);
   const [statut, setStatut] = useState("");         // message d'étape (détourage / envoi)
   const [error, setError] = useState("");
@@ -26,6 +26,26 @@ export function ImageUploader({ images = [], onChange }) {
   const [mediatheque, setMediatheque] = useState(false);
   const [mediathequeOuverte, setMediathequeOuverte] = useState(false);
   useEffect(() => { mediathequeActive().then(setMediatheque).catch(() => {}); }, []);
+
+  // Dossier probable des visuels de la gamme, à coller dans la fenêtre
+  // « Ouvrir » de Windows plutôt que d'y descendre à la souris.
+  const [chemin, setChemin] = useState(null);
+  const [copie, setCopie] = useState(false);
+  useEffect(() => {
+    if (!gammeNom) return;
+    cheminSuggere(gammeNom).then(setChemin).catch(() => {});
+  }, [gammeNom]);
+
+  const copier = async () => {
+    if (!chemin?.chemin) return;
+    try {
+      await navigator.clipboard.writeText(chemin.chemin);
+      setCopie(true);
+      setTimeout(() => setCopie(false), 1800);
+    } catch {
+      setError("Copie refusée par le navigateur — sélectionne le chemin à la main.");
+    }
+  };
 
   // ─── Traitements ───
   const detourerBlobOuFichier = async (source) => {
@@ -190,6 +210,30 @@ export function ImageUploader({ images = [], onChange }) {
         <span style={{ fontSize: 12, color: "#9aa0a8" }}>JPG, PNG, WebP — compressées automatiquement</span>
       </button>
       <input ref={inputRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFilesSelected(e.target.files)} />
+
+      {chemin && (
+        <div style={{ marginTop: 10, padding: "10px 12px", borderRadius: 10, border: "1px solid #ece8e0", background: "#faf8f4" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+            <span style={{ fontSize: 11.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", color: "#9aa0a8" }}>
+              Visuels de la gamme
+            </span>
+            <span style={{ fontSize: 11.5, color: "#9aa0a8" }}>
+              {chemin.images ? `${chemin.images} image${chemin.images > 1 ? "s" : ""} à la racine` : "images dans les sous-dossiers"}
+            </span>
+            <span style={{ flex: 1 }} />
+            <button type="button" onClick={copier}
+              style={{ padding: "5px 11px", borderRadius: 8, border: "1px solid #e8e3da", background: copie ? "#f0661b" : "#fff",
+                color: copie ? "#fff" : "#5c616a", cursor: "pointer", fontSize: 12, fontWeight: 600, whiteSpace: "nowrap" }}>
+              {copie ? "Copié ✓" : "Copier le chemin"}
+            </button>
+          </div>
+          <code style={{ display: "block", fontSize: 11.5, color: "#23262a", wordBreak: "break-all", lineHeight: 1.45 }}>{chemin.chemin}</code>
+          <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "6px 0 0" }}>
+            À coller dans la barre d&apos;adresse de la fenêtre « Ouvrir ».
+            {chemin.autres?.length > 0 && ` Autres dossiers possibles : ${chemin.autres.map((a) => `${a.rel.split("/").pop()} (${a.images})`).join(", ")}.`}
+          </p>
+        </div>
+      )}
 
       {mediatheque && (
         <button type="button" onClick={() => setMediathequeOuverte(true)} disabled={occupe}

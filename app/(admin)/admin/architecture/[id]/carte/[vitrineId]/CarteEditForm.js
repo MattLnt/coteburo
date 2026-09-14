@@ -428,7 +428,7 @@ export default function CarteEditForm({ carte }) {
           <p style={{ fontSize: 13, color: "#9aa0a8", margin: "0 0 14px" }}>
             Ajoute toutes les photos de ce produit. La <strong>première</strong> (marquée « Principale ») sert automatiquement de vignette partout où le produit apparaît en dehors de sa propre fiche — catalogue, recherche, carrousels. Les autres forment la galerie visible sur sa fiche. Utilise les flèches ← → sous chaque photo pour changer l'ordre, donc pour choisir laquelle est mise en avant.
           </p>
-          <ImageUploader images={galerie} onChange={(imgs) => { setGalerie(imgs); dirty(); }} />
+          <ImageUploader images={galerie} onChange={(imgs) => { setGalerie(imgs); dirty(); }} gammeNom={carte.gammeNom} />
         </div>
       )}
 

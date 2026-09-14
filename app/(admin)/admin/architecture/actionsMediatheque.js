@@ -81,6 +81,56 @@ export async function listerDossier(relatif = "") {
   return { ok: true, chemin, dossiers, images };
 }
 
+// Dossier probable des visuels d'une gamme, à coller dans la fenêtre « Ouvrir »
+// de Windows — plus court que de descendre l'arborescence à la souris.
+//
+// Les noms de dossier ne collent jamais tout à fait : « arco dossier »,
+// « CHEYENNE 2025 », « PROSEAT 2026 », « COIGNY ECO ET COLOR ». On compare donc
+// sur les lettres et chiffres seuls, et on retient le dossier le mieux fourni
+// en images parmi ceux qui correspondent.
+export async function cheminSuggere(gammeNom) {
+  if (!(await admin())) return null;
+  const base = racine();
+  if (!base || !gammeNom) return null;
+
+  const cle = (s) => (s || "").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Z0-9]/g, "");
+  const cible = cle(gammeNom);
+  if (!cible) return null;
+
+  const candidats = [];
+  async function parcourir(dir, rel, prof) {
+    if (prof > 3) return;
+    let entrees = [];
+    try { entrees = await readdir(dir, { withFileTypes: true }); } catch { return; }
+
+    const dossiers = entrees.filter((e) => e.isDirectory() && !e.name.startsWith("."));
+    const images = entrees.filter((e) => e.isFile() && IMAGES.includes(extname(e.name).toLowerCase())).length;
+
+    const k = cle(basename(dir));
+    // Exact, puis « commence par », puis « contient » : « SCOTT » doit passer
+    // avant « SCOTT LUGE », et « TECSY » ne doit pas rafler « TECSY CONCEPT ».
+    const score = k === cible ? 3 : k.startsWith(cible) ? 2 : k.includes(cible) ? 1 : 0;
+    if (score && rel) candidats.push({ rel, score, images, profondeur: prof });
+
+    for (const d of dossiers) await parcourir(join(dir, d.name), rel ? `${rel}/${d.name}` : d.name, prof + 1);
+  }
+  await parcourir(base, "", 0);
+
+  if (!candidats.length) return null;
+  candidats.sort((a, b) => b.score - a.score || b.images - a.images || a.profondeur - b.profondeur);
+  const gagnant = candidats[0];
+
+  // Chemin Windows : c'est ce qui se colle dans la barre d'adresse.
+  const chemin = resolve(base, gagnant.rel).split("/").join("\\");
+  return {
+    chemin,
+    rel: gagnant.rel,
+    images: gagnant.images,
+    // Les autres pistes, quand la gamme est éclatée en plusieurs dossiers.
+    autres: candidats.slice(1, 4).map((c) => ({ rel: c.rel, images: c.images })),
+  };
+}
+
 // Aperçu : on ne renvoie jamais le fichier d'origine, qui peut peser 20 Mo.
 export async function vignetteLocale(relatif) {
   if (!(await admin())) return null;
