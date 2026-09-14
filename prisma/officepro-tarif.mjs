@@ -77,13 +77,31 @@ async function main() {
     const desc = (col, garde = () => true) =>
       cel.filter((c) => c.col === col && garde(c)).sort((a, b) => b.y - a.y);
 
-    // Continuation d'un libellé sur deux lignes : 7 px. Deux étiquettes
-    // distinctes : au moins 24. Le seuil sépare les deux sans ambiguïté.
+    const refs = ancres.map((a) =>
+      cel.filter((c) => c.col === "reference" && Math.abs(c.y - a.y) <= 4 && /^[A-Z0-9][A-Z0-9-]{3,}$/.test(c.s))
+        .sort((x, y) => x.x - y.x)[0]?.s || null);
+
+    // Racine de la référence : BUF01NR → BUF01. OfficePro compose ses
+    // références en <produit><NN><coloris>, si bien que deux lignes de racines
+    // différentes sont deux produits.
+    const racine = (r) => (/^([A-Z]+[0-9]{1,3})/.exec(r || "") || [])[1] || null;
+    const racineProche = (y) => {
+      let best = null, d = Infinity;
+      ancres.forEach((a, i) => { const e = Math.abs(a.y - y); if (e < d) { d = e; best = racine(refs[i]); } });
+      return best;
+    };
+
+    // Continuation d'un libellé sur deux lignes : 7 px. Mais deux produits
+    // d'une ligne chacun peuvent l'être tout autant — « FAUTEUIL BUFFALO » et
+    // « FAUTEUIL BRISTOL » se retrouvaient collés en un seul nom. L'écart ne
+    // suffit donc pas : on ne recolle que si les deux fragments regardent la
+    // même racine de référence, donc le même produit.
     const recoller = (liste) => {
       const out = [];
       for (const c of liste) {
         const p = out.at(-1);
-        if (p && p.y - c.y <= 7) { p.s = `${p.s} ${c.s}`; p.y = (p.y + c.y) / 2; }
+        const memeProduit = p && racineProche(p.y) && racineProche(p.y) === racineProche(c.y);
+        if (p && p.y - c.y <= 7 && memeProduit) { p.s = `${p.s} ${c.s}`; p.y = (p.y + c.y) / 2; }
         else out.push({ ...c });
       }
       return out;
@@ -97,10 +115,6 @@ async function main() {
     const ecos = recoller(desc("eco"));
     const pagesCat = recoller(desc("pageCatalogue", (c) => /^\d{1,3}$/.test(c.s)));
     const sections = cel.filter((c) => SECTION.test(c.s)).sort((a, b) => b.y - a.y);
-
-    const refs = ancres.map((a) =>
-      cel.filter((c) => c.col === "reference" && Math.abs(c.y - a.y) <= 4 && /^[A-Z0-9][A-Z0-9-]{3,}$/.test(c.s))
-        .sort((x, y) => x.x - y.x)[0]?.s || null);
 
     // Les étiquettes d'une colonne découpent les lignes en segments contigus,
     // chacune centrée sur le sien. « Au plus proche » ne suffit pas : la
