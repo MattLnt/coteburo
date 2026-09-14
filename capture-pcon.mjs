@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import puppeteer from "puppeteer";
 
 // Capture les visuels produits depuis le configurateur pCon de Buronomic.
@@ -38,7 +39,7 @@ const RACINE = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Burono
 //
 // Certaines URL portent « cep= » là où d'autres ont « crp= » : c'est bien
 // la forme fournie par le configurateur, pas une coquille.
-const DOSSIERS = [
+export const DOSSIERS = [
   {
     gamme: "Astro Direction",
     url: "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1750%24default%2C%40FOLDER1136%24default&lang=fr",
@@ -185,7 +186,7 @@ const DOSSIERS = [
 // sur les caissons Comfort, « Façade » ne propose que des configurations
 // de tiroirs — « caisson structurex 3T+1DS » — alors que « Finition
 // caisson » porte les huit décors.
-const AXE_MATIERE = [
+export const AXE_MATIERE = [
   "tissu écran",
   // Les modules Modul'Up ont quatre coussins numérotés ; le premier
   // suffit à montrer le tissu retenu.
@@ -220,7 +221,7 @@ const AXE_MATIERE = [
 // « Type de support » n'y figure pas : sur les caissons Comfort, il
 // propose des configurations de tiroirs, pas des teintes. Le croiser
 // coûtait deux décors sur huit sans montrer de finition supplémentaire.
-const AXE_STRUCTURE = [
+export const AXE_STRUCTURE = [
   "piétement",
   "piètement",
   "finition pieds",
@@ -236,7 +237,7 @@ const AXE_STRUCTURE = [
 // Partage, le premier « Plateau » propose des configurations — « avec
 // obturateurs », « Top access » — et le second les vrais décors. On
 // reconnaît les décors à leurs noms, qui reviennent d'une gamme à l'autre.
-const DECORS_CONNUS = [
+export const DECORS_CONNUS = [
   "chene fil", "chene de fil", "chene nebraska", "hetre", "blanc", "noir",
   "timber", "yukon", "argile", "cedre", "aluminium", "sauge", "peche",
   "ombre", "horizon", "gris clair", "chrome",
@@ -661,4 +662,9 @@ async function main() {
   }
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+// Ce module est aussi importé par diagnostic-pcon.mjs, qui réutilise les URL
+// des dossiers et les listes d'axes : on ne lance le parcours que si le
+// fichier est appelé directement.
+if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
+  main().catch((e) => { console.error(e); process.exit(1); });
+}
