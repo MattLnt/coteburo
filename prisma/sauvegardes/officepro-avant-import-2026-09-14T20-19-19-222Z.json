@@ -1,0 +1,99 @@
+{
+  "gammes": [
+    {
+      "id": "cmsc8n0we003k7krofny4z7a4",
+      "nom": "Galet OfficePro",
+      "slug": "galet-officepro",
+      "marqueId": "cmsc8iic6003i7kro4vujx4se",
+      "venteSurDevis": false,
+      "marque": {
+        "slug": "officepro"
+      },
+      "_count": {
+        "vitrines": 1
+      }
+    },
+    {
+      "id": "cmsc840gd002z7krowcbus4xu",
+      "nom": "Arco",
+      "slug": "arco",
+      "marqueId": "cmsc8iic6003i7kro4vujx4se",
+      "venteSurDevis": false,
+      "marque": {
+        "slug": "officepro"
+      },
+      "_count": {
+        "vitrines": 4
+      }
+    },
+    {
+      "id": "cmscblqzs005y7krow634orzd",
+      "nom": "Amy",
+      "slug": "amy",
+      "marqueId": "cmsc8iic6003i7kro4vujx4se",
+      "venteSurDevis": false,
+      "marque": {
+        "slug": "officepro"
+      },
+      "_count": {
+        "vitrines": 1
+      }
+    }
+  ],
+  "vitrines": [
+    {
+      "id": "cmsc8ng2p003m7kroap82f66o",
+      "nom": "Table basse Galet OfficePro",
+      "slug": "table-basse-galet-officepro",
+      "publie": false,
+      "gamme": {
+        "nom": "Galet OfficePro"
+      }
+    },
+    {
+      "id": "cmsc84xe800357krob1mqnelr",
+      "nom": "Pouf Arco",
+      "slug": "pouf-arco",
+      "publie": false,
+      "gamme": {
+        "nom": "Arco"
+      }
+    },
+    {
+      "id": "cmsc84i9b00337kro7wx4hvpm",
+      "nom": "Fauteuil lounge Arco",
+      "slug": "fauteuil-lounge-arco",
+      "publie": false,
+      "gamme": {
+        "nom": "Arco"
+      }
+    },
+    {
+      "id": "cmsc840vf00317kro11lel3z6",
+      "nom": "Chauffeuse Arco",
+      "slug": "chauffeuse-arco",
+      "publie": false,
+      "gamme": {
+        "nom": "Arco"
+      }
+    },
+    {
+      "id": "cmsc85dws00377krocc4yp1wl",
+      "nom": "Banquette - Arco",
+      "slug": "banquette-arco",
+      "publie": false,
+      "gamme": {
+        "nom": "Arco"
+      }
+    },
+    {
+      "id": "cmscblre500607krolaug5s0g",
+      "nom": "Fauteuil Amy",
+      "slug": "fauteuil-amy",
+      "publie": false,
+      "gamme": {
+        "nom": "Amy"
+      }
+    }
+  ]
+}

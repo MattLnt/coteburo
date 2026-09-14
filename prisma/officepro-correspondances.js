@@ -39,6 +39,10 @@ export const EMPLACEMENTS_PAR_TYPE = {
   "MANGE DEBOUT": { categorie: "tables", sousCategorie: "cafeteria", parEspace: { OUTDOOR: { categorie: "tables", sousCategorie: "outdoor" } } },
   "COUSSIN": { categorie: "accessoires", sousCategorie: "coussins-d-assises" },
   "COUSSINS": { categorie: "accessoires", sousCategorie: "coussins-d-assises" },
+  "POUF": { categorie: "sieges", sousCategorie: "poufs" },
+  "TABOURET": { categorie: "sieges", sousCategorie: "tabourets" },
+  "TABOURET BAS": { categorie: "sieges", sousCategorie: "tabourets" },
+  "TABOURET HAUT": { categorie: "sieges", sousCategorie: "tabourets" },
 };
 
 // Gamme du catalogue → libellés du tarif qui la composent.
