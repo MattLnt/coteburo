@@ -76,6 +76,15 @@ const nomFiche = (type, gamme, qualifiant) => {
   return d ? `${g} - ${d}` : g;
 };
 
+// Emplacement au catalogue : l'espace de la gamme, sauf si le type impose une
+// autre catégorie — une table basse reste une table. L'usage suit malgré tout :
+// une table Verano va en tables/outdoor, pas en tables/cafétéria.
+const emplacementDe = (type, espace) => {
+  const parType = type && EMPLACEMENTS_PAR_TYPE[type];
+  if (parType) return parType.parEspace?.[espace] || { categorie: parType.categorie, sousCategorie: parType.sousCategorie };
+  return ESPACES[espace] || null;
+};
+
 // Valeurs d'axe lues dans la désignation.
 const axesDe = (designation) => {
   const out = {};
@@ -118,8 +127,11 @@ async function main() {
         type: type || null,
         qualifiant: qualifiant || null,
         nom: type ? nomFiche(type, l.gammeCatalogue.nom, qualifiant) : joli(l.designation),
-        espace: l.section,
-        emplacement: (type && EMPLACEMENTS_PAR_TYPE[type]) || ESPACES[l.section] || null,
+        // L'espace vient de la gamme, pas de la section du tarif : Verano est
+        // de l'outdoor et Loops de la cafétéria, même listés sous « lounge ».
+        espace: l.gammeCatalogue.espace,
+        sectionTarif: l.section,
+        emplacement: emplacementDe(type, l.gammeCatalogue.espace),
         pageCatalogue: l.pageCatalogue,
         lignes: [],
       });

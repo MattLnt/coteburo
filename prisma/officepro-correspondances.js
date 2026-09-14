@@ -7,28 +7,36 @@
 // Ce fichier ne contient que des données. prisma/officepro-fiches.mjs s'en
 // sert pour proposer les fiches, prisma/officepro-import.mjs les écrira.
 
-// Espace du tarif → emplacement au catalogue.
+// Espace → emplacement au catalogue.
+//
+// L'espace se rattache à la GAMME, pas à la ligne du tarif : une gamme se
+// vend pour un usage, quelle que soit la page où le fournisseur l'a rangée.
+// Verano est de l'outdoor et Loops de la cafétéria, même quand le tarif les
+// liste sous « espace lounge ».
 //
 // Les sièges de magasin vont en Sièges › Accueil et non en Mobilier
 // d'accueil : ce sont des sièges de caisse et de vente, pas du mobilier de
 // hall.
 export const ESPACES = {
-  "ESPACE ACCUEIL": { categorie: "sieges", sousCategorie: "accueil" },
-  "FAUTEUILS DE DIRECTION & ERGO+": { categorie: "sieges", sousCategorie: "direction" },
-  "FAUTEUILS - PROJETS D'AMENAGEMENT": { categorie: "sieges", sousCategorie: "collaboratif" },
-  "ESPACE RÉUNION": { categorie: "sieges", sousCategorie: "reunion-formation" },
-  "ESPACE PAUSE & CAFÉTÉRIA": { categorie: "sieges", sousCategorie: "cafeteria" },
-  "ESPACE LOUNGE": { categorie: "sieges", sousCategorie: "convivialite" },
-  "ESPACE OUTDOOR": { categorie: "sieges", sousCategorie: "outdoor" },
-  "ESPACE ATELIERS & METIERS": { categorie: "sieges", sousCategorie: "ergo-technique" },
+  "ACCUEIL": { categorie: "sieges", sousCategorie: "accueil" },
+  "DIRECTION ET ERGO": { categorie: "sieges", sousCategorie: "direction" },
+  "PROJETS D'AMÉNAGEMENT": { categorie: "sieges", sousCategorie: "collaboratif" },
+  "PAUSE CAFÉTÉRIA": { categorie: "sieges", sousCategorie: "cafeteria" },
+  "ATELIERS ET MÉTIERS": { categorie: "sieges", sousCategorie: "ergo-technique" },
+  "RÉUNION": { categorie: "sieges", sousCategorie: "reunion-formation" },
+  "MAGASINS": { categorie: "sieges", sousCategorie: "accueil" },
+  "OUTDOOR": { categorie: "sieges", sousCategorie: "outdoor" },
 };
 
 // Certains types ne sont pas des sièges, quel que soit l'espace du tarif : une
 // table basse Square reste une table. L'emplacement par type l'emporte donc
 // sur celui de l'espace.
+// `parEspace` garde l'usage quand la catégorie change : une table de jardin
+// Verano reste de l'outdoor, pas de la cafétéria.
 export const EMPLACEMENTS_PAR_TYPE = {
-  "TABLE BASSE": { categorie: "tables", sousCategorie: "tables-basses" },
-  "MANGE DEBOUT": { categorie: "tables", sousCategorie: "cafeteria" },
+  "TABLE BASSE": { categorie: "tables", sousCategorie: "tables-basses", parEspace: { OUTDOOR: { categorie: "tables", sousCategorie: "outdoor" } } },
+  "TABLE": { categorie: "tables", sousCategorie: "tables-polyvalentes", parEspace: { OUTDOOR: { categorie: "tables", sousCategorie: "outdoor" } } },
+  "MANGE DEBOUT": { categorie: "tables", sousCategorie: "cafeteria", parEspace: { OUTDOOR: { categorie: "tables", sousCategorie: "outdoor" } } },
   "COUSSIN": { categorie: "accessoires", sousCategorie: "coussins-d-assises" },
   "COUSSINS": { categorie: "accessoires", sousCategorie: "coussins-d-assises" },
 };
@@ -39,48 +47,48 @@ export const EMPLACEMENTS_PAR_TYPE = {
 // `espace` force l'emplacement quand la section du tarif ne convient pas.
 export const GAMMES = [
   // ── ACCUEIL ──
-  { nom: "Arco", libelles: ["ARCO CHAUFFEUSE", "ARCO CHIC", "ARCO COUSSIN"] },
-  { nom: "Arco Banquette", libelles: ["ARCO BANQUETTE"] },
-  { nom: "Arco Lounge", libelles: ["ARCO LOUNGE", "ARCO POUF"] },
-  { nom: "Square", libelles: ["SQUARE"] },
-  { nom: "Giro", libelles: ["GIRO"] },
-  { nom: "Galet", libelles: ["GALET"] },
+  { nom: "Arco", espace: "ACCUEIL", libelles: ["ARCO CHAUFFEUSE", "ARCO CHIC", "ARCO COUSSIN"] },
+  { nom: "Arco Banquette", espace: "ACCUEIL", libelles: ["ARCO BANQUETTE"] },
+  { nom: "Arco Lounge", espace: "ACCUEIL", libelles: ["ARCO LOUNGE", "ARCO POUF"] },
+  { nom: "Square", espace: "ACCUEIL", libelles: ["SQUARE"] },
+  { nom: "Giro", espace: "ACCUEIL", libelles: ["GIRO"] },
+  { nom: "Galet", espace: "ACCUEIL", libelles: ["GALET"] },
 
   // ── DIRECTION ET ERGO ──
-  { nom: "Ergostar Ultra", libelles: ["ERGOSTAR ULTRA", "ERGOSTAR ULTRA VELVET"] },
-  { nom: "Heavy", libelles: ["HEAVY"] },
+  { nom: "Ergostar Ultra", espace: "DIRECTION ET ERGO", libelles: ["ERGOSTAR ULTRA", "ERGOSTAR ULTRA VELVET"] },
+  { nom: "Heavy", espace: "DIRECTION ET ERGO", libelles: ["HEAVY"] },
 
   // ── PROJETS D'AMÉNAGEMENT — sur mesure, donc sur devis ──
-  { nom: "Tecsy Concept", libelles: ["TECSY CONCEPT"], surDevis: true },
-  { nom: "Proseat", libelles: ["PROSEAT V2"], surDevis: true },
-  { nom: "Lando", libelles: ["LANDO"], surDevis: true },
+  { nom: "Tecsy Concept", espace: "PROJETS D'AMÉNAGEMENT", libelles: ["TECSY CONCEPT"], surDevis: true },
+  { nom: "Proseat", espace: "PROJETS D'AMÉNAGEMENT", libelles: ["PROSEAT V2"], surDevis: true },
+  { nom: "Lando", espace: "PROJETS D'AMÉNAGEMENT", libelles: ["LANDO"], surDevis: true },
 
   // ── PAUSE CAFÉTÉRIA ──
-  { nom: "Loops", libelles: ["LOOPS", "LOOPS TABOURET"] },
+  { nom: "Loops", espace: "PAUSE CAFÉTÉRIA", libelles: ["LOOPS", "LOOPS TABOURET"] },
 
   // ── ATELIERS ET MÉTIERS ──
-  { nom: "Budget", libelles: ["BUDGET"] },
-  { nom: "Steno", libelles: ["STENO"] },
+  { nom: "Budget", espace: "ATELIERS ET MÉTIERS", libelles: ["BUDGET"] },
+  { nom: "Steno", espace: "ATELIERS ET MÉTIERS", libelles: ["STENO"] },
 
   // ── RÉUNION ──
-  { nom: "Coigny", libelles: ["COIGNY", "COIGNY ECO", "COIGNY MAX", "COIGNY-COLOR", "COIGNY-MILI"] },
-  { nom: "Khong", libelles: ["KHONG"] },
+  { nom: "Coigny", espace: "RÉUNION", libelles: ["COIGNY", "COIGNY ECO", "COIGNY MAX", "COIGNY-COLOR", "COIGNY-MILI"] },
+  { nom: "Khong", espace: "RÉUNION", libelles: ["KHONG"] },
   // « Tecseat Learning » n'existe pas au tarif : ce sont les assises de
   // formation, réparties sur quatre libellés. La poutre à composer est rangée
   // en accueil par le tarif, ce qui est cohérent avec son usage.
-  { nom: "Tecseat Learning", libelles: ["TECSEAT", "TECSEAT / TECSUP", "TECSEAT ETUDIANT", "TECSEAT MEETING", "TECSEAT POUTRE A COMPOSER"] },
+  { nom: "Tecseat Learning", espace: "RÉUNION", libelles: ["TECSEAT", "TECSEAT / TECSUP", "TECSEAT ETUDIANT", "TECSEAT MEETING", "TECSEAT POUTRE A COMPOSER"] },
 
   // ── MAGASINS — sièges de caisse et de vente ──
-  { nom: "Scott", libelles: ["SCOTT", "SCOTTY"] },
-  { nom: "Cheyenne", libelles: ["CHEYENNE"] },
-  { nom: "Bristol", libelles: ["BRISTOL"] },
-  { nom: "Tecsy", libelles: ["TECSY ALTO", "TECSY CHIC", "TECSY PLATINIUM", "TECSY WHITE"] },
-  { nom: "Amy", libelles: ["AMY"] },
-  { nom: "Liberty", libelles: ["LIBERTY"] },
+  { nom: "Scott", espace: "MAGASINS", libelles: ["SCOTT", "SCOTTY"] },
+  { nom: "Cheyenne", espace: "MAGASINS", libelles: ["CHEYENNE"] },
+  { nom: "Bristol", espace: "MAGASINS", libelles: ["BRISTOL"] },
+  { nom: "Tecsy", espace: "MAGASINS", libelles: ["TECSY ALTO", "TECSY CHIC", "TECSY PLATINIUM", "TECSY WHITE"] },
+  { nom: "Amy", espace: "MAGASINS", libelles: ["AMY"] },
+  { nom: "Liberty", espace: "MAGASINS", libelles: ["LIBERTY"] },
 
   // ── OUTDOOR ──
-  { nom: "Beez", libelles: ["BEEZ"] },
-  { nom: "Verano", libelles: ["VERANO - ESPACE LOUNGE", "VERANO - RESTAURATION CLASSIQUE", "VERANO - RESTAURATION HAUTE", "VERANO BANC", "VERANO COUSSIN", "VERANO POUF"] },
+  { nom: "Beez", espace: "OUTDOOR", libelles: ["BEEZ"] },
+  { nom: "Verano", espace: "OUTDOOR", libelles: ["VERANO - ESPACE LOUNGE", "VERANO - RESTAURATION CLASSIQUE", "VERANO - RESTAURATION HAUTE", "VERANO BANC", "VERANO COUSSIN", "VERANO POUF"] },
 ];
 
 // Type de produit reconnu en tête de désignation. L'ordre compte : le premier
