@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ProduitsTable } from "./ProduitsTable";
 import { getGammesPourRecherche } from "./actions";
-import { prixVenteEffectif } from "@/lib/prixDeclinaison";
+import { prixLigne, prixUnitaire } from "@/lib/prixCatalogue";
 
 export const dynamic = "force-dynamic";
 
@@ -15,16 +15,6 @@ function libelleDeclinaison(axes, valeurs) {
     .join(" · ");
 }
 
-// Prix de vente d'un produit à prix unique (sansDeclinaisons) :
-// verrouillé → prix de vente saisi ; sinon → fournisseur × (1 + marge) ; repli sur le prix de vente.
-function prixUniqueEffectif(carte, marge) {
-  const vente = carte.prixUnitaireHT != null ? Number(carte.prixUnitaireHT) : null;
-  if (carte.prixUnitaireVerrouille && vente != null && !Number.isNaN(vente) && vente > 0) return vente;
-  const tarif = carte.prixUnitaireTarifHT != null ? Number(carte.prixUnitaireTarifHT) : null;
-  if (tarif != null && !Number.isNaN(tarif) && tarif > 0) return Math.round(tarif * (1 + marge) * 100) / 100;
-  if (vente != null && !Number.isNaN(vente) && vente > 0) return vente;
-  return null;
-}
 
 // Compte les visuels d'un produit sans compter deux fois la vignette
 // lorsqu'elle figure aussi dans la galerie.
@@ -79,7 +69,7 @@ export default async function ProduitsPage() {
 
     // Produit à PRIX UNIQUE (sans déclinaisons) : une seule ligne, prix depuis prixUnitaire*.
     if (!surDevis && carte.sansDeclinaisons) {
-      const prix = prixUniqueEffectif(carte, margeGlobale);
+      const prix = prixUnitaire(carte, margeGlobale);
       const tarif = carte.prixUnitaireTarifHT != null ? Number(carte.prixUnitaireTarifHT) : null;
       lignes.push({
         key: carte.id,
@@ -121,7 +111,7 @@ export default async function ProduitsPage() {
           mode: "boutique",
           declinaisonId: d.id,
           prixTarif: tarif,
-          prix: prixVenteEffectif(d, margeGlobale),
+          prix: prixLigne(d, margeGlobale),
           verrouille: !!d.prixVerrouille,
         });
       }

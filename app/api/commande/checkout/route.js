@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { calculerTousLesFrais } from "@/lib/frais";
-import { prixVenteEffectif } from "@/lib/prixDeclinaison";
+import { prixVitrine } from "@/lib/prixCatalogue";
 
 // Génère un numéro de commande lisible : CB-2026-0001
 async function genererNumero() {
@@ -21,27 +21,6 @@ function motDePasseValide(mdp) {
   if (!/[0-9]/.test(mdp)) return false;
   if (!/[^A-Za-z0-9]/.test(mdp)) return false;
   return true;
-}
-
-// Même logique de promo que celle affichée dans l'admin (PrixProduit.js) — un pourcentage
-// n'est actif que si la date du jour est dans la période choisie (ou si aucune date n'est fixée).
-function prixApresPromoVitrine(vitrine, prixBase) {
-  if (!vitrine.promoPct) return prixBase;
-  const now = new Date();
-  if (vitrine.promoDebut && new Date(vitrine.promoDebut) > now) return prixBase;
-  if (vitrine.promoFin && new Date(vitrine.promoFin) < now) return prixBase;
-  return prixBase * (1 - vitrine.promoPct / 100);
-}
-
-// Prix unique effectif d'une fiche à prix fixe (sansDeclinaisons) :
-// verrouillé → prix de vente saisi ; sinon → fournisseur × (1 + marge) ; repli sur le prix de vente.
-function prixUniqueEffectif(vitrine, marge) {
-  const vente = Number(vitrine.prixUnitaireHT);
-  if (vitrine.prixUnitaireVerrouille && !Number.isNaN(vente) && vente > 0) return vente;
-  const tarif = Number(vitrine.prixUnitaireTarifHT);
-  if (!Number.isNaN(tarif) && tarif > 0) return Math.round(tarif * (1 + marge) * 100) / 100;
-  if (!Number.isNaN(vente) && vente > 0) return vente;
-  return null;
 }
 
 export async function POST(req) {
@@ -147,41 +126,34 @@ export async function POST(req) {
         const v = vitrinesMap[it.vitrineId];
         if (!v) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
 
-        if (v.sansDeclinaisons || !it.declinaisonId) {
-          // ── Produit / accessoire à PRIX FIXE (pas de déclinaison) ──
-          const prixBase = prixUniqueEffectif(v, margeGlobale);
-          if (!prixBase || prixBase <= 0) return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
-
-          lignes.push({
-            codeRacine: null,
-            referenceFournisseur: v.referenceUnitaire || null,
-            designation: it.designation || v.nom,
-            marque: v.gamme?.marque?.nom || null,
-            finition: it.finition || null,
-            prixHT: prixApresPromoVitrine(v, prixBase),
-            quantite,
-            imageUrl: v.imageUrl || null,
-          });
-        } else {
-          // ── Produit à DÉCLINAISONS ──
-          const declinaisons = Array.isArray(v.declinaisons) ? v.declinaisons : [];
-          const decl = declinaisons.find((d) => d.id === it.declinaisonId);
-          if (!decl) return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
-
-          const prixBase = prixVenteEffectif(decl, margeGlobale);
-          if (!prixBase || prixBase <= 0) return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
-
-          lignes.push({
-            codeRacine: null,
-            referenceFournisseur: decl.referenceFournisseur || null,
-            designation: it.designation || v.nom,
-            marque: v.gamme?.marque?.nom || null,
-            finition: it.finition || null,
-            prixHT: prixApresPromoVitrine(v, prixBase),
-            quantite,
-            imageUrl: v.imageUrl || null,
-          });
+        // Un seul calcul, le même que la fiche et le devis : prixVitrine gère
+        // le prix unique, les déclinaisons et la promo.
+        const { prixHT, motif } = prixVitrine(v, {
+          declinaisonId: it.declinaisonId,
+          surDevis: false,
+          marge: margeGlobale,
+        });
+        if (motif === "déclinaison disparue du catalogue") {
+          return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
         }
+        if (!prixHT || prixHT <= 0) {
+          return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
+        }
+
+        const decl = it.declinaisonId && !v.sansDeclinaisons
+          ? (Array.isArray(v.declinaisons) ? v.declinaisons : []).find((d) => d.id === it.declinaisonId)
+          : null;
+
+        lignes.push({
+          codeRacine: null,
+          referenceFournisseur: decl ? decl.referenceFournisseur || null : v.referenceUnitaire || null,
+          designation: it.designation || v.nom,
+          marque: v.gamme?.marque?.nom || null,
+          finition: it.finition || null,
+          prixHT,
+          quantite,
+          imageUrl: v.imageUrl || null,
+        });
       }
     }
 

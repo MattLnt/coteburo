@@ -1,5 +1,5 @@
 "use client";
-import { prixVenteEffectif } from "@/lib/prixDeclinaison";
+import { prixLigne, prixUnitaire } from "@/lib/prixCatalogue";
 
 const fmt2 = (n) => (n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
@@ -16,7 +16,7 @@ export default function PrixProduit({ surDevis, gammeForceDevis, venteSurDevis, 
   const verrouiller = (ligneId) => {
     onChangeLignes(lignes.map((l) => {
       if (l.id !== ligneId) return l;
-      const valeurActuelle = prixVenteEffectif(l, margeGlobale);
+      const valeurActuelle = prixLigne(l, margeGlobale);
       return { ...l, prixVerrouille: true, prixVenteHT: valeurActuelle != null ? String(valeurActuelle) : l.prixVenteHT };
     }));
   };
@@ -121,8 +121,9 @@ export default function PrixProduit({ surDevis, gammeForceDevis, venteSurDevis, 
 
   // ─── Mode "prix unique" : produit sans déclinaisons ───
   if (sansDeclinaisons) {
-    const tarifNum = (() => { const n = parseFloat(String(prixUnitaireTarifHT).replace(",", ".")); return Number.isNaN(n) ? null : n; })();
-    const venteAuto = tarifNum != null ? Math.round(tarifNum * (1 + margeGlobale) * 100) / 100 : null;
+    // Aperçu du prix Auto : même fonction que la fiche publique, pour que
+    // l admin ne promette pas un montant different de celui affiche au client.
+    const venteAuto = prixUnitaire({ prixUnitaireTarifHT, prixUnitaireHT: null, prixUnitaireVerrouille: false }, margeGlobale);
     return (
       <div>
         {selecteurMode}
@@ -212,7 +213,7 @@ export default function PrixProduit({ surDevis, gammeForceDevis, venteSurDevis, 
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {lignes.map((l) => {
-            const venteCalcule = prixVenteEffectif(l, margeGlobale);
+            const venteCalcule = prixLigne(l, margeGlobale);
             return (
               <div key={l.id} style={{ display: "grid", gridTemplateColumns: `repeat(${axes.length}, 1fr) 120px 34px 120px`, gap: 8, alignItems: "center", padding: "6px 4px", borderRadius: 10, background: "#faf8f4" }}>
                 {axes.map((a) => (

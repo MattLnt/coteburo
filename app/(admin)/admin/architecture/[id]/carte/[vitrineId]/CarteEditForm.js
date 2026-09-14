@@ -9,6 +9,7 @@ import OptionsAdditionnelles from "./OptionsAdditionnelles";
 import SelecteurOptionsLiees from "./SelecteurOptionsLiees";
 import FinitionsProduit from "./FinitionsProduit";
 import PrixProduit from "./PrixProduit";
+import { prixUnitaire } from "@/lib/prixCatalogue";
 import { sauverCarteComplete, changerGammeProduit, getGammesPourRecherche } from "./actions";
 
 export default function CarteEditForm({ carte }) {
@@ -88,15 +89,12 @@ export default function CarteEditForm({ carte }) {
   const nbOptions = (optionsAdditionnelles || []).length;
   const nbOptionsTotal = nbOptions + optionsLieesIds.length;
 
-  const prixUniqueEffectif = (() => {
-    const marge = carte.margeGlobale ?? 0.3;
-    const vente = Number(prixUnitaireHT);
-    if (prixUnitaireVerrouille && !Number.isNaN(vente) && vente > 0) return vente;
-    const tarif = Number(prixUnitaireTarifHT);
-    if (!Number.isNaN(tarif) && tarif > 0) return Math.round(tarif * (1 + marge) * 100) / 100;
-    if (!Number.isNaN(vente) && vente > 0) return vente;
-    return null;
-  })();
+  // Même calcul que la fiche publique et le paiement — l'admin ne doit pas
+  // afficher un prix que le client ne verra pas.
+  const prixUniqueEffectif = prixUnitaire(
+    { prixUnitaireHT, prixUnitaireTarifHT, prixUnitaireVerrouille },
+    carte.margeGlobale ?? 0.3
+  );
 
   const dirty = () => { setSaved(false); setErreurSave(""); };
 
