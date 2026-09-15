@@ -14,7 +14,31 @@ import { exigerAdmin } from "@/lib/session";
 // du serveur de production n'a évidemment pas ces fichiers.
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join, resolve, relative, extname, basename, sep } from "node:path";
-import sharp from "sharp";
+
+// sharp est un module natif : le charger déclenche un dlopen sur libvips. En
+// production ce chargement échoue —
+//
+//   Could not load the "sharp" module using the linux-x64 runtime
+//   ERR_DLOPEN_FAILED: libvips-cpp.so.8.18.3: cannot open shared object file
+//
+// — parce que le traceur de Next embarque bien sharp-linux-x64.node, qu'il
+// voit passer par un require, mais pas la bibliothèque partagée que l'éditeur
+// de liens va chercher à côté au moment du dlopen. Elle est pourtant installée
+// (@img/sharp-libvips-linux-x64 est dans le verrou) : elle n'est simplement
+// jamais copiée dans la fonction.
+//
+// Un import en tête de fichier faisait donc tomber le module à son évaluation,
+// et ce module est tiré par ImageUploader — présent dans neuf écrans de
+// l'admin. Or la médiathèque ne tourne QUE en local : elle lit un dossier du
+// disque désigné par MEDIATHEQUE_LOCALE, que la production n'a pas, et les
+// deux seules fonctions qui appellent sharp sortent avant lui quand la
+// variable est absente. On ne le charge donc qu'au moment de s'en servir,
+// c'est-à-dire jamais en production.
+let sharpCharge = null;
+function chargerSharp() {
+  sharpCharge ??= import("sharp").then((m) => m.default);
+  return sharpCharge;
+}
 
 const IMAGES = [".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".avif"];
 const VIGNETTE = 180;
@@ -134,6 +158,7 @@ export async function vignetteLocale(relatif) {
   const cible = resoudre(relatif);
   if (!cible) return null;
   try {
+    const sharp = await chargerSharp();
     const buffer = await sharp(cible)
       .rotate()
       .resize(VIGNETTE, VIGNETTE, { fit: "inside", withoutEnlargement: true })
@@ -167,6 +192,7 @@ export async function importerImagesLocales(relatifs = []) {
       // La dimension est plafonnée : les TIFF du catalogue OfficePro pèsent
       // jusqu'à 380 Mo et donnaient encore 20 Mo en JPEG, quand l'envoi non
       // signé s'arrête à 10. 2500 px suffisent largement à une fiche produit.
+      const sharp = await chargerSharp();
       const buffer = await sharp(cible)
         .rotate()
         .resize(MAX_COTE, MAX_COTE, { fit: "inside", withoutEnlargement: true })
