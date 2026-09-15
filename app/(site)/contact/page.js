@@ -11,7 +11,7 @@ export const metadata = {
 export default async function ContactPage() {
   const reglages = await getReglagesPublic();
 
-  const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
+  const tel = formatTel(reglages.telephone) || "06 35 58 43 78";
   const telLink = "tel:" + tel.replace(/\s/g, "");
   const email = reglages.email || "coteburo@orange.fr";
   const adresse = reglages.adresse || "645 rue Mayor de Montricher\n13290 Aix-en-Provence";

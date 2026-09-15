@@ -227,7 +227,7 @@ export function ReglagesForm({ reglages, paliersInitiaux, campagnes = [] }) {
         <div style={card}>
           <CardHead title="Coordonnées" sub="En-tête, pied de page et contact." />
           <div className="rg-duo" style={{ marginBottom: 14 }}>
-            <Field label="Téléphone" value={form.telephone} onChange={(v) => set("telephone", v)} placeholder="06 20 39 13 90" />
+            <Field label="Téléphone" value={form.telephone} onChange={(v) => set("telephone", v)} placeholder="06 35 58 43 78" />
             <Field label="Email" value={form.email} onChange={(v) => set("email", v)} placeholder="coteburo@orange.fr" />
           </div>
           <div style={{ marginBottom: 14 }}>

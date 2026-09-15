@@ -45,7 +45,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
   const connecte = sessionStatus === "authenticated";
   const initiale = (session?.user?.email || "?")[0]?.toUpperCase();
 
-  const tel = formatTel(reglages.telephone) || "06 20 39 13 90";
+  const tel = formatTel(reglages.telephone) || "06 35 58 43 78";
   const telLink = "tel:" + tel.replace(/\s/g, "");
   const bandeauActif = reglages.bandeauActif;
   const bandeauTexte = reglages.bandeauTexte || "Showroom Aix-en-Provence — 645 rue Mayor de Montricher";
