@@ -1,0 +1,327 @@
+[
+ {
+  "gamme": "Astro Direction",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1750%24default%2C%40FOLDER1136%24default&lang=fr",
+  "refs": [
+   "DH50",
+   "ED70",
+   "DQ35",
+   "ED98",
+   "ED733"
+  ]
+ },
+ {
+  "gamme": "Alto",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER2690%24default%2C%40FOLDER2777%24default&lang=fr",
+  "refs": [
+   "ED25",
+   "ED32",
+   "ED29",
+   "ED35",
+   "EA84",
+   "ED39",
+   "EC82"
+  ]
+ },
+ {
+  "gamme": "Alto Réunion",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1750%24default%2C%40FOLDER2931%24default&lang=fr",
+  "refs": [
+   "DY32",
+   "DT03"
+  ]
+ },
+ {
+  "gamme": "Alto Réunion Tables",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1758%24default%2C%40FOLDER2665%24default&lang=fr",
+  "refs": [
+   "DT70",
+   "DT72",
+   "DT86",
+   "DT89"
+  ]
+ },
+ {
+  "gamme": "Astro",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1736%24default%2C%40FOLDER1123%24default&lang=fr",
+  "refs": [
+   "BP16",
+   "BP27",
+   "DW59",
+   "BQ98",
+   "BQ99",
+   "EB96",
+   "EC05",
+   "BF901K",
+   "BZ73",
+   "DQ38",
+   "BM62",
+   "BM63",
+   "DR39",
+   "DR40",
+   "DN27",
+   "BM29"
+  ]
+ },
+ {
+  "gamme": "Astrolite",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1736%24default%2C%40FOLDER1124%24default&lang=fr",
+  "refs": [
+   "BK44",
+   "BT44",
+   "BU50",
+   "BT55",
+   "BK58",
+   "DF18",
+   "DB93",
+   "DN98",
+   "DN29",
+   "DY67",
+   "EB17",
+   "EB26",
+   "BF901K"
+  ]
+ },
+ {
+  "gamme": "Astrolite Réglable",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER2690%24default%2C%40FOLDER2691%24default&lang=fr",
+  "refs": [
+   "BM79",
+   "DX75",
+   "DL30",
+   "BT67",
+   "BU51"
+  ]
+ },
+ {
+  "gamme": "Comfort",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER1138%24default&lang=fr",
+  "refs": [
+   "AP201",
+   "BD26",
+   "AP22",
+   "AP24",
+   "AP38",
+   "DH77",
+   "AW553",
+   "DR071",
+   "DP035G"
+  ]
+ },
+ {
+  "gamme": "Quiétude",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER1139%24default&lang=fr",
+  "refs": [
+   "BH693",
+   "BU323",
+   "BP513",
+   "BJ013",
+   "AW713",
+   "BU44",
+   "DZ09",
+   "BJ533",
+   "BH713",
+   "BJ083",
+   "AE294G"
+  ]
+ },
+ {
+  "gamme": "Quiétude Coulissantes",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER2942%24default&lang=fr",
+  "refs": [
+   "EG98",
+   "EH04",
+   "EH143",
+   "ED98",
+   "ED733"
+  ]
+ },
+ {
+  "gamme": "Classif",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1756%24default%2C%40FOLDER1141%24default&lang=fr",
+  "refs": [
+   "BK33",
+   "BK35",
+   "BM513",
+   "BM523"
+  ]
+ },
+ {
+  "gamme": "Essentiel",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1734%24default%2C%40FOLDER2759%24default&lang=fr",
+  "refs": [
+   "AR98",
+   "AS03",
+   "BH67",
+   "AR02"
+  ]
+ },
+ {
+  "gamme": "Essentielle",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER2765%24default%2C%40FOLDER2822%24default&lang=fr",
+  "refs": [
+   "S",
+   "S BUREAU",
+   "M",
+   "L",
+   "XL"
+  ]
+ },
+ {
+  "gamme": "Extensions Bureaux Classiques",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1734%24default%2C%40FOLDER1129%24default&lang=fr",
+  "refs": [
+   "AQ79",
+   "AQ92",
+   "AQ91",
+   "BE37",
+   "AQ81",
+   "AQ94",
+   "AQ00"
+  ]
+ },
+ {
+  "gamme": "Partage",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1736%24default%2C%40FOLDER1674%24default&lang=fr",
+  "refs": [
+   "BX61",
+   "BX72",
+   "BU50",
+   "BX86",
+   "BT58",
+   "DF14",
+   "DB93",
+   "DX375G",
+   "DN99",
+   "DN28",
+   "EB54",
+   "EB67",
+   "BF901K"
+  ]
+ },
+ {
+  "gamme": "Rétro",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1734%24default%2C%40FOLDER1128%24default&lang=fr",
+  "refs": [
+   "BT83",
+   "BT88",
+   "AQ00"
+  ]
+ },
+ {
+  "gamme": "Cohésion",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1727%24default%2C%40FOLDER1675%24default&lang=fr",
+  "refs": [
+   "BX99",
+   "BY01",
+   "DN789Z"
+  ]
+ },
+ {
+  "gamme": "Cohésion Haute",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1727%24default%2C%40FOLDER1762%24default&lang=fr",
+  "refs": [
+   "BZ10",
+   "BY32",
+   "BY33",
+   "DN789Z"
+  ]
+ },
+ {
+  "gamme": "Bewall",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER2765%24default%2C%40FOLDER2956%24default&lang=fr",
+  "refs": [
+   "EG13",
+   "EG15",
+   "EG17",
+   "EG19"
+  ]
+ },
+ {
+  "gamme": "Bewall Séparateurs",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1737%24default%2C%40FOLDER2440%24default&lang=fr",
+  "refs": [
+   "EB003",
+   "EA883",
+   "EA903",
+   "DW713",
+   "DW743",
+   "EA92"
+  ]
+ },
+ {
+  "gamme": "Astrolite Haute",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1727%24default%2C%40FOLDER2555%24default&lang=fr",
+  "refs": [
+   "DQ86",
+   "DQ88",
+   "EB51",
+   "EG91"
+  ]
+ },
+ {
+  "gamme": "Envol One",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER2690%24default%2C%40FOLDER2516%24default&lang=fr",
+  "refs": [
+   "EC14",
+   "EC18",
+   "EC22"
+  ]
+ },
+ {
+  "gamme": "Ergonomie",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1737%24default%2C%40FOLDER2882%24default&lang=fr",
+  "refs": [
+   "DL06",
+   "DL08",
+   "EE95",
+   "EE98",
+   "EE99"
+  ]
+ },
+ {
+  "gamme": "Prestige Réunion",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1758%24default%2C%40FOLDER1143%24default&lang=fr",
+  "refs": [
+   "DZ05",
+   "DZ06"
+  ]
+ },
+ {
+  "gamme": "Rencontre",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1758%24default%2C%40FOLDER1151%24default&lang=fr",
+  "refs": [
+   "EH41",
+   "EH47"
+  ]
+ },
+ {
+  "gamme": "Stricto Direction",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1750%24default%2C%40FOLDER1374%24default&lang=fr",
+  "refs": [
+   "DW825",
+   "DW845",
+   "DW64",
+   "BS843",
+   "BU01",
+   "EG91"
+  ]
+ },
+ {
+  "gamme": "Solution",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&crp=brmc%3A0%2Ccat%3A%40FOLDER1758%24default%2C%40FOLDER2810%24default&lang=fr",
+  "refs": [
+   "DZ145",
+   "AE635G"
+  ]
+ },
+ {
+  "gamme": "Modul Up",
+  "url": "https://ui.pcon-solutions.com/#GATEKEEPER_ID=66c70800b49f8&cep=brmc%3A0%2Ccat%3A%40FOLDER1727%24default%2C%40FOLDER2973%24default&lang=fr",
+  "refs": [
+   "MODULE BAS",
+   "MODULE BAS REHAUSSE DOSSIER",
+   "MODULE BAS REHAUSSE ESTRADE"
+  ]
+ }
+]

@@ -1,119 +1,62 @@
 # Captures pCon
 
-Lancé le 14/09/2026 16:23:57
-Gammes : Quiétude Coulissantes
+Lancé le 20/09/2026 01:35:17
+Gammes : Prestige Réunion, Solution, Modul Up
 
 
-## Quiétude Coulissantes
+## Prestige Réunion
 
-5 produit(s) : EG98, EH04, EH143, ED98, ED733
+2 produit(s) : DZ05, DZ06
+
+⊘ DZ05 — aucune fiche au catalogue 2026, non capturé
+⊘ DZ06 — aucune fiche au catalogue 2026, non capturé
+
+## Solution
+
+2 produit(s) : DZ145, AE635G
 
 
-### EG98SSC1 — ARMOIRE PORTE COULISSANTE L143 x H72
+### DZ145N — TABLE DROITE L120 X P70 / PIED PLIANT
 
-Propriétés : Longueur · Hauteur · Dos tissu · Finition structure · Finition intérieure · Type de poignées · Couleur des poignées
-Axes retenus : **Finition structure** (7) × **Finition intérieure** (7)
-   Blanc · Blanc
-   Blanc · Chêne fil
-   Blanc · Chêne Nebraska
-   Chêne fil · Timber
-   Chêne fil · Hêtre
-   Chêne fil · Argile
-   Chêne Nebraska · Yukon
-   Chêne Nebraska · Blanc
-   Chêne Nebraska · Chêne fil
-   Timber · Chêne Nebraska
-   Timber · Timber
-   Timber · Hêtre
-   Hêtre · Argile
-   Hêtre · Yukon
-   Hêtre · Blanc
-   Argile · Chêne fil
-   Argile · Chêne Nebraska
-   Argile · Timber
-   Yukon · Hêtre
-   Yukon · Argile
-   Yukon · Yukon
+Propriétés : Longueur · Piètement · Finition plateau · Position du plateau
+Axes retenus : **Piètement** (2) × **Finition plateau** (5)
+   chrome · Chêne fil
+   chrome · Hêtre
+   chrome · Blanc
+   noir · Chêne Nebraska
+   noir · Timber
+   noir · Chêne fil
 
-### EH04SSC1 — ARMOIRE PORTE COULISSANTE L120 x H104
+### AE635G — CHARIOT TRANSPORT / TABLE PLIANTE
 
-Propriétés : Longueur · Hauteur · Dos tissu · Finition structure · Finition intérieure · Type de poignées · Couleur des poignées
-Axes retenus : **Finition structure** (7) × **Finition intérieure** (7)
-   Blanc · Blanc
-   Blanc · Chêne fil
-   Blanc · Chêne Nebraska
-   Chêne fil · Timber
-   Chêne fil · Hêtre
-   Chêne fil · Argile
-   Chêne Nebraska · Yukon
-   Chêne Nebraska · Blanc
-   Chêne Nebraska · Chêne fil
-   Timber · Chêne Nebraska
-   Timber · Timber
-   Timber · Hêtre
-   Hêtre · Argile
-   Hêtre · Yukon
-   Hêtre · Blanc
-   Argile · Chêne fil
-   Argile · Chêne Nebraska
-   Argile · Timber
-   Yukon · Hêtre
-   Yukon · Argile
-   Yukon · Yukon
+Aucune propriété configurable.
 
-### EH143E — DOS TISSU L120 x H104
+## Modul Up
 
-Propriétés : Longueur · Hauteur · Type de revêtement · Tissu
-Axe retenu : **Tissu** — 9 option(s)
-   Gris
-   Rouge
-   Bleu
-   Vert acide
-   Vert d'eau
-   Orange
-   Ocre
-   Bleu pétrole
-   Gris carbone
+3 produit(s) : MODULE BAS, MODULE BAS REHAUSSE DOSSIER, MODULE BAS REHAUSSE ESTRADE
 
-### ED98NNC1 — CONSOLE B-BOX L140 x P55 - 1 PORTE COULISSANTE
-
-Propriétés : Façade · Support · Finition B-box · Intérieur et portes · Type de poignée · Finition poignée · Sens
-Axes retenus : **Support** (2) × **Finition B-box** (7)
-   patins · Chêne fil
-   patins · Chêne Nebraska
-   patins · Timber
-   roulettes · Blanc
-   roulettes · Yukon
-   roulettes · Hêtre
-
-### ED733E — COUSSIN ASSISE TISSU L32 x P55 / CAISSON SLIM MELAMINE
-
-Propriétés : Type de revêtement · Tissu
-Axe retenu : **Tissu** — 9 option(s)
-   Gris
-   Rouge
-   Bleu
-   Vert acide
-   Vert d'eau
-   Orange
-   Ocre
-   Bleu pétrole
-   Gris carbone
+⊘ MODULE BAS — aucune fiche au catalogue 2026, non capturé
+⊘ MODULE BAS REHAUSSE DOSSIER — aucune fiche au catalogue 2026, non capturé
+⊘ MODULE BAS REHAUSSE ESTRADE — aucune fiche au catalogue 2026, non capturé
 
 ---
 
 ## Bilan
 
-71 image(s) capturée(s).
+8 image(s) capturée(s).
+
+## Produits du configurateur sans fiche au catalogue 2026
+
+5 produit(s) : hors périmètre 2026, ou nommés par
+un libellé que PAR_LIBELLE ne connaît pas encore.
+
+- Prestige Réunion · DZ055N
+- Prestige Réunion · DZ065N
+- Modul Up · MODULE BAS
+- Modul Up · MODULE BAS REHAUSSE DOSSIER
+- Modul Up · MODULE BAS REHAUSSE ESTRADE
 
 ## Libellés non reconnus
 
-- **Longueur** — 3 produit(s), gammes : Quiétude Coulissantes
-- **Hauteur** — 3 produit(s), gammes : Quiétude Coulissantes
-- **Dos tissu** — 2 produit(s), gammes : Quiétude Coulissantes
-- **Type de poignées** — 2 produit(s), gammes : Quiétude Coulissantes
-- **Couleur des poignées** — 2 produit(s), gammes : Quiétude Coulissantes
-- **Type de revêtement** — 2 produit(s), gammes : Quiétude Coulissantes
-- **Type de poignée** — 1 produit(s), gammes : Quiétude Coulissantes
-- **Finition poignée** — 1 produit(s), gammes : Quiétude Coulissantes
-- **Sens** — 1 produit(s), gammes : Quiétude Coulissantes
+- **Longueur** — 1 produit(s), gammes : Solution
+- **Position du plateau** — 1 produit(s), gammes : Solution

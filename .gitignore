@@ -60,3 +60,7 @@ catalogue-2026/*.pdf
 # Cache Python des parsers du catalogue.
 __pycache__/
 *.pyc
+
+# Profil du navigateur des captures pCon : un cache local, reconstruit
+# tout seul au premier lancement.
+.pcon-cache/
