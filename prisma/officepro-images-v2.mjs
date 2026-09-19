@@ -44,7 +44,7 @@ const TRACER = (process.argv.find((a) => a.startsWith("--tracer=")) || "").split
 const DEFAUT = (process.argv.find((a) => a.startsWith("--defaut=")) || "").split("=").slice(1).join("=")
   .split(",").map((s) => s.trim()).filter(Boolean);
 
-const RACINE = "C:/Users/pages/Bureau/Matt/projets/COTEBURO-MEDIAS/resourcesLENIVET/resourcesLENIVETv2/resources LENIVET";
+const RACINE = "C:/Users/akeys/Desktop/Matt/COTEBURO-MEDIAS/resourcesLENIVET/resourcesLENIVETv2/resources LENIVET";
 const FICHES = "prisma/officepro-fiches.json";
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;

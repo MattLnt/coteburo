@@ -1,0 +1,13002 @@
+{
+ "1W1C": {
+  "bloc": "Chaise 4 pieds",
+  "page": 356
+ },
+ "1W1N": {
+  "bloc": "Chaise 4 pieds",
+  "page": 356
+ },
+ "1W2C": {
+  "bloc": "• Poids maximal autorisé 110 kg.",
+  "page": 357
+ },
+ "1W2N": {
+  "bloc": "• Poids maximal autorisé 110 kg.",
+  "page": 357
+ },
+ "1W3C": {
+  "bloc": "53,4 54,5 Contrecoque Placet d'assise Tabouret haut",
+  "page": 363
+ },
+ "1W3N": {
+  "bloc": "• Poids maximal autorisé 110 kg.",
+  "page": 363
+ },
+ "1W60": {
+  "bloc": "Chariot de transport pour chaises 4 pieds ou traineau",
+  "page": 356
+ },
+ "AC41": {
+  "P": [
+   33.5,
+   33.5
+  ],
+  "bloc": "P 33,5 / H 9 / H utile 4,5 cm",
+  "page": 98
+ },
+ "AD24": {
+  "H": [
+   67.5,
+   67.5
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Angle 90°",
+  "page": 83
+ },
+ "AE01": {
+  "bloc": "Tablette supplémentaire",
+  "page": 237
+ },
+ "AE02": {
+  "bloc": "Tablette supplémentaire",
+  "page": 237
+ },
+ "AE29": {
+  "bloc": "Tablette supplémentaire",
+  "page": 237
+ },
+ "AE30": {
+  "bloc": "Tablette supplémentaire",
+  "page": 237
+ },
+ "AE63": {
+  "bloc": "pour tables pliantes",
+  "page": 307
+ },
+ "AE99": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "bloc": "suspendus Lest anti-basculement (commun aux 2 largeurs",
+  "page": 237
+ },
+ "AF03": {
+  "bloc": "SUPPORT UNITÉ CENTRALE - Fixation sous plateaux",
+  "page": 209
+ },
+ "AF05": {
+  "H": [
+   12.0,
+   12.0
+  ],
+  "P": [
+   13.0,
+   13.0
+  ],
+  "bloc": "Goulotte simple P 13 / H 12 cm / H utile 4 cm",
+  "page": 166
+ },
+ "AP20": {
+  "bloc": "CAISSONS MOBILES",
+  "page": 225
+ },
+ "AP21": {
+  "bloc": "Plumier inclus",
+  "page": 225
+ },
+ "AP22": {
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "P 60 cm Dim. (cm) Description Réf.",
+  "page": 173
+ },
+ "AP23": {
+  "L": [
+   50.0,
+   50.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "avec top L 50 / P 60 cm top L 50 SEUQISSALC",
+  "page": 173
+ },
+ "AP24": {
+  "L": [
+   50.0,
+   50.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "avec top L 50 / P 60 cm top L 50 SEUQISSALC",
+  "page": 173
+ },
+ "AP25": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "avec top L 80 / P 60 cm* top L 80 XUAERUB",
+  "page": 173
+ },
+ "AP38": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "P 80 cm Dim. (cm) Description Réf.",
+  "page": 173
+ },
+ "AP39": {
+  "L": [
+   60.0,
+   60.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec top L 60 / P 80 cm top L 60",
+  "page": 173
+ },
+ "AQ00": {
+  "bloc": "Pied de soutien Pour plan compact",
+  "page": 166
+ },
+ "AQ79": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Angle 90°",
+  "page": 166
+ },
+ "AQ81": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   50.0,
+   50.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "EXTENSIONS sur pied de soutien cylindrique",
+  "page": 172
+ },
+ "AQ82": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "SEUQISSALC Pour plans droits ou compacts",
+  "page": 172
+ },
+ "AQ91": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Extension convivialité",
+  "page": 172
+ },
+ "AQ92": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   60.0,
+   60.0
+  ],
+  "P": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Extension demi-lune P 160 cm",
+  "page": 172
+ },
+ "AQ94": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   60.0,
+   60.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Extension latérale",
+  "page": 172
+ },
+ "AQ99": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "Voile de fond suspendu Pour bureau L 200",
+  "page": 186
+ },
+ "AR00": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Options",
+  "page": 83
+ },
+ "AR01": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Options",
+  "page": 83
+ },
+ "AR02": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Options",
+  "page": 83
+ },
+ "AR03": {
+  "H": [
+   35.0,
+   35.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Options",
+  "page": 83
+ },
+ "AR95": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "BUREAUX avec voile de fond",
+  "page": 166
+ },
+ "AR96": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "BUREAUX avec voile de fond",
+  "page": 166
+ },
+ "AR97": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 166
+ },
+ "AR98": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 166
+ },
+ "AR99": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 166
+ },
+ "AS02": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Pied de soutien inclus",
+  "page": 166
+ },
+ "AS03": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "XUAERUB Plans compacts 90°",
+  "page": 166
+ },
+ "AS04": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "XUAERUB Plans compacts 90°",
+  "page": 166
+ },
+ "AS05": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Retour P 60 cm",
+  "page": 166
+ },
+ "AT07": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "BUREAUX système poutre",
+  "page": 167
+ },
+ "AT08": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "BUREAUX système poutre",
+  "page": 167
+ },
+ "AT09": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 167
+ },
+ "AT10": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 167
+ },
+ "AT11": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 167
+ },
+ "AT14": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Pied de soutien inclus",
+  "page": 167
+ },
+ "AT15": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans compacts 90° XUAERUB",
+  "page": 167
+ },
+ "AT16": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans compacts 90° XUAERUB",
+  "page": 167
+ },
+ "AT17": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Retour P 60 cm",
+  "page": 167
+ },
+ "AU19": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "BUREAUX pieds \"l\" réglables en hauteur",
+  "page": 83
+ },
+ "AU20": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "BUREAUX pieds \"l\" réglables en hauteur",
+  "page": 83
+ },
+ "AU21": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 83
+ },
+ "AU22": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 83
+ },
+ "AU23": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 83
+ },
+ "AW71": {
+  "H": [
+   69.5,
+   69.5
+  ],
+  "bloc": "Colonnes uniquement disponibles en décors unis",
+  "page": 243
+ },
+ "AW72": {
+  "H": [
+   69.5,
+   69.5
+  ],
+  "bloc": "Colonnes uniquement disponibles en décors unis",
+  "page": 243
+ },
+ "AW73": {
+  "H": [
+   133.5,
+   133.5
+  ],
+  "bloc": "Tablettes fixes H 133,5 cm - 3 cases",
+  "page": 243
+ },
+ "AW74": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "bloc": "Tablettes fixes H 133,5 cm - 3 cases",
+  "page": 243
+ },
+ "AX06": {
+  "bloc": "Options",
+  "page": 120
+ },
+ "AZ20": {
+  "L": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Goulottes techniques",
+  "page": 57
+ },
+ "AZ21": {
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Pour électrification",
+  "page": 70
+ },
+ "AZ22": {
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "d'électrification",
+  "page": 57
+ },
+ "AZ23": {
+  "L": [
+   150.0,
+   150.0
+  ],
+  "bloc": "Pour électrification",
+  "page": 70
+ },
+ "BA00": {
+  "bloc": "4 Poignées Description Réf. Finition Réf. Finition",
+  "page": 239
+ },
+ "BD26": {
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "P 60 - P 80 cm Dim. (cm) Description Réf.",
+  "page": 226
+ },
+ "BD27": {
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "P 60 - P 80 cm Dim. (cm) Description Réf.",
+  "page": 226
+ },
+ "BE37": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   60.0,
+   60.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Extension arrondie",
+  "page": 172
+ },
+ "BF90": {
+  "bloc": "Option B-box",
+  "page": 117
+ },
+ "BG68": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "Bureau droit",
+  "page": 190
+ },
+ "BH55": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "en hauteur Caissons & Rangements",
+  "page": 83
+ },
+ "BH67": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "cylindrique H 72 cm",
+  "page": 166
+ },
+ "BH69": {
+  "H": [
+   69.5,
+   69.5
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Rangement H 69,5 cm",
+  "page": 238
+ },
+ "BH70": {
+  "H": [
+   69.5,
+   69.5
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Rangement H 69,5 cm",
+  "page": 238
+ },
+ "BH71": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Option - pour rangements H 201 cm",
+  "page": 236
+ },
+ "BH72": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Option - pour rangements H 201 cm",
+  "page": 236
+ },
+ "BH73": {
+  "bloc": "Top de finition 2 obligatoire à ajouter",
+  "page": 238
+ },
+ "BH74": {
+  "bloc": "Top de finition 2 obligatoire à ajouter",
+  "page": 238
+ },
+ "BH75": {
+  "H": [
+   101.5,
+   101.5
+  ],
+  "bloc": "STNEMEGNAR Rangements H 101,5 cm",
+  "page": 238
+ },
+ "BH76": {
+  "H": [
+   101.5,
+   101.5
+  ],
+  "bloc": "STNEMEGNAR Rangements H 101,5 cm",
+  "page": 238
+ },
+ "BH77": {
+  "bloc": "Top de finition 2 obligatoire à ajouter",
+  "page": 238
+ },
+ "BH78": {
+  "bloc": "Top de finition 2 obligatoire à ajouter",
+  "page": 238
+ },
+ "BH79": {
+  "H": [
+   133.5,
+   133.5
+  ],
+  "bloc": "Rangements H 133,5 cm",
+  "page": 238
+ },
+ "BH80": {
+  "H": [
+   133.5,
+   133.5
+  ],
+  "bloc": "Rangements H 133,5 cm",
+  "page": 238
+ },
+ "BH81": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BH82": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BH83": {
+  "bloc": "Top de finition optionnel",
+  "page": 236
+ },
+ "BH84": {
+  "bloc": "Top de finition optionnel",
+  "page": 236
+ },
+ "BH97": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 3 tablettes métal",
+  "page": 237
+ },
+ "BH98": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 3 tablettes métal",
+  "page": 237
+ },
+ "BH99": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 4 tablettes métal",
+  "page": 237
+ },
+ "BJ00": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 4 tablettes métal",
+  "page": 237
+ },
+ "BJ01": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Bibliothèque H 201 cm",
+  "page": 237
+ },
+ "BJ02": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Bibliothèque H 201 cm",
+  "page": 237
+ },
+ "BJ08": {
+  "bloc": "2 Tops Description Réf. Finition Réf. Finition",
+  "page": 238
+ },
+ "BJ09": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "L": [
+   240.0,
+   240.0
+  ],
+  "bloc": "N'existe pas en version L 300 cm",
+  "page": 238
+ },
+ "BJ10": {
+  "bloc": "2 Tops Description Réf. Finition Réf. Finition",
+  "page": 238
+ },
+ "BJ49": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES modulaires",
+  "page": 295
+ },
+ "BJ50": {
+  "bloc": "(6/8 personnes)",
+  "page": 295
+ },
+ "BJ53": {
+  "bloc": "Options - pour rangement à composer",
+  "page": 237
+ },
+ "BJ54": {
+  "bloc": "Options - pour rangement à composer",
+  "page": 237
+ },
+ "BK33": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "STNEMEGNAR",
+  "page": 272
+ },
+ "BK35": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "ARMOIRES À RIDEAUX unicolores",
+  "page": 272
+ },
+ "BK42": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 110
+ },
+ "BK43": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 110
+ },
+ "BK44": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 110
+ },
+ "BK45": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 110
+ },
+ "BK52": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 116
+ },
+ "BK53": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 116
+ },
+ "BK54": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 116
+ },
+ "BK55": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BK56": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BK57": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BK58": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BK59": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BK64": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 151
+ },
+ "BK65": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 151
+ },
+ "BK69": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 156
+ },
+ "BK70": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 156
+ },
+ "BK71": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BK72": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BK75": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 156
+ },
+ "BK76": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BK77": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BK78": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BM29": {
+  "H": [
+   61.0,
+   61.0
+  ],
+  "bloc": "Descente de câbles verticale",
+  "page": 159
+ },
+ "BM30": {
+  "L": [
+   15.5,
+   15.5
+  ],
+  "bloc": "Se fixent sous les plateaux",
+  "page": 207
+ },
+ "BM42": {
+  "bloc": "Description Réf.",
+  "page": 360
+ },
+ "BM49": {
+  "H": [
+   69.0,
+   69.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   44.0,
+   44.0
+  ],
+  "bloc": "Tops Structurex®",
+  "page": 272
+ },
+ "BM50": {
+  "H": [
+   69.0,
+   69.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   44.0,
+   44.0
+  ],
+  "bloc": "Tops Structurex®",
+  "page": 272
+ },
+ "BM51": {
+  "H": [
+   69.0,
+   69.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Crédence H 69 cm 1 porte à rideau à ouverture horizontale",
+  "page": 272
+ },
+ "BM52": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   44.0,
+   44.0
+  ],
+  "bloc": "Options",
+  "page": 272
+ },
+ "BM57": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tops Structurex®",
+  "page": 273
+ },
+ "BM58": {
+  "H": [
+   198.0,
+   198.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "pour dossiers suspendus",
+  "page": 273
+ },
+ "BM59": {
+  "bloc": "pliante sur roulettes 54 84",
+  "page": 360
+ },
+ "BM62": {
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Élément départ",
+  "page": 287
+ },
+ "BM63": {
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 287
+ },
+ "BM64": {
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Élément départ",
+  "page": 287
+ },
+ "BM65": {
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 287
+ },
+ "BM79": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BM80": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BM81": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BM82": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BN01": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   44.0,
+   44.0
+  ],
+  "bloc": "P 44 cm 3 niveaux d'accrochage DS",
+  "page": 272
+ },
+ "BN02": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   44.0,
+   44.0
+  ],
+  "bloc": "P 44 cm 5 niveaux d'accrochage DS",
+  "page": 272
+ },
+ "BN09": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 151
+ },
+ "BN10": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 151
+ },
+ "BP16": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 151
+ },
+ "BP17": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BP18": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BP19": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BP27": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Sur pied de soutien",
+  "page": 151
+ },
+ "BP28": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 151
+ },
+ "BP29": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 151
+ },
+ "BP30": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Retour P 60 cm",
+  "page": 151
+ },
+ "BP50": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Rangement H 72 cm",
+  "page": 236
+ },
+ "BP51": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Armoire H 72 cm",
+  "page": 237
+ },
+ "BQ98": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BQ99": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BR00": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BR01": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BR42": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BR43": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BR44": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 156
+ },
+ "BR45": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BR46": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 156
+ },
+ "BR47": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BR48": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 156
+ },
+ "BR49": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 156
+ },
+ "BR52": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BR53": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BR54": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BR56": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BR57": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BR58": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BR66": {
+  "bloc": "CAISSONS MOBILES",
+  "page": 269
+ },
+ "BR67": {
+  "bloc": "Plumier inclus",
+  "page": 269
+ },
+ "BR81": {
+  "L": [
+   42.0,
+   42.0
+  ],
+  "P": [
+   53.5,
+   53.5
+  ],
+  "bloc": "Top Structurex® Pour caissons mobiles",
+  "page": 269
+ },
+ "BS84": {
+  "H": [
+   32.2,
+   32.2
+  ],
+  "L": [
+   35.5,
+   35.5
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "à encastrer dans le meuble de service",
+  "page": 183
+ },
+ "BS99": {
+  "bloc": "Descente de câbles extensible",
+  "page": 208
+ },
+ "BT27": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 151
+ },
+ "BT37": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 110
+ },
+ "BT38": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 110
+ },
+ "BT39": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 110
+ },
+ "BT40": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 110
+ },
+ "BT41": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 110
+ },
+ "BT44": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 110
+ },
+ "BT45": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 110
+ },
+ "BT46": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 110
+ },
+ "BT47": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "XUAERUB Retour P 60 cm",
+  "page": 110
+ },
+ "BT53": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 116
+ },
+ "BT54": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 116
+ },
+ "BT55": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 116
+ },
+ "BT56": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BT57": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BT58": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 116
+ },
+ "BT59": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BT60": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BT61": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BT62": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BT63": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BT64": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "BT67": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BT68": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BT69": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BT70": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "BT80": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "BUREAUX pieds panneaux",
+  "page": 169
+ },
+ "BT81": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "BUREAUX pieds panneaux",
+  "page": 169
+ },
+ "BT82": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "BUREAUX pieds panneaux",
+  "page": 169
+ },
+ "BT83": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "BUREAUX pieds panneaux",
+  "page": 169
+ },
+ "BT84": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "BUREAUX pieds panneaux",
+  "page": 169
+ },
+ "BT87": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "BUREAUX pieds panneaux",
+  "page": 169
+ },
+ "BT88": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans compacts 90°",
+  "page": 169
+ },
+ "BT89": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans compacts 90°",
+  "page": 169
+ },
+ "BT90": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Retour P 60 cm",
+  "page": 169
+ },
+ "BU22": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU23": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU24": {
+  "bloc": "Top de finition inclus",
+  "page": 237
+ },
+ "BU25": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 2 tablettes métal",
+  "page": 237
+ },
+ "BU26": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU27": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU28": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 2 tablettes métal",
+  "page": 237
+ },
+ "BU29": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 3 tablettes métal",
+  "page": 237
+ },
+ "BU32": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Rangement H 72 cm",
+  "page": 236
+ },
+ "BU33": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "Armoire H 72 cm",
+  "page": 237
+ },
+ "BU34": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU35": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU36": {
+  "bloc": "Top de finition inclus",
+  "page": 237
+ },
+ "BU37": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 2 tablettes métal",
+  "page": 237
+ },
+ "BU38": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU39": {
+  "bloc": "Top de finition inclus",
+  "page": 236
+ },
+ "BU40": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 2 tablettes métal",
+  "page": 237
+ },
+ "BU41": {
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "P 48 cm 2 portes battantes - 3 tablettes métal",
+  "page": 237
+ },
+ "BU42": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "Colonnes uniquement disponibles en décors unis",
+  "page": 243
+ },
+ "BU43": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   240.0,
+   240.0
+  ],
+  "bloc": "+ 1 colonne H 72 cm",
+  "page": 243
+ },
+ "BU44": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "+ 1 colonne H 72 cm",
+  "page": 243
+ },
+ "BU45": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "L": [
+   240.0,
+   240.0
+  ],
+  "bloc": "+ 1 colonne H 104 cm",
+  "page": 243
+ },
+ "BU46": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "+ 1 colonne H 104 cm",
+  "page": 243
+ },
+ "BU47": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   240.0,
+   240.0
+  ],
+  "bloc": "+ 1 colonne H 136 cm",
+  "page": 243
+ },
+ "BU48": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "+ 1 colonne H 136 cm",
+  "page": 243
+ },
+ "BU49": {
+  "H": [
+   203.0,
+   203.0
+  ],
+  "L": [
+   240.0,
+   240.0
+  ],
+  "P": [
+   48.0,
+   48.0
+  ],
+  "bloc": "+ 1 colonne H 203 cm",
+  "page": 243
+ },
+ "BU50": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Extension / Retour",
+  "page": 109
+ },
+ "BU51": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Extension / Retour",
+  "page": 81
+ },
+ "BU55": {
+  "H": [
+   41.0,
+   41.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Table basse Galet 80",
+  "page": 346
+ },
+ "BU58": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 151
+ },
+ "BU67": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BU68": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BU69": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BU70": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BU71": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 155
+ },
+ "BU76": {
+  "bloc": "Élément départ",
+  "page": 159
+ },
+ "BU77": {
+  "bloc": "Élément suivant",
+  "page": 159
+ },
+ "BX61": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 126
+ },
+ "BX62": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 126
+ },
+ "BX63": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 126
+ },
+ "BX64": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 126
+ },
+ "BX65": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 126
+ },
+ "BX66": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 126
+ },
+ "BX67": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 126
+ },
+ "BX68": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 126
+ },
+ "BX69": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 126
+ },
+ "BX72": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 126
+ },
+ "BX73": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 126
+ },
+ "BX74": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 126
+ },
+ "BX75": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "XUAERUB Retour P 60 cm",
+  "page": 126
+ },
+ "BX86": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 132
+ },
+ "BX87": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 132
+ },
+ "BX88": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 132
+ },
+ "BX89": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 132
+ },
+ "BX90": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 132
+ },
+ "BX91": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 132
+ },
+ "BX92": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 132
+ },
+ "BX93": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "BX94": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "BX95": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "BX96": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "BX97": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "BX98": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "BX99": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 44
+ },
+ "BY01": {
+  "H": [
+   61.0,
+   61.0
+  ],
+  "bloc": "Descente de câbles verticale",
+  "page": 44
+ },
+ "BY25": {
+  "L": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Parements satellite",
+  "page": 329
+ },
+ "BY27": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Parements satellite",
+  "page": 329
+ },
+ "BY30": {
+  "H": [
+   113.0,
+   113.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLE HAUTE ronde",
+  "page": 294
+ },
+ "BY31": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 339
+ },
+ "BY32": {
+  "bloc": "Tabouret",
+  "page": 364
+ },
+ "BY33": {
+  "bloc": "Largeur repose-pieds : 31 cm.",
+  "page": 365
+ },
+ "BY46": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 151
+ },
+ "BY47": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 151
+ },
+ "BY84": {
+  "bloc": "Bureau sur meuble de",
+  "page": 190
+ },
+ "BY88": {
+  "bloc": "service à tiroirs",
+  "page": 190
+ },
+ "BY98": {
+  "H": [
+   60.5,
+   60.5
+  ],
+  "L": [
+   30.0,
+   30.0
+  ],
+  "P": [
+   52.0,
+   52.0
+  ],
+  "bloc": "Caisson mobile slim",
+  "page": 269
+ },
+ "BZ10": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 45
+ },
+ "BZ11": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Cohésion Haute",
+  "page": 45
+ },
+ "BZ12": {
+  "H": [
+   107.0,
+   107.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "H 107 cm GNIKROWOC",
+  "page": 45
+ },
+ "BZ73": {
+  "bloc": "TABLES DE RÉUNION carrées",
+  "page": 159
+ },
+ "BZ75": {
+  "bloc": "Élément départ",
+  "page": 159
+ },
+ "BZ99": {
+  "bloc": "Yumi",
+  "page": 354
+ },
+ "DA00": {
+  "bloc": "Nami",
+  "page": 354
+ },
+ "DA17": {
+  "H": [
+   28.0,
+   28.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "Voile de fond suspendu Pour L 200",
+  "page": 190
+ },
+ "DB64": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 141
+ },
+ "DB65": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 141
+ },
+ "DB66": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 141
+ },
+ "DB67": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 141
+ },
+ "DB68": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 141
+ },
+ "DB69": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 141
+ },
+ "DB70": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 141
+ },
+ "DB71": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec obturateurs P 70 CM P 80 CM",
+  "page": 141
+ },
+ "DB72": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 141
+ },
+ "DB73": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB74": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB75": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB76": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB77": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB78": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB79": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec obturateurs",
+  "page": 145
+ },
+ "DB80": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 143
+ },
+ "DB81": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 143
+ },
+ "DB82": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 143
+ },
+ "DB83": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 143
+ },
+ "DB84": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 147
+ },
+ "DB85": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 147
+ },
+ "DB86": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 147
+ },
+ "DB87": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 147
+ },
+ "DB92": {
+  "bloc": "TABLES CARRÉES - Élément départ",
+  "page": 285
+ },
+ "DB93": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "H 72 cm P 163 / L 160 SFITAROBALLOC",
+  "page": 121
+ },
+ "DB96": {
+  "bloc": "Access",
+  "page": 285
+ },
+ "DB97": {
+  "bloc": "Elément suivant",
+  "page": 121
+ },
+ "DE43": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 153
+ },
+ "DE44": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 153
+ },
+ "DE45": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 153
+ },
+ "DE46": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 153
+ },
+ "DE47": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE48": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE49": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE50": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE51": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE52": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE53": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE54": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 157
+ },
+ "DE55": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 125
+ },
+ "DE56": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 125
+ },
+ "DE57": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 125
+ },
+ "DE58": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 131
+ },
+ "DE59": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 131
+ },
+ "DE60": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 131
+ },
+ "DE61": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DE62": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DE63": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DE64": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 128
+ },
+ "DE65": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 128
+ },
+ "DE66": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 128
+ },
+ "DE67": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 128
+ },
+ "DE68": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 134
+ },
+ "DE69": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 134
+ },
+ "DE70": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 134
+ },
+ "DE71": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 134
+ },
+ "DE72": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 118
+ },
+ "DE73": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 118
+ },
+ "DE74": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 118
+ },
+ "DE75": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 118
+ },
+ "DE76": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 109
+ },
+ "DE77": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 109
+ },
+ "DE78": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 109
+ },
+ "DE79": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DE80": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DE81": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DE85": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 112
+ },
+ "DE86": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 112
+ },
+ "DE87": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 112
+ },
+ "DE88": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access P 80 CM",
+  "page": 112
+ },
+ "DE89": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 118
+ },
+ "DE90": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 118
+ },
+ "DE91": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec Top Access",
+  "page": 118
+ },
+ "DE92": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 118
+ },
+ "DF14": {
+  "bloc": "TABLES DE RÉUNION carrées",
+  "page": 137
+ },
+ "DF16": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "H 72 cm P 163 / L 160 SFITAROBALLOC",
+  "page": 137
+ },
+ "DF18": {
+  "bloc": "TABLES DE RÉUNION carrées",
+  "page": 121
+ },
+ "DF20": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "H 72 cm P 163 / L 160 SFITAROBALLOC",
+  "page": 121
+ },
+ "DF40": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Extension / Retour",
+  "page": 141
+ },
+ "DF98": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 44
+ },
+ "DH00": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 44
+ },
+ "DH13": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 45
+ },
+ "DH29": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   50.0,
+   50.0
+  ],
+  "bloc": "pré-débouchants Ø 80 mm",
+  "page": 339
+ },
+ "DH46": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 133
+ },
+ "DH47": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "DH48": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 117
+ },
+ "DH50": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "bloc": "Bureau droit",
+  "page": 186
+ },
+ "DH70": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables droites",
+  "page": 301
+ },
+ "DH71": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites",
+  "page": 301
+ },
+ "DH72": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "4 connecteurs inclus",
+  "page": 301
+ },
+ "DH77": {
+  "bloc": "Caissons avec Top box 3 tiroirs dont 1 pour dossiers suspend",
+  "page": 226
+ },
+ "DH78": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Dim. Top box P 80 / H 40 / 4 tiroirs plats",
+  "page": 226
+ },
+ "DH98": {
+  "bloc": "Pour écran",
+  "page": 57
+ },
+ "DK12": {
+  "H": [
+   119.5,
+   119.5
+  ],
+  "L": [
+   117.0,
+   117.0
+  ],
+  "bloc": "Casiers ouverts",
+  "page": 262
+ },
+ "DK13": {
+  "H": [
+   157.5,
+   157.5
+  ],
+  "L": [
+   117.0,
+   117.0
+  ],
+  "bloc": "Casiers ouverts",
+  "page": 262
+ },
+ "DK18": {
+  "H": [
+   13.5,
+   13.5
+  ],
+  "L": [
+   73.0,
+   73.0
+  ],
+  "bloc": "Socle mélaminé",
+  "page": 262
+ },
+ "DK65": {
+  "bloc": "Options",
+  "page": 79
+ },
+ "DL06": {
+  "H": [
+   28.0,
+   28.0
+  ],
+  "L": [
+   12.5,
+   12.5
+  ],
+  "P": [
+   27.0,
+   27.0
+  ],
+  "bloc": "Simple extension P 27 / L 12,5 / H 28",
+  "page": 33
+ },
+ "DL08": {
+  "bloc": "Double bras support écrans",
+  "page": 217
+ },
+ "DL30": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DL31": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DL32": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DL33": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DM56": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   77.0,
+   77.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 322
+ },
+ "DM58": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   280.0,
+   280.0
+  ],
+  "P": [
+   77.0,
+   77.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 322
+ },
+ "DM60": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   300.0,
+   300.0
+  ],
+  "P": [
+   107.5,
+   107.5
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 324
+ },
+ "DM62": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   380.0,
+   380.0
+  ],
+  "P": [
+   107.5,
+   107.5
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 324
+ },
+ "DM64": {
+  "bloc": "Banque d'accueil",
+  "page": 323
+ },
+ "DM66": {
+  "bloc": "Banque d'accueil",
+  "page": 323
+ },
+ "DM68": {
+  "bloc": "Banque d'accueil",
+  "page": 323
+ },
+ "DM70": {
+  "bloc": "Banque d'accueil",
+  "page": 323
+ },
+ "DM72": {
+  "H": [
+   109.0,
+   109.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   72.5,
+   72.5
+  ],
+  "bloc": "Modules hauts intermédiaires",
+  "page": 327
+ },
+ "DM73": {
+  "H": [
+   109.0,
+   109.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Modules hauts intermédiaires",
+  "page": 327
+ },
+ "DM74": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Module PMR(1) intermédiaire",
+  "page": 327
+ },
+ "DM75": {
+  "L": [
+   102.5,
+   102.5
+  ],
+  "bloc": "Module PMR(1) final",
+  "page": 328
+ },
+ "DM76": {
+  "H": [
+   109.0,
+   109.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "LIEUCCA",
+  "page": 328
+ },
+ "DM77": {
+  "H": [
+   109.0,
+   109.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   72.5,
+   72.5
+  ],
+  "bloc": "LIEUCCA",
+  "page": 328
+ },
+ "DM78": {
+  "H": [
+   109.0,
+   109.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "LIEUCCA",
+  "page": 328
+ },
+ "DM79": {
+  "H": [
+   109.0,
+   109.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   72.5,
+   72.5
+  ],
+  "bloc": "LIEUCCA",
+  "page": 328
+ },
+ "DN01": {
+  "bloc": "Pied de soutien carré* 50 x 50",
+  "page": 329
+ },
+ "DN19": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tables rondes (3/4 personnes)",
+  "page": 284
+ },
+ "DN20": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables rondes (3/4 personnes)",
+  "page": 284
+ },
+ "DN21": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 141
+ },
+ "DN22": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 141
+ },
+ "DN23": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans compacts",
+  "page": 141
+ },
+ "DN24": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Retour P 60 cm XUAERUB",
+  "page": 141
+ },
+ "DN26": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "H 72 cm - Structure L 140 cm",
+  "page": 284
+ },
+ "DN27": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Tables tonneau",
+  "page": 158
+ },
+ "DN28": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "(6 personnes)",
+  "page": 136
+ },
+ "DN29": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "XUAERUB (6 personnes) Dotée de 2 passe-câbles",
+  "page": 120
+ },
+ "DN31": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "TABLES DE RÉUNION rondes",
+  "page": 136
+ },
+ "DN32": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES DE RÉUNION rondes",
+  "page": 136
+ },
+ "DN33": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "TABLES DE RÉUNION rondes",
+  "page": 120
+ },
+ "DN34": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES DE RÉUNION rondes",
+  "page": 120
+ },
+ "DN35": {
+  "H": [
+   67.5,
+   67.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Pied de soutien inclus",
+  "page": 83
+ },
+ "DN36": {
+  "H": [
+   67.5,
+   67.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Pied de soutien inclus",
+  "page": 83
+ },
+ "DN37": {
+  "H": [
+   67.5,
+   67.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Pied de soutien inclus",
+  "page": 83
+ },
+ "DN38": {
+  "H": [
+   67.5,
+   67.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Pied de soutien inclus",
+  "page": 83
+ },
+ "DN40": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables droites",
+  "page": 301
+ },
+ "DN41": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites",
+  "page": 301
+ },
+ "DN42": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "4 connecteurs inclus",
+  "page": 301
+ },
+ "DN43": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables demi-lune",
+  "page": 301
+ },
+ "DN44": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "4 connecteurs inclus",
+  "page": 301
+ },
+ "DN45": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   150.0,
+   150.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plateaux munis de 2 passe-câbles pré-débouchants Ø 80 mm",
+  "page": 302
+ },
+ "DN46": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   150.0,
+   150.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plateaux munis de 2 passe-câbles pré-débouchants Ø 80 mm",
+  "page": 302
+ },
+ "DN47": {
+  "L": [
+   170.0,
+   170.0
+  ],
+  "bloc": "4 connecteurs inclus",
+  "page": 302
+ },
+ "DN48": {
+  "L": [
+   170.0,
+   170.0
+  ],
+  "bloc": "4 connecteurs inclus",
+  "page": 302
+ },
+ "DN52": {
+  "H": [
+   119.5,
+   119.5
+  ],
+  "L": [
+   78.5,
+   78.5
+  ],
+  "bloc": "STNEMEGNAR",
+  "page": 262
+ },
+ "DN53": {
+  "H": [
+   13.5,
+   13.5
+  ],
+  "L": [
+   73.0,
+   73.0
+  ],
+  "bloc": "Socle mélaminé",
+  "page": 262
+ },
+ "DN72": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tables rondes Dotées d'1 passe-",
+  "page": 294
+ },
+ "DN73": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "4 pieds cylindriques câble pré-débouchant",
+  "page": 294
+ },
+ "DN74": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "NOINUÉR",
+  "page": 294
+ },
+ "DN75": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "NOINUÉR",
+  "page": 294
+ },
+ "DN76": {
+  "bloc": "4 pieds cylindriques Ridigificateur métal sous",
+  "page": 295
+ },
+ "DN77": {
+  "bloc": "(6/8 personnes) plateau",
+  "page": 295
+ },
+ "DN78": {
+  "bloc": "Kit 2 platines de liaison",
+  "page": 44
+ },
+ "DN98": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES DE RÉUNION rondes",
+  "page": 120
+ },
+ "DN99": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES DE RÉUNION rondes",
+  "page": 136
+ },
+ "DP00": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Tables rondes (3/4 personnes)",
+  "page": 284
+ },
+ "DP03": {
+  "bloc": "Kit de réhausse Pour surélever les caissons hauteur",
+  "page": 226
+ },
+ "DP21": {
+  "bloc": "2 formats de plateaux",
+  "page": 347
+ },
+ "DP22": {
+  "bloc": "Plateau rond",
+  "page": 347
+ },
+ "DP23": {
+  "bloc": "Plateau rond",
+  "page": 347
+ },
+ "DP24": {
+  "bloc": "2 formats de plateaux",
+  "page": 347
+ },
+ "DP25": {
+  "bloc": "Plateau rond",
+  "page": 347
+ },
+ "DP26": {
+  "bloc": "Plateau rond",
+  "page": 347
+ },
+ "DP27": {
+  "bloc": "Options",
+  "page": 231
+ },
+ "DP28": {
+  "bloc": "Kit 5 roulettes et accotoirs • Patins de finition.",
+  "page": 351
+ },
+ "DP32": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 127
+ },
+ "DP33": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 127
+ },
+ "DP34": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 127
+ },
+ "DP35": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 127
+ },
+ "DP36": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 127
+ },
+ "DP37": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 127
+ },
+ "DP38": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 127
+ },
+ "DP39": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 152
+ },
+ "DP40": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 152
+ },
+ "DP41": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 152
+ },
+ "DP42": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 152
+ },
+ "DP43": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 152
+ },
+ "DP44": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 152
+ },
+ "DP45": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 152
+ },
+ "DP46": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 111
+ },
+ "DP47": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 111
+ },
+ "DP48": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 111
+ },
+ "DP49": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 111
+ },
+ "DP50": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 111
+ },
+ "DP51": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 111
+ },
+ "DP52": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 111
+ },
+ "DP89": {
+  "bloc": "Description Réf. Finition Réf. Finition",
+  "page": 199
+ },
+ "DP90": {
+  "bloc": "Description Réf. Finition Réf. Finition",
+  "page": 199
+ },
+ "DP91": {
+  "bloc": "Description Réf. Finition Réf. Finition",
+  "page": 199
+ },
+ "DP92": {
+  "bloc": "Description Réf. Finition Réf. Finition",
+  "page": 199
+ },
+ "DP93": {
+  "bloc": "Pinces métal",
+  "page": 93
+ },
+ "DP94": {
+  "bloc": "Description Réf. Finition Réf. Finition",
+  "page": 199
+ },
+ "DP97": {
+  "bloc": "Supports métal",
+  "page": 93
+ },
+ "DQ10": {
+  "bloc": "Accroche-câbles universel",
+  "page": 44
+ },
+ "DQ13": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Obturateur électrifié Ø 100 mm",
+  "page": 71
+ },
+ "DQ21": {
+  "bloc": "Access",
+  "page": 285
+ },
+ "DQ22": {
+  "bloc": "Access Double",
+  "page": 285
+ },
+ "DQ23": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "H 72 cm P 163 / L 160 SFITAROBALLOC",
+  "page": 121
+ },
+ "DQ24": {
+  "bloc": "Elément suivant",
+  "page": 121
+ },
+ "DQ33": {
+  "bloc": "TABLES DE RÉUNION carrées",
+  "page": 137
+ },
+ "DQ34": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "H 72 cm P 163 / L 160 SFITAROBALLOC",
+  "page": 137
+ },
+ "DQ35": {
+  "bloc": "TABLES DE RÉUNION carrées",
+  "page": 159
+ },
+ "DQ36": {
+  "bloc": "Élément départ",
+  "page": 159
+ },
+ "DQ37": {
+  "bloc": "Élément départ",
+  "page": 159
+ },
+ "DQ38": {
+  "bloc": "Élément suivant",
+  "page": 159
+ },
+ "DQ46": {
+  "bloc": "TABLES DE RÉUNION carrées",
+  "page": 121
+ },
+ "DQ47": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "H 72 cm P 163 / L 160 SFITAROBALLOC",
+  "page": 121
+ },
+ "DQ52": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 44
+ },
+ "DQ53": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 44
+ },
+ "DQ54": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 44
+ },
+ "DQ60": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 45
+ },
+ "DQ61": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Dim. (cm) Description Réf. Réf.",
+  "page": 45
+ },
+ "DQ62": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Cohésion Haute",
+  "page": 45
+ },
+ "DQ63": {
+  "H": [
+   107.0,
+   107.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "H 107 cm GNIKROWOC",
+  "page": 45
+ },
+ "DQ80": {
+  "bloc": "Top Access double inclus",
+  "page": 57
+ },
+ "DQ81": {
+  "bloc": "Top Access double inclus",
+  "page": 57
+ },
+ "DQ82": {
+  "bloc": "Top Access double inclus",
+  "page": 57
+ },
+ "DQ83": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "Stations de travail H 104 cm",
+  "page": 57
+ },
+ "DQ84": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "Stations de travail H 104 cm",
+  "page": 57
+ },
+ "DQ85": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Stations de travail H 72 cm",
+  "page": 57
+ },
+ "DQ86": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 55
+ },
+ "DQ87": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 55
+ },
+ "DQ88": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Tables Astrolite Haute",
+  "page": 55
+ },
+ "DQ89": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Tables Astrolite Haute",
+  "page": 55
+ },
+ "DQ93": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Tables tonneau",
+  "page": 158
+ },
+ "DR07": {
+  "H": [
+   60.0,
+   60.0
+  ],
+  "L": [
+   32.0,
+   32.0
+  ],
+  "P": [
+   55.0,
+   55.0
+  ],
+  "bloc": "Caisson mobile slim",
+  "page": 225
+ },
+ "DR09": {
+  "bloc": "Caissons hauteur bureau",
+  "page": 226
+ },
+ "DR10": {
+  "bloc": "Caissons hauteur bureau",
+  "page": 226
+ },
+ "DR16": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "bloc": "Rangements H 201 cm",
+  "page": 238
+ },
+ "DR17": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "bloc": "Rangements H 201 cm",
+  "page": 238
+ },
+ "DR32": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "(3/4 personnes) / H 72 cm",
+  "page": 294
+ },
+ "DR33": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "(3/4 personnes) / H 72 cm",
+  "page": 294
+ },
+ "DR34": {
+  "bloc": "4 pieds cylindriques Ridigificateur métal sous",
+  "page": 295
+ },
+ "DR35": {
+  "bloc": "(6/8 personnes)",
+  "page": 295
+ },
+ "DR36": {
+  "bloc": "(6/8 personnes)",
+  "page": 295
+ },
+ "DR37": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES modulaires",
+  "page": 295
+ },
+ "DR38": {
+  "bloc": "(6/8 personnes)",
+  "page": 295
+ },
+ "DR39": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Élément départ",
+  "page": 158
+ },
+ "DR40": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 158
+ },
+ "DR41": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Élément départ",
+  "page": 158
+ },
+ "DR42": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 158
+ },
+ "DR82": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 55
+ },
+ "DR84": {
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Descente de câbles",
+  "page": 98
+ },
+ "DR85": {
+  "L": [
+   150.0,
+   150.0
+  ],
+  "bloc": "Gaine en polyester tressé non feu Noir",
+  "page": 98
+ },
+ "DR86": {
+  "bloc": "2 Kits pour blocs électriques",
+  "page": 215
+ },
+ "DR87": {
+  "bloc": "2 Kits pour blocs électriques",
+  "page": 215
+ },
+ "DR88": {
+  "bloc": "2 Kits pour blocs électriques",
+  "page": 215
+ },
+ "DR89": {
+  "bloc": "2 Kits pour blocs électriques",
+  "page": 215
+ },
+ "DS36": {
+  "bloc": "Pinces métal",
+  "page": 93
+ },
+ "DS37": {
+  "bloc": "Pinces métal",
+  "page": 198
+ },
+ "DS38": {
+  "bloc": "Pinces métal",
+  "page": 99
+ },
+ "DS40": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS41": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS42": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS43": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS44": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS45": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS46": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS47": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS48": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS49": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS50": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS51": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS52": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS53": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS54": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS55": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS56": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS57": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS P 70 CM P 80 CM",
+  "page": 91
+ },
+ "DS76": {
+  "L": [
+   70.0,
+   70.0
+  ],
+  "P": [
+   50.0,
+   50.0
+  ],
+  "bloc": "Extensions / Retours",
+  "page": 92
+ },
+ "DS77": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   50.0,
+   50.0
+  ],
+  "bloc": "Sur pied de soutien",
+  "page": 92
+ },
+ "DS78": {
+  "L": [
+   50.0,
+   50.0
+  ],
+  "bloc": "Options Description Réf. Finition",
+  "page": 91
+ },
+ "DS79": {
+  "L": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Options",
+  "page": 77
+ },
+ "DS80": {
+  "L": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Options",
+  "page": 77
+ },
+ "DS81": {
+  "L": [
+   110.0,
+   110.0
+  ],
+  "P": [
+   16.0,
+   16.0
+  ],
+  "bloc": "Options",
+  "page": 77
+ },
+ "DS82": {
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "Options",
+  "page": 77
+ },
+ "DS83": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   50.0,
+   50.0
+  ],
+  "bloc": "Voiles de fond suspendus mélaminés Description Réf.",
+  "page": 92
+ },
+ "DS84": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Voiles de fond suspendus mélaminés Description Réf.",
+  "page": 92
+ },
+ "DS85": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Voiles de fond suspendus mélaminés Description Réf.",
+  "page": 92
+ },
+ "DS86": {
+  "H": [
+   35.0,
+   35.0
+  ],
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Voiles de fond suspendus mélaminés Description Réf.",
+  "page": 92
+ },
+ "DS87": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "Voiles de fond suspendus mélaminés Description Réf.",
+  "page": 92
+ },
+ "DT01": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   32.5,
+   32.5
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Caisson suspendu Solo avec tiroirs 1 façade - 1 poignée - 1 ",
+  "page": 92
+ },
+ "DT02": {
+  "H": [
+   60.0,
+   60.0
+  ],
+  "L": [
+   32.0,
+   32.0
+  ],
+  "P": [
+   55.0,
+   55.0
+  ],
+  "bloc": "pour bureaux individuels P 70 / P 80 cm 2 pieds métal",
+  "page": 92
+ },
+ "DT03": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tableau aimanté blanc",
+  "page": 49
+ },
+ "DT04": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT05": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT06": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT07": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT08": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT09": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT10": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT11": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT12": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT13": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT14": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT15": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT16": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT17": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 96
+ },
+ "DT40": {
+  "bloc": "Caisson suspendu Duo avec tiroirs",
+  "page": 98
+ },
+ "DT70": {
+  "bloc": "TABLES DE RÉUNION carrées PRÉ-ÉLECTRIFIABLE",
+  "page": 101
+ },
+ "DT71": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.5,
+   163.5
+  ],
+  "bloc": "Élément départ P 163,5 / L 160",
+  "page": 101
+ },
+ "DT72": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.5,
+   163.5
+  ],
+  "bloc": "Élément départ P 163,5 / L 160",
+  "page": 101
+ },
+ "DT73": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.5,
+   163.5
+  ],
+  "bloc": "Élément suivant P 163,5 / L 160",
+  "page": 101
+ },
+ "DT74": {
+  "bloc": "TABLES DE RÉUNION carrées PRÉ-ÉLECTRIFIABLE",
+  "page": 101
+ },
+ "DT75": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.5,
+   163.5
+  ],
+  "bloc": "Élément départ P 163,5 / L 160",
+  "page": 101
+ },
+ "DT76": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.5,
+   163.5
+  ],
+  "bloc": "Élément départ P 163,5 / L 160",
+  "page": 101
+ },
+ "DT77": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.5,
+   163.5
+  ],
+  "bloc": "Élément suivant P 163,5 / L 160",
+  "page": 101
+ },
+ "DT78": {
+  "bloc": "TABLES DE RÉUNION carrées PRÉ-ÉLECTRIFIABLE",
+  "page": 51
+ },
+ "DT79": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "bloc": "Élément départ",
+  "page": 51
+ },
+ "DT80": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "bloc": "Élément départ",
+  "page": 51
+ },
+ "DT81": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 51
+ },
+ "DT82": {
+  "bloc": "TABLES DE RÉUNION carrées PRÉ-ÉLECTRIFIABLE",
+  "page": 51
+ },
+ "DT83": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "bloc": "Élément départ",
+  "page": 51
+ },
+ "DT84": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "bloc": "Élément départ",
+  "page": 51
+ },
+ "DT85": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 51
+ },
+ "DT86": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT87": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT88": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément départ",
+  "page": 50
+ },
+ "DT89": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT90": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT91": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 50
+ },
+ "DT92": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT93": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT94": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément départ",
+  "page": 50
+ },
+ "DT95": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT96": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables hautes rectangles",
+  "page": 50
+ },
+ "DT97": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 50
+ },
+ "DT98": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   40.0,
+   40.0
+  ],
+  "bloc": "Bibliothèque H 162 cm",
+  "page": 257
+ },
+ "DT99": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Bibliothèque H 162 cm",
+  "page": 257
+ },
+ "DU00": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Bibliothèque H 162 cm",
+  "page": 257
+ },
+ "DU01": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   40.0,
+   40.0
+  ],
+  "bloc": "Bibliothèque H 162 cm",
+  "page": 257
+ },
+ "DU02": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Bibliothèque H 162 cm",
+  "page": 257
+ },
+ "DU03": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Bibliothèque H 162 cm",
+  "page": 257
+ },
+ "DU04": {
+  "L": [
+   37.5,
+   37.5
+  ],
+  "bloc": "Dim. utiles : Avec porte ouverture attache mâle /",
+  "page": 257
+ },
+ "DU05": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   75.0,
+   75.0
+  ],
+  "bloc": "Bac de rangement",
+  "page": 257
+ },
+ "DU06": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   112.5,
+   112.5
+  ],
+  "bloc": "Bac de rangement",
+  "page": 257
+ },
+ "DU13": {
+  "bloc": "Options Description Réf. Finition",
+  "page": 50
+ },
+ "DU76": {
+  "H": [
+   115.0,
+   115.0
+  ],
+  "bloc": "COMPTOIRS",
+  "page": 317
+ },
+ "DU77": {
+  "H": [
+   115.0,
+   115.0
+  ],
+  "bloc": "COMPTOIRS",
+  "page": 317
+ },
+ "DU78": {
+  "bloc": "Top Access double inclus",
+  "page": 57
+ },
+ "DU79": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Stations de travail H 72 cm",
+  "page": 57
+ },
+ "DU80": {
+  "bloc": "Fauteuil opératif",
+  "page": 351
+ },
+ "DU81": {
+  "bloc": "Fauteuil opératif",
+  "page": 351
+ },
+ "DU82": {
+  "bloc": "Chaise de réunion 18 8",
+  "page": 360
+ },
+ "DW03": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 125
+ },
+ "DW04": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 131
+ },
+ "DW05": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DW06": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "2 Plans droits",
+  "page": 135
+ },
+ "DW07": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "face à face",
+  "page": 135
+ },
+ "DW08": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Élément départ",
+  "page": 135
+ },
+ "DW09": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "2 Plans droits",
+  "page": 119
+ },
+ "DW10": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "face à face",
+  "page": 119
+ },
+ "DW11": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 119
+ },
+ "DW12": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "2 Plans droits",
+  "page": 135
+ },
+ "DW13": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "face à face",
+  "page": 135
+ },
+ "DW14": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Élément départ",
+  "page": 135
+ },
+ "DW15": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Élément départ",
+  "page": 135
+ },
+ "DW16": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "2 Plans droits",
+  "page": 119
+ },
+ "DW17": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "face à face",
+  "page": 119
+ },
+ "DW18": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 119
+ },
+ "DW19": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 119
+ },
+ "DW20": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sans obturateur P 80 CM",
+  "page": 109
+ },
+ "DW21": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "sans obturateur",
+  "page": 115
+ },
+ "DW22": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "2 Plans droits",
+  "page": 119
+ },
+ "DW23": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "face à face",
+  "page": 119
+ },
+ "DW24": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Élément départ",
+  "page": 119
+ },
+ "DW25": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "2 Plans droits",
+  "page": 119
+ },
+ "DW26": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "face à face",
+  "page": 119
+ },
+ "DW27": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Élément départ",
+  "page": 119
+ },
+ "DW28": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Élément départ",
+  "page": 119
+ },
+ "DW59": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Extension / Retour",
+  "page": 151
+ },
+ "DW64": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "XUAERUB Retour à droite",
+  "page": 182
+ },
+ "DW70": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "À fixer Description Dim. (cm) Réf. Finition",
+  "page": 201
+ },
+ "DW71": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "À fixer Description Dim. (cm) Réf. Finition",
+  "page": 201
+ },
+ "DW72": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "à fixer*",
+  "page": 201
+ },
+ "DW73": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "à fixer*",
+  "page": 201
+ },
+ "DW74": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   70.0,
+   70.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "À poser Description Dim. (cm) Réf. Finition",
+  "page": 201
+ },
+ "DW75": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Séparateurs latéraux à poser*",
+  "page": 201
+ },
+ "DW76": {
+  "L": [
+   95.0,
+   95.0
+  ],
+  "bloc": "Options",
+  "page": 115
+ },
+ "DW77": {
+  "L": [
+   115.0,
+   115.0
+  ],
+  "P": [
+   33.5,
+   33.5
+  ],
+  "bloc": "Options",
+  "page": 115
+ },
+ "DW78": {
+  "L": [
+   135.0,
+   135.0
+  ],
+  "bloc": "Options",
+  "page": 115
+ },
+ "DW81": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "NOITCERID",
+  "page": 182
+ },
+ "DW82": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "NOITCERID",
+  "page": 182
+ },
+ "DW83": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Sur pied ruban",
+  "page": 182
+ },
+ "DW84": {
+  "bloc": "Bureaux sur meuble de service",
+  "page": 183
+ },
+ "DW85": {
+  "bloc": "Bureaux sur meuble de service",
+  "page": 183
+ },
+ "DW86": {
+  "H": [
+   63.5,
+   63.5
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "P 60 / H 63,5 / L 140 cm XUAERUB",
+  "page": 183
+ },
+ "DW87": {
+  "H": [
+   63.5,
+   63.5
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "P 60 / H 63,5 / L 140 cm XUAERUB",
+  "page": 183
+ },
+ "DW88": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Sur pied de soutien",
+  "page": 151
+ },
+ "DX05": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "TABLES DROITES abattantes",
+  "page": 305
+ },
+ "DX06": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "TABLES DROITES abattantes",
+  "page": 305
+ },
+ "DX07": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "TABLES DROITES abattantes",
+  "page": 305
+ },
+ "DX08": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Table demi-lune",
+  "page": 305
+ },
+ "DX09": {
+  "bloc": "SEGÈIS",
+  "page": 352
+ },
+ "DX10": {
+  "bloc": "SEGÈIS",
+  "page": 352
+ },
+ "DX13": {
+  "bloc": "TABLES DE RÉUNION rectangles",
+  "page": 158
+ },
+ "DX14": {
+  "bloc": "Élément départ",
+  "page": 158
+ },
+ "DX15": {
+  "bloc": "TABLES DE RÉUNION rectangles",
+  "page": 158
+ },
+ "DX16": {
+  "bloc": "Élément départ",
+  "page": 158
+ },
+ "DX17": {
+  "L": [
+   240.0,
+   240.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Cohésion",
+  "page": 44
+ },
+ "DX18": {
+  "L": [
+   240.0,
+   240.0
+  ],
+  "P": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Cohésion",
+  "page": 44
+ },
+ "DX21": {
+  "bloc": "4 Poignées Description Réf. Finition Réf. Finition",
+  "page": 239
+ },
+ "DX23": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Stations de travail mobiles",
+  "page": 49
+ },
+ "DX24": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Stations de travail mobiles",
+  "page": 49
+ },
+ "DX25": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Pieds hauts H 180 cm",
+  "page": 49
+ },
+ "DX26": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Stations de travail mobiles",
+  "page": 49
+ },
+ "DX27": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Stations de travail mobiles",
+  "page": 49
+ },
+ "DX28": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Pieds hauts H 180 cm",
+  "page": 49
+ },
+ "DX29": {
+  "bloc": "de la station de travail",
+  "page": 49
+ },
+ "DX30": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "bloc": "Bac à crochet métal",
+  "page": 99
+ },
+ "DX31": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tableau aimanté blanc",
+  "page": 49
+ },
+ "DX32": {
+  "L": [
+   137.5,
+   137.5
+  ],
+  "bloc": "Bac de rangement supérieur",
+  "page": 49
+ },
+ "DX33": {
+  "H": [
+   15.0,
+   15.0
+  ],
+  "L": [
+   157.5,
+   157.5
+  ],
+  "P": [
+   24.0,
+   24.0
+  ],
+  "bloc": "En mélaminé. P 24 / H 15 cm",
+  "page": 49
+ },
+ "DX34": {
+  "L": [
+   177.5,
+   177.5
+  ],
+  "bloc": "Se fixe sur la traverse supérieure",
+  "page": 49
+ },
+ "DX37": {
+  "H": [
+   12.0,
+   12.0
+  ],
+  "L": [
+   29.0,
+   29.0
+  ],
+  "P": [
+   12.5,
+   12.5
+  ],
+  "bloc": "Équipé de 3 PC + 1 USB A 5v Inclinaison 25°",
+  "page": 81
+ },
+ "DX38": {
+  "bloc": "+ 1 USB C 5v + 1 passage de câbles Élément suivant*",
+  "page": 121
+ },
+ "DX75": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DX76": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DX77": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DX78": {
+  "H": [
+   66.5,
+   66.5
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "réglables en hauteur",
+  "page": 81
+ },
+ "DX79": {
+  "L": [
+   91.0,
+   91.0
+  ],
+  "P": [
+   91.0,
+   91.0
+  ],
+  "bloc": "Obturateur électrifié",
+  "page": 55
+ },
+ "DX80": {
+  "bloc": "• Poids maximal autorisé 120 kg.",
+  "page": 353
+ },
+ "DX81": {
+  "bloc": "• Chauffeuse tapissée 2 faces avec rembourrage Chauffeuse",
+  "page": 355
+ },
+ "DX82": {
+  "bloc": "• Poids maximal autorisé 120 kg.",
+  "page": 355
+ },
+ "DX83": {
+  "bloc": "Tabouret haut",
+  "page": 362
+ },
+ "DY13": {
+  "H": [
+   80.5,
+   80.5
+  ],
+  "L": [
+   78.5,
+   78.5
+  ],
+  "bloc": "1 Casiers ouverts Description Dim. (cm) Réf.",
+  "page": 262
+ },
+ "DY19": {
+  "bloc": "Socle métal",
+  "page": 262
+ },
+ "DY20": {
+  "bloc": "Socle métal",
+  "page": 262
+ },
+ "DY21": {
+  "L": [
+   70.0,
+   70.0
+  ],
+  "P": [
+   35.0,
+   35.0
+  ],
+  "bloc": "Tablettes d’extension",
+  "page": 92
+ },
+ "DY22": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   35.0,
+   35.0
+  ],
+  "bloc": "Se fixent sur le piétement",
+  "page": 92
+ },
+ "DY23": {
+  "L": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Se fixe sur les piétements",
+  "page": 49
+ },
+ "DY24": {
+  "L": [
+   143.5,
+   143.5
+  ],
+  "bloc": "Se fixent sur les piétements",
+  "page": 51
+ },
+ "DY25": {
+  "L": [
+   163.5,
+   163.5
+  ],
+  "bloc": "avec équerres (fixation à",
+  "page": 51
+ },
+ "DY26": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   40.0,
+   40.0
+  ],
+  "P": [
+   143.5,
+   143.5
+  ],
+  "bloc": "SFITAROBALLOC P 143,5 / H 75 - 42,5 / L 40 cm 1 serrure par ",
+  "page": 98
+ },
+ "DY27": {
+  "H": [
+   146.0,
+   146.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   46.0,
+   46.0
+  ],
+  "bloc": "Armoire porte battante",
+  "page": 253
+ },
+ "DY28": {
+  "H": [
+   176.0,
+   176.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   46.0,
+   46.0
+  ],
+  "bloc": "Armoire porte battante",
+  "page": 253
+ },
+ "DY29": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   46.0,
+   46.0
+  ],
+  "bloc": "Armoire porte battante",
+  "page": 253
+ },
+ "DY30": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   46.0,
+   46.0
+  ],
+  "bloc": "Armoire porte battante",
+  "page": 253
+ },
+ "DY31": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   143.5,
+   143.5
+  ],
+  "P": [
+   40.0,
+   40.0
+  ],
+  "bloc": "Console 2 portes battantes",
+  "page": 253
+ },
+ "DY32": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Bureaux manager Dim. (cm) Réf. Finitions",
+  "page": 91
+ },
+ "DY33": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Bureaux manager Dim. (cm) Réf. Finitions",
+  "page": 91
+ },
+ "DY36": {
+  "H": [
+   34.0,
+   34.0
+  ],
+  "L": [
+   70.0,
+   70.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Table basse",
+  "page": 32
+ },
+ "DY37": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec plateau coulissant P 70 CM P 80 CM",
+  "page": 113
+ },
+ "DY38": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 113
+ },
+ "DY39": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 113
+ },
+ "DY40": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec plateau coulissant P 70 CM P 80 CM",
+  "page": 113
+ },
+ "DY41": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 113
+ },
+ "DY42": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 113
+ },
+ "DY43": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Goulotte noire incluse",
+  "page": 113
+ },
+ "DY44": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec plateau coulissant P 70 CM P 80 CM",
+  "page": 129
+ },
+ "DY45": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 129
+ },
+ "DY46": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 129
+ },
+ "DY47": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec plateau coulissant P 70 CM P 80 CM",
+  "page": 129
+ },
+ "DY48": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 129
+ },
+ "DY49": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 129
+ },
+ "DY50": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Goulotte noire incluse",
+  "page": 129
+ },
+ "DY64": {
+  "H": [
+   196.0,
+   196.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Alcôve de confidentialité debout",
+  "page": 29
+ },
+ "DY65": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Alcôve de confidentialité assise bureau",
+  "page": 29
+ },
+ "DY66": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tablette à gauche",
+  "page": 29
+ },
+ "DY67": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "mélaminés",
+  "page": 113
+ },
+ "DY68": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Structurex®*",
+  "page": 113
+ },
+ "DY69": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Structurex®*",
+  "page": 113
+ },
+ "DY70": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Se fixe sur les",
+  "page": 113
+ },
+ "DY71": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tablette à droite",
+  "page": 29
+ },
+ "DY74": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 142
+ },
+ "DY75": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 142
+ },
+ "DY76": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 142
+ },
+ "DY77": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 142
+ },
+ "DY78": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 142
+ },
+ "DY79": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "avec échancrure P 70 CM P 80 CM",
+  "page": 142
+ },
+ "DY80": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits",
+  "page": 142
+ },
+ "DY87": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 146
+ },
+ "DY88": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 146
+ },
+ "DY89": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 146
+ },
+ "DY90": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 146
+ },
+ "DY91": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 146
+ },
+ "DY92": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec échancrures",
+  "page": 146
+ },
+ "DY93": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 146
+ },
+ "DZ05": {
+  "H": [
+   73.5,
+   73.5
+  ],
+  "L": [
+   240.0,
+   240.0
+  ],
+  "P": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Table de conférence P 140 / H 73,5 / L 240",
+  "page": 191
+ },
+ "DZ06": {
+  "bloc": "Extension centrale",
+  "page": 191
+ },
+ "DZ07": {
+  "bloc": "Alcôve avec tablettes",
+  "page": 241
+ },
+ "DZ08": {
+  "bloc": "Alcôve avec tablettes",
+  "page": 241
+ },
+ "DZ11": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Sur pied de soutien",
+  "page": 109
+ },
+ "DZ12": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Sur pied de soutien",
+  "page": 141
+ },
+ "DZ13": {
+  "L": [
+   75.0,
+   75.0
+  ],
+  "bloc": "Options",
+  "page": 115
+ },
+ "DZ14": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES DROITES pliantes",
+  "page": 307
+ },
+ "DZ15": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites",
+  "page": 307
+ },
+ "DZ16": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tables droites",
+  "page": 307
+ },
+ "DZ17": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   75.0,
+   75.0
+  ],
+  "bloc": "Sur roulettes Ø 75 mm",
+  "page": 301
+ },
+ "DZ18": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   75.0,
+   75.0
+  ],
+  "bloc": "Sur roulettes Ø 75 mm",
+  "page": 301
+ },
+ "DZ19": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   158.0,
+   158.0
+  ],
+  "bloc": "H 75 cm Uniquement pour",
+  "page": 302
+ },
+ "DZ20": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "courbe",
+  "page": 302
+ },
+ "DZ28": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   77.0,
+   77.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 322
+ },
+ "DZ29": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   77.0,
+   77.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 322
+ },
+ "DZ30": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   300.0,
+   300.0
+  ],
+  "P": [
+   77.0,
+   77.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 324
+ },
+ "DZ31": {
+  "H": [
+   114.0,
+   114.0
+  ],
+  "L": [
+   380.0,
+   380.0
+  ],
+  "P": [
+   77.0,
+   77.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 324
+ },
+ "DZ32": {
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "DZ33": {
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "DZ34": {
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "DZ35": {
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "DZ36": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   72.5,
+   72.5
+  ],
+  "bloc": "Modules bas intermédiaires",
+  "page": 327
+ },
+ "DZ37": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Modules bas intermédiaires",
+  "page": 327
+ },
+ "DZ38": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Module bas angle 90°",
+  "page": 327
+ },
+ "DZ39": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "2 EXTENSIONS extrémités",
+  "page": 328
+ },
+ "DZ40": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   72.5,
+   72.5
+  ],
+  "bloc": "2 EXTENSIONS extrémités",
+  "page": 328
+ },
+ "DZ41": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "2 EXTENSIONS extrémités",
+  "page": 328
+ },
+ "DZ42": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   72.5,
+   72.5
+  ],
+  "bloc": "2 EXTENSIONS extrémités",
+  "page": 328
+ },
+ "DZ43": {
+  "bloc": "avec serrures",
+  "page": 263
+ },
+ "DZ44": {
+  "bloc": "avec serrures",
+  "page": 263
+ },
+ "DZ45": {
+  "bloc": "Pour casiers 6, 9",
+  "page": 263
+ },
+ "DZ46": {
+  "bloc": "Pour casiers 6, 9",
+  "page": 263
+ },
+ "DZ47": {
+  "bloc": "Kit de 4 portes",
+  "page": 263
+ },
+ "DZ48": {
+  "bloc": "Kit de 4 portes",
+  "page": 263
+ },
+ "DZ49": {
+  "bloc": "avec serrures",
+  "page": 263
+ },
+ "DZ50": {
+  "bloc": "avec serrures",
+  "page": 263
+ },
+ "DZ51": {
+  "H": [
+   76.5,
+   76.5
+  ],
+  "bloc": "Porte vestiaire",
+  "page": 263
+ },
+ "DZ52": {
+  "H": [
+   76.5,
+   76.5
+  ],
+  "bloc": "Porte vestiaire",
+  "page": 263
+ },
+ "DZ53": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ54": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ55": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ56": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ57": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ58": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ59": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ60": {
+  "bloc": "avec portes",
+  "page": 264
+ },
+ "DZ61": {
+  "bloc": "Casiers 3 portes et",
+  "page": 265
+ },
+ "DZ62": {
+  "bloc": "Casiers 3 portes et",
+  "page": 265
+ },
+ "DZ63": {
+  "bloc": "Casiers 6 portes et",
+  "page": 265
+ },
+ "DZ64": {
+  "bloc": "Casiers 6 portes et",
+  "page": 265
+ },
+ "DZ65": {
+  "bloc": "avec patères",
+  "page": 265
+ },
+ "DZ66": {
+  "bloc": "Casier 2 niches et",
+  "page": 265
+ },
+ "DZ67": {
+  "bloc": "avec patères",
+  "page": 265
+ },
+ "DZ68": {
+  "bloc": "Casiers 4 cases avec portes",
+  "page": 266
+ },
+ "DZ69": {
+  "bloc": "Casiers 4 cases avec portes",
+  "page": 266
+ },
+ "DZ70": {
+  "bloc": "Casiers 6 cases avec portes",
+  "page": 266
+ },
+ "DZ71": {
+  "bloc": "Casiers 6 cases avec portes",
+  "page": 266
+ },
+ "DZ72": {
+  "bloc": "Casiers 9 cases avec portes",
+  "page": 266
+ },
+ "DZ73": {
+  "bloc": "Casiers 9 cases avec portes",
+  "page": 266
+ },
+ "DZ74": {
+  "bloc": "Casiers 12 cases avec portes",
+  "page": 266
+ },
+ "DZ75": {
+  "bloc": "Casiers 12 cases avec portes",
+  "page": 266
+ },
+ "DZ76": {
+  "bloc": "Casiers 3 portes et",
+  "page": 267
+ },
+ "DZ77": {
+  "bloc": "Casiers 3 portes et",
+  "page": 267
+ },
+ "DZ78": {
+  "bloc": "Casiers 6 portes et",
+  "page": 267
+ },
+ "DZ79": {
+  "bloc": "Casiers 6 portes et",
+  "page": 267
+ },
+ "DZ80": {
+  "bloc": "Casier 2 portes vestiaires avec patères",
+  "page": 267
+ },
+ "DZ81": {
+  "bloc": "Casier 2 niches et",
+  "page": 267
+ },
+ "DZ82": {
+  "bloc": "Casier 6 portes vestiaires avec patères",
+  "page": 267
+ },
+ "DZ83": {
+  "bloc": "Option Pour serrure mode public",
+  "page": 263
+ },
+ "DZ84": {
+  "bloc": "Dos tissu",
+  "page": 263
+ },
+ "DZ85": {
+  "H": [
+   162.0,
+   162.0
+  ],
+  "L": [
+   192.0,
+   192.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "avec bancs",
+  "page": 29
+ },
+ "DZ86": {
+  "bloc": "FIFTY-FULL CHÊNE FIL NEBRASKA TIMBER YUKON BLANC NOIR",
+  "page": 326
+ },
+ "DZ87": {
+  "bloc": "LIEUCCA",
+  "page": 326
+ },
+ "DZ88": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   62.5,
+   62.5
+  ],
+  "P": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Fauteuil Banquette 2 places",
+  "page": 344
+ },
+ "DZ89": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Canapé 2 places Banquette 4 places",
+  "page": 344
+ },
+ "DZ90": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Canapé 3 places Banquette 6 places",
+  "page": 344
+ },
+ "DZ91": {
+  "bloc": "Élement suivant 2 places dos à dos",
+  "page": 344
+ },
+ "DZ92": {
+  "bloc": "Élement suivant 3 places dos à dos",
+  "page": 344
+ },
+ "DZ93": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   62.5,
+   62.5
+  ],
+  "P": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Fauteuil Banquette 2 places",
+  "page": 344
+ },
+ "DZ94": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Canapé 2 places Banquette 4 places",
+  "page": 344
+ },
+ "DZ95": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Canapé 3 places Banquette 6 places",
+  "page": 344
+ },
+ "DZ96": {
+  "bloc": "Élement suivant 2 places dos à dos",
+  "page": 344
+ },
+ "DZ97": {
+  "bloc": "Élement suivant 3 places dos à dos",
+  "page": 344
+ },
+ "DZ98": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "DZ99": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA00": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément départ",
+  "page": 100
+ },
+ "EA01": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA02": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA03": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 100
+ },
+ "EA04": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA05": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA06": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément départ",
+  "page": 100
+ },
+ "EA07": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA08": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 100
+ },
+ "EA09": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 100
+ },
+ "EA85": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   32.5,
+   32.5
+  ],
+  "P": [
+   143.5,
+   143.5
+  ],
+  "bloc": "Caisson suspendu Duo avec tiroirs",
+  "page": 76
+ },
+ "EA86": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   40.0,
+   40.0
+  ],
+  "P": [
+   143.5,
+   143.5
+  ],
+  "bloc": "Rangement portes battantes + 1 tablette intérieure,",
+  "page": 76
+ },
+ "EA88": {
+  "L": [
+   70.0,
+   70.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Panneaux écrans latéraux Solo",
+  "page": 93
+ },
+ "EA89": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "d’extrémité",
+  "page": 93
+ },
+ "EA90": {
+  "L": [
+   70.0,
+   70.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Panneaux écrans latéraux Solo",
+  "page": 93
+ },
+ "EA91": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "intermédiaires",
+  "page": 93
+ },
+ "EA92": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 65
+ },
+ "EA93": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 65
+ },
+ "EA94": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 65
+ },
+ "EA95": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 65
+ },
+ "EB00": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "À fixer Description Dim. (cm) Réf. Finition",
+  "page": 198
+ },
+ "EB01": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "À fixer Description Dim. (cm) Réf. Finition",
+  "page": 198
+ },
+ "EB02": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "à fixer*",
+  "page": 198
+ },
+ "EB03": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "* à compléter par les pinces de fixation adaptées à votre us",
+  "page": 198
+ },
+ "EB04": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Panneaux écrans tissus Description Réf. Finition pinces",
+  "page": 93
+ },
+ "EB05": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Panneaux écrans tissus Description Réf. Finition pinces",
+  "page": 93
+ },
+ "EB06": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Panneaux écrans frontaux",
+  "page": 93
+ },
+ "EB07": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "H 40 cm à fixer par pinces",
+  "page": 93
+ },
+ "EB08": {
+  "H": [
+   40.0,
+   40.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "H 40 cm à fixer par pinces",
+  "page": 93
+ },
+ "EB13": {
+  "L": [
+   142.0,
+   142.0
+  ],
+  "bloc": "d’extrémité L 142 cm pour bureaux multipostes",
+  "page": 99
+ },
+ "EB14": {
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "intermédiaire L 130 cm pour bureaux multipostes",
+  "page": 99
+ },
+ "EB15": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 75
+ },
+ "EB17": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 110
+ },
+ "EB18": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 110
+ },
+ "EB19": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 110
+ },
+ "EB20": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 111
+ },
+ "EB21": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 111
+ },
+ "EB22": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 111
+ },
+ "EB23": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 112
+ },
+ "EB24": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 112
+ },
+ "EB25": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 112
+ },
+ "EB26": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 116
+ },
+ "EB27": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 116
+ },
+ "EB28": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 116
+ },
+ "EB29": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 117
+ },
+ "EB30": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 117
+ },
+ "EB31": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 117
+ },
+ "EB32": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 118
+ },
+ "EB33": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 118
+ },
+ "EB34": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 118
+ },
+ "EB35": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB36": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB37": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB38": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB39": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB40": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB41": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB42": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB43": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB44": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB45": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB46": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 104
+ },
+ "EB51": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 55
+ },
+ "EB52": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 55
+ },
+ "EB53": {
+  "H": [
+   105.0,
+   105.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "TABLES HAUTES rectangles",
+  "page": 55
+ },
+ "EB54": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 126
+ },
+ "EB55": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 126
+ },
+ "EB56": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 126
+ },
+ "EB57": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 111
+ },
+ "EB58": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 111
+ },
+ "EB59": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 127
+ },
+ "EB60": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 127
+ },
+ "EB61": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 127
+ },
+ "EB62": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 127
+ },
+ "EB63": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 127
+ },
+ "EB64": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 128
+ },
+ "EB65": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 128
+ },
+ "EB66": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 128
+ },
+ "EB67": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 132
+ },
+ "EB68": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 132
+ },
+ "EB69": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 132
+ },
+ "EB70": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 133
+ },
+ "EB71": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 133
+ },
+ "EB72": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 133
+ },
+ "EB73": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 134
+ },
+ "EB74": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 134
+ },
+ "EB75": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 134
+ },
+ "EB76": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 141
+ },
+ "EB77": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 141
+ },
+ "EB78": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 141
+ },
+ "EB79": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 142
+ },
+ "EB80": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 142
+ },
+ "EB81": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 142
+ },
+ "EB82": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 142
+ },
+ "EB83": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 142
+ },
+ "EB84": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 143
+ },
+ "EB85": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 143
+ },
+ "EB86": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 143
+ },
+ "EB87": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 145
+ },
+ "EB88": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 145
+ },
+ "EB89": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 145
+ },
+ "EB90": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 146
+ },
+ "EB91": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 146
+ },
+ "EB92": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 146
+ },
+ "EB93": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 147
+ },
+ "EB94": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 147
+ },
+ "EB95": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 147
+ },
+ "EB96": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 151
+ },
+ "EB97": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 151
+ },
+ "EB98": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 151
+ },
+ "EB99": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 152
+ },
+ "EC00": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 152
+ },
+ "EC01": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 152
+ },
+ "EC02": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits P 80 / H 72 cm",
+  "page": 153
+ },
+ "EC03": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "sur console B-box",
+  "page": 153
+ },
+ "EC04": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Console B-box positionnable",
+  "page": 153
+ },
+ "EC05": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 155
+ },
+ "EC06": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 155
+ },
+ "EC07": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 155
+ },
+ "EC08": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 156
+ },
+ "EC09": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 156
+ },
+ "EC10": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 156
+ },
+ "EC11": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 157
+ },
+ "EC12": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "face à face",
+  "page": 157
+ },
+ "EC13": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "sur 2 consoles B-box",
+  "page": 157
+ },
+ "EC14": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 65
+ },
+ "EC15": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 65
+ },
+ "EC16": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 65
+ },
+ "EC17": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Boîtier mémoire 4 positions",
+  "page": 65
+ },
+ "EC18": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 65
+ },
+ "EC19": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 65
+ },
+ "EC20": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 65
+ },
+ "EC21": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Boîtier mémoire 4 positions",
+  "page": 65
+ },
+ "EC22": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 65
+ },
+ "EC23": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 65
+ },
+ "EC24": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 65
+ },
+ "EC25": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Boîtier mémoire 4 positions",
+  "page": 65
+ },
+ "EC26": {
+  "bloc": "Tiroir métal Descentes de câbles",
+  "page": 65
+ },
+ "EC39": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC40": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC41": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC42": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC43": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC44": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC45": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC46": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC47": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC48": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC49": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC50": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 69
+ },
+ "EC52": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC53": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC54": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC56": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC57": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC58": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC60": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC61": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC62": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 69
+ },
+ "EC63": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 70
+ },
+ "EC64": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 70
+ },
+ "EC65": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "face à face",
+  "page": 70
+ },
+ "EC66": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "face à face",
+  "page": 70
+ },
+ "EC67": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 70
+ },
+ "EC68": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 70
+ },
+ "EC69": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "face à face",
+  "page": 70
+ },
+ "EC70": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "face à face",
+  "page": 70
+ },
+ "EC71": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage électrique",
+  "page": 70
+ },
+ "EC72": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "2 Plans droits P 80 cm",
+  "page": 70
+ },
+ "EC73": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "face à face",
+  "page": 70
+ },
+ "EC74": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "face à face",
+  "page": 70
+ },
+ "EC75": {
+  "P": [
+   20.0,
+   20.0
+  ],
+  "bloc": "Goulotte télescopique",
+  "page": 70
+ },
+ "EC76": {
+  "bloc": "Espaceurs de sécurité Page 215",
+  "page": 70
+ },
+ "EC77": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 70
+ },
+ "EC78": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 70
+ },
+ "EC79": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 70
+ },
+ "EC80": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 70
+ },
+ "EC81": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tables tonneau P 100 / L 200",
+  "page": 71
+ },
+ "EC82": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tables tonneau P 100 / L 200",
+  "page": 71
+ },
+ "EC83": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tables rectangles P 100 / L 200 SEUQIMONOGRE",
+  "page": 71
+ },
+ "EC84": {
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tables rectangles P 100 / L 200 SEUQIMONOGRE",
+  "page": 71
+ },
+ "ED25": {
+  "L": [
+   115.0,
+   115.0
+  ],
+  "bloc": "BUREAUX INDIVIDUELS à réglage électrique",
+  "page": 75
+ },
+ "ED26": {
+  "L": [
+   135.0,
+   135.0
+  ],
+  "bloc": "Plans droits",
+  "page": 75
+ },
+ "ED27": {
+  "L": [
+   155.0,
+   155.0
+  ],
+  "bloc": "Plans droits",
+  "page": 75
+ },
+ "ED28": {
+  "L": [
+   175.0,
+   175.0
+  ],
+  "bloc": "Plans droits",
+  "page": 75
+ },
+ "ED29": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   135.0,
+   135.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 75
+ },
+ "ED30": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   50.0,
+   50.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 75
+ },
+ "ED31": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   175.0,
+   175.0
+  ],
+  "bloc": "Plans droits avec retour",
+  "page": 75
+ },
+ "ED32": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   155.0,
+   155.0
+  ],
+  "bloc": "à gauche",
+  "page": 75
+ },
+ "ED33": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   175.0,
+   175.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "à gauche",
+  "page": 75
+ },
+ "ED35": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   115.0,
+   115.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "BUREAUX MULTIPOSTES à réglage électrique",
+  "page": 76
+ },
+ "ED36": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   135.0,
+   135.0
+  ],
+  "bloc": "BUREAUX MULTIPOSTES à réglage électrique",
+  "page": 76
+ },
+ "ED37": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   155.0,
+   155.0
+  ],
+  "P": [
+   163.0,
+   163.0
+  ],
+  "bloc": "BUREAUX MULTIPOSTES à réglage électrique",
+  "page": 76
+ },
+ "ED38": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   175.0,
+   175.0
+  ],
+  "bloc": "BUREAUX MULTIPOSTES à réglage électrique",
+  "page": 76
+ },
+ "ED39": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   135.0,
+   135.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 77
+ },
+ "ED40": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   155.0,
+   155.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 77
+ },
+ "ED41": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   175.0,
+   175.0
+  ],
+  "P": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Tables rectangles",
+  "page": 77
+ },
+ "ED60": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Obturateur électrifié Ø 100 mm",
+  "page": 50
+ },
+ "ED61": {
+  "bloc": "Tables tonneau",
+  "page": 105
+ },
+ "ED62": {
+  "bloc": "Tables tonneau",
+  "page": 105
+ },
+ "ED64": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 152
+ },
+ "ED65": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 152
+ },
+ "ED70": {
+  "L": [
+   214.5,
+   214.5
+  ],
+  "P": [
+   192.5,
+   192.5
+  ],
+  "bloc": "Plans droits P 100 / L 200 Plan droit sur B-box",
+  "page": 186
+ },
+ "ED71": {
+  "L": [
+   214.5,
+   214.5
+  ],
+  "P": [
+   192.5,
+   192.5
+  ],
+  "bloc": "Descente de câbles",
+  "page": 186
+ },
+ "ED72": {
+  "L": [
+   42.0,
+   42.0
+  ],
+  "P": [
+   59.0,
+   59.0
+  ],
+  "bloc": "Vendu à l'unité",
+  "page": 187
+ },
+ "ED73": {
+  "L": [
+   32.0,
+   32.0
+  ],
+  "P": [
+   55.0,
+   55.0
+  ],
+  "bloc": "Fixation par velcro",
+  "page": 225
+ },
+ "ED87": {
+  "L": [
+   300.0,
+   300.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "ED88": {
+  "L": [
+   300.0,
+   300.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "ED89": {
+  "L": [
+   380.0,
+   380.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "ED90": {
+  "L": [
+   380.0,
+   380.0
+  ],
+  "bloc": "Banque d'accueil",
+  "page": 325
+ },
+ "ED91": {
+  "L": [
+   400.0,
+   400.0
+  ],
+  "bloc": "LIEUCCA",
+  "page": 326
+ },
+ "ED92": {
+  "bloc": "LIEUCCA",
+  "page": 326
+ },
+ "ED93": {
+  "bloc": "Angle de liaison 90°",
+  "page": 345
+ },
+ "ED94": {
+  "bloc": "Tablette de liaison Solo",
+  "page": 345
+ },
+ "ED95": {
+  "bloc": "Tablette de liaison Duo",
+  "page": 345
+ },
+ "ED96": {
+  "bloc": "Position basse",
+  "page": 345
+ },
+ "ED98": {
+  "bloc": "B-box 1 porte",
+  "page": 187
+ },
+ "ED99": {
+  "H": [
+   63.5,
+   63.5
+  ],
+  "bloc": "H 59,5 cm (fixe) B-box 2 portes",
+  "page": 187
+ },
+ "EE00": {
+  "bloc": "B-box 1 porte",
+  "page": 187
+ },
+ "EE01": {
+  "H": [
+   63.5,
+   63.5
+  ],
+  "bloc": "H 59,5 cm (fixe) B-box 2 portes",
+  "page": 187
+ },
+ "EE02": {
+  "bloc": "Caisson Tower Se positionne à droite ou à gauche",
+  "page": 231
+ },
+ "EE03": {
+  "bloc": "2 Caissons Towers avec",
+  "page": 231
+ },
+ "EE04": {
+  "bloc": "Caisson Tower",
+  "page": 231
+ },
+ "EE05": {
+  "bloc": "Caisson Tower",
+  "page": 231
+ },
+ "EE06": {
+  "L": [
+   75.0,
+   75.0
+  ],
+  "bloc": "Options Description Réf. Finition",
+  "page": 96
+ },
+ "EE07": {
+  "L": [
+   95.0,
+   95.0
+  ],
+  "bloc": "Goulottes doubles",
+  "page": 96
+ },
+ "EE08": {
+  "L": [
+   115.0,
+   115.0
+  ],
+  "bloc": "d’électrification Noir",
+  "page": 96
+ },
+ "EE09": {
+  "L": [
+   135.0,
+   135.0
+  ],
+  "P": [
+   33.5,
+   33.5
+  ],
+  "bloc": "P 33,5 / H 9 / H utile 4,5 cm",
+  "page": 96
+ },
+ "EE10": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE11": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE12": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE13": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE14": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE15": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE16": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE17": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE18": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE19": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE20": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE21": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE22": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE23": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "avec plateaux coulissants",
+  "page": 97
+ },
+ "EE39": {
+  "bloc": "Coussin d'assise",
+  "page": 269
+ },
+ "EE41": {
+  "H": [
+   28.0,
+   28.0
+  ],
+  "L": [
+   12.5,
+   12.5
+  ],
+  "P": [
+   27.0,
+   27.0
+  ],
+  "bloc": "Double extension pneumatique - Pivotement 360° - Hauteur rég",
+  "page": 217
+ },
+ "EE44": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Tables tonneau",
+  "page": 158
+ },
+ "EE45": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Élément départ",
+  "page": 158
+ },
+ "EE46": {
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Élément suivant",
+  "page": 158
+ },
+ "EE49": {
+  "bloc": "Description Réf. orientation.",
+  "page": 350
+ },
+ "EE50": {
+  "bloc": "Fauteuil opératif 49,5 49,5",
+  "page": 350
+ },
+ "EE51": {
+  "bloc": "Option Réf. ,7 3 ,7 3 3 3",
+  "page": 350
+ },
+ "EE52": {
+  "bloc": "PAPILLON PAPILLON Color",
+  "page": 351
+ },
+ "EE53": {
+  "bloc": "Fauteuil opératif",
+  "page": 351
+ },
+ "EE54": {
+  "bloc": "Kit de 3 portes",
+  "page": 263
+ },
+ "EE55": {
+  "bloc": "Kit de 3 portes",
+  "page": 263
+ },
+ "EE56": {
+  "bloc": "et 12 cases",
+  "page": 263
+ },
+ "EE57": {
+  "bloc": "et 12 cases",
+  "page": 263
+ },
+ "EE58": {
+  "H": [
+   76.5,
+   76.5
+  ],
+  "bloc": "Porte vestiaire",
+  "page": 263
+ },
+ "EE59": {
+  "bloc": "NOUVEAU",
+  "page": 263
+ },
+ "EE60": {
+  "bloc": "Casiers 4 cases",
+  "page": 264
+ },
+ "EE61": {
+  "bloc": "Casiers 6 cases",
+  "page": 264
+ },
+ "EE62": {
+  "bloc": "Casiers 9 cases",
+  "page": 264
+ },
+ "EE63": {
+  "bloc": "Casiers 12 cases",
+  "page": 264
+ },
+ "EE64": {
+  "bloc": "Casiers 4 cases",
+  "page": 264
+ },
+ "EE65": {
+  "bloc": "Casiers 6 cases",
+  "page": 264
+ },
+ "EE66": {
+  "bloc": "Casiers 9 cases",
+  "page": 264
+ },
+ "EE67": {
+  "bloc": "Casiers 12 cases",
+  "page": 264
+ },
+ "EE68": {
+  "bloc": "Casiers 3 portes et",
+  "page": 265
+ },
+ "EE69": {
+  "bloc": "Casiers 6 portes et",
+  "page": 265
+ },
+ "EE70": {
+  "bloc": "Casiers 3 portes et",
+  "page": 265
+ },
+ "EE71": {
+  "bloc": "Casiers 6 portes et",
+  "page": 265
+ },
+ "EE72": {
+  "bloc": "Casier 2 portes vestiaires",
+  "page": 265
+ },
+ "EE73": {
+  "bloc": "Casier 2 niches et",
+  "page": 265
+ },
+ "EE74": {
+  "bloc": "Casier 6 portes vestiaires",
+  "page": 265
+ },
+ "EE95": {
+  "bloc": "Bras support 2 écrans",
+  "page": 217
+ },
+ "EE96": {
+  "H": [
+   18.0,
+   18.0
+  ],
+  "L": [
+   28.0,
+   28.0
+  ],
+  "bloc": "Equipé d'un cache-câbles intégré",
+  "page": 217
+ },
+ "EE98": {
+  "bloc": "Lampe Attenzia Complete Température de couleur 3000 K",
+  "page": 219
+ },
+ "EE99": {
+  "bloc": "Lampe Attenzia Task Température de couleur 3000 K",
+  "page": 219
+ },
+ "EF00": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Obturateur électrifié pour tiroir Se fixe sur le passe-câble",
+  "page": 231
+ },
+ "EF01": {
+  "bloc": "4 pieds cylindriques Ridigificateur métal sous",
+  "page": 295
+ },
+ "EF02": {
+  "bloc": "(6/8 personnes)",
+  "page": 295
+ },
+ "EF08": {
+  "bloc": "Supports métal Pour bureaux multipostes",
+  "page": 99
+ },
+ "EF09": {
+  "bloc": "Attaches par vis Pour bureaux multipostes",
+  "page": 99
+ },
+ "EF33": {
+  "H": [
+   67.0,
+   67.0
+  ],
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Tissu BeSoft Tissu chiné Step Mélange",
+  "page": 76
+ },
+ "EG05": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   68.5,
+   68.5
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Fauteuil confidentiel",
+  "page": 32
+ },
+ "EG06": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   126.0,
+   126.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Canapé confidentiel 2 places",
+  "page": 32
+ },
+ "EG07": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   186.0,
+   186.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Canapé confidentiel 3 places",
+  "page": 32
+ },
+ "EG08": {
+  "H": [
+   160.0,
+   160.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG09": {
+  "H": [
+   160.0,
+   160.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG13": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "CLOISONS acoustiques tissu",
+  "page": 35
+ },
+ "EG14": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "CLOISONS acoustiques tissu",
+  "page": 35
+ },
+ "EG15": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Cloisons",
+  "page": 35
+ },
+ "EG16": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Cloisons",
+  "page": 35
+ },
+ "EG17": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG18": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG19": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG20": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclinées",
+  "page": 35
+ },
+ "EG21": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "CLOISONS acoustiques tissu",
+  "page": 35
+ },
+ "EG22": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "CLOISONS acoustiques tissu",
+  "page": 35
+ },
+ "EG23": {
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Cloisons",
+  "page": 35
+ },
+ "EG24": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Cloisons",
+  "page": 35
+ },
+ "EG25": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG26": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG27": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclus",
+  "page": 35
+ },
+ "EG28": {
+  "H": [
+   180.0,
+   180.0
+  ],
+  "L": [
+   80.0,
+   80.0
+  ],
+  "bloc": "inclinées",
+  "page": 35
+ },
+ "EG29": {
+  "bloc": "Lot de 2 pièces de liaison 180°",
+  "page": 35
+ },
+ "EG30": {
+  "bloc": "Lot de 2 pièces de liaison 90°",
+  "page": 35
+ },
+ "EG31": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage mécanique",
+  "page": 79
+ },
+ "EG32": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 79
+ },
+ "EG33": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 79
+ },
+ "EG34": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Réglage par manivelle",
+  "page": 79
+ },
+ "EG35": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage mécanique",
+  "page": 79
+ },
+ "EG36": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 79
+ },
+ "EG37": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 79
+ },
+ "EG38": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Réglage par manivelle",
+  "page": 79
+ },
+ "EG39": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "à réglage mécanique",
+  "page": 79
+ },
+ "EG40": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Plans droits",
+  "page": 79
+ },
+ "EG41": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Plans droits",
+  "page": 79
+ },
+ "EG42": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Réglage par manivelle",
+  "page": 79
+ },
+ "EG49": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Voiles de fond suspendus",
+  "page": 203
+ },
+ "EG50": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Voiles de fond suspendus",
+  "page": 203
+ },
+ "EG51": {
+  "H": [
+   35.0,
+   35.0
+  ],
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "Voiles de fond suspendus",
+  "page": 203
+ },
+ "EG52": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   150.0,
+   150.0
+  ],
+  "bloc": "Voiles de fond suspendus",
+  "page": 203
+ },
+ "EG54": {
+  "bloc": "Bloc électrique nomade",
+  "page": 33
+ },
+ "EG55": {
+  "L": [
+   26.5,
+   26.5
+  ],
+  "bloc": "Bloc électrique 3 PC panneau mélaminé par vis à bois",
+  "page": 214
+ },
+ "EG56": {
+  "bloc": "avec connexion GST Possibilité de connecter 3 blocs électriq",
+  "page": 214
+ },
+ "EG57": {
+  "bloc": "Câbles d’alimentation secteur",
+  "page": 214
+ },
+ "EG58": {
+  "bloc": "Câbles d’alimentation secteur",
+  "page": 214
+ },
+ "EG59": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Bureaux droits",
+  "page": 177
+ },
+ "EG60": {
+  "H": [
+   63.0,
+   63.0
+  ],
+  "L": [
+   200.0,
+   200.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "P 100 / H 63 - 128 cm Top Access simple inclus",
+  "page": 177
+ },
+ "EG61": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "P": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Bureaux sur B-box",
+  "page": 177
+ },
+ "EG62": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "L": [
+   209.0,
+   209.0
+  ],
+  "bloc": "Bureaux sur B-box",
+  "page": 177
+ },
+ "EG63": {
+  "L": [
+   189.0,
+   189.0
+  ],
+  "bloc": "Top Access simple inclus",
+  "page": 177
+ },
+ "EG64": {
+  "L": [
+   209.0,
+   209.0
+  ],
+  "bloc": "Top Access simple inclus",
+  "page": 177
+ },
+ "EG71": {
+  "bloc": "(de 53 cm à 78 cm +/- 10 mm). Tabouret",
+  "page": 361
+ },
+ "EG72": {
+  "bloc": "avec canapés 2 places face à face",
+  "page": 33
+ },
+ "EG73": {
+  "bloc": "avec canapés 3 places face à face",
+  "page": 33
+ },
+ "EG75": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 110
+ },
+ "EG76": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 110
+ },
+ "EG77": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 111
+ },
+ "EG78": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 111
+ },
+ "EG79": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 126
+ },
+ "EG80": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 126
+ },
+ "EG81": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 127
+ },
+ "EG82": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 127
+ },
+ "EG83": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 141
+ },
+ "EG84": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 141
+ },
+ "EG85": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 142
+ },
+ "EG86": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 142
+ },
+ "EG87": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "Plans droits",
+  "page": 151
+ },
+ "EG88": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "Plans droits",
+  "page": 151
+ },
+ "EG89": {
+  "L": [
+   143.0,
+   143.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 152
+ },
+ "EG90": {
+  "L": [
+   163.0,
+   163.0
+  ],
+  "bloc": "SFITAROBALLOC",
+  "page": 152
+ },
+ "EG91": {
+  "H": [
+   11.0,
+   11.0
+  ],
+  "bloc": "Goulotte universelle",
+  "page": 50
+ },
+ "EG92": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "NOUVEAU",
+  "page": 207
+ },
+ "EG93": {
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "NOUVEAU",
+  "page": 207
+ },
+ "EG94": {
+  "H": [
+   130.0,
+   130.0
+  ],
+  "bloc": "aimantée à maillons sur le pied + 28 maillons",
+  "page": 208
+ },
+ "EG95": {
+  "H": [
+   90.0,
+   90.0
+  ],
+  "bloc": "aimantées à maillons",
+  "page": 208
+ },
+ "EG96": {
+  "L": [
+   150.0,
+   150.0
+  ],
+  "bloc": "CHEMINS DE CÂBLES - Gestion au sol des câbles STNEMÉLPMOC",
+  "page": 209
+ },
+ "EG97": {
+  "L": [
+   100.0,
+   100.0
+  ],
+  "bloc": "Profil métal",
+  "page": 209
+ },
+ "EG98": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Description Réf. Réf.",
+  "page": 249
+ },
+ "EG99": {
+  "H": [
+   72.0,
+   72.0
+  ],
+  "bloc": "Description Réf. Réf.",
+  "page": 249
+ },
+ "EH00": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "coulissantes",
+  "page": 249
+ },
+ "EH01": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "coulissantes",
+  "page": 249
+ },
+ "EH02": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "bloc": "d'un bench",
+  "page": 249
+ },
+ "EH03": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "bloc": "d'un bench",
+  "page": 249
+ },
+ "EH04": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "L 120 cm Finition Finition portes Finition",
+  "page": 248
+ },
+ "EH05": {
+  "bloc": "Armoires portes",
+  "page": 248
+ },
+ "EH06": {
+  "bloc": "STNEMEGNAR de dossiers suspendus ou 3 niveaux de classeurs",
+  "page": 248
+ },
+ "EH07": {
+  "bloc": "NOUVEAU NOUVEAU",
+  "page": 257
+ },
+ "EH08": {
+  "bloc": "Dim. utiles : Avec porte ouverture attache mâle /",
+  "page": 257
+ },
+ "EH09": {
+  "bloc": "Cube de rangement Dos tissu cube",
+  "page": 257
+ },
+ "EH10": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "Dos tissu Description Réf. Réf.",
+  "page": 239
+ },
+ "EH11": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "bloc": "À fixer au dos des",
+  "page": 239
+ },
+ "EH12": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "Dos tissu Description Réf. Réf.",
+  "page": 239
+ },
+ "EH13": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "bloc": "À fixer au dos des",
+  "page": 239
+ },
+ "EH14": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "Dos tissu Description Réf.",
+  "page": 248
+ },
+ "EH15": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Dos tissu L 120 cm",
+  "page": 248
+ },
+ "EH16": {
+  "H": [
+   160.0,
+   160.0
+  ],
+  "bloc": "portes coulissantes",
+  "page": 248
+ },
+ "EH17": {
+  "bloc": "Option Pour serrure mode public",
+  "page": 263
+ },
+ "EH18": {
+  "bloc": "Dos tissu",
+  "page": 263
+ },
+ "EH19": {
+  "bloc": "Dos tissu",
+  "page": 263
+ },
+ "EH20": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH21": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH22": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH23": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH24": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH25": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH26": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH27": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH28": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH29": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH30": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH31": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH32": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH33": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH34": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH35": {
+  "H": [
+   75.0,
+   75.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "Tables droites avec bloc",
+  "page": 301
+ },
+ "EH36": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Voiles de fond mélaminés",
+  "page": 303
+ },
+ "EH37": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "Structurex®",
+  "page": 303
+ },
+ "EH38": {
+  "H": [
+   28.0,
+   28.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "H 28 cm réel",
+  "page": 303
+ },
+ "EH39": {
+  "H": [
+   35.0,
+   35.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "H 35 cm posé",
+  "page": 303
+ },
+ "EH41": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "TABLES DROITES 4 pieds",
+  "page": 311
+ },
+ "EH42": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "TABLES DROITES 4 pieds",
+  "page": 311
+ },
+ "EH43": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   140.0,
+   140.0
+  ],
+  "bloc": "TABLES DROITES 4 pieds",
+  "page": 311
+ },
+ "EH44": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "TABLES DROITES 4 pieds",
+  "page": 311
+ },
+ "EH45": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   160.0,
+   160.0
+  ],
+  "bloc": "TABLES DROITES 4 pieds",
+  "page": 311
+ },
+ "EH46": {
+  "H": [
+   74.0,
+   74.0
+  ],
+  "L": [
+   180.0,
+   180.0
+  ],
+  "bloc": "TABLES DROITES 4 pieds",
+  "page": 311
+ },
+ "EH47": {
+  "L": [
+   120.0,
+   120.0
+  ],
+  "P": [
+   60.0,
+   60.0
+  ],
+  "bloc": "TABLES DEMI-LUNE 4 pieds",
+  "page": 311
+ },
+ "EH48": {
+  "L": [
+   140.0,
+   140.0
+  ],
+  "P": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Tables demi-lune",
+  "page": 311
+ },
+ "EH49": {
+  "L": [
+   160.0,
+   160.0
+  ],
+  "P": [
+   80.0,
+   80.0
+  ],
+  "bloc": "Tables demi-lune",
+  "page": 311
+ },
+ "EH50": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   50.0,
+   50.0
+  ],
+  "bloc": "Voiles de fond suspendus tissus Description Réf.",
+  "page": 93
+ },
+ "EH51": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   70.0,
+   70.0
+  ],
+  "bloc": "Voiles de fond suspendus tissus Description Réf.",
+  "page": 93
+ },
+ "EH52": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   90.0,
+   90.0
+  ],
+  "bloc": "Voiles de fond suspendus tissus Description Réf.",
+  "page": 93
+ },
+ "EH53": {
+  "H": [
+   35.0,
+   35.0
+  ],
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Voiles de fond suspendus tissus Description Réf.",
+  "page": 93
+ },
+ "EH54": {
+  "H": [
+   30.0,
+   30.0
+  ],
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "Voiles de fond suspendus tissus Description Réf.",
+  "page": 93
+ },
+ "EH55": {
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Voile de fond Voile de fond",
+  "page": 177
+ },
+ "EH56": {
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "suspendu suspendu",
+  "page": 177
+ },
+ "EH57": {
+  "L": [
+   110.0,
+   110.0
+  ],
+  "bloc": "Voile de fond Voile de fond",
+  "page": 177
+ },
+ "EH58": {
+  "L": [
+   130.0,
+   130.0
+  ],
+  "bloc": "suspendu suspendu",
+  "page": 177
+ },
+ "EH75": {
+  "bloc": "• Tablette écritoire optionnelle en polypropylène Noir.",
+  "page": 359
+ },
+ "EH76": {
+  "bloc": "65 42,5 Chaise pied fixe",
+  "page": 359
+ },
+ "EH77": {
+  "bloc": "5,74 Option Réf.",
+  "page": 359
+ },
+ "EH78": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "bloc": "3 Portes Description Réf. Réf.",
+  "page": 239
+ },
+ "EH79": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "2 portes battantes Pour rangement H 104 cm.",
+  "page": 239
+ },
+ "EH80": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "bloc": "ouverts Pour rangement H 136 cm.",
+  "page": 239
+ },
+ "EH81": {
+  "bloc": "Sans poignées Jeu de 2 portes",
+  "page": 239
+ },
+ "EH82": {
+  "H": [
+   201.0,
+   201.0
+  ],
+  "bloc": "3 Portes Description Réf. Réf.",
+  "page": 239
+ },
+ "EH83": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "bloc": "2 portes battantes Pour rangement H 104 cm.",
+  "page": 239
+ },
+ "EH84": {
+  "H": [
+   136.0,
+   136.0
+  ],
+  "bloc": "ouverts Pour rangement H 136 cm.",
+  "page": 239
+ },
+ "EH85": {
+  "bloc": "Sans poignées Jeu de 2 portes",
+  "page": 239
+ },
+ "EH86": {
+  "L": [
+   111.0,
+   111.0
+  ],
+  "bloc": "Description Dimensions Réf. Finition mm. Chants ABS antichoc",
+  "page": 358
+ },
+ "EH87": {
+  "L": [
+   164.5,
+   164.5
+  ],
+  "bloc": "Poutre avec piétement extrémités ou en intermédiaire.",
+  "page": 358
+ },
+ "EH88": {
+  "H": [
+   45.0,
+   45.0
+  ],
+  "L": [
+   218.0,
+   218.0
+  ],
+  "P": [
+   55.0,
+   55.0
+  ],
+  "bloc": "P 55 / H 45 cm • Conformes à la norme EN 16139. Certificatio",
+  "page": 358
+ },
+ "EH89": {
+  "bloc": "Coque à fixer sur poutre Assise :",
+  "page": 358
+ },
+ "EH90": {
+  "L": [
+   45.0,
+   45.0
+  ],
+  "P": [
+   45.0,
+   45.0
+  ],
+  "bloc": "Options Dimensions Réf. Finition",
+  "page": 358
+ },
+ "EH91": {
+  "bloc": "Options Dimensions Réf. Finition",
+  "page": 358
+ },
+ "EH92": {
+  "bloc": "Options Dimensions Réf. Finition",
+  "page": 358
+ },
+ "EH93": {
+  "H": [
+   104.0,
+   104.0
+  ],
+  "L": [
+   120.0,
+   120.0
+  ],
+  "bloc": "Options - pour rangements portes coulissantes",
+  "page": 248
+ }
+}

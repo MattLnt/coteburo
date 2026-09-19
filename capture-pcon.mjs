@@ -32,7 +32,7 @@ import puppeteer from "puppeteer";
 // si on l'interroge trop vite : en cas d'échecs en série, attendre un
 // quart d'heure avant de relancer.
 
-const RACINE = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Buronomic";
+const RACINE = "C:\\Users\\akeys\\Desktop\\Matt\\COTEBURO-MEDIAS\\Buronomic";
 
 // Chaque dossier du configurateur, avec son URL et le nom de gamme
 // correspondant dans le catalogue.

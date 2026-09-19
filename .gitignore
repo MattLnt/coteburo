@@ -50,3 +50,13 @@ prisma/officepro-fiches.json
 prisma/officepro-images-attribution.json
 officepro-fiches-a-rediger.json
 officepro-descriptions.json
+
+# Catalogues et tarifs fournisseurs 2026 : sources PDF de 155 Mo, dont une
+# de 92 Mo. On garde les extractions (JSON, xlsx), qui sont ce dont les
+# scripts ont besoin au quotidien, et pas les binaires — même règle que
+# pour le tarif OfficePro ci-dessus.
+catalogue-2026/*.pdf
+
+# Cache Python des parsers du catalogue.
+__pycache__/
+*.pyc

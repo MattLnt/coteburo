@@ -16,7 +16,7 @@ const prisma = new PrismaClient();
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-const DOSSIER = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Sokoa\\EMAN_BD";
+const DOSSIER = "C:\\Users\\akeys\\Desktop\\Matt\\COTEBURO-MEDIAS\\Sokoa\\EMAN_BD";
 const FICHIER = "SOKOA_EMAN_DET_BRAZO4D SOPORTE ALUM.jpg";
 
 async function main() {

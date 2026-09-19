@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-const DOSSIER = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Sokoa\\EMAN_BD";
+const DOSSIER = "C:\\Users\\akeys\\Desktop\\Matt\\COTEBURO-MEDIAS\\Sokoa\\EMAN_BD";
 const CLOUD_DOSSIER = "coteburo/sokoa/eman";
 
 // Les fichiers Sokoa portent la référence du siège : Eman_NT87K0.jpg.

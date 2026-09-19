@@ -26,7 +26,7 @@ const prisma = new PrismaClient();
 // dépasse ce qu'un terminal garde en mémoire.
 
 const APPLIQUER = process.argv.includes("--appliquer");
-const FICHIER = "C:\\Users\\pages\\Bureau\\Matt\\projets\\coteburo\\buronomic.xlsx";
+const FICHIER = "C:\\Users\\akeys\\Desktop\\Matt\\coteburo\\buronomic.xlsx";
 
 const arrondi = (n) => Math.round(n * 100) / 100;
 

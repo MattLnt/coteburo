@@ -33,7 +33,7 @@ const FORCER = process.argv.includes("--forcer");
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-const RACINE = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Buronomic";
+const RACINE = "C:\\Users\\akeys\\Desktop\\Matt\\COTEBURO-MEDIAS\\Buronomic";
 
 // Sans argument, toutes les gammes. Avec, seulement celles nommées.
 const DEMANDEES = process.argv.slice(2).filter((a) => !a.startsWith("--"));

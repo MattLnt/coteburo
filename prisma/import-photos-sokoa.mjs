@@ -23,7 +23,7 @@ const APPLIQUER = process.argv.includes("--appliquer");
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-const RACINE = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Sokoa\\fichiers_sokoa";
+const RACINE = "C:\\Users\\akeys\\Desktop\\Matt\\COTEBURO-MEDIAS\\Sokoa\\fichiers_sokoa";
 
 // Pour chaque produit : le dossier, les fragments de nom qui identifient
 // ses photos, et ceux qui servent d'ambiance. La première correspondance

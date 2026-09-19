@@ -33,7 +33,7 @@ import sharp from "sharp";
 const prisma = new PrismaClient();
 const APPLIQUER = process.argv.includes("--appliquer");
 
-const RACINE = "C:/Users/pages/Bureau/Matt/projets/COTEBURO-MEDIAS/resourcesLENIVET/resourcesLENIVET";
+const RACINE = "C:/Users/akeys/Desktop/Matt/COTEBURO-MEDIAS/resourcesLENIVET/resourcesLENIVET";
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 const IMAGES = [".jpg", ".jpeg", ".png", ".webp"];

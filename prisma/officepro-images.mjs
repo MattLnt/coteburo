@@ -32,7 +32,7 @@ const prisma = new PrismaClient();
 const APPLIQUER = process.argv.includes("--appliquer");
 const DEMANDEES = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 
-const RACINE = "C:/Users/pages/Bureau/Matt/projets/COTEBURO-MEDIAS/resourcesLENIVET/resourcesLENIVET";
+const RACINE = "C:/Users/akeys/Desktop/Matt/COTEBURO-MEDIAS/resourcesLENIVET/resourcesLENIVET";
 const FICHES = "prisma/officepro-fiches.json";
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;

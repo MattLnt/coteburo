@@ -34,7 +34,7 @@ const APPLIQUER = process.argv.includes("--appliquer");
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-const RACINE = "C:\\Users\\pages\\Bureau\\Matt\\projets\\COTEBURO-MEDIAS\\Buronomic";
+const RACINE = "C:\\Users\\akeys\\Desktop\\Matt\\COTEBURO-MEDIAS\\Buronomic";
 
 // Pour chaque produit : le nom exact en base, le dossier tel qu'il
 // s'écrit sur le disque, le préfixe des fichiers, et facultativement un

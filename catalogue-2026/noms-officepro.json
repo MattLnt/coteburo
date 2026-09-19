@@ -1,0 +1,3529 @@
+{
+ "_lisezmoi": [
+  "Correspondance entre les références du tarif OfficePro et les fiches du site.",
+  "",
+  "Les noms viennent du CATALOGUE, jamais du tarif. Le tarif nomme mal :",
+  "il appelle « Verano coussin » la chaise sans accoudoirs et « Chaise",
+  "Verano lounge » ce que le catalogue nomme « Fauteuil lounge ». Le",
+  "catalogue présente les produits tels que le client les verra.",
+  "",
+  "nom     : le titre de la fiche, sans la gamme. Le script ajoute « - Gamme ».",
+  "nature  : Produit, Extension ou Option.",
+  "page    : page du PDF catalogue où la fiche est présentée.",
+  "refs    : les références du tarif regroupées sous cette fiche.",
+  "",
+  "Les références sortent de officepro-references.json, produit par",
+  "parser-officepro.py : 580 références lues dans le tarif, contre 270",
+  "dans l'import précédent."
+ ],
+ "Arco": {
+  "gamme_affichee": "Arco",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges visiteur et accueil"
+  ],
+  "produits": [
+   {
+    "nom": "Chauffeuse tissu non feu",
+    "nature": "Produit",
+    "page": 46,
+    "refs": [
+     "ARC01BE-M1",
+     "ARC01BL-M1",
+     "ARC01GR-M1",
+     "ARC01JA-M1",
+     "ARC01TE-M1",
+     "ARC01VE-M1",
+     "ARC02BE-M1",
+     "ARC02BL-M1",
+     "ARC02GR-M1",
+     "ARC02JA-M1",
+     "ARC02TE-M1",
+     "ARC02VE-M1",
+     "ARC03BE-M1",
+     "ARC03BL-M1",
+     "ARC03GR-M1",
+     "ARC03JA-M1",
+     "ARC03TE-M1",
+     "ARC03VE-M1",
+     "ARC04BE-M1",
+     "ARC04BL-M1",
+     "ARC04GR-M1",
+     "ARC04JA-M1",
+     "ARC04TE-M1",
+     "ARC04VE-M1",
+     "ARC05BE-M1",
+     "ARC05BL-M1",
+     "ARC05GR-M1",
+     "ARC05JA-M1",
+     "ARC05TE-M1",
+     "ARC05VE-M1"
+    ],
+    "description": "La chauffeuse Arco en tissu non feu, dans six coloris et sur cinq piétements au choix : c'est la fiche la plus ouverte de la gamme, trente combinaisons en tout. Le tissu non feu la rend éligible aux établissements recevant du public, là où un revêtement ordinaire serait refusé.",
+    "technique": [
+     "## Assise et dossier",
+     "- Coque garnie tout en rondeur",
+     "- Tissu non feu",
+     "- Six coloris : beige, bleu nuit, gris poivre, safran, terracotta, vert anglais",
+     "",
+     "## Piétements au choix",
+     "- Quatre pieds bois",
+     "- Quatre pieds métal fixes",
+     "- Pyramidal métal noir",
+     "- Étoile métal noir avec roulettes, réglable en hauteur",
+     "- Étoile métal chromé avec roulettes, réglable en hauteur",
+     "",
+     "## Usage",
+     "- Accueil, réunion, espaces visiteurs"
+    ]
+   },
+   {
+    "nom": "Chauffeuse Chic polyuréthane",
+    "nature": "Produit",
+    "page": 46,
+    "refs": [
+     "ARC01BE-PU",
+     "ARC01MA-PU",
+     "ARC01NR-PU",
+     "ARC02BE-PU",
+     "ARC02MA-PU",
+     "ARC02NR-PU",
+     "ARC03BE-PU",
+     "ARC03MA-PU",
+     "ARC03NR-PU",
+     "ARC04BE-PU",
+     "ARC04MA-PU",
+     "ARC04NR-PU",
+     "ARC05BE-PU",
+     "ARC05MA-PU",
+     "ARC05NR-PU"
+    ],
+    "description": "La version Chic de la chauffeuse Arco troque le tissu contre un polyuréthane nettoyable, dans trois teintes cuir — taupe, cognac, noir. Mêmes piétements, même prix que le tissu : le choix se fait sur l'entretien et sur l'allure, pas sur le budget.",
+    "technique": [
+     "## Assise et dossier",
+     "- Coque garnie tout en rondeur",
+     "- Polyuréthane nettoyable",
+     "- Trois coloris : taupe, cognac, noir",
+     "",
+     "## Piétements au choix",
+     "- Quatre pieds bois",
+     "- Quatre pieds métal fixes",
+     "- Pyramidal métal noir",
+     "- Étoile métal noir avec roulettes, réglable en hauteur",
+     "- Étoile métal chromé avec roulettes, réglable en hauteur",
+     "",
+     "## Entretien",
+     "- Surface lavable, adaptée aux lieux de passage"
+    ]
+   },
+   {
+    "nom": "Fauteuil lounge",
+    "nature": "Produit",
+    "page": 48,
+    "refs": [
+     "ARC08GR",
+     "ARC08JA"
+    ],
+    "description": "Le fauteuil lounge Arco est plus bas et plus enveloppant que la chauffeuse, et livré avec son coussin. C'est la version qu'on installe dans un coin d'attente où l'on reste assis vingt minutes, pas cinq. Deux coloris, gris ou bronze.",
+    "technique": [
+     "## Assise et dossier",
+     "- Coque lounge basse et enveloppante",
+     "- Coussin fourni",
+     "",
+     "## Finitions",
+     "- Gris ou bronze",
+     "",
+     "## Usage",
+     "- Espaces d'attente et coins lounge"
+    ]
+   },
+   {
+    "nom": "Pouf",
+    "nature": "Produit",
+    "page": 49,
+    "refs": [
+     "ARC07BL",
+     "ARC07GR",
+     "ARC07JA",
+     "ARC07VE"
+    ],
+    "description": "Le pouf Arco complète la gamme par le bas : pas de dossier, pas de piétement visible, juste une assise d'appoint qu'on pousse du pied. Quatre structures colorées — bleue, noire, terracotta, verte — pour ponctuer un ensemble sans l'alourdir.",
+    "technique": [
+     "## Assise",
+     "- Pouf garni, sans dossier",
+     "",
+     "## Finitions",
+     "- Structure bleue, noire, terracotta ou verte",
+     "",
+     "## Usage",
+     "- Assise d'appoint, complément d'un ensemble Arco"
+    ]
+   },
+   {
+    "nom": "Banquette",
+    "nature": "Produit",
+    "page": 50,
+    "refs": [
+     "ARC06BE"
+    ],
+    "description": "La banquette Arco étend la ligne de la chauffeuse sur une assise continue, en tissu non feu beige. Elle arrive avec deux coussins Arco 45 × 45 cm à choisir dans les six coloris de la gamme — de quoi rappeler la teinte des chauffeuses posées à côté.",
+    "technique": [
+     "## Assise et dossier",
+     "- Banquette continue, tissu non feu",
+     "- Finition beige",
+     "",
+     "## Fourni avec",
+     "- Deux coussins Arco 45 × 45 cm, coloris au choix",
+     "",
+     "## Usage",
+     "- Accueil, salle d'attente"
+    ]
+   },
+   {
+    "nom": "Coussins",
+    "nature": "Option",
+    "categorie": "Accessoires",
+    "sous_categories": ["Coussins et accessoires d'assise"],
+    "classement_motif": "Fournis avec la banquette Arco, le tarif précise « ne peut être vendu » : aucun prix, donc pas de place au rayon Sièges.",
+    "page": 50,
+    "refs": [
+     "KOUS05BE-ARC",
+     "KOUS05BL-ARC",
+     "KOUS05GR-ARC",
+     "KOUS05JA-ARC",
+     "KOUS05TE-ARC",
+     "KOUS05VE-ARC"
+    ],
+    "description": "Les coussins Arco 45 × 45 cm sont fournis avec la banquette, mais se commandent aussi séparément pour rhabiller un ensemble ou rattraper une teinte. Six coloris, les mêmes que les chauffeuses en tissu non feu.",
+    "technique": [
+     "## Dimensions",
+     "- 45 × 45 cm",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, bleu, gris, jaune, terracotta, vert",
+     "",
+     "## Bon à savoir",
+     "- Deux coussins sont déjà inclus avec la banquette Arco : ces références servent au remplacement ou au complément"
+    ]
+   }
+  ],
+  "description": "Arco est une famille de petits fauteuils tout en rondeur, dont on compose la version en choisissant le piétement et le revêtement. Chauffeuse, fauteuil lounge, pouf ou banquette : de quoi meubler un accueil, une salle de réunion ou un coin visiteurs d'une même ligne.",
+  "technique": [
+   "## Collection",
+   "- Chauffeuse, fauteuil lounge, pouf, banquette",
+   "- Banquette livrée avec deux coussins Arco 45 × 45 cm au choix",
+   "",
+   "## Piétements",
+   "- Quatre pieds bois",
+   "- Quatre pieds métal fixes",
+   "- Pyramidal métal noir avec roulettes, réglable en hauteur",
+   "- Étoile métal chromé avec roulettes, réglable en hauteur",
+   "",
+   "## Revêtements",
+   "- Tissu non feu",
+   "- Polyuréthane nettoyable, version Arco Chic"
+  ],
+  "options_refs": [
+   "KOUS05BE-ARC",
+   "KOUS05BL-ARC",
+   "KOUS05GR-ARC",
+   "KOUS05JA-ARC",
+   "KOUS05TE-ARC",
+   "KOUS05VE-ARC"
+  ]
+ },
+ "Shineo": {
+  "gamme_affichee": "Shineo",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges visiteur et accueil",
+   "Sièges de réunion et formation"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil tissu",
+    "nature": "Produit",
+    "page": 102,
+    "refs": [
+     "SHI01TU",
+     "SHI01TE",
+     "SHI01GR",
+     "SHI01JA",
+     "SHI02TU",
+     "SHI02TE",
+     "SHI02GR",
+     "SHI02JA",
+     "SHI03TU",
+     "SHI03TE",
+     "SHI03GR",
+     "SHI03JA",
+     "SHI04TU",
+     "SHI04TE",
+     "SHI04GR",
+     "SHI04JA"
+    ],
+    "description": "Le Shineo est un petit fauteuil qu'on configure : quatre piétements et quatre coloris de tissu, soit seize combinaisons, du pied bois fixe à l'étoile sur roulettes réglable en hauteur. Assez sobre pour une salle de réunion, assez coloré pour un accueil — et le pied bois passe même à la maison.",
+    "technique": [
+     "## Assise et dossier",
+     "- Mousse découpée 5 cm, densité 32 kg/m³, collée sur support bois",
+     "- Revêtement tissu térylène, 40 000 tours Martindale",
+     "- Quatre coloris : turquoise, terracotta, gris, jaune",
+     "",
+     "## Piétements au choix",
+     "- Quatre pieds hêtre, socle nylon sous l'assise",
+     "- Quatre pieds acier noir, socle nylon",
+     "- Étoile 5 branches acier noir sur roulettes sol dur, mécanisme up & down, vérin classe 3",
+     "- Pyramidal acier noir, platine acier sous l'assise",
+     "",
+     "## Garantie",
+     "- 3 ans"
+    ]
+   }
+  ],
+  "description": "Shineo est une gamme de petits fauteuils à personnaliser selon le style et la destination — salle de réunion, accueil, et même à la maison. Quatre piétements et une palette de tissus donnent l'essentiel des combinaisons.",
+  "technique": [
+   "## Assise et dossier",
+   "- Mousse découpée 5 cm, densité 32 kg/m³, collée sur support bois",
+   "- Revêtement tissu térylène, 40 000 tours Martindale",
+   "",
+   "## Piétements",
+   "- Quatre pieds hêtre, socle nylon fixé sous l'assise",
+   "- Quatre pieds acier noir, socle nylon",
+   "- Étoile 5 branches acier noir sur roulettes sol dur, mécanisme up & down, vérin classe 3",
+   "- Pyramidal acier noir, platine acier fixée sous l'assise",
+   "",
+   "## Garantie",
+   "- 3 ans"
+  ],
+  "options_refs": []
+ },
+ "Verano": {
+  "gamme_affichee": "Verano",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges d'extérieur",
+   "Tables d'extérieur"
+  ],
+  "produits": [
+   {
+    "nom": "Table basse",
+    "nature": "Produit",
+    "page": 154,
+    "refs": [
+     "VER07BE",
+     "VER07CA",
+     "VER07GR",
+     "VER07JA",
+     "VER07RE",
+     "VER07VE"
+    ],
+    "description": "La table basse Verano accompagne les fauteuils lounge de la gamme, à hauteur d'assise basse. Cent quatre-vingts euros, six coloris — la pièce la moins chère de l'espace lounge.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, hauteur basse",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## À associer",
+     "- Fauteuils lounge Verano"
+    ]
+   },
+   {
+    "nom": "Fauteuil lounge",
+    "nature": "Produit",
+    "page": 154,
+    "refs": [
+     "VER03BE",
+     "VER03CA",
+     "VER03GR",
+     "VER03JA",
+     "VER03RE",
+     "VER03VE"
+    ],
+    "description": "Le fauteuil lounge Verano est plus bas et plus large que la chaise : on s'y installe pour rester. Il forme l'espace lounge de la gamme avec la table basse et le support pour plantes, dans les six mêmes coloris.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, assise lounge basse",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## À associer",
+     "- Table basse et support pour plantes Verano"
+    ]
+   },
+   {
+    "nom": "Support pour plantes",
+    "nature": "Option",
+    "page": 155,
+    "refs": [
+     "VER12GR",
+     "VER12JA",
+     "VER12RE",
+     "VER12VE"
+    ],
+    "description": "Le support pour plantes est la touche qui fait passer une terrasse d'aménagée à habitée. Même aluminium, mêmes coloris que les sièges — sauf le beige et le cactus, qui n'existent pas sur cette référence.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %",
+     "",
+     "## Finitions",
+     "- Quatre coloris : gris, miel, paprika, menthe",
+     "",
+     "## Usage",
+     "- Espace lounge Verano"
+    ]
+   },
+   {
+    "nom": "Chaise sans accoudoirs",
+    "nature": "Produit",
+    "page": 155,
+    "refs": [
+     "VER01BE",
+     "VER01CA",
+     "VER01GR",
+     "VER01JA",
+     "VER01RE",
+     "VER01VE"
+    ],
+    "description": "La chaise Verano sans accoudoirs est le siège de base de la gamme outdoor : aluminium intégral, léger, insensible à la corrosion. C'est aussi la seule version compatible avec les coussins Verano — les accoudoirs empêchent leur mise en place. Six coloris, vendue par deux minimum.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, résistant à la corrosion et aux UV",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## Compatibilité",
+     "- Seule version compatible avec les coussins Verano",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2 minimum"
+    ]
+   },
+   {
+    "nom": "Chaise avec accoudoirs",
+    "nature": "Produit",
+    "page": 155,
+    "refs": [
+     "VER02BE",
+     "VER02CA",
+     "VER02GR",
+     "VER02JA",
+     "VER02RE",
+     "VER02VE"
+    ],
+    "description": "La même chaise Verano, avec accoudoirs intégrés à la structure aluminium. Vingt euros de plus, et un maintien supplémentaire pour les terrasses où l'on reste attablé — mais les coussins de la gamme ne s'y adaptent pas.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, accoudoirs intégrés",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## Bon à savoir",
+     "- Les coussins Verano ne sont pas compatibles avec cette version",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2 minimum"
+    ]
+   },
+   {
+    "nom": "Banc 2 places",
+    "nature": "Produit",
+    "page": 155,
+    "refs": [
+     "VER06BE",
+     "VER06CA",
+     "VER06RE",
+     "VER06VE"
+    ],
+    "description": "Le banc Verano assoit deux personnes sur une assise continue, dans quatre coloris. Trois cent quarante-cinq euros — un peu plus que deux chaises, pour une ligne qui tient mieux le long d'un mur ou d'une table de repas.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, assise continue deux places",
+     "",
+     "## Finitions",
+     "- Quatre coloris : beige, cactus, paprika, menthe",
+     "",
+     "## Usage",
+     "- Le long d'une table de repas ou d'un mur"
+    ]
+   },
+   {
+    "nom": "Table bistro carrée",
+    "nature": "Produit",
+    "page": 155,
+    "refs": [
+     "VER08BE",
+     "VER08CA",
+     "VER08GR",
+     "VER08JA",
+     "VER08RE",
+     "VER08VE"
+    ],
+    "description": "La table bistro Verano est le format carré de la gamme, pour deux à quatre couverts. Deux cent quatre-vingt-quinze euros, six coloris : c'est la table qui multiplie le mieux sur une terrasse, chaque exemplaire servant un groupe.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, plateau carré",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## Usage",
+     "- Deux à quatre couverts, terrasse de restauration"
+    ]
+   },
+   {
+    "nom": "Petite table rectangulaire 4 places",
+    "nature": "Produit",
+    "page": 155,
+    "refs": [
+     "VER10GR",
+     "VER10RE",
+     "VER10VE"
+    ],
+    "description": "La table rectangulaire 4 places mesure 161 cm de long. À six cent quatre-vingt-quinze euros elle coûte plus que deux tables bistro, mais assoit un groupe d'un seul tenant — ce qu'aucune juxtaposition de carrés ne donne vraiment.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, plateau rectangulaire",
+     "- Longueur 161 cm",
+     "",
+     "## Finitions",
+     "- Trois coloris : gris, paprika, menthe",
+     "",
+     "## Usage",
+     "- Quatre couverts"
+    ]
+   },
+   {
+    "nom": "Grande table rectangulaire 6 places",
+    "nature": "Produit",
+    "page": 155,
+    "refs": [
+     "VER13BE",
+     "VER13GR"
+    ],
+    "description": "La grande table Verano fait 199,7 cm et assoit six personnes. C'est la pièce la plus chère de la gamme, et la seule qui ne descende pas au-dessous de deux mètres — à mesurer avant commande si la terrasse est étroite. Deux coloris seulement.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, plateau rectangulaire",
+     "- Longueur 199,7 cm",
+     "",
+     "## Finitions",
+     "- Deux coloris : beige, gris",
+     "",
+     "## Usage",
+     "- Six couverts"
+    ]
+   },
+   {
+    "nom": "Mange debout carré",
+    "nature": "Produit",
+    "page": 156,
+    "refs": [
+     "VER09BE",
+     "VER09CA",
+     "VER09GR",
+     "VER09JA",
+     "VER09RE",
+     "VER09VE"
+    ],
+    "description": "Le mange-debout carré Verano se pose au milieu d'une terrasse pour boire un café debout, ou s'associe aux chaises hautes et tabourets de la gamme. Même prix que la table bistro, mais à hauteur de comptoir.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, plateau carré, hauteur mange-debout",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## À associer",
+     "- Chaises hautes et tabourets de bar Verano"
+    ]
+   },
+   {
+    "nom": "Table de bar haute",
+    "nature": "Produit",
+    "page": 156,
+    "refs": [
+     "VER11BE",
+     "VER11GR"
+    ],
+    "description": "La table de bar haute Verano est le format rectangulaire du mange-debout : plus longue, elle accueille quatre à six personnes debout. Six cent quarante-cinq euros, en beige ou gris.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, plateau rectangulaire, hauteur bar",
+     "",
+     "## Finitions",
+     "- Deux coloris : beige, gris",
+     "",
+     "## À associer",
+     "- Chaises hautes et tabourets de bar Verano"
+    ]
+   },
+   {
+    "nom": "Tabouret de bar",
+    "nature": "Produit",
+    "page": 156,
+    "refs": [
+     "VER05BE",
+     "VER05CA",
+     "VER05GR",
+     "VER05JA",
+     "VER05RE",
+     "VER05VE"
+    ],
+    "description": "Le tabouret Verano est la chaise haute sans dossier : dix euros de moins, et une silhouette qui se glisse entièrement sous la table. Pratique quand la terrasse doit se dégager le soir.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, sans dossier",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## Usage",
+     "- Mange-debout et tables de bar Verano ; se range sous la table"
+    ]
+   },
+   {
+    "nom": "Chaise haute",
+    "nature": "Produit",
+    "page": 156,
+    "refs": [
+     "VER04BE",
+     "VER04CA",
+     "VER04GR",
+     "VER04JA",
+     "VER04RE",
+     "VER04VE"
+    ],
+    "description": "La version haute de la chaise Verano, pour les mange-debout et les tables de bar de la gamme. Quinze euros de plus que la chaise standard, dans les six mêmes coloris. Vendue par deux minimum.",
+    "technique": [
+     "## Matière",
+     "- Aluminium 100 %, résistant à la corrosion et aux UV",
+     "",
+     "## Hauteur",
+     "- Assise haute, pour mange-debout et tables de bar Verano",
+     "",
+     "## Finitions",
+     "- Six coloris : beige, cactus, gris, miel, paprika, menthe",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2 minimum"
+    ]
+   },
+   {
+    "nom": "Pouf rond",
+    "nature": "Produit",
+    "page": 158,
+    "refs": [
+     "VER15RG",
+     "VER15VE"
+    ],
+    "description": "Le pouf rond Verano est une assise d'appoint en polyester déperlant, résistant aux UV. Contrairement au reste de la gamme il n'est pas en aluminium — c'est le seul élément textile, en paprika ou kaki.",
+    "technique": [
+     "## Matière",
+     "- Polyester déperlant, résistant aux UV",
+     "- Forme ronde",
+     "",
+     "## Finitions",
+     "- Deux coloris : paprika, kaki",
+     "",
+     "## Usage",
+     "- Assise d'appoint, espace lounge"
+    ]
+   },
+   {
+    "nom": "Pouf poire",
+    "nature": "Produit",
+    "page": 158,
+    "refs": [
+     "VER14GR",
+     "VER14JA"
+    ],
+    "description": "Le pouf poire est la version affaissée du pouf rond : on s'y enfonce plutôt qu'on s'y assoit. Quinze euros de plus, en ardoise ou safran — deux teintes qui n'existent pas sur le modèle rond.",
+    "technique": [
+     "## Matière",
+     "- Polyester déperlant, résistant aux UV",
+     "- Forme poire",
+     "",
+     "## Finitions",
+     "- Deux coloris : ardoise, safran",
+     "",
+     "## Usage",
+     "- Assise d'appoint, espace lounge"
+    ]
+   },
+   {
+    "nom": "Coussin",
+    "nature": "Option",
+    "page": 154,
+    "refs": [
+     "KOUS03GR-VER",
+     "KOUS03JA-VER",
+     "KOUS03RG-VER",
+     "KOUS03VE-VER"
+    ],
+    "description": "Les coussins Verano mesurent 45 × 25 cm, en polyester déperlant résistant aux UV. Ils ne se posent que sur les chaises sans accoudoirs : sur les versions à accoudoirs, la largeur ne passe pas.",
+    "technique": [
+     "## Dimensions",
+     "- 45 × 25 cm",
+     "",
+     "## Matière",
+     "- Polyester déperlant, résistant aux UV",
+     "",
+     "## Finitions",
+     "- Quatre coloris : ardoise, safran, paprika, kaki",
+     "",
+     "## Compatibilité",
+     "- Chaises Verano sans accoudoirs uniquement"
+    ]
+   }
+  ],
+  "description": "Verano transforme un extérieur en espace de travail ou de pause : chaises et tables 100 % aluminium, légères et insensibles à la corrosion. Six coloris dont deux nouveautés, Cactus et Sable, et des coussins polyester déperlants pour l'assise.",
+  "technique": [
+   "## Matière",
+   "- Aluminium 100 %, léger et résistant à la corrosion",
+   "- Résistant à toutes les conditions climatiques",
+   "- Recyclable, entretien facile",
+   "",
+   "## Espace restauration",
+   "- Chaise sans ou avec accoudoirs, banc 2 places",
+   "- Table bistro carrée, petite table rectangulaire 4 places, grande table rectangulaire 6 places",
+   "",
+   "## Espace restauration haute",
+   "- Chaise haute, tabouret de bar, mange-debout carré, table de bar haute",
+   "",
+   "## Espace lounge",
+   "- Fauteuil lounge, table basse, support pour plantes",
+   "- Poufs rond et poire",
+   "",
+   "## Coussins",
+   "- Polyester déperlant et résistant aux UV",
+   "- Compatibles uniquement avec les chaises sans accoudoirs",
+   "",
+   "## Finitions",
+   "- Six coloris : Paprika, Miel, Vert menthe, Sable, Cactus, Gris"
+  ],
+  "options_refs": [
+   "VER12GR",
+   "VER12JA",
+   "VER12RE",
+   "VER12VE",
+   "KOUS03GR-VER",
+   "KOUS03JA-VER",
+   "KOUS03RG-VER",
+   "KOUS03VE-VER"
+  ]
+ },
+ "Tecseat": {
+  "gamme_affichee": "Tecseat",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de réunion et formation",
+   "Banquettes et poutres"
+  ],
+  "produits": [
+   {
+    "nom": "Chaise Tecseat",
+    "nature": "Produit",
+    "page": 108,
+    "refs": [
+     "TSE01BLA",
+     "TSE01GR",
+     "TSE01NR",
+     "TSE02BLA",
+     "TSE02GR",
+     "TSE03GR",
+     "TSE03NR"
+    ],
+    "description": "La chaise Tecseat est la base de la famille formation : coque polypropylène sur piétement fenêtre chromé ou quatre pieds, en blanc, gris ou noir. Cent quinze euros quel que soit le piétement — le choix se fait sur l'allure et sur le sol, pas sur le prix. Vendue par quatre.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène",
+     "- Trois coloris : blanc, gris, noir",
+     "",
+     "## Piétements au choix",
+     "- Fenêtre chromé",
+     "- Quatre pieds blancs",
+     "- Quatre pieds noirs",
+     "",
+     "## Conditionnement",
+     "- Vendue par 4",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Tabouret Tecsup",
+    "nature": "Produit",
+    "page": 108,
+    "refs": [
+     "TUP01BLA",
+     "TUP01GR",
+     "TUP01NR",
+     "TUP02BLA",
+     "TUP02GR",
+     "TUP03GR",
+     "TUP03NR"
+    ],
+    "description": "Le Tecsup est la version haute de la chaise Tecseat — un tabouret, malgré son dossier, puisqu'il monte à hauteur de comptoir. Mêmes coques et mêmes piétements que la chaise, vingt-cinq euros de plus, et vendu par deux au lieu de quatre.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène",
+     "- Trois coloris : blanc, gris, noir",
+     "",
+     "## Piétements au choix",
+     "- Fenêtre chromé",
+     "- Quatre pieds blancs",
+     "- Quatre pieds noirs",
+     "",
+     "## Hauteur",
+     "- Assise haute, pour tables hautes et comptoirs",
+     "",
+     "## Conditionnement",
+     "- Vendu par 2"
+    ]
+   },
+   {
+    "nom": "Chaise Tecseat Meeting",
+    "nature": "Produit",
+    "page": 110,
+    "refs": [
+     "TSE04BLA",
+     "TSE04GR",
+     "TSE04NR"
+    ],
+    "description": "La Tecseat Meeting ajoute des accoudoirs à la coque de la chaise standard : dix euros de plus, pour les salles de réunion où l'on reste assis plus longtemps qu'en formation. Trois coloris de coque, blanc, gris ou noir.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène avec accoudoirs",
+     "- Trois coloris : blanc, gris, noir",
+     "",
+     "## Usage",
+     "- Salles de réunion",
+     "",
+     "## Empilabilité",
+     "- Empilable",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Chaise Tecseat Learning",
+    "nature": "Produit",
+    "page": 112,
+    "refs": [
+     "TSE05BLA",
+     "TSE05GR",
+     "TSE05NR"
+    ],
+    "description": "La Tecseat Learning est la chaise de formation complète : tablette écritoire rotative pour gaucher comme pour droitier, porte-gobelet et panier de rangement sous l'assise, le tout sur roulettes. Deux cent quarante-cinq euros — le double d'une Tecseat nue, et ce qui sépare une salle polyvalente d'une vraie salle de formation.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène",
+     "- Trois coloris : blanc, gris, noir",
+     "",
+     "## Équipements",
+     "- Tablette écritoire rotative, gaucher et droitier",
+     "- Porte-tablette et porte-gobelet",
+     "- Panier de rangement sous l'assise",
+     "",
+     "## Piétement",
+     "- Structure à roulettes, pour reconfigurer la salle rapidement",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Coque à composer",
+    "nature": "Extension",
+    "page": 52,
+    "refs": [
+     "COQU01BLA-TEC",
+     "COQU01GR-TEC",
+     "COQU01NR-TEC"
+    ],
+    "description": "La coque Tecseat vendue seule, sans piétement : elle sert à monter une poutre d'attente sur mesure, ou à remplacer une coque abîmée sans changer la chaise entière. Soixante euros, en blanc, gris ou noir.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène, vendue sans piétement",
+     "- Trois coloris : blanc, gris, noir",
+     "",
+     "## Usage",
+     "- Composition d'une poutre d'attente",
+     "- Remplacement d'une coque sur une chaise existante"
+    ]
+   },
+   {
+    "nom": "Poutre",
+    "nature": "Extension",
+    "page": 52,
+    "refs": [
+     "STRP2-SEAT",
+     "STRP3-SEAT",
+     "STRP4-SEAT"
+    ],
+    "description": "La poutre Tecseat reçoit deux, trois ou quatre coques pour composer une rangée d'attente. Dix euros séparent chaque place supplémentaire, et les coques se commandent à part — de quoi ajuster la longueur au couloir plutôt que l'inverse.",
+    "technique": [
+     "## Structure",
+     "- Poutre métal noir",
+     "- Deux, trois ou quatre places",
+     "",
+     "## À commander séparément",
+     "- Les coques Tecseat, une par place",
+     "- La tablette de poutre, en option",
+     "",
+     "## Usage",
+     "- Salles d'attente, couloirs, halls"
+    ]
+   },
+   {
+    "nom": "Tablette pour poutre",
+    "nature": "Option",
+    "page": 52,
+    "refs": [
+     "TBT01NR"
+    ],
+    "description": "La tablette se fixe sur la poutre Tecseat, entre deux places, et transforme une rangée d'attente en espace où l'on peut poser un café ou un dossier. Cinquante-cinq euros, en noir.",
+    "technique": [
+     "## Montage",
+     "- Se fixe sur une poutre Tecseat, entre deux places",
+     "",
+     "## Finition",
+     "- Noir"
+    ]
+   },
+   {
+    "nom": "Placet",
+    "nature": "Option",
+    "page": 108,
+    "refs": [
+     "PLA01NR",
+     "PLA01GR",
+     "PLA01BL2",
+     "PLA01TA",
+     "PLA01RG",
+     "PLA01BL",
+     "PLA01GC",
+     "PLA01VE",
+     "PLA01NR-PU",
+     "PLA01GR-PU",
+     "PLA01BL-PU",
+     "PLA01TA-PU"
+    ],
+    "description": "Le placet est le coussin d'assise qui se pose dans la coque Tecseat ou Tecsup. Huit coloris en tissu à quinze euros, quatre en polyuréthane à vingt : le polyuréthane s'essuie, le tissu est plus doux. C'est l'option la plus rentable de la famille — une coque nue devient vite inconfortable en formation longue.",
+    "technique": [
+     "## Versions",
+     "- Tissu : noir, anthracite, bleu paon, taupe, orange, bleu, gris perle, vert tilleul",
+     "- Polyuréthane lavable : noir, anthracite, bleu paon, taupe",
+     "",
+     "## Compatibilité",
+     "- Chaises Tecseat et tabourets Tecsup",
+     "",
+     "## Usage",
+     "- Confort sur les sessions longues, ou surface lavable en polyuréthane"
+    ]
+   }
+  ],
+  "description": "Tecseat est conçu pour les salles de formation : tablette écritoire rotative, panier de rangement sous l'assise et structure à roulettes qui laisse reconfigurer la salle en quelques minutes. La famille comprend la chaise Tecseat, le tabouret Tecsup en version haute, les déclinaisons Meeting et Learning, et une poutre pour l'attente.",
+  "technique": [
+   "## Coque",
+   "- Polypropylène",
+   "- Placet d'assise en tissu ou polyuréthane, en option",
+   "",
+   "## Équipements",
+   "- Tablette rotative gaucher et droitier, avec porte-tablette et porte-gobelet",
+   "- Panier de rangement",
+   "",
+   "## Piétements",
+   "- Fenêtre chromée ou quatre pieds, finition blanc ou noir",
+   "- Version haute Tecsup",
+   "",
+   "## Collection",
+   "- Chaise Tecseat, tabouret Tecsup, Tecseat Meeting, Tecseat Learning",
+   "- Poutre 2, 3 ou 4 places avec tablette en option",
+   "- Coque à composer, vendue seule",
+   "",
+   "## Conditionnement",
+   "- Chaises vendues par 4, tabourets par 2",
+   "",
+   "## Garantie",
+   "- 5 ans"
+  ],
+  "options_refs": [
+   "TBT01NR",
+   "PLA01NR",
+   "PLA01GR",
+   "PLA01BL2",
+   "PLA01TA",
+   "PLA01RG",
+   "PLA01BL",
+   "PLA01GC",
+   "PLA01VE",
+   "PLA01NR-PU",
+   "PLA01GR-PU",
+   "PLA01BL-PU",
+   "PLA01TA-PU"
+  ]
+ },
+ "Coigny": {
+  "gamme_affichee": "Coigny",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de réunion et formation"
+  ],
+  "produits": [
+   {
+    "nom": "Chaise Eco",
+    "nature": "Produit",
+    "page": 126,
+    "refs": [
+     "CQPN41BLBL",
+     "CQPN41GC",
+     "CQPN41NRNR",
+     "CQPN41VE",
+     "CQPN41VT"
+    ],
+    "description": "La Coigny Eco est la quatre pieds tout tissu de la famille, dans cinq coloris vifs — bleu jean, gris clair, noir, vert anis, prune. Cinquante-six euros pièce, vendue par quatre minimum : c'est la chaise qu'on prend pour équiper une salle entière sans se ruiner.",
+    "technique": [
+     "## Assise et dossier",
+     "- Tout tissu sur coque",
+     "- Cinq coloris : bleu jean, gris clair, noir, vert anis, prune",
+     "",
+     "## Piétement",
+     "- Quatre pieds noirs",
+     "",
+     "## Conditionnement",
+     "- Vendue par 4 minimum, livrée montée, empilable par 10",
+     "",
+     "## Garantie",
+     "- 3 ans"
+    ]
+   },
+   {
+    "nom": "Chaise Max",
+    "nature": "Produit",
+    "page": 126,
+    "refs": [
+     "CQPC61NRNR",
+     "CQPN61NR"
+    ],
+    "description": "La Coigny Max est la version confort de la famille : tissu non feu et assise en mousse 30 kg/m³, nettement plus épaisse que l'Eco. Six euros de plus, et le tissu non feu ouvre les établissements recevant du public. Piétement noir ou chromé.",
+    "technique": [
+     "## Assise et dossier",
+     "- Tissu non feu",
+     "- Assise ultra confortable, mousse 30 kg/m³",
+     "",
+     "## Piétements au choix",
+     "- Quatre pieds noirs",
+     "- Quatre pieds chromés",
+     "",
+     "## Conditionnement",
+     "- Vendue par 4 minimum",
+     "",
+     "## Garantie",
+     "- 3 ans"
+    ]
+   },
+   {
+    "nom": "Chaise Mili",
+    "nature": "Produit",
+    "page": 126,
+    "refs": [
+     "CQPN41BL",
+     "CQPN41GR",
+     "CQPN41SN"
+    ],
+    "description": "La Coigny Mili est habillée de polyuréthane : on l'essuie, ce qu'aucune version tissu ne permet. Même prix que l'Eco, trois coloris — bleu, gris, noir. C'est la Coigny des cantines, des salles de pause et des lieux où l'on mange.",
+    "technique": [
+     "## Assise et dossier",
+     "- Polyuréthane lavable",
+     "- Trois coloris : bleu, gris, noir",
+     "",
+     "## Piétement",
+     "- Quatre pieds noirs",
+     "",
+     "## Entretien",
+     "- Surface lavable, adaptée aux espaces de restauration",
+     "",
+     "## Conditionnement",
+     "- Vendue par 4 minimum"
+    ]
+   },
+   {
+    "nom": "Chaise Color",
+    "nature": "Produit",
+    "page": 126,
+    "refs": [
+     "CQPN05BLBL",
+     "CQPN05GCGC",
+     "CQPN05NRNR"
+    ],
+    "description": "La Coigny Color est la plus légère de la famille : coque polypropylène, sans garnissage, lavable et facile à empiler. Même tarif que l'Eco et la Mili — le choix se fait sur le poids et sur l'entretien.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène, léger et lavable",
+     "- Trois coloris : bleu, gris, noir",
+     "",
+     "## Piétement",
+     "- Quatre pieds noirs",
+     "",
+     "## Conditionnement",
+     "- Vendue par 4 minimum, empilable"
+    ]
+   },
+   {
+    "nom": "Paire d'accoudoirs",
+    "nature": "Option",
+    "page": 126,
+    "refs": [
+     "ACC21NR"
+    ],
+    "description": "Les accoudoirs Coigny se montent par paire sur une chaise déjà livrée. Vingt-neuf euros, en noir : la moitié du prix de la chaise, ce qui vaut la peine d'être décidé à la commande plutôt qu'après coup.",
+    "technique": [
+     "## Montage",
+     "- Paire d'accoudoirs, à fixer sur une chaise Coigny",
+     "",
+     "## Finition",
+     "- Noir"
+    ]
+   },
+   {
+    "nom": "Kit tablette écritoire",
+    "nature": "Option",
+    "page": 126,
+    "refs": [
+     "ATE13NR"
+    ],
+    "description": "Le kit tablette écritoire transforme une Coigny en chaise de formation : il comprend l'accoudoir et la tablette. Livré en version droitier — si la tablette doit se fixer à gauche, il faut le préciser à la commande, car la référence change.",
+    "technique": [
+     "## Composition",
+     "- Accoudoir et tablette écritoire",
+     "",
+     "## Montage",
+     "- Se fixe sur une chaise Coigny",
+     "",
+     "## Bon à savoir",
+     "- Version droitier de série ; préciser à la commande pour une fixation à gauche, la référence produit est différente"
+    ]
+   },
+   {
+    "nom": "Lot de 4 attaches",
+    "nature": "Option",
+    "page": 126,
+    "refs": [
+     "ATT01NR"
+    ],
+    "description": "Les attaches relient les chaises Coigny entre elles pour former une rangée solidaire — ce que la réglementation impose dans certaines salles recevant du public. Neuf euros le lot de quatre, l'accessoire le moins cher du catalogue.",
+    "technique": [
+     "## Composition",
+     "- Lot de 4 attaches",
+     "",
+     "## Usage",
+     "- Solidariser les chaises en rangée, comme l'exige la réglementation dans certaines salles recevant du public"
+    ]
+   },
+   {
+    "nom": "Chariot de transport",
+    "nature": "Option",
+    "page": 127,
+    "refs": [
+     "CHA02NR"
+    ],
+    "description": "Le chariot de transport permet de déplacer une pile de chaises d'un seul mouvement, au lieu de les porter par deux. Il sert aussi bien les Coigny que les Charlotte — c'est la seule référence OfficePro partagée entre deux familles.",
+    "technique": [
+     "## Usage",
+     "- Transport d'une pile de chaises empilées",
+     "",
+     "## Compatibilité",
+     "- Chaises Coigny et chaises Charlotte",
+     "",
+     "## Finition",
+     "- Noir"
+    ]
+   }
+  ],
+  "description": "Coigny est la chaise quatre pieds classique, revisitée en une palette de couleurs gaies. Quatre déclinaisons selon l'usage : Eco tout tissu, Max en tissu non feu avec assise épaisse, Mili en polyuréthane lavable, Color en polypropylène léger. Livrées montées, empilables par dix.",
+  "technique": [
+   "## Déclinaisons",
+   "- Coigny Eco : tout tissu, grand choix de couleurs",
+   "- Coigny Max : tissu non feu, assise ultra confortable, mousse 30 kg/m³",
+   "- Coigny Mili : polyuréthane lavable",
+   "- Coigny Color : polypropylène léger et lavable",
+   "",
+   "## Accessoires",
+   "- Paire d'accoudoirs",
+   "- Kit tablette écritoire, accoudoir et tablette",
+   "- Lot de 4 attaches pour accrocher les chaises entre elles",
+   "- Chariot de transport, également compatible Charlotte",
+   "",
+   "## Conditionnement",
+   "- Vendues par 4, livrées montées, empilables par 10",
+   "",
+   "## Bon à savoir",
+   "- Si la tablette écritoire doit se fixer à gauche, le préciser à la commande : la référence produit change"
+  ],
+  "options_refs": [
+   "ACC21NR",
+   "ATE13NR",
+   "ATT01NR",
+   "CHA02NR"
+  ]
+ },
+ "Loops": {
+  "gamme_affichee": "Loops",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de réunion et formation",
+   "Tabourets et sièges hauts"
+  ],
+  "produits": [
+   {
+    "nom": "Chaise",
+    "nature": "Produit",
+    "page": 130,
+    "refs": [
+     "LOO01BE",
+     "LOO01BLA",
+     "LOO01GR",
+     "LOO01JA",
+     "LOO01KA",
+     "LOO01NR",
+     "LOO01RE",
+     "LOO03BE",
+     "LOO03BLA",
+     "LOO03GR",
+     "LOO03JA",
+     "LOO03KA",
+     "LOO03NR",
+     "LOO03RE"
+    ],
+    "description": "La chaise Loops se choisit d'abord par son piétement : pyramide métal noir ou quatre pieds bois, vingt-cinq euros d'écart. Sept coloris de coque dans les deux cas, du noir au jaune. C'est la base de la collection, celle qu'on décline ensuite en fauteuil, en chaise haute ou en tabouret.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène, sans accoudoirs",
+     "- Sept coloris : beige, blanc, gris, jaune, kaki, noir, rouge",
+     "",
+     "## Piétements au choix",
+     "- Pyramide métal noir",
+     "- Quatre pieds bois",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2"
+    ]
+   },
+   {
+    "nom": "Fauteuil",
+    "nature": "Produit",
+    "page": 130,
+    "refs": [
+     "LOO02BE",
+     "LOO02BLA",
+     "LOO02GR",
+     "LOO02JA",
+     "LOO02KA",
+     "LOO02NR",
+     "LOO02RE",
+     "LOO04BE",
+     "LOO04BLA",
+     "LOO04GR",
+     "LOO04JA",
+     "LOO04KA",
+     "LOO04NR",
+     "LOO04RE"
+    ],
+    "description": "Le fauteuil Loops est la chaise avec accoudoirs intégrés à la coque — pas de pièce rapportée, la coque se prolonge. Quinze euros de plus que la chaise, dans les deux piétements et les sept mêmes coloris.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène, accoudoirs intégrés à la coque",
+     "- Sept coloris : beige, blanc, gris, jaune, kaki, noir, rouge",
+     "",
+     "## Piétements au choix",
+     "- Pyramide métal noir",
+     "- Quatre pieds bois",
+     "",
+     "## Conditionnement",
+     "- Vendu par 2"
+    ]
+   },
+   {
+    "nom": "Chaise haute",
+    "nature": "Produit",
+    "page": 130,
+    "refs": [
+     "LOO05BE",
+     "LOO05BLA",
+     "LOO05GR",
+     "LOO05JA",
+     "LOO05KA",
+     "LOO05NR",
+     "LOO05RE"
+    ],
+    "description": "La chaise haute Loops monte la coque sur un piétement fenêtre, pour les tables hautes et les comptoirs. Elle est moins chère que la chaise standard sur pyramide métal, ce qui surprend — le piétement fenêtre coûte moins qu'une pyramide.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène, sans accoudoirs",
+     "- Sept coloris : beige, blanc, gris, jaune, kaki, noir, rouge",
+     "",
+     "## Piétement",
+     "- Fenêtre haut",
+     "",
+     "## Usage",
+     "- Tables hautes, comptoirs, mange-debout",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2"
+    ]
+   },
+   {
+    "nom": "Chaise avec placet",
+    "nature": "Produit",
+    "page": 130,
+    "refs": [
+     "LOO07BLA",
+     "LOO08BLA",
+     "LOO09BLA"
+    ],
+    "description": "La chaise Loops avec placet : un coussin d'assise tapissé posé dans la coque, en finition blanche. Vingt-cinq à trente euros de plus que la coque nue, pour les espaces de repas où l'on reste attablé — le polypropylène seul devient vite inconfortable au-delà d'une demi-heure.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène blanc",
+     "- Placet d'assise tapissé",
+     "",
+     "## Piétements au choix",
+     "- Pyramide métal noir",
+     "- Quatre pieds bois",
+     "- Fenêtre haut, en version chaise haute",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2"
+    ]
+   },
+   {
+    "nom": "Tabouret",
+    "nature": "Produit",
+    "page": 132,
+    "refs": [
+     "LOO06BE",
+     "LOO06BLA",
+     "LOO06GR",
+     "LOO06JA",
+     "LOO06NR",
+     "LOO06RE"
+    ],
+    "description": "Le tabouret Loops est la pièce la moins chère de la collection : une assise sur piétement fenêtre, sans dossier. Il sert d'appoint autour d'un mange-debout ou se range sous un comptoir, dans les six coloris de la gamme.",
+    "technique": [
+     "## Assise",
+     "- Polypropylène, sans dossier",
+     "- Six coloris : beige, blanc, gris, jaune, noir, rouge",
+     "",
+     "## Piétement",
+     "- Fenêtre",
+     "",
+     "## Conditionnement",
+     "- Vendu par 2"
+    ]
+   }
+  ],
+  "description": "Loops est une collection de chaises coque très modulables : on choisit le piétement, la coque et la couleur, et on obtient sa propre version. Chaise ou fauteuil, avec ou sans placet tapissé, plus des tabourets assortis pour les tables hautes.",
+  "technique": [
+   "## Coques",
+   "- Chaise ou fauteuil",
+   "- Coque nue ou avec placet tapissé",
+   "",
+   "## Piétements",
+   "- Quatre pieds bois",
+   "- Pyramidal",
+   "- Fenêtre, en version haute pour le tabouret",
+   "",
+   "## Collection",
+   "- Chaises, fauteuils, chaises hautes et tabourets assortis",
+   "",
+   "## Conditionnement",
+   "- Vendues par 2"
+  ],
+  "options_refs": []
+ },
+ "Beez": {
+  "gamme_affichee": "Beez",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges d'extérieur",
+   "Tables d'extérieur"
+  ],
+  "produits": [
+   {
+    "nom": "Chaise",
+    "nature": "Produit",
+    "page": 150,
+    "refs": [
+     "BEE01BLA"
+    ],
+    "description": "La chaise Beez est un monobloc en polypropylène traité anti-UV : ni vis, ni assemblage, rien qui rouille. Elle s'empile et se laisse dehors toute la saison, ce qui en fait le siège de terrasse le plus simple à gérer du catalogue. Vendue par quatre.",
+    "technique": [
+     "## Matière",
+     "- Polypropylène monobloc traité anti-UV",
+     "- Empilable",
+     "",
+     "## Usage",
+     "- Terrasse, espace de restauration extérieur",
+     "",
+     "## Conditionnement",
+     "- Vendue par 4",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   },
+   {
+    "nom": "Chaise haute",
+    "nature": "Produit",
+    "page": 150,
+    "refs": [
+     "BEE02BLA"
+    ],
+    "description": "La version haute de la chaise Beez, à associer au mange-debout de la gamme. Même polypropylène monobloc anti-UV, même empilabilité — quatorze euros de plus que la chaise standard, et vendue par deux au lieu de quatre.",
+    "technique": [
+     "## Matière",
+     "- Polypropylène monobloc traité anti-UV",
+     "- Empilable",
+     "",
+     "## Usage",
+     "- À associer au mange-debout rond Beez",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   },
+   {
+    "nom": "Mange debout rond",
+    "nature": "Produit",
+    "page": 150,
+    "refs": [
+     "BEE03BLA"
+    ],
+    "description": "Le mange-debout rond Beez complète les chaises hautes de la gamme. Plateau de 14 mm d'épaisseur, monobloc traité anti-UV : il reste dehors sans housse et se nettoie au jet.",
+    "technique": [
+     "## Matière",
+     "- Polypropylène monobloc traité anti-UV",
+     "- Plateau 14 mm d'épaisseur",
+     "",
+     "## Usage",
+     "- À associer aux chaises hautes Beez",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   },
+   {
+    "nom": "Table ronde",
+    "nature": "Produit",
+    "page": 150,
+    "refs": [
+     "BEE04BLA"
+    ],
+    "description": "La table ronde Beez est la version à hauteur standard du mange-debout, vingt euros moins chère. Même plateau de 14 mm, même traitement anti-UV, à associer aux chaises Beez standard.",
+    "technique": [
+     "## Matière",
+     "- Polypropylène monobloc traité anti-UV",
+     "- Plateau 14 mm d'épaisseur",
+     "",
+     "## Usage",
+     "- À associer aux chaises Beez standard",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   },
+   {
+    "nom": "Kit mange debout et 2 chaises hautes",
+    "nature": "Produit",
+    "page": 150,
+    "refs": [
+     "BEE03BLA-KIT"
+    ],
+    "description": "Le kit haut Beez règle une terrasse d'un seul bon de commande : un mange-debout rond et deux chaises hautes. Trois cent vingt-sept euros contre trois cent quarante-quatre si l'on achète les pièces séparément — et surtout, rien à recouper entre les conditionnements.",
+    "technique": [
+     "## Composition",
+     "- 1 mange-debout rond Beez",
+     "- 2 chaises hautes Beez",
+     "",
+     "## Matière",
+     "- Polypropylène monobloc traité anti-UV",
+     "",
+     "## Usage",
+     "- Solution clé en main pour terrasse et espace de restauration"
+    ]
+   },
+   {
+    "nom": "Kit table et 2 chaises",
+    "nature": "Produit",
+    "page": 150,
+    "refs": [
+     "BEE04BLA-KIT"
+    ],
+    "description": "Le kit standard Beez : une table ronde et deux chaises, à hauteur classique. Le pendant du kit haut, pour les terrasses où l'on mange assis plutôt qu'appuyé.",
+    "technique": [
+     "## Composition",
+     "- 1 table ronde Beez",
+     "- 2 chaises Beez",
+     "",
+     "## Matière",
+     "- Polypropylène monobloc traité anti-UV",
+     "",
+     "## Usage",
+     "- Solution clé en main pour terrasse et espace de restauration"
+    ]
+   }
+  ],
+  "description": "Beez équipe les terrasses et les espaces de restauration extérieurs : sièges et tables monoblocs en polypropylène traité anti-UV, en version standard ou haute. Deux kits clés en main règlent l'aménagement d'un coup, table et chaises comprises.",
+  "technique": [
+   "## Matière",
+   "- Polypropylène monobloc traité anti-UV",
+   "- Plateau de table 14 mm d'épaisseur",
+   "- Chaises empilables",
+   "",
+   "## Collection",
+   "- Chaise et table standard, chaise haute et mange-debout",
+   "",
+   "## Kits",
+   "- Un mange-debout et deux tabourets",
+   "- Ou une table et deux chaises",
+   "",
+   "## Conditionnement",
+   "- Chaises standard vendues par 4, chaises hautes par 2"
+  ],
+  "options_refs": []
+ },
+ "Tecsy": {
+  "gamme_affichee": "Tecsy",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil Concept",
+    "nature": "Produit",
+    "page": 84,
+    "refs": [
+     "TCY05NR-NR",
+     "TCY05NR-BE",
+     "TCY05NR-BL",
+     "TCY05NR-TA",
+     "TCY05BE-BE",
+     "TCY05BE-JA",
+     "TCY05BE-TE",
+     "TCY05BE-VT"
+    ],
+    "description": "Le Tecsy Concept est le siège d'aménagement de la gamme : accessible, coloré, fait pour les projets où l'on habille un plateau entier sans monter au prix d'un siège de direction. Structure noire à maille noire, ou structure blanche à maille beige — vingt euros séparent les deux, et huit coloris d'assise en découlent.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier maille, assise en mousse injectée 55 kg/m³",
+     "- Structure noire, maille noire : coloris noir, beige, bleu paon, taupe",
+     "- Structure blanche, maille beige : coloris beige, citron, terracotta, parme",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 3 positions",
+     "- Réglage automatique de la tension de bascule",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs",
+     "- Réglables"
+    ]
+   },
+   {
+    "nom": "Fauteuil dessinateur",
+    "nature": "Produit",
+    "page": 84,
+    "refs": [
+     "TCY03NR-NR",
+     "TCY03NR-BE",
+     "TCY03NR-BL",
+     "TCY03NR-TA",
+     "TCY03NR-GR",
+     "TCY05NR-GR"
+    ],
+    "description": "La version dessinateur du Tecsy Concept monte l'assise plus haut et ajoute un repose-pieds circulaire : c'est le siège des postes debout, des tables à dessin et des comptoirs techniques. Cent euros de moins que le Concept standard, avec cinq coloris d'assise.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier maille, assise tissu",
+     "- Cinq coloris : noir, beige, bleu paon, taupe, gris clair",
+     "",
+     "## Hauteur",
+     "- Version dessinateur, assise haute avec repose-pieds",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 3 positions",
+     "- Réglage automatique de la tension de bascule",
+     "",
+     "## Usage",
+     "- Postes debout, tables à dessin, comptoirs techniques"
+    ]
+   },
+   {
+    "nom": "Fauteuil Chic",
+    "nature": "Produit",
+    "page": 90,
+    "refs": [
+     "TCY05NR-PU"
+    ],
+    "description": "Le Tecsy Chic remplace la maille du Concept par un appui-tête et une assise en polyuréthane. C'est la montée en gamme la moins chère de la famille : même prix que le Concept, mais une matière qui s'essuie et un rendu plus habillé pour un bureau qu'on montre.",
+    "technique": [
+     "## Assise et dossier",
+     "- Appui-tête et assise en polyuréthane",
+     "- Finition noire",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable, réglage automatique de la tension",
+     "- Translation d'assise",
+     "",
+     "## Entretien",
+     "- Surface lavable"
+    ]
+   },
+   {
+    "nom": "Fauteuil Platinium",
+    "nature": "Produit",
+    "page": 90,
+    "refs": [
+     "TCY05GR"
+    ],
+    "description": "Le Tecsy Platinium est la version maille 3D gris métallisé de la famille : une maille tissée en volume, plus dense et plus technique à l'œil que la maille plate du Concept. Même tarif que le Chic — les deux se partagent le haut de la gamme Tecsy, l'un en polyuréthane, l'autre en maille.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier maille 3D gris métallisé",
+     "- Assise en mousse injectée",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable, réglage automatique de la tension",
+     "- Translation d'assise",
+     "",
+     "## Finition",
+     "- Gris métallisé"
+    ]
+   },
+   {
+    "nom": "Fauteuil Alto",
+    "nature": "Produit",
+    "page": 88,
+    "refs": [
+     "TCY05NR-RH"
+    ],
+    "description": "L'Alto est le Tecsy dont le dossier se règle en hauteur : on remonte ou descend le soutien lombaire avec le dossier entier, au lieu de déplacer un renfort. Dix euros de plus que le Concept, pour le seul réglage qui manque aux autres modèles de la famille.",
+    "technique": [
+     "## Dossier",
+     "- Maille, réglable en hauteur",
+     "",
+     "## Assise",
+     "- Mousse injectée, translation d'assise",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable, réglage automatique de la tension",
+     "",
+     "## Finition",
+     "- Noir"
+    ]
+   },
+   {
+    "nom": "Fauteuil White",
+    "nature": "Produit",
+    "page": 177,
+    "refs": [
+     "TCY02BE",
+     "TCY02GR"
+    ],
+    "description": "Le Tecsy White est monté sur structure blanche intégrale, en deux coloris d'habillage, beige ou gris. Il vient d'une autre page du catalogue que les Concept — c'est un fauteuil ergonomique à part entière, pas une déclinaison de couleur.",
+    "technique": [
+     "## Assise et dossier",
+     "- Structure blanche",
+     "- Deux coloris d'habillage : beige ou gris",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs",
+     "- Réglables"
+    ]
+   },
+   {
+    "nom": "Fauteuil Tecsy",
+    "nature": "Produit",
+    "page": 176,
+    "refs": [
+     "TCY01NR"
+    ],
+    "description": "Le Tecsy de base réunit l'essentiel pour un poste bureautique à la journée : appui-tête, translation d'assise et accoudoirs réglables, pour trois cent seize euros. C'est le modèle le moins cher de la famille à proposer un appui-tête de série.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier avec appui-tête",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs",
+     "- Réglables",
+     "",
+     "## Finition",
+     "- Noir"
+    ]
+   }
+  ],
+  "description": "Tecsy est la gamme d'aménagement accessible et colorée, pour les projets qu'on veut personnaliser sans y mettre le prix d'un siège de direction. Structure noire ou blanche, et des versions plus qualitatives — Chic, Platinium, Alto — pour monter en gamme sans changer de famille.",
+  "technique": [
+   "## Versions",
+   "- Tecsy Concept, structure noire ou blanche, et version dessinateur",
+   "- Tecsy Chic : appui-tête et assise en polyuréthane",
+   "- Tecsy Platinium : fauteuil en maille 3D gris métallisé",
+   "- Tecsy Alto : dossier réglable en hauteur",
+   "- Tecsy White : structure blanche",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 3 positions",
+   "- Réglage automatique de la tension de bascule",
+   "- Translation d'assise",
+   "",
+   "## Assise",
+   "- Mousse injectée 55 kg/m³",
+   "",
+   "## Accoudoirs",
+   "- Réglables"
+  ],
+  "options_refs": []
+ },
+ "Scott": {
+  "gamme_affichee": "Scott",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil synchrone",
+    "nature": "Produit",
+    "page": 178,
+    "refs": [
+     "SCT05NRNR",
+     "SCT07BLNR",
+     "SCT07GRNR",
+     "SCT07NRNR",
+     "SCT08NRNR"
+    ],
+    "description": "Le Scott est le fauteuil opérateur le plus vendu d'OfficePro, et il le doit à un équilibre simple : mécanisme synchrone blocable en quatre positions, soutien lombaire réglable, accoudoirs 2D, sans monter au prix d'un siège de direction. Existe avec ou sans appui-tête, en structure noire ou gris clair.",
+    "technique": [
+     "## Assise et dossier",
+     "- Assise en mousse injectée 30 kg/m³ et tissu",
+     "- Dossier maille ou tissu selon la version",
+     "- Soutien lombaire réglable",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 2D",
+     "- Appui-tête en option, mousse 55 kg/m³, réglable en hauteur",
+     "",
+     "## Finitions",
+     "- Structure noire ou gris clair",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Fauteuil Scotty",
+    "nature": "Produit",
+    "page": 178,
+    "refs": [
+     "SCY17NRNR"
+    ],
+    "description": "Le Scotty est la déclinaison du Scott à dossier tissu, livrée d'office avec son appui-tête. Là où le Scott laisse choisir maille ou tissu, le Scotty tranche : dossier habillé, plus chaleureux à l'œil et au toucher, pour les bureaux qui ne veulent pas de l'esthétique technique de la maille.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier tissu, assise en mousse injectée et tissu",
+     "- Soutien lombaire réglable",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 2D",
+     "- Appui-tête fourni",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Siège visiteur Luge",
+    "nature": "Produit",
+    "page": 178,
+    "refs": [
+     "SCT25NRNR"
+    ],
+    "description": "Le Scott Luge est le siège visiteur assorti au fauteuil Scott : même coque, même habillage, mais monté sur un piétement luge fixe. Poser les deux de part et d'autre d'un bureau donne un ensemble cohérent sans chercher un visiteur compatible ailleurs. Vendu par deux.",
+    "technique": [
+     "## Assise et dossier",
+     "- Coque et habillage assortis au fauteuil Scott",
+     "",
+     "## Piétement",
+     "- Luge fixe",
+     "",
+     "## Conditionnement",
+     "- Vendu par 2",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   }
+  ],
+  "description": "Scott est le fauteuil opérateur best-seller d'OfficePro : indémodable, confortable, avec un mécanisme synchrone blocable en quatre positions et un soutien lombaire réglable. La version Scotty ajoute un dossier tissu, et le Scott Luge donne le siège visiteur assorti.",
+  "technique": [
+   "## Assise et dossier",
+   "- Assise en mousse injectée 30 kg/m³ et tissu",
+   "- Dossier maille ou tissu selon version",
+   "- Soutien lombaire réglable",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 4 positions",
+   "- Réglage manuel de la tension de bascule",
+   "",
+   "## Accoudoirs et têtière",
+   "- Accoudoirs réglables 2D",
+   "- Appui-tête réglable en hauteur, mousse 55 kg/m³",
+   "",
+   "## Versions",
+   "- Scott, Scotty, et Scott Luge en siège visiteur — vendu par 2",
+   "",
+   "## Garantie",
+   "- 5 ans"
+  ],
+  "options_refs": []
+ },
+ "Ergostar Ultra": {
+  "gamme_affichee": "Ergostar Ultra",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de direction"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil",
+    "nature": "Produit",
+    "page": 64,
+    "refs": [
+     "ETR02NR"
+    ],
+    "description": "L'Ergostar Ultra se distingue par son soutien lombaire réglable en profondeur à la main : on avance ou recule le renfort jusqu'à ce qu'il tombe dans le creux des reins, ce que le réglage en hauteur seul ne permet jamais tout à fait. Mécanisme synchrone blocable en quatre positions, accoudoirs 4D, garantie 8 ans.",
+    "technique": [
+     "## Assise et dossier",
+     "- Assise en mousse injectée 50 kg/m³ et tissu",
+     "- Soutien lombaire ajustable manuellement en profondeur",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 4D",
+     "- Appui-tête réglable en hauteur",
+     "",
+     "## Garantie",
+     "- 8 ans"
+    ]
+   },
+   {
+    "nom": "Fauteuil Velvet",
+    "nature": "Produit",
+    "page": 66,
+    "refs": [
+     "ETR03NR"
+    ],
+    "description": "La version Velvet de l'Ergostar Ultra troque la maille classique contre une maille velours, plus douce au toucher et plus feutrée à l'œil. Même mécanique, même prix : c'est un choix de matière, pas de niveau d'équipement.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier en maille velours",
+     "- Assise en mousse injectée 50 kg/m³",
+     "- Soutien lombaire ajustable manuellement en profondeur",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 4D",
+     "- Appui-tête réglable en hauteur",
+     "",
+     "## Garantie",
+     "- 8 ans"
+    ]
+   }
+  ],
+  "description": "Ergostar Ultra est un fauteuil très ergonomique pour usage intensif, reconnaissable à son soutien lombaire réglable en profondeur à la main. Mécanisme synchrone blocable en quatre positions, translation d'assise et accoudoirs 4D : tous les réglages qu'un poste à la journée réclame.",
+  "technique": [
+   "## Assise et dossier",
+   "- Assise en mousse injectée 50 kg/m³",
+   "- Soutien lombaire ajustable manuellement en profondeur",
+   "- Versions tissu, maille ou velours",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 4 positions",
+   "- Réglage manuel de la tension de bascule",
+   "- Translation d'assise",
+   "",
+   "## Accoudoirs et têtière",
+   "- Accoudoirs réglables 4D",
+   "- Appui-tête réglable en hauteur",
+   "",
+   "## Garantie",
+   "- 8 ans"
+  ],
+  "options_refs": []
+ },
+ "Heavy": {
+  "gamme_affichee": "Heavy",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de direction",
+   "Sièges techniques et ateliers"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil tissu 24/24",
+    "nature": "Produit",
+    "page": 68,
+    "refs": [
+     "HEAV01NR",
+     "HEAV02NR"
+    ],
+    "description": "Le Heavy est fait pour les postes qui ne s'arrêtent pas — sécurité, surveillance, supervision — et pour les grands gabarits, jusqu'à 200 kg. Structure renforcée, étoile six branches en aluminium poli, mousse injectée 55 kg/m³ et appui-tête en cuir véritable. Garantie 10 ans, ce qui dit assez ce qu'OfficePro en attend.",
+    "technique": [
+     "## Structure",
+     "- Renforcée, étoile 6 branches en aluminium poli",
+     "- Usage 24 heures sur 24, jusqu'à 200 kg",
+     "",
+     "## Assise et dossier",
+     "- Mousse injectée 55 kg/m³, maille et tissu",
+     "- Dossier et soutien lombaire réglables en hauteur",
+     "- Translation d'assise",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs inclinables, rabattables et verrouillables en plusieurs angles",
+     "- Appui-tête cuir véritable, réglable en hauteur et en profondeur",
+     "",
+     "## Garantie",
+     "- 10 ans"
+    ]
+   },
+   {
+    "nom": "Fauteuil polyuréthane 24/24",
+    "nature": "Produit",
+    "page": 68,
+    "refs": [
+     "HEAV02NR-PU"
+    ],
+    "description": "La version polyuréthane du Heavy s'adresse aux postes où le tissu ne tient pas : salles de contrôle où l'on mange devant les écrans, postes partagés en trois-huit, milieux médicaux. Deux cents euros de plus que le tissu, pour une surface qu'on désinfecte.",
+    "technique": [
+     "## Structure",
+     "- Renforcée, étoile 6 branches en aluminium poli",
+     "- Usage 24 heures sur 24, jusqu'à 200 kg",
+     "",
+     "## Assise et dossier",
+     "- Polyuréthane, nettoyage et désinfection à la surface",
+     "- Mousse injectée 55 kg/m³",
+     "- Dossier et soutien lombaire réglables en hauteur",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs inclinables, rabattables et verrouillables",
+     "- Appui-tête cuir véritable, réglable en hauteur et en profondeur",
+     "",
+     "## Garantie",
+     "- 10 ans"
+    ]
+   }
+  ],
+  "description": "Heavy est bâti pour les postes de sécurité et de surveillance tenus 24 heures sur 24, et pour les grands gabarits : structure renforcée, étoile six branches en aluminium poli, mousse injectée 55 kg/m³ et revêtements ultra résistants. Garantie 10 ans.",
+  "technique": [
+   "## Structure",
+   "- Renforcée, étoile 6 branches en aluminium poli",
+   "- Usage 24/24",
+   "",
+   "## Assise et dossier",
+   "- Mousse injectée 55 kg/m³",
+   "- Dossier et soutien lombaire réglables en hauteur",
+   "- Translation d'assise",
+   "- Versions maille et tissu, tissu 24/24 ou polyuréthane",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 4 positions",
+   "- Réglage manuel de la tension de bascule",
+   "",
+   "## Accoudoirs et têtière",
+   "- Accoudoirs inclinables, rabattables et verrouillables en plusieurs angles",
+   "- Appui-tête en cuir véritable, réglable en hauteur et en profondeur",
+   "",
+   "## Garantie",
+   "- 10 ans"
+  ],
+  "options_refs": []
+ },
+ "Wave": {
+  "gamme_affichee": "Wave",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de direction",
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil",
+    "nature": "Produit",
+    "page": 76,
+    "refs": [
+     "WAV01GRGR",
+     "WAV01GRBL",
+     "WAV01NRGR"
+    ],
+    "description": "Le Wave n'a ni soutien lombaire ni appui-tête, et c'est voulu : son dossier maille est galbé pour soutenir le dos sans qu'on ait à le régler. Pour qui n'ouvre jamais la notice d'un siège, c'est l'argument décisif. Maille testée ISO 12947 et ISO 105-X, jusqu'à 120 kg.",
+    "technique": [
+     "## Dossier",
+     "- Maille particulièrement résistante, normes ISO 12947 et ISO 105-X",
+     "- Galbe ergonomique sans réglage lombaire",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 3 positions",
+     "- Réglage automatique de la tension de bascule, commande à portée de main",
+     "",
+     "## Accoudoirs",
+     "- Réglables 3D",
+     "",
+     "## Finitions",
+     "- Structure grise, maille gris clair ou bleu ciel",
+     "- Structure noire, maille gris anthracite",
+     "",
+     "## Usage",
+     "- Plus de 7 heures d'assise par jour, jusqu'à 120 kg"
+    ]
+   }
+  ],
+  "description": "Wave n'a ni soutien lombaire ni appui-tête à régler, et c'est le propos : son dossier ergonomique fait le travail tout seul. Maille particulièrement résistante, réglage de la tension automatique, accoudoirs 3D à portée de main. Jusqu'à 120 kg.",
+  "technique": [
+   "## Dossier",
+   "- Maille particulièrement résistante, normes ISO 12947 et ISO 105-X",
+   "- Dossier ergonomique sans réglage lombaire",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 3 positions",
+   "- Réglage automatique de la tension de bascule, à portée de main",
+   "",
+   "## Accoudoirs",
+   "- Réglables 3D",
+   "",
+   "## Usage",
+   "- Plus de 7 heures d'assise par jour, jusqu'à 120 kg"
+  ],
+  "options_refs": []
+ },
+ "Vaseat": {
+  "gamme_affichee": "Vaseat",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges de direction",
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil tout maille",
+    "nature": "Produit",
+    "page": 170,
+    "refs": [
+     "VAS01GR",
+     "VAS01NR"
+    ],
+    "description": "Le Vaseat tout maille est un fauteuil ergonomique complet, pensé pour les personnes de grande taille : dossier haut, assise large, soutien lombaire réglable en hauteur ET en profondeur. Tout en maille, il reste ventilé sur des journées de plus de dix heures. Gris ou noir.",
+    "technique": [
+     "## Assise et dossier",
+     "- Tout maille, dossier haut",
+     "- Soutien lombaire réglable en hauteur et en profondeur",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 4D",
+     "- Appui-tête pivotant et réglable en hauteur",
+     "",
+     "## Finitions",
+     "- Gris ou noir",
+     "",
+     "## Usage",
+     "- Plus de 10 heures d'assise par jour",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Fauteuil maille et tissu",
+    "nature": "Produit",
+    "page": 170,
+    "refs": [
+     "VAS02NR"
+    ],
+    "description": "La version maille et tissu du Vaseat garde le dossier ventilé et garnit l'assise : on gagne en moelleux là où le corps appuie le plus, sans perdre la respiration du dos. Même prix que le tout maille — le choix se fait sur la sensation.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier maille, assise tissu sur mousse injectée",
+     "- Soutien lombaire réglable en hauteur et en profondeur",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage manuel de la tension de bascule",
+     "- Translation d'assise",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 4D",
+     "- Appui-tête pivotant et réglable en hauteur",
+     "",
+     "## Usage",
+     "- Plus de 10 heures d'assise par jour",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   }
+  ],
+  "description": "Vaseat est un fauteuil ergonomique complet, particulièrement adapté aux personnes de grande taille. Mécanisme synchrone blocable en quatre positions, translation d'assise, soutien lombaire réglable en hauteur et en profondeur, accoudoirs 4D et appui-tête pivotant.",
+  "technique": [
+   "## Assise et dossier",
+   "- Version tout maille, ou maille et tissu",
+   "- Version tissu déperlant eau et huile, assise mousse injectée 64 kg/m³",
+   "- Soutien lombaire réglable en hauteur et en profondeur",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 4 positions",
+   "- Réglage manuel de la tension de bascule",
+   "- Translation d'assise",
+   "",
+   "## Accoudoirs et têtière",
+   "- Accoudoirs réglables 4D",
+   "- Appui-tête pivotant et réglable en hauteur",
+   "",
+   "## Usage",
+   "- Plus de 10 heures d'assise par jour",
+   "",
+   "## Garantie",
+   "- 5 ans"
+  ],
+  "options_refs": []
+ },
+ "Lando": {
+  "gamme_affichee": "Lando",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil",
+    "nature": "Produit",
+    "page": 96,
+    "refs": [
+     "LAN01GFGR",
+     "LAN02GMGR"
+    ],
+    "description": "Le Lando a une ligne douce et discrète, faite pour les aménagements sobres où le siège ne doit pas attirer l'œil. Sous cette retenue, l'équipement est sérieux : mécanisme synchrone blocable en trois positions, accoudoirs 3D et soutien lombaire réglable en hauteur. Deux finitions de structure, gris foncé ou gris clair.",
+    "technique": [
+     "## Assise et dossier",
+     "- Assise en mousse injectée 50 kg/m³",
+     "- Dossier maille avec soutien lombaire réglable en hauteur",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 3 positions",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs",
+     "- Réglables 3D",
+     "",
+     "## Finitions",
+     "- Structure gris chiné foncé ou gris chiné clair",
+     "",
+     "## Certifications",
+     "- Greenguard, ISO 9001, ISO 14001, BSCI",
+     "",
+     "## Garantie",
+     "- 8 ans"
+    ]
+   },
+   {
+    "nom": "Appui-tête coulissant",
+    "nature": "Option",
+    "page": 96,
+    "refs": [
+     "ATLAN01GR",
+     "ATLAN02GR"
+    ],
+    "description": "L'appui-tête du Lando coulisse au lieu de se fixer à une hauteur : on le fait glisser le long du dossier jusqu'à la nuque. Trente euros, à commander dans la finition de structure du fauteuil.",
+    "technique": [
+     "## Montage",
+     "- Se fixe sur le dossier d'un fauteuil Lando",
+     "- Coulissant, réglable en hauteur",
+     "",
+     "## Finitions",
+     "- Gris chiné foncé ou gris chiné clair, à assortir au fauteuil"
+    ]
+   }
+  ],
+  "description": "Lando est un fauteuil ergonomique à la ligne douce et discrète, qui s'efface dans un aménagement sobre. Mécanisme synchrone blocable en trois positions, accoudoirs 3D et soutien lombaire réglable en hauteur, avec un appui-tête coulissant en option.",
+  "technique": [
+   "## Assise et dossier",
+   "- Assise en mousse injectée 50 kg/m³",
+   "- Soutien lombaire réglable en hauteur",
+   "- Versions tissu ou maille",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 3 positions",
+   "- Réglage manuel de la tension de bascule",
+   "",
+   "## Accoudoirs",
+   "- Réglables 3D",
+   "",
+   "## Options",
+   "- Appui-tête coulissant",
+   "",
+   "## Garantie",
+   "- 8 ans"
+  ],
+  "options_refs": [
+   "ATLAN01GR",
+   "ATLAN02GR"
+  ]
+ },
+ "Proseat": {
+  "gamme_affichee": "Proseat",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil V2",
+    "nature": "Produit",
+    "page": 92,
+    "refs": [
+     "PROS01NR",
+     "PROS02NR"
+    ],
+    "description": "Le Proseat V2 est tout en maille, donc entièrement respirant, avec un dossier qui se règle en hauteur par crémaillère — un réglage franc, cran par cran, plus durable qu'un système à friction. Il existe aussi en assise mousse injectée et tissu non feu, au même prix.",
+    "technique": [
+     "## Dossier",
+     "- Maille tendue sur cadre nylon, 60 % élastomère Hytrel et 40 % nylon",
+     "- Réglage en hauteur par crémaillère",
+     "",
+     "## Assise",
+     "- Maille tendue, ou mousse injectée et tissu non feu selon la version",
+     "- Tissu résistant aux UV et déperlant huile",
+     "- Translation d'assise",
+     "",
+     "## Mécanisme",
+     "- Synchrone blocable en 4 positions",
+     "- Réglage automatique de la tension de bascule",
+     "",
+     "## Accoudoirs et têtière",
+     "- Accoudoirs réglables 3D",
+     "- Appui-tête réglable en hauteur et pivotant",
+     "",
+     "## Garantie",
+     "- 5 ans"
+    ]
+   },
+   {
+    "nom": "Option repose-jambe",
+    "nature": "Option",
+    "page": 92,
+    "refs": [
+     "RJ-PROS01NR"
+    ],
+    "description": "Le repose-jambe se déplie sous l'assise du Proseat et transforme le fauteuil en siège de repos. OfficePro le présente pour la micro-sieste ou sur indication médicale — c'est l'accessoire qui permet de garder quelqu'un au poste plutôt que de l'envoyer s'allonger ailleurs.",
+    "technique": [
+     "## Montage",
+     "- Se fixe sous l'assise d'un fauteuil Proseat V2",
+     "- Escamotable",
+     "",
+     "## Usage",
+     "- Micro-sieste, ou station allongée sur indication médicale"
+    ]
+   }
+  ],
+  "description": "Proseat V2 est un fauteuil tout maille entièrement respirant, au dossier réglable en hauteur par crémaillère. Son repose-jambe en option en fait un siège de micro-sieste, ou répond à une indication médicale. Il existe aussi avec assise en mousse injectée et tissu non feu.",
+  "technique": [
+   "## Dossier",
+   "- Maille tendue sur cadre nylon, 60 % élastomère Hytrel et 40 % nylon",
+   "- Réglable en hauteur par crémaillère",
+   "",
+   "## Assise",
+   "- Maille tendue, ou mousse injectée et tissu non feu selon version",
+   "- Tissu hautement résistant, déperlant huile et résistant aux UV",
+   "- Translation d'assise",
+   "",
+   "## Mécanisme",
+   "- Synchrone blocable en 4 positions",
+   "- Réglage automatique de la tension de bascule",
+   "",
+   "## Accoudoirs et têtière",
+   "- Accoudoirs réglables 3D",
+   "- Appui-tête réglable en hauteur et pivotant",
+   "",
+   "## Options",
+   "- Repose-jambe",
+   "",
+   "## Garantie",
+   "- 5 ans"
+  ],
+  "options_refs": [
+   "RJ-PROS01NR"
+  ]
+ },
+ "Khong": {
+  "gamme_affichee": "Khong",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges visiteur et accueil",
+   "Sièges de réunion et formation"
+  ],
+  "produits": [
+   {
+    "nom": "Chaise",
+    "nature": "Produit",
+    "page": 106,
+    "refs": [
+     "KHG02BLBL",
+     "KHG02GRBLA"
+    ],
+    "description": "La Khong est un siège d'accueil et de réunion à coque polypropylène, dont l'assise pivote à 360° — on se tourne vers son voisin sans déplacer le siège. Les patins se remplacent par des roulettes si la salle change souvent de configuration. Vendue par deux, d'un même coloris.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène",
+     "- Dossier et assise en mousse injectée 50 kg/m³ et tissu",
+     "",
+     "## Réglages",
+     "- Rotation de l'assise à 360°",
+     "- Roulettes adaptables à la place des patins",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2, de même coloris",
+     "",
+     "## Certifications",
+     "- Greenguard, ISO 9001, ISO 14001",
+     "",
+     "## Garantie",
+     "- 3 ans"
+    ]
+   },
+   {
+    "nom": "Chaise Papillon",
+    "nature": "Produit",
+    "page": 106,
+    "refs": [
+     "KHG03BL"
+    ],
+    "description": "La Khong Papillon reprend la coque et le mécanisme de la Khong avec un dossier découpé en deux ailes, d'où son nom. Même prix, même conditionnement par deux : le choix se fait sur la ligne, pas sur le budget.",
+    "technique": [
+     "## Coque",
+     "- Polypropylène, dossier en deux ailes",
+     "- Dossier et assise en mousse injectée 50 kg/m³ et tissu",
+     "",
+     "## Réglages",
+     "- Rotation de l'assise à 360°",
+     "- Roulettes adaptables à la place des patins",
+     "",
+     "## Conditionnement",
+     "- Vendue par 2, de même coloris",
+     "",
+     "## Garantie",
+     "- 3 ans"
+    ]
+   }
+  ],
+  "description": "Khong est un siège d'accueil et de réunion à coque polypropylène, contemporain et confortable. L'assise pivote à 360°, et les patins se remplacent par des roulettes. La version Papillon en reprend la ligne avec un dossier ajouré.",
+  "technique": [
+   "## Coque",
+   "- Polypropylène",
+   "- Dossier et assise en mousse injectée 50 kg/m³ et tissu",
+   "",
+   "## Versions",
+   "- Khong et Khong Papillon",
+   "",
+   "## Réglages",
+   "- Rotation de l'assise à 360°",
+   "- Adaptation possible de roulettes à la place des patins",
+   "",
+   "## Conditionnement",
+   "- Vendues par 2, de même coloris",
+   "",
+   "## Certification",
+   "- Greenguard"
+  ],
+  "options_refs": []
+ },
+ "Liberty": {
+  "gamme_affichee": "Liberty",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges visiteur et accueil"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil",
+    "nature": "Produit",
+    "page": 188,
+    "refs": [
+     "LIB01NRGR",
+     "LIB01NRNR",
+     "LIB01NRRE"
+    ],
+    "description": "Le Liberty est le petit fauteuil qu'on installe sans y réfléchir : un basculement centré blocable, une tension réglable, des accoudoirs fixes, et c'est tout. À cent quinze euros, il équipe un poste ponctuel ou une salle d'attente sans grever le budget. Trois coloris.",
+    "technique": [
+     "## Assise et dossier",
+     "- Mousse 24 kg/m³ et tissu",
+     "",
+     "## Mécanisme",
+     "- Basculement centré du dossier, blocable en 1 position",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs",
+     "- Fixes",
+     "",
+     "## Finitions",
+     "- Gris, noir ou rouge",
+     "",
+     "## Usage",
+     "- 4 à 6 heures d'assise par jour"
+    ]
+   },
+   {
+    "nom": "Appui-tête",
+    "nature": "Option",
+    "page": 188,
+    "refs": [
+     "ATL01GR",
+     "ATL01NR",
+     "ATL01RE"
+    ],
+    "description": "L'appui-tête du Liberty se monte après coup, dans le coloris du fauteuil. Quinze euros pour transformer un siège de passage en siège où l'on peut s'adosser vraiment — l'option la moins chère du catalogue.",
+    "technique": [
+     "## Montage",
+     "- Se fixe sur le dossier d'un fauteuil Liberty",
+     "- Réglable en hauteur",
+     "",
+     "## Finitions",
+     "- Gris, noir ou rouge, à assortir au fauteuil"
+    ]
+   }
+  ],
+  "description": "Liberty est le petit fauteuil facile, pour une utilisation ponctuelle : basculement centré blocable en une position, accoudoirs fixes, et un appui-tête réglable en hauteur en option. Simple à choisir, simple à utiliser.",
+  "technique": [
+   "## Assise et dossier",
+   "- Mousse 24 kg/m³ et tissu",
+   "",
+   "## Mécanisme",
+   "- Basculement centré du dossier, blocable en 1 position",
+   "- Réglage manuel de la tension de bascule",
+   "",
+   "## Accoudoirs",
+   "- Fixes",
+   "",
+   "## Options",
+   "- Appui-tête réglable en hauteur",
+   "",
+   "## Usage",
+   "- 4 à 6 heures d'assise par jour"
+  ],
+  "options_refs": [
+   "ATL01GR",
+   "ATL01NR",
+   "ATL01RE"
+  ]
+ },
+ "Amy": {
+  "gamme_affichee": "Amy",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges visiteur et accueil"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil junior",
+    "nature": "Produit",
+    "page": 189,
+    "refs": [
+     "AMY01NRNR"
+    ],
+    "description": "Amy est le siège de travail le moins cher du catalogue OfficePro, et il assume ce qu'il est : un fauteuil junior pour un poste d'appoint, une chambre d'étudiant ou un bureau qu'on occupe une heure par jour. Dossier maille et assise tissu, réglage en hauteur, soutien lombaire — rien de plus, rien qui tombe en panne.",
+    "technique": [
+     "## Assise et dossier",
+     "- Dossier maille, assise en mousse 27 kg/m³ et tissu",
+     "- Soutien lombaire fixe",
+     "",
+     "## Réglages",
+     "- Hauteur d'assise",
+     "",
+     "## Accoudoirs",
+     "- Fixes",
+     "",
+     "## Usage",
+     "- Jusqu'à 4 heures d'assise par jour",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   }
+  ],
+  "description": "Amy est le fauteuil junior d'OfficePro : un siège de travail simple et bon marché, pour un poste d'appoint ou une chambre d'étudiant. Réglage en hauteur, soutien lombaire et accoudoirs fixes — l'essentiel, sans réglage à apprendre.",
+  "technique": [
+   "## Assise et dossier",
+   "- Mousse 27 kg/m³ et tissu",
+   "- Soutien lombaire",
+   "",
+   "## Réglages",
+   "- Hauteur d'assise",
+   "- Accoudoirs fixes",
+   "",
+   "## Usage",
+   "- Jusqu'à 4 heures d'assise par jour"
+  ],
+  "options_refs": []
+ },
+ "Bristol": {
+  "gamme_affichee": "Bristol",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges visiteur et accueil"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil",
+    "nature": "Produit",
+    "page": 187,
+    "refs": [
+     "BRL01NR"
+    ],
+    "description": "Le Bristol est un fauteuil de direction d'entrée de gamme entièrement habillé de polyuréthane : on l'essuie d'un coup d'éponge, ce qu'aucun tissu ne permet. Basculement centré blocable en une position et réglage manuel de la tension — les deux commandes qu'on utilise vraiment.",
+    "technique": [
+     "## Assise et dossier",
+     "- Polyuréthane, mousse 25 kg/m³",
+     "- Nettoyage à l'éponge",
+     "",
+     "## Mécanisme",
+     "- Basculement centré du dossier, blocable en 1 position",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Usage",
+     "- 4 à 6 heures d'assise par jour",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   }
+  ],
+  "description": "Bristol est un classique en polyuréthane à petit prix : dossier et assise faciles à nettoyer, basculement centré blocable en une position. Le siège qu'on met là où ça passe et repasse.",
+  "technique": [
+   "## Assise et dossier",
+   "- Polyuréthane, mousse 25 kg/m³",
+   "",
+   "## Mécanisme",
+   "- Basculement centré du dossier, blocable en une position",
+   "- Réglage manuel de la tension de bascule",
+   "",
+   "## Usage",
+   "- 4 à 6 heures d'assise par jour"
+  ],
+  "options_refs": []
+ },
+ "Cheyenne": {
+  "gamme_affichee": "Cheyenne",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges opérateur et ergonomiques"
+  ],
+  "produits": [
+   {
+    "nom": "Fauteuil gamer",
+    "nature": "Produit",
+    "page": 191,
+    "refs": [
+     "CHE01NR",
+     "CHE01NRRE"
+    ],
+    "description": "Le Cheyenne bascule jusqu'à 135°, ce qui en fait autant un siège de travail long qu'un fauteuil de jeu. Il arrive avec ses coussins lombaire et de nuque, des accoudoirs réglables en hauteur et pivotants, et une mousse de 41 kg/m³ sur sept centimètres d'épaisseur. Deux coloris : tout noir, ou noir et rouge.",
+    "technique": [
+     "## Assise et dossier",
+     "- Mousse 41 kg/m³, épaisseur 7 cm",
+     "- Coussins lombaire et de nuque fournis",
+     "",
+     "## Mécanisme",
+     "- Forte bascule du dossier jusqu'à 135°",
+     "- Blocage multipositions",
+     "- Réglage manuel de la tension de bascule",
+     "",
+     "## Accoudoirs",
+     "- Réglables en hauteur, pivotants",
+     "",
+     "## Finitions",
+     "- Noir, ou noir et rouge",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   }
+  ],
+  "description": "Cheyenne est le fauteuil gamer de la gamme : forte bascule jusqu'à 135°, blocage multipositions, accoudoirs réglables en hauteur et pivotants, et des coussins lombaires et de nuque fournis. Il tient aussi bien un poste de travail long qu'une session de jeu.",
+  "technique": [
+   "## Assise et dossier",
+   "- Mousse 41 kg/m³, épaisseur 7 cm",
+   "- Coussins lombaires et de nuque fournis",
+   "",
+   "## Mécanisme",
+   "- Forte bascule du dossier jusqu'à 135°",
+   "- Blocage multipositions",
+   "- Réglage manuel de la tension de bascule",
+   "",
+   "## Accoudoirs",
+   "- Réglables en hauteur et pivotants"
+  ],
+  "options_refs": []
+ },
+ "Steno": {
+  "gamme_affichee": "Steno",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges techniques et ateliers",
+   "Tabourets et sièges hauts"
+  ],
+  "produits": [
+   {
+    "nom": "Siège de travail en hauteur",
+    "nature": "Produit",
+    "page": 162,
+    "refs": [
+     "SDCP01NR"
+    ],
+    "description": "Le Steno est un siège d'atelier : coque polypropylène qu'on nettoie sans précaution, assise haute et repose-pieds réglable. C'est le siège des postes debout-assis où le tissu ne tiendrait pas — établi, laboratoire, comptoir technique.",
+    "technique": [
+     "## Assise et dossier",
+     "- Polypropylène, nettoyage facile",
+     "- Dossier à contact permanent",
+     "",
+     "## Réglages",
+     "- Hauteur d'assise",
+     "- Repose-pieds réglable en hauteur",
+     "",
+     "## Piétement",
+     "- Sur patins de série, roulettes en option",
+     "",
+     "## Usage",
+     "- Jusqu'à 4 heures d'assise par jour"
+    ]
+   }
+  ],
+  "description": "Steno est le siège de travail en hauteur en polypropylène : nettoyable d'un coup d'éponge, il est fait pour les ateliers. Repose-pieds réglable en hauteur, piétement sur patins, roulettes en option.",
+  "technique": [
+   "## Assise et dossier",
+   "- Polypropylène, nettoyage facile",
+   "",
+   "## Réglages",
+   "- Hauteur d'assise",
+   "- Repose-pieds réglable en hauteur",
+   "",
+   "## Piétement",
+   "- Sur patins de série",
+   "- Roulettes en option",
+   "",
+   "## Usage",
+   "- Jusqu'à 4 heures d'assise par jour"
+  ],
+  "options_refs": []
+ },
+ "Budget": {
+  "gamme_affichee": "Budget",
+  "sur_devis": false,
+  "categorie": "Sièges",
+  "sous_categories": [
+   "Sièges techniques et ateliers",
+   "Tabourets et sièges hauts"
+  ],
+  "produits": [
+   {
+    "nom": "Siège de travail en hauteur",
+    "nature": "Produit",
+    "page": 162,
+    "refs": [
+     "SDSL02NR"
+    ],
+    "description": "Le Budget est le pendant en tissu du Steno : même assise haute, même repose-pieds réglable, mais garni. Soixante euros de moins que le polypropylène, et un confort supérieur — à condition que le poste ne salisse pas.",
+    "technique": [
+     "## Assise et dossier",
+     "- Tissu sur mousse, dossier à contact permanent",
+     "",
+     "## Réglages",
+     "- Hauteur d'assise",
+     "- Repose-pieds réglable en hauteur",
+     "",
+     "## Piétement",
+     "- Sur patins de série, roulettes en option",
+     "",
+     "## Usage",
+     "- Jusqu'à 4 heures d'assise par jour"
+    ]
+   }
+  ],
+  "description": "Budget est le siège de travail en hauteur en tissu : le même poste assis haut que Steno, avec un peu plus de confort. Repose-pieds réglable en hauteur et piétement sur patins, roulettes en option.",
+  "technique": [
+   "## Assise et dossier",
+   "- Tissu, dossier à contact permanent",
+   "",
+   "## Réglages",
+   "- Hauteur d'assise",
+   "- Repose-pieds réglable en hauteur",
+   "",
+   "## Piétement",
+   "- Sur patins de série",
+   "- Roulettes en option",
+   "",
+   "## Usage",
+   "- Jusqu'à 4 heures d'assise par jour"
+  ],
+  "options_refs": []
+ },
+ "Square": {
+  "gamme_affichee": "Square",
+  "sur_devis": false,
+  "categorie": "Tables",
+  "sous_categories": [
+   "Tables basses"
+  ],
+  "produits": [
+   {
+    "nom": "Table basse",
+    "nature": "Produit",
+    "page": 54,
+    "refs": [
+     "SQU01NR",
+     "SQU01BLA",
+     "SQU01BS"
+    ],
+    "description": "La Square est une table basse carrée aux lignes nettes, montée sur un piétement aluminium noir en croix. Trois plateaux au même prix — noir, blanc ou bois — ce qui laisse choisir sur l'aménagement plutôt que sur le budget.",
+    "technique": [
+     "## Plateau",
+     "- Bois MDF 18 mm d'épaisseur",
+     "- Trois finitions : noir, blanc ou bois",
+     "",
+     "## Piétement",
+     "- Aluminium noir en croix",
+     "",
+     "## Certifications",
+     "- FSC, BSCI, SEDEX, GRS 4.0",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   }
+  ],
+  "description": "Square est une table basse aux lignes nettes, qui s'intègre facilement dans un espace d'accueil. Plateau MDF de 18 mm sur piétement aluminium noir en croix.",
+  "technique": [
+   "## Plateau",
+   "- Bois MDF 18 mm d'épaisseur",
+   "- Finition noire ou blanche",
+   "",
+   "## Piétement",
+   "- Aluminium noir en croix",
+   "",
+   "## Garantie",
+   "- 2 ans"
+  ],
+  "options_refs": []
+ },
+ "Giro": {
+  "gamme_affichee": "Giro",
+  "sur_devis": false,
+  "categorie": "Tables",
+  "sous_categories": [
+   "Tables basses"
+  ],
+  "produits": [
+   {
+    "nom": "Table basse",
+    "nature": "Produit",
+    "page": 55,
+    "refs": [
+     "GIR01BS",
+     "GIR01NR"
+    ],
+    "description": "La Giro est ronde et épurée : elle se pose seule pour une pause ou se glisse au centre d'un ensemble d'accueil sans imposer d'angles. Plateau MDF stratifié HPL sur piétement acier peint noir, en finition bois ou noire — le bois coûte quinze euros de plus.",
+    "technique": [
+     "## Plateau",
+     "- Bois MDF 18 mm d'épaisseur, stratifié HPL",
+     "- Finition bois ou noire",
+     "",
+     "## Piétement",
+     "- Acier peint noir",
+     "",
+     "## Certifications",
+     "- FSC, BSCI, SEDEX, GRS 4.0",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   }
+  ],
+  "description": "Giro est une table basse ronde et épurée, qui trouve sa place aussi bien seule, pour une pause, que dans un ensemble d'accueil. Plateau MDF 18 mm, piétement acier peint noir, deux finitions de plateau.",
+  "technique": [
+   "## Plateau",
+   "- Bois MDF 18 mm d'épaisseur",
+   "- Finition bois ou noir",
+   "",
+   "## Piétement",
+   "- Acier peint noir",
+   "",
+   "## Garantie",
+   "- 2 ans"
+  ],
+  "options_refs": []
+ },
+ "Galet": {
+  "gamme_affichee": "Galet",
+  "sur_devis": false,
+  "categorie": "Tables",
+  "sous_categories": [
+   "Tables basses"
+  ],
+  "produits": [
+   {
+    "nom": "Table basse",
+    "nature": "Produit",
+    "page": 55,
+    "refs": [
+     "GAL01BLA",
+     "GAL02BLA"
+    ],
+    "description": "La Galet va par deux : une petite et une allongée, de forme oblongue, qu'on associe ou qu'on prend séparément. La forme contemporaine casse l'alignement d'un hall d'accueil là où une table carrée le raidit.",
+    "technique": [
+     "## Plateau",
+     "- Bois MDF 18 mm d'épaisseur, stratifié HPL",
+     "- Forme oblongue",
+     "",
+     "## Piétement",
+     "- Acier peint noir",
+     "",
+     "## Collection",
+     "- Deux tailles, petite et allongée, à associer ou à prendre seules",
+     "",
+     "## Garantie",
+     "- 2 ans"
+    ]
+   }
+  ],
+  "description": "Galet est un duo de tables basses à la forme allongée, en petite et en grande version. Plateau MDF de 18 mm stratifié HPL sur piétement acier peint noir : de quoi poser un ensemble d'accueil sans l'alourdir.",
+  "technique": [
+   "## Plateau",
+   "- Bois MDF 18 mm d'épaisseur, stratifié HPL",
+   "",
+   "## Piétement",
+   "- Acier peint noir",
+   "",
+   "## Collection",
+   "- Deux tailles : petite et allongée",
+   "",
+   "## Garantie",
+   "- 2 ans"
+  ],
+  "options_refs": []
+ },
+ "_perimetre": {
+  "_lisezmoi": [
+   "Le périmètre OfficePro, famille par famille.",
+   "",
+   "Le tarif range chaque référence sous un NOM DU PRODUIT : c'est lui",
+   "qui fait foi ici, et non plus un préfixe de référence. Un préfixe",
+   "ment — ACC21 désigne un accoudoir Coigny, ACC26 un accoudoir",
+   "Synergy, et rien dans les lettres ne le dit.",
+   "",
+   "« retenues » associe chaque famille vendue à sa gamme sur le site.",
+   "« ecartees » liste celles que le client ne vend pas, avec leur page",
+   "au catalogue pour qu'on puisse aller vérifier de quoi il s'agit.",
+   "",
+   "Toute famille absente des deux listes est une erreur : le",
+   "vérificateur la signale plutôt que de l'ignorer en silence.",
+   "",
+   "« exceptions » traite la référence isolée dont la famille dit le",
+   "contraire du périmètre."
+  ],
+  "retenues": {
+   "AMY": {
+    "gamme": "Amy",
+    "page_catalogue": 189,
+    "references": 1
+   },
+   "ARCO BANQUETTE": {
+    "gamme": "Arco",
+    "page_catalogue": 50,
+    "references": 1
+   },
+   "ARCO CHAUFFEUSE": {
+    "gamme": "Arco",
+    "page_catalogue": 46,
+    "references": 30
+   },
+   "ARCO CHIC": {
+    "gamme": "Arco",
+    "page_catalogue": 46,
+    "references": 15
+   },
+   "ARCO COUSSIN": {
+    "gamme": "Arco",
+    "page_catalogue": 50,
+    "references": 6
+   },
+   "ARCO LOUNGE": {
+    "gamme": "Arco",
+    "page_catalogue": 48,
+    "references": 2
+   },
+   "ARCO POUF": {
+    "gamme": "Arco",
+    "page_catalogue": 49,
+    "references": 4
+   },
+   "BEEZ": {
+    "gamme": "Beez",
+    "page_catalogue": 150,
+    "references": 4
+   },
+   "BRISTOL": {
+    "gamme": "Bristol",
+    "page_catalogue": 187,
+    "references": 1
+   },
+   "BUDGET": {
+    "gamme": "Budget",
+    "page_catalogue": 162,
+    "references": 1
+   },
+   "CHEYENNE": {
+    "gamme": "Cheyenne",
+    "page_catalogue": 191,
+    "references": 2
+   },
+   "COIGNY": {
+    "gamme": "Coigny",
+    "page_catalogue": 126,
+    "references": 2
+   },
+   "COIGNY ECO": {
+    "gamme": "Coigny",
+    "page_catalogue": 126,
+    "references": 6
+   },
+   "COIGNY MAX": {
+    "gamme": "Coigny",
+    "page_catalogue": 126,
+    "references": 2
+   },
+   "COIGNY-COLOR": {
+    "gamme": "Coigny",
+    "page_catalogue": 126,
+    "references": 3
+   },
+   "COIGNY-MILI": {
+    "gamme": "Coigny",
+    "page_catalogue": 126,
+    "references": 3
+   },
+   "ERGOSTAR ULTRA": {
+    "gamme": "Ergostar Ultra",
+    "page_catalogue": 64,
+    "references": 1
+   },
+   "ERGOSTAR ULTRA VELVET": {
+    "gamme": "Ergostar Ultra",
+    "page_catalogue": 66,
+    "references": 1
+   },
+   "GALET": {
+    "gamme": "Galet",
+    "page_catalogue": 55,
+    "references": 2
+   },
+   "GIRO": {
+    "gamme": "Giro",
+    "page_catalogue": 55,
+    "references": 2
+   },
+   "HEAVY": {
+    "gamme": "Heavy",
+    "page_catalogue": 68,
+    "references": 3
+   },
+   "KHONG": {
+    "gamme": "Khong",
+    "page_catalogue": 106,
+    "references": 3
+   },
+   "KIT BEEZ": {
+    "gamme": "Beez",
+    "page_catalogue": 150,
+    "references": 2
+   },
+   "LANDO": {
+    "gamme": "Lando",
+    "page_catalogue": 96,
+    "references": 4
+   },
+   "LIBERTY": {
+    "gamme": "Liberty",
+    "page_catalogue": 188,
+    "references": 6
+   },
+   "LOOPS": {
+    "gamme": "Loops",
+    "page_catalogue": 130,
+    "references": 38
+   },
+   "LOOPS TABOURET": {
+    "gamme": "Loops",
+    "page_catalogue": 132,
+    "references": 6
+   },
+   "PROSEAT V2": {
+    "gamme": "Proseat",
+    "page_catalogue": 92,
+    "references": 3
+   },
+   "SCOTT": {
+    "gamme": "Scott",
+    "page_catalogue": 178,
+    "references": 6
+   },
+   "SCOTTY": {
+    "gamme": "Scott",
+    "page_catalogue": 178,
+    "references": 1
+   },
+   "SHINEO": {
+    "gamme": "Shineo",
+    "page_catalogue": 102,
+    "references": 16
+   },
+   "SQUARE": {
+    "gamme": "Square",
+    "page_catalogue": 54,
+    "references": 3
+   },
+   "STENO": {
+    "gamme": "Steno",
+    "page_catalogue": 162,
+    "references": 1
+   },
+   "TE C S E A T P O U T RE": {
+    "gamme": "Tecseat",
+    "page_catalogue": 52,
+    "references": 7
+   },
+   "TECSEAT": {
+    "gamme": "Tecseat",
+    "page_catalogue": 108,
+    "references": 7
+   },
+   "TECSEAT / TECSUP": {
+    "gamme": "Tecseat",
+    "page_catalogue": 108,
+    "references": 12
+   },
+   "TECSEAT ETUDIANT": {
+    "gamme": "Tecseat",
+    "page_catalogue": 112,
+    "references": 3
+   },
+   "TECSEAT MEETING": {
+    "gamme": "Tecseat",
+    "page_catalogue": 110,
+    "references": 3
+   },
+   "TECSUP": {
+    "gamme": "Tecseat",
+    "page_catalogue": 108,
+    "references": 7
+   },
+   "TECSY": {
+    "gamme": "Tecsy",
+    "page_catalogue": 176,
+    "references": 1
+   },
+   "TECSY ALTO": {
+    "gamme": "Tecsy",
+    "page_catalogue": 88,
+    "references": 1
+   },
+   "TECSY CHIC": {
+    "gamme": "Tecsy",
+    "page_catalogue": 90,
+    "references": 1
+   },
+   "TECSY CONCEPT": {
+    "gamme": "Tecsy",
+    "page_catalogue": 84,
+    "references": 14
+   },
+   "TECSY PLATINIUM": {
+    "gamme": "Tecsy",
+    "page_catalogue": 90,
+    "references": 1
+   },
+   "TECSY WHITE": {
+    "gamme": "Tecsy",
+    "page_catalogue": 177,
+    "references": 2
+   },
+   "VASEAT": {
+    "gamme": "Vaseat",
+    "page_catalogue": 170,
+    "references": 3
+   },
+   "VERANO -": {
+    "gamme": "Verano",
+    "page_catalogue": 154,
+    "references": 12
+   },
+   "VERANO - RESTAURATION": {
+    "gamme": "Verano",
+    "page_catalogue": 155,
+    "references": 47
+   },
+   "VERANO BANC": {
+    "gamme": "Verano",
+    "page_catalogue": 155,
+    "references": 4
+   },
+   "VERANO COUSSIN": {
+    "gamme": "Verano",
+    "page_catalogue": 154,
+    "references": 4
+   },
+   "VERANO POUF": {
+    "gamme": "Verano",
+    "page_catalogue": 158,
+    "references": 4
+   },
+   "WAVE": {
+    "gamme": "Wave",
+    "page_catalogue": 76,
+    "references": 3
+   }
+  },
+  "ecartees": {
+   "AERO": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 184,
+    "references": 1
+   },
+   "AMI-O": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 136,
+    "references": 8
+   },
+   "AMI-O TABOURET": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 138,
+    "references": 6
+   },
+   "AZAY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 60,
+    "references": 1
+   },
+   "BOY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 148,
+    "references": 6
+   },
+   "BREAK": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 142,
+    "references": 4
+   },
+   "BUFFALO": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 186,
+    "references": 1
+   },
+   "CHARIOT": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 123,
+    "references": 1
+   },
+   "CHARLOTTE GIVRÉE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 124,
+    "references": 4
+   },
+   "CHARLOTTE M1": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 125,
+    "references": 8
+   },
+   "CHARLOTTE PASTEL": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 124,
+    "references": 3
+   },
+   "CONFORTIS": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 98,
+    "references": 1
+   },
+   "COSY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 62,
+    "references": 4
+   },
+   "CULBUTO": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 116,
+    "references": 4
+   },
+   "DACADA": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 122,
+    "references": 5
+   },
+   "DESIGNER UNICOLOR": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 78,
+    "references": 3
+   },
+   "E-CRAFT": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 192,
+    "references": 2
+   },
+   "EGGY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 104,
+    "references": 20
+   },
+   "ELPHI": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 146,
+    "references": 8
+   },
+   "ERGO METAL": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 190,
+    "references": 1
+   },
+   "FEDO": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 72,
+    "references": 4
+   },
+   "GUALI": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 163,
+    "references": 1
+   },
+   "JOLLY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 164,
+    "references": 1
+   },
+   "KAFET": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 140,
+    "references": 4
+   },
+   "KANAP": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 36,
+    "references": 4
+   },
+   "KANAP CHIC": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 36,
+    "references": 4
+   },
+   "KANAP COUSSIN": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 37,
+    "references": 4
+   },
+   "KANAP COUSSIN CARRE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 37,
+    "references": 4
+   },
+   "KARRE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 40,
+    "references": 8
+   },
+   "KIT BREAK": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 142,
+    "references": 2
+   },
+   "KIT CHARLOTTE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 125,
+    "references": 1
+   },
+   "KIT HAUT UNIVERSEL": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 2
+   },
+   "KIT STANDARD ALUMINIUMETOILE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 1
+   },
+   "KIT STANDARD NYLON": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 1
+   },
+   "KURLY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 38,
+    "references": 11
+   },
+   "KURLY COUSSIN CARRE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 39,
+    "references": 3
+   },
+   "KURLY COUSSIN RECTANGLE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 39,
+    "references": 3
+   },
+   "LUG": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 61,
+    "references": 1
+   },
+   "MACARON": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 44,
+    "references": 6
+   },
+   "MANHATTAN": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 58,
+    "references": 2
+   },
+   "MANHATTAN LUGE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 58,
+    "references": 2
+   },
+   "NEST": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 94,
+    "references": 5
+   },
+   "OFFSEAT": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 174,
+    "references": 1
+   },
+   "OMAHA": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 183,
+    "references": 1
+   },
+   "OPEN": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 180,
+    "references": 3
+   },
+   "PATINS FIXES": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 1
+   },
+   "PEPITO": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 193,
+    "references": 5
+   },
+   "PHOENIX": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 182,
+    "references": 2
+   },
+   "POLAR": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 74,
+    "references": 5
+   },
+   "POLAR GRIS": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 74,
+    "references": 1
+   },
+   "ROULETTES": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 5
+   },
+   "SHERMAN CHIC": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 82,
+    "references": 4
+   },
+   "SHERMAN TISSU": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 80,
+    "references": 6
+   },
+   "SPACEMESH": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 114,
+    "references": 2
+   },
+   "SPOT": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 54,
+    "references": 1
+   },
+   "STARSEAT": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 173,
+    "references": 1
+   },
+   "SYNERGY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 118,
+    "references": 16
+   },
+   "TAB": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 165,
+    "references": 1
+   },
+   "TANET": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 172,
+    "references": 1
+   },
+   "TANIX": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 182,
+    "references": 1
+   },
+   "TAOS": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 181,
+    "references": 2
+   },
+   "TECKNET": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 172,
+    "references": 3
+   },
+   "TEDDY": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 42,
+    "references": 2
+   },
+   "TWIST": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 134,
+    "references": 7
+   },
+   "VÉRIN": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 3
+   },
+   "ÉTOILE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 198,
+    "references": 3
+   },
+   "CHARLOTTE": {
+    "raison": "famille non retenue par le client",
+    "page_catalogue": 125,
+    "references": 21
+   }
+  },
+  "exceptions": {
+   "_lisezmoi": [
+    "Références retenues bien que leur famille ne le soit pas, ou",
+    "l'inverse. Chacune porte sa raison : sans elle, la référence",
+    "paraîtrait oubliée ou intruse au contrôle."
+   ],
+   "CHA02NR": {
+    "gamme": "Coigny",
+    "raison": "chariot de transport ; le tarif le donne pour les chaises Charlotte ET Coigny, et Coigny est vendue"
+   }
+  }
+ },
+ "_cotes": {
+  "_lisezmoi": [
+   "Le catalogue OfficePro ne porte pas de tableau de dimensions.",
+   "",
+   "Ses cotes sont des légendes posées à côté des dessins — « 50.5 cm »,",
+   "« 46 cm » — sans rien qui les rattache à une référence plutôt qu'à",
+   "une autre, et plusieurs produits partagent souvent la même double",
+   "page. Les rattacher automatiquement reviendrait à tirer au sort.",
+   "",
+   "Les colonnes de cotes de l'onglet OFFICEPRO restent donc vides, en",
+   "attendant une saisie à la main. parser-catalogue-officepro.py",
+   "collecte les cotes lues sur chaque page, dans cotes_page, pour",
+   "faciliter ce travail."
+  ]
+ }
+}

@@ -1,0 +1,9409 @@
+{
+ "ACC21NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 126,
+  "pdf": 64,
+  "titres_page": [
+   "ECO MAX",
+   "MILI COLOR",
+   "SERIOSSECCA",
+   "126"
+  ]
+ },
+ "ACC26NR": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "ACCESSOIRE Paire",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "AER01NR": {
+  "cotes_page": [
+   40.0,
+   43.0,
+   50.0,
+   55.0,
+   63.0
+  ],
+  "libelle": "",
+  "page": 185,
+  "pdf": 93,
+  "titres_page": [
+   "AERO",
+   "TIUDORP 43 cm",
+   "185"
+  ]
+ },
+ "AMIO01GR": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER CHÊNE CLAIR",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO01NR-PU": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER CHÊNE CLAIR",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO01RG": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER CHÊNE CLAIR",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO01VE": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER CHÊNE CLAIR",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO02GR": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER NOYER",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO02NR-PU": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER NOYER",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO02RG": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER NOYER",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO02VE": {
+  "cotes_page": [
+   42.5,
+   44.0,
+   46.0,
+   55.5,
+   64.0
+  ],
+  "libelle": "DOSSIER NOYER",
+  "page": 137,
+  "pdf": 69,
+  "titres_page": [
+   "CHAISE AMI-O",
+   "TIUDORP 3ANS 9001 14001 45001",
+   "137"
+  ]
+ },
+ "AMIO03GR": {
+  "cotes_page": [
+   34.0,
+   38.0,
+   40.5,
+   43.0,
+   45.5,
+   51.0,
+   52.0,
+   83.0,
+   102.0
+  ],
+  "libelle": "PIEDS PYRAMIDAL",
+  "page": 139,
+  "pdf": 70,
+  "titres_page": [
+   "TABOURET AMI-O",
+   "TIUDORP mc 43",
+   "701-5.58"
+  ]
+ },
+ "AMIO03RG": {
+  "cotes_page": [
+   34.0,
+   38.0,
+   40.5,
+   43.0,
+   45.5,
+   51.0,
+   52.0,
+   83.0,
+   102.0
+  ],
+  "libelle": "PIEDS PYRAMIDAL",
+  "page": 139,
+  "pdf": 70,
+  "titres_page": [
+   "TABOURET AMI-O",
+   "TIUDORP mc 43",
+   "701-5.58"
+  ]
+ },
+ "AMIO03VE": {
+  "cotes_page": [
+   34.0,
+   38.0,
+   40.5,
+   43.0,
+   45.5,
+   51.0,
+   52.0,
+   83.0,
+   102.0
+  ],
+  "libelle": "PIEDS PYRAMIDAL",
+  "page": 139,
+  "pdf": 70,
+  "titres_page": [
+   "TABOURET AMI-O",
+   "TIUDORP mc 43",
+   "701-5.58"
+  ]
+ },
+ "AMIO04GR": {
+  "cotes_page": [
+   34.0,
+   38.0,
+   40.5,
+   43.0,
+   45.5,
+   51.0,
+   52.0,
+   83.0,
+   102.0
+  ],
+  "libelle": "PIEDS PYRAMIDAL",
+  "page": 139,
+  "pdf": 70,
+  "titres_page": [
+   "TABOURET AMI-O",
+   "TIUDORP mc 43",
+   "701-5.58"
+  ]
+ },
+ "AMIO04RG": {
+  "cotes_page": [
+   34.0,
+   38.0,
+   40.5,
+   43.0,
+   45.5,
+   51.0,
+   52.0,
+   83.0,
+   102.0
+  ],
+  "libelle": "PIEDS PYRAMIDAL",
+  "page": 139,
+  "pdf": 70,
+  "titres_page": [
+   "TABOURET AMI-O",
+   "TIUDORP mc 43",
+   "701-5.58"
+  ]
+ },
+ "AMIO04VE": {
+  "cotes_page": [
+   34.0,
+   38.0,
+   40.5,
+   43.0,
+   45.5,
+   51.0,
+   52.0,
+   83.0,
+   102.0
+  ],
+  "libelle": "PIEDS PYRAMIDAL",
+  "page": 139,
+  "pdf": 70,
+  "titres_page": [
+   "TABOURET AMI-O",
+   "TIUDORP mc 43",
+   "701-5.58"
+  ]
+ },
+ "AMY01NRNR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 189,
+  "pdf": 95,
+  "titres_page": [
+   "AMY",
+   "TIUDORP",
+   "189"
+  ]
+ },
+ "ARC01BE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01BE-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01BL-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01GR-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01JA-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01MA-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01NR-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01TE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC01VE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "REVÊTEMENT",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02BE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02BE-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02BL-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02GR-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02JA-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02MA-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02NR-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02TE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC02VE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03BE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03BE-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03BL-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03GR-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03JA-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03MA-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03NR-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03TE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC03VE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04BE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04BE-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04BL-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04GR-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04JA-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04MA-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04NR-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04TE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC04VE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05BE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05BE-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05BL-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05GR-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05JA-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05MA-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05NR-PU": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05TE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC05VE-M1": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC06BE": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC07BL": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC07GR": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC07JA": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC07VE": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC08GR": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ARC08JA": {
+  "cotes_page": [
+   45.0,
+   48.0,
+   49.0,
+   51.0,
+   52.5,
+   53.0,
+   56.0,
+   57.0,
+   58.0,
+   59.5,
+   65.5,
+   74.5,
+   124.0,
+   130.0
+  ],
+  "libelle": "",
+  "page": 51,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO LOUNGE ARCO POUF ARCO BANQUETTE",
+   "EGNUOL mc",
+   "65.5 cm TIUDORP 53 cm",
+   "ARCO CHAUFFEUSE mc mc",
+   "TIUDORP mc"
+  ]
+ },
+ "ATC01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 63,
+  "pdf": 32,
+  "titres_page": [
+   "COSY",
+   "TIUDORP 5ANS kg"
+  ]
+ },
+ "ATC01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 63,
+  "pdf": 32,
+  "titres_page": [
+   "COSY",
+   "TIUDORP 5ANS kg"
+  ]
+ },
+ "ATE11NR": {
+  "cotes_page": [
+   24.0
+  ],
+  "libelle": "ACCESSOIRE",
+  "page": 115,
+  "pdf": 58,
+  "titres_page": [
+   "SPACEMESH",
+   "TIUDORP kg",
+   "115"
+  ]
+ },
+ "ATE13NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 126,
+  "pdf": 64,
+  "titres_page": [
+   "ECO MAX",
+   "MILI COLOR",
+   "SERIOSSECCA",
+   "126"
+  ]
+ },
+ "ATL01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 188,
+  "pdf": 95,
+  "titres_page": [
+   "LIBERTY",
+   "TIUDORP",
+   "188"
+  ]
+ },
+ "ATL01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 188,
+  "pdf": 95,
+  "titres_page": [
+   "LIBERTY",
+   "TIUDORP",
+   "188"
+  ]
+ },
+ "ATL01RE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 188,
+  "pdf": 95,
+  "titres_page": [
+   "LIBERTY",
+   "TIUDORP",
+   "188"
+  ]
+ },
+ "ATLAN01GR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE",
+  "page": 97,
+  "pdf": 49,
+  "titres_page": [
+   "LANDO",
+   "TIUDORP BSCI kg"
+  ]
+ },
+ "ATLAN02GR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE",
+  "page": 97,
+  "pdf": 49,
+  "titres_page": [
+   "LANDO",
+   "TIUDORP BSCI kg"
+  ]
+ },
+ "ATP01NR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE STRUCTURE MAILLE",
+  "page": 75,
+  "pdf": 38,
+  "titres_page": [
+   "POLAR Le fauteuil plébicité dans les projets",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "ATP02GR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE STRUCTURE MAILLE",
+  "page": 75,
+  "pdf": 38,
+  "titres_page": [
+   "POLAR Le fauteuil plébicité dans les projets",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "ATP02NR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE STRUCTURE MAILLE",
+  "page": 75,
+  "pdf": 38,
+  "titres_page": [
+   "POLAR Le fauteuil plébicité dans les projets",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "ATS01BL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 81,
+  "pdf": 41,
+  "titres_page": [
+   "SHERMAN",
+   "TIUDORP kg"
+  ]
+ },
+ "ATS01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 81,
+  "pdf": 41,
+  "titres_page": [
+   "SHERMAN",
+   "TIUDORP kg"
+  ]
+ },
+ "ATS01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 81,
+  "pdf": 41,
+  "titres_page": [
+   "SHERMAN",
+   "TIUDORP kg"
+  ]
+ },
+ "ATS03MA": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 83,
+  "pdf": 42,
+  "titres_page": [
+   "SHERMAN CHIC Toute l’ergonomie du Sherman",
+   "TIUDORP kg"
+  ]
+ },
+ "ATS03NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 83,
+  "pdf": 42,
+  "titres_page": [
+   "SHERMAN CHIC Toute l’ergonomie du Sherman",
+   "TIUDORP kg"
+  ]
+ },
+ "ATT01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 126,
+  "pdf": 64,
+  "titres_page": [
+   "ECO MAX",
+   "MILI COLOR",
+   "SERIOSSECCA",
+   "126"
+  ]
+ },
+ "AZY01NR": {
+  "cotes_page": [
+   48.0,
+   50.0
+  ],
+  "libelle": "",
+  "page": 60,
+  "pdf": 31,
+  "titres_page": [
+   "AZAY",
+   "TIUDORP BSCI kg mc"
+  ]
+ },
+ "BEE01BLA": {
+  "cotes_page": [
+   38.0,
+   41.0,
+   42.0,
+   42.5,
+   46.0,
+   47.0,
+   47.5,
+   49.0,
+   50.5,
+   55.5,
+   60.0,
+   70.0,
+   74.0
+  ],
+  "libelle": "CHAISES",
+  "page": 151,
+  "pdf": 76,
+  "titres_page": [
+   "BEEZ",
+   "KIT EN12520 EN16139 EN581-2",
+   "Une TIUDORP 47.5 cm mc 42.5 cm",
+   "TIUDORP KIT REF TAILLE CHAISES TABLES"
+  ]
+ },
+ "BEE02BLA": {
+  "cotes_page": [
+   38.0,
+   41.0,
+   42.0,
+   42.5,
+   46.0,
+   47.0,
+   47.5,
+   49.0,
+   50.5,
+   55.5,
+   60.0,
+   70.0,
+   74.0
+  ],
+  "libelle": "",
+  "page": 151,
+  "pdf": 76,
+  "titres_page": [
+   "BEEZ",
+   "KIT EN12520 EN16139 EN581-2",
+   "Une TIUDORP 47.5 cm mc 42.5 cm",
+   "TIUDORP KIT REF TAILLE CHAISES TABLES"
+  ]
+ },
+ "BEE03BLA": {
+  "cotes_page": [
+   38.0,
+   41.0,
+   42.0,
+   42.5,
+   46.0,
+   47.0,
+   47.5,
+   49.0,
+   50.5,
+   55.5,
+   60.0,
+   70.0,
+   74.0
+  ],
+  "libelle": "",
+  "page": 151,
+  "pdf": 76,
+  "titres_page": [
+   "BEEZ",
+   "KIT EN12520 EN16139 EN581-2",
+   "Une TIUDORP 47.5 cm mc 42.5 cm",
+   "TIUDORP KIT REF TAILLE CHAISES TABLES"
+  ]
+ },
+ "BEE03BLA-KIT": {
+  "cotes_page": [
+   38.0,
+   41.0,
+   42.0,
+   42.5,
+   46.0,
+   47.0,
+   47.5,
+   49.0,
+   50.5,
+   55.5,
+   60.0,
+   70.0,
+   74.0
+  ],
+  "libelle": "TIUDORP",
+  "page": 151,
+  "pdf": 76,
+  "titres_page": [
+   "BEEZ",
+   "KIT EN12520 EN16139 EN581-2",
+   "Une TIUDORP 47.5 cm mc 42.5 cm",
+   "TIUDORP KIT REF TAILLE CHAISES TABLES"
+  ]
+ },
+ "BEE04BLA": {
+  "cotes_page": [
+   38.0,
+   41.0,
+   42.0,
+   42.5,
+   46.0,
+   47.0,
+   47.5,
+   49.0,
+   50.5,
+   55.5,
+   60.0,
+   70.0,
+   74.0
+  ],
+  "libelle": "TABLES",
+  "page": 151,
+  "pdf": 76,
+  "titres_page": [
+   "BEEZ",
+   "KIT EN12520 EN16139 EN581-2",
+   "Une TIUDORP 47.5 cm mc 42.5 cm",
+   "TIUDORP KIT REF TAILLE CHAISES TABLES"
+  ]
+ },
+ "BEE04BLA-KIT": {
+  "cotes_page": [
+   38.0,
+   41.0,
+   42.0,
+   42.5,
+   46.0,
+   47.0,
+   47.5,
+   49.0,
+   50.5,
+   55.5,
+   60.0,
+   70.0,
+   74.0
+  ],
+  "libelle": "BEE03BLA-KIT",
+  "page": 151,
+  "pdf": 76,
+  "titres_page": [
+   "BEEZ",
+   "KIT EN12520 EN16139 EN581-2",
+   "Une TIUDORP 47.5 cm mc 42.5 cm",
+   "TIUDORP KIT REF TAILLE CHAISES TABLES"
+  ]
+ },
+ "BOY01BLA": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 149,
+  "pdf": 75,
+  "titres_page": [
+   "BOY FABRIQUÉ EN ITALIE",
+   "98DEPLASTIQUE",
+   "TIUDORP"
+  ]
+ },
+ "BOY01BLC": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 149,
+  "pdf": 75,
+  "titres_page": [
+   "BOY FABRIQUÉ EN ITALIE",
+   "98DEPLASTIQUE",
+   "TIUDORP"
+  ]
+ },
+ "BOY01RS": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 149,
+  "pdf": 75,
+  "titres_page": [
+   "BOY FABRIQUÉ EN ITALIE",
+   "98DEPLASTIQUE",
+   "TIUDORP"
+  ]
+ },
+ "BOY02BLF": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 149,
+  "pdf": 75,
+  "titres_page": [
+   "BOY FABRIQUÉ EN ITALIE",
+   "98DEPLASTIQUE",
+   "TIUDORP"
+  ]
+ },
+ "BOY02NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 149,
+  "pdf": 75,
+  "titres_page": [
+   "BOY FABRIQUÉ EN ITALIE",
+   "98DEPLASTIQUE",
+   "TIUDORP"
+  ]
+ },
+ "BOY02VE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 149,
+  "pdf": 75,
+  "titres_page": [
+   "BOY FABRIQUÉ EN ITALIE",
+   "98DEPLASTIQUE",
+   "TIUDORP"
+  ]
+ },
+ "BRE01BLA": {
+  "cotes_page": [],
+  "libelle": "TABOURETS (VENDUS PAR 2)",
+  "page": 143,
+  "pdf": 72,
+  "titres_page": [
+   "BREAK",
+   "TIUDORP TIUDORP",
+   "KIT KIT BREAK"
+  ]
+ },
+ "BRE01NR": {
+  "cotes_page": [],
+  "libelle": "TABOURETS (VENDUS PAR 2)",
+  "page": 143,
+  "pdf": 72,
+  "titres_page": [
+   "BREAK",
+   "TIUDORP TIUDORP",
+   "KIT KIT BREAK"
+  ]
+ },
+ "BRE02BLA": {
+  "cotes_page": [],
+  "libelle": "MANGE DEBOUT",
+  "page": 143,
+  "pdf": 72,
+  "titres_page": [
+   "BREAK",
+   "TIUDORP TIUDORP",
+   "KIT KIT BREAK"
+  ]
+ },
+ "BRE02NR": {
+  "cotes_page": [],
+  "libelle": "MANGE DEBOUT",
+  "page": 143,
+  "pdf": 72,
+  "titres_page": [
+   "BREAK",
+   "TIUDORP TIUDORP",
+   "KIT KIT BREAK"
+  ]
+ },
+ "BRE03BLA-KIT": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 143,
+  "pdf": 72,
+  "titres_page": [
+   "BREAK",
+   "TIUDORP TIUDORP",
+   "KIT KIT BREAK"
+  ]
+ },
+ "BRE03NR-KIT": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 143,
+  "pdf": 72,
+  "titres_page": [
+   "BREAK",
+   "TIUDORP TIUDORP",
+   "KIT KIT BREAK"
+  ]
+ },
+ "BRL01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 187,
+  "pdf": 94,
+  "titres_page": [
+   "BRISTOL",
+   "TIUDORP kg",
+   "187"
+  ]
+ },
+ "BUF01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 186,
+  "pdf": 94,
+  "titres_page": [
+   "BUFFALO",
+   "TIUDORP",
+   "186"
+  ]
+ },
+ "CCPC01BE": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC01BL": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC01BL-M1": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC01GC": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC01NR": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC01NR-M1": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC01RE": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02-KIT": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 124,
+  "pdf": 63,
+  "titres_page": [
+   "LA GIVRÉE LA PASTEL",
+   "TIUDORP empilables sur"
+  ]
+ },
+ "CCPC02BE": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02BL": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02BL-G": {
+  "cotes_page": [],
+  "libelle": "Bleu M1 Noir M1 CHARLOTTE GIVRÉE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02BL-M1": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02GC": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02GR-P": {
+  "cotes_page": [],
+  "libelle": "CCP04BL-M1 CCP04NR-M1 CHARIOT NOIR",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02JA-G": {
+  "cotes_page": [],
+  "libelle": "Bleu M1 Noir M1 CHARLOTTE GIVRÉE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02NR": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02NR-M1": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02RE": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02RG-G": {
+  "cotes_page": [],
+  "libelle": "Bleu M1 Noir M1 CHARLOTTE GIVRÉE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02RS-P": {
+  "cotes_page": [],
+  "libelle": "CCP04BL-M1 CCP04NR-M1 CHARIOT NOIR",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPC02VE-P": {
+  "cotes_page": [],
+  "libelle": "CCP04BL-M1 CCP04NR-M1 CHARIOT NOIR",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN03BE": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN03GC": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN03RE": {
+  "cotes_page": [],
+  "libelle": "PIEDS CHROMÉS PIEDS CHROMÉS PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN04BE": {
+  "cotes_page": [],
+  "libelle": "PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN04BL": {
+  "cotes_page": [],
+  "libelle": "PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN04GC": {
+  "cotes_page": [],
+  "libelle": "PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN04NR": {
+  "cotes_page": [],
+  "libelle": "PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CCPN04RE": {
+  "cotes_page": [],
+  "libelle": "PIEDS NOIRS AVEC ACCROCHE",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CHA02NR": {
+  "cotes_page": [],
+  "libelle": "CCP04BL-M1 CCP04NR-M1 CHARIOT NOIR",
+  "page": 125,
+  "pdf": 63,
+  "titres_page": [
+   "CHARLOTTE",
+   "LA CLASSIQUE",
+   "TIUDORP TIUDORP TIUDORP TIUDORP"
+  ]
+ },
+ "CHA03NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TSE03GR TECSEAT MEETING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "CHE01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 191,
+  "pdf": 96,
+  "titres_page": [
+   "CHEYENNE",
+   "TIUDORP kg",
+   "191"
+  ]
+ },
+ "CHE01NRRE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 191,
+  "pdf": 96,
+  "titres_page": [
+   "CHEYENNE",
+   "TIUDORP kg",
+   "191"
+  ]
+ },
+ "CONF01NR": {
+  "cotes_page": [
+   33.0,
+   44.5,
+   45.5,
+   53.0,
+   57.5,
+   64.0,
+   67.0
+  ],
+  "libelle": "",
+  "page": 99,
+  "pdf": 50,
+  "titres_page": [
+   "CONFORTIS Notre tout nouveau siège opérateur",
+   "TIUDORP kg 49-58 mc"
+  ]
+ },
+ "COQU01BLA-TEC": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "COQU01GR-TEC": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "COQU01NR-TEC": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "COS01GF": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 63,
+  "pdf": 32,
+  "titres_page": [
+   "COSY",
+   "TIUDORP 5ANS kg"
+  ]
+ },
+ "COS01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 63,
+  "pdf": 32,
+  "titres_page": [
+   "COSY",
+   "TIUDORP 5ANS kg"
+  ]
+ },
+ "CQPC61NRNR": {
+  "cotes_page": [],
+  "libelle": "COIGNY MAX STRUCTURE",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN05BLBL": {
+  "cotes_page": [],
+  "libelle": "COIGNY COLOR",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN05GCGC": {
+  "cotes_page": [],
+  "libelle": "COIGNY COLOR",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN05NRNR": {
+  "cotes_page": [],
+  "libelle": "COIGNY COLOR",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41BL": {
+  "cotes_page": [],
+  "libelle": "CQPN41GC CQPN41BLBL",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41BLBL": {
+  "cotes_page": [],
+  "libelle": "COIGNY ECO",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41GC": {
+  "cotes_page": [],
+  "libelle": "COIGNY ECO",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41GR": {
+  "cotes_page": [],
+  "libelle": "CQPN41GC CQPN41BLBL",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41NRNR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41SN": {
+  "cotes_page": [],
+  "libelle": "CQPN41GC CQPN41BLBL",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41VE": {
+  "cotes_page": [],
+  "libelle": "COIGNY ECO",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN41VT": {
+  "cotes_page": [],
+  "libelle": "COIGNY ECO",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CQPN61NR": {
+  "cotes_page": [],
+  "libelle": "COIGNY MAX STRUCTURE",
+  "page": 127,
+  "pdf": 64,
+  "titres_page": [
+   "COIGNY",
+   "TIUDORP TIUDORP",
+   "TIUDORP TIUDORP BS 5852",
+   "127"
+  ]
+ },
+ "CRAFT01NRGR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 192,
+  "pdf": 97,
+  "titres_page": [
+   "E-CRAFT",
+   "TIUDORP",
+   "192"
+  ]
+ },
+ "CRAFT01NRRE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 192,
+  "pdf": 97,
+  "titres_page": [
+   "E-CRAFT",
+   "TIUDORP",
+   "192"
+  ]
+ },
+ "CULB01BC": {
+  "cotes_page": [],
+  "libelle": "CTB 117 EN12520 BIFMAX5.1",
+  "page": 117,
+  "pdf": 59,
+  "titres_page": [
+   "CULBUTO",
+   "TIUDORP kg 3ANS",
+   "117"
+  ]
+ },
+ "CULB01GR": {
+  "cotes_page": [],
+  "libelle": "CTB 117 EN12520 BIFMAX5.1",
+  "page": 117,
+  "pdf": 59,
+  "titres_page": [
+   "CULBUTO",
+   "TIUDORP kg 3ANS",
+   "117"
+  ]
+ },
+ "CULB01NR": {
+  "cotes_page": [],
+  "libelle": "CTB 117 EN12520 BIFMAX5.1",
+  "page": 117,
+  "pdf": 59,
+  "titres_page": [
+   "CULBUTO",
+   "TIUDORP kg 3ANS",
+   "117"
+  ]
+ },
+ "CULB01RG": {
+  "cotes_page": [],
+  "libelle": "CTB 117 EN12520 BIFMAX5.1",
+  "page": 117,
+  "pdf": 59,
+  "titres_page": [
+   "CULBUTO",
+   "TIUDORP kg 3ANS",
+   "117"
+  ]
+ },
+ "DCD01BLA-PP": {
+  "cotes_page": [
+   40.0,
+   42.0,
+   45.0,
+   46.0,
+   47.0,
+   49.0,
+   94.0
+  ],
+  "libelle": "",
+  "page": 123,
+  "pdf": 62,
+  "titres_page": [
+   "DACADA",
+   "TIUDORP TIUDORP les 2 mc",
+   "123"
+  ]
+ },
+ "DCD01GR": {
+  "cotes_page": [
+   40.0,
+   42.0,
+   45.0,
+   46.0,
+   47.0,
+   49.0,
+   94.0
+  ],
+  "libelle": "",
+  "page": 123,
+  "pdf": 62,
+  "titres_page": [
+   "DACADA",
+   "TIUDORP TIUDORP les 2 mc",
+   "123"
+  ]
+ },
+ "DCD01GR-PP": {
+  "cotes_page": [
+   40.0,
+   42.0,
+   45.0,
+   46.0,
+   47.0,
+   49.0,
+   94.0
+  ],
+  "libelle": "",
+  "page": 123,
+  "pdf": 62,
+  "titres_page": [
+   "DACADA",
+   "TIUDORP TIUDORP les 2 mc",
+   "123"
+  ]
+ },
+ "DCD01NR": {
+  "cotes_page": [
+   40.0,
+   42.0,
+   45.0,
+   46.0,
+   47.0,
+   49.0,
+   94.0
+  ],
+  "libelle": "",
+  "page": 123,
+  "pdf": 62,
+  "titres_page": [
+   "DACADA",
+   "TIUDORP TIUDORP les 2 mc",
+   "123"
+  ]
+ },
+ "DCD01NR-PP": {
+  "cotes_page": [
+   40.0,
+   42.0,
+   45.0,
+   46.0,
+   47.0,
+   49.0,
+   94.0
+  ],
+  "libelle": "",
+  "page": 123,
+  "pdf": 62,
+  "titres_page": [
+   "DACADA",
+   "TIUDORP TIUDORP les 2 mc",
+   "123"
+  ]
+ },
+ "DES01BL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 79,
+  "pdf": 40,
+  "titres_page": [
+   "DESIGNER UNICOLOR",
+   "ISO Maille tendue 095 fixée sur c2ad5re5 en nylon 0131-0021 ACCOUDOIRS",
+   "ASSISE 065-064"
+  ]
+ },
+ "DES01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 79,
+  "pdf": 40,
+  "titres_page": [
+   "DESIGNER UNICOLOR",
+   "ISO Maille tendue 095 fixée sur c2ad5re5 en nylon 0131-0021 ACCOUDOIRS",
+   "ASSISE 065-064"
+  ]
+ },
+ "DES01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 79,
+  "pdf": 40,
+  "titres_page": [
+   "DESIGNER UNICOLOR",
+   "ISO Maille tendue 095 fixée sur c2ad5re5 en nylon 0131-0021 ACCOUDOIRS",
+   "ASSISE 065-064"
+  ]
+ },
+ "EGG01BE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG01MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG01BL": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG01MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG01GR": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "FENÊTRE",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG01MA": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "FENÊTRE",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG01VE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "FENÊTRE",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG02BE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG02MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG02BL": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG02MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG02GR": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES NOIRES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG02MA": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES NOIRES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG02VE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES NOIRES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG03BE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG03MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG03BL": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG03MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG03GR": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES PYRAMIDAL CHROMÉES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG03MA": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES PYRAMIDAL CHROMÉES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG04BE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG04MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG04BL": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "EGG04MA",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG04GR": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES PYRAMIDAL CHROMÉES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG04MA": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES PYRAMIDAL CHROMÉES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "EGG04VE": {
+  "cotes_page": [
+   35.0,
+   45.0,
+   46.0,
+   48.0,
+   50.0,
+   53.0,
+   54.0,
+   58.5,
+   59.0
+  ],
+  "libelle": "ROULETTES PYRAMIDAL CHROMÉES",
+  "page": 105,
+  "pdf": 53,
+  "titres_page": [
+   "EGGY Choisissez vos",
+   "100 3ANS BSCI TIUDORP"
+  ]
+ },
+ "ELP01BC": {
+  "cotes_page": [],
+  "libelle": "EN12520 EN581-2 UV FAUTEUIL",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP01BLA": {
+  "cotes_page": [],
+  "libelle": "EN12520 EN581-2 UV FAUTEUIL",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP01GR": {
+  "cotes_page": [],
+  "libelle": "EN12520 EN581-2 UV FAUTEUIL",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP01VE": {
+  "cotes_page": [],
+  "libelle": "EN12520 EN581-2 UV FAUTEUIL",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP02BLA": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP02GC": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP02GF": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ELP02NR": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 147,
+  "pdf": 74,
+  "titres_page": [
+   "ELPHI",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "ERM01NRAL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 190,
+  "pdf": 96,
+  "titres_page": [
+   "ERGO METAL",
+   "TIUDORP kg",
+   "190"
+  ]
+ },
+ "ETL02NR": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "ETL05NR": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "ETL10AL": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "ETR02NR": {
+  "cotes_page": [
+   46.0,
+   51.0
+  ],
+  "libelle": "",
+  "page": 65,
+  "pdf": 33,
+  "titres_page": [
+   "ERGOSTAR ULTRA",
+   "TIUDORP 8ANS BSCI kg mc 9.36",
+   "5.331-221"
+  ]
+ },
+ "ETR03NR": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "GENCOD",
+  "page": 67,
+  "pdf": 34,
+  "titres_page": [
+   "ERGOSTAR ULTRA VELVET",
+   "TIUDORP DOSSIER 086-036 Revêtement du dessus : Soft en Polyuréthane",
+   "à réglage automatique 5341-0911"
+  ]
+ },
+ "FED01NRNR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 73,
+  "pdf": 37,
+  "titres_page": [
+   "FEDO",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "FED02BLBLA": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 73,
+  "pdf": 37,
+  "titres_page": [
+   "FEDO",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "FED02GRBLA": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 73,
+  "pdf": 37,
+  "titres_page": [
+   "FEDO",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "FED03NRNR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 73,
+  "pdf": 37,
+  "titres_page": [
+   "FEDO",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "FME01GR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   47.0,
+   59.0,
+   64.0,
+   131.0
+  ],
+  "libelle": "",
+  "page": 182,
+  "pdf": 92,
+  "titres_page": [
+   "PHOENIX & TANIX",
+   "TIUDORP 185 mc kg 54 ISO",
+   "54 TIUDORP mc FSC",
+   "182"
+  ]
+ },
+ "FME01NR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   47.0,
+   59.0,
+   64.0,
+   131.0
+  ],
+  "libelle": "",
+  "page": 182,
+  "pdf": 92,
+  "titres_page": [
+   "PHOENIX & TANIX",
+   "TIUDORP 185 mc kg 54 ISO",
+   "54 TIUDORP mc FSC",
+   "182"
+  ]
+ },
+ "FMTK01BX": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 173,
+  "pdf": 87,
+  "titres_page": [
+   "TECKNET 2.0 & TANET",
+   "TIUDORP kg kg"
+  ]
+ },
+ "FMTK01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 173,
+  "pdf": 87,
+  "titres_page": [
+   "TECKNET 2.0 & TANET",
+   "TIUDORP kg kg"
+  ]
+ },
+ "FMTK01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 173,
+  "pdf": 87,
+  "titres_page": [
+   "TECKNET 2.0 & TANET",
+   "TIUDORP kg kg"
+  ]
+ },
+ "GAL01BLA": {
+  "cotes_page": [
+   47.0,
+   49.0,
+   50.0,
+   55.5,
+   60.0,
+   79.0,
+   88.0
+  ],
+  "libelle": "",
+  "page": 55,
+  "pdf": 28,
+  "titres_page": [
+   "GALET",
+   "TIUDORP 2ANS",
+   "GIRO"
+  ]
+ },
+ "GAL02BLA": {
+  "cotes_page": [
+   47.0,
+   49.0,
+   50.0,
+   55.5,
+   60.0,
+   79.0,
+   88.0
+  ],
+  "libelle": "",
+  "page": 55,
+  "pdf": 28,
+  "titres_page": [
+   "GALET",
+   "TIUDORP 2ANS",
+   "GIRO"
+  ]
+ },
+ "GAS01CH": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "GAS01NR": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "GAS02NR": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "GIR01BS": {
+  "cotes_page": [
+   47.0,
+   49.0,
+   50.0,
+   55.5,
+   60.0,
+   79.0,
+   88.0
+  ],
+  "libelle": "BSCI SEDEX FSC GRS 4.0",
+  "page": 55,
+  "pdf": 28,
+  "titres_page": [
+   "GALET",
+   "TIUDORP 2ANS",
+   "GIRO"
+  ]
+ },
+ "GIR01NR": {
+  "cotes_page": [
+   47.0,
+   49.0,
+   50.0,
+   55.5,
+   60.0,
+   79.0,
+   88.0
+  ],
+  "libelle": "BSCI SEDEX FSC GRS 4.0",
+  "page": 55,
+  "pdf": 28,
+  "titres_page": [
+   "GALET",
+   "TIUDORP 2ANS",
+   "GIRO"
+  ]
+ },
+ "GUA01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 163,
+  "pdf": 82,
+  "titres_page": [
+   "GUALI",
+   "TIUDORP kg",
+   "163"
+  ]
+ },
+ "HEAV01NR": {
+  "cotes_page": [
+   20.0,
+   44.0,
+   48.0,
+   51.0,
+   52.0,
+   60.0,
+   68.0,
+   69.0,
+   76.0
+  ],
+  "libelle": "",
+  "page": 69,
+  "pdf": 35,
+  "titres_page": [
+   "HEAVY",
+   "5.231-5.321 36 mc",
+   "CTB 117 SA 8000 BS5459 200 44 cm 7.921-.7.011"
+  ]
+ },
+ "HEAV02NR": {
+  "cotes_page": [
+   20.0,
+   44.0,
+   48.0,
+   51.0,
+   52.0,
+   60.0,
+   68.0,
+   69.0,
+   76.0
+  ],
+  "libelle": "",
+  "page": 69,
+  "pdf": 35,
+  "titres_page": [
+   "HEAVY",
+   "5.231-5.321 36 mc",
+   "CTB 117 SA 8000 BS5459 200 44 cm 7.921-.7.011"
+  ]
+ },
+ "HEAV02NR-PU": {
+  "cotes_page": [
+   20.0,
+   44.0,
+   48.0,
+   51.0,
+   52.0,
+   60.0,
+   68.0,
+   69.0,
+   76.0
+  ],
+  "libelle": "",
+  "page": 69,
+  "pdf": 35,
+  "titres_page": [
+   "HEAVY",
+   "5.231-5.321 36 mc",
+   "CTB 117 SA 8000 BS5459 200 44 cm 7.921-.7.011"
+  ]
+ },
+ "KAF01BLA": {
+  "cotes_page": [
+   60.0,
+   75.0,
+   110.0
+  ],
+  "libelle": "PLATEAU",
+  "page": 141,
+  "pdf": 71,
+  "titres_page": [
+   "KAFET’ Pour équiper vos espaces de cafétéria en toute élégance.",
+   "TIUDORP 2ANS 9001 14001 45001 60 cm 60 cm",
+   "141"
+  ]
+ },
+ "KAF01BS": {
+  "cotes_page": [
+   60.0,
+   75.0,
+   110.0
+  ],
+  "libelle": "PLATEAU",
+  "page": 141,
+  "pdf": 71,
+  "titres_page": [
+   "KAFET’ Pour équiper vos espaces de cafétéria en toute élégance.",
+   "TIUDORP 2ANS 9001 14001 45001 60 cm 60 cm",
+   "141"
+  ]
+ },
+ "KAF02BLA": {
+  "cotes_page": [
+   60.0,
+   75.0,
+   110.0
+  ],
+  "libelle": "PLATEAU",
+  "page": 141,
+  "pdf": 71,
+  "titres_page": [
+   "KAFET’ Pour équiper vos espaces de cafétéria en toute élégance.",
+   "TIUDORP 2ANS 9001 14001 45001 60 cm 60 cm",
+   "141"
+  ]
+ },
+ "KAF02BS": {
+  "cotes_page": [
+   60.0,
+   75.0,
+   110.0
+  ],
+  "libelle": "PLATEAU",
+  "page": 141,
+  "pdf": 71,
+  "titres_page": [
+   "KAFET’ Pour équiper vos espaces de cafétéria en toute élégance.",
+   "TIUDORP 2ANS 9001 14001 45001 60 cm 60 cm",
+   "141"
+  ]
+ },
+ "KAN01BE-M1": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ FAUTEUIL KAN01MA-PU KAN02MA-PU",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN01GR-M1": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ FAUTEUIL KAN01MA-PU KAN02MA-PU",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN01MA-PU": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN01NR-PU": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ FAUTEUIL KAN01MA-PU KAN02MA-PU",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN02BE-M1": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ FAUTEUIL KAN01MA-PU KAN02MA-PU",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN02GR-M1": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ FAUTEUIL KAN01MA-PU KAN02MA-PU",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN02MA-PU": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAN02NR-PU": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "CANAPÉ FAUTEUIL KAN01MA-PU KAN02MA-PU",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KAR01GF": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POISE",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR01VE": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POISE",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR02GF": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POUF",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR02VE": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POUF",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR03BL": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POUF",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR03GF": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POUF",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR03JA": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POUF",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KAR03VE": {
+  "cotes_page": [
+   42.0,
+   50.0,
+   66.5,
+   107.0,
+   124.5
+  ],
+  "libelle": "POUF",
+  "page": 41,
+  "pdf": 21,
+  "titres_page": [
+   "KARRE",
+   "TIUDORP"
+  ]
+ },
+ "KHG02BLBL": {
+  "cotes_page": [
+   43.0,
+   45.5,
+   46.0,
+   48.0,
+   57.5,
+   65.0
+  ],
+  "libelle": "",
+  "page": 107,
+  "pdf": 54,
+  "titres_page": [
+   "KHONG",
+   "TIUDORP 3ANS 9001 mc",
+   "107"
+  ]
+ },
+ "KHG02GRBLA": {
+  "cotes_page": [
+   43.0,
+   45.5,
+   46.0,
+   48.0,
+   57.5,
+   65.0
+  ],
+  "libelle": "",
+  "page": 107,
+  "pdf": 54,
+  "titres_page": [
+   "KHONG",
+   "TIUDORP 3ANS 9001 mc",
+   "107"
+  ]
+ },
+ "KHG03BL": {
+  "cotes_page": [
+   43.0,
+   45.5,
+   46.0,
+   48.0,
+   57.5,
+   65.0
+  ],
+  "libelle": "",
+  "page": 107,
+  "pdf": 54,
+  "titres_page": [
+   "KHONG",
+   "TIUDORP 3ANS 9001 mc",
+   "107"
+  ]
+ },
+ "KOUS01BLA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KOUS01GR": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS01JA": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS01RS": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS01VE": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS01VJA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KOUS01VTE": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KOUS02BLA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KOUS02GR": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS02JA": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS02RS": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS02VE": {
+  "cotes_page": [
+   45.0,
+   53.0,
+   71.0,
+   76.0,
+   133.0
+  ],
+  "libelle": "",
+  "page": 37,
+  "pdf": 19,
+  "titres_page": [
+   "KANAP’",
+   "TIUDORP 57 53 cm 57 07 57 57 07"
+  ]
+ },
+ "KOUS02VJA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KOUS02VTE": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KOUS03GR-VER": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "KOUS03JA-VER": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "KOUS03RG-VER": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "KOUS03VE-VER": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "KOUS05BE-ARC": {
+  "cotes_page": [
+   45.0
+  ],
+  "libelle": "EGAP COUSSINS",
+  "page": 50,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO BANQUETTE",
+   "ARCO COUSSINS",
+   "TIUDORP"
+  ]
+ },
+ "KOUS05BL-ARC": {
+  "cotes_page": [
+   45.0
+  ],
+  "libelle": "EGAP COUSSINS",
+  "page": 50,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO BANQUETTE",
+   "ARCO COUSSINS",
+   "TIUDORP"
+  ]
+ },
+ "KOUS05GR-ARC": {
+  "cotes_page": [
+   45.0
+  ],
+  "libelle": "EGAP COUSSINS",
+  "page": 50,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO BANQUETTE",
+   "ARCO COUSSINS",
+   "TIUDORP"
+  ]
+ },
+ "KOUS05JA-ARC": {
+  "cotes_page": [
+   45.0
+  ],
+  "libelle": "EGAP COUSSINS",
+  "page": 50,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO BANQUETTE",
+   "ARCO COUSSINS",
+   "TIUDORP"
+  ]
+ },
+ "KOUS05TE-ARC": {
+  "cotes_page": [
+   45.0
+  ],
+  "libelle": "EGAP COUSSINS",
+  "page": 50,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO BANQUETTE",
+   "ARCO COUSSINS",
+   "TIUDORP"
+  ]
+ },
+ "KOUS05VE-ARC": {
+  "cotes_page": [
+   45.0
+  ],
+  "libelle": "EGAP COUSSINS",
+  "page": 50,
+  "pdf": 26,
+  "titres_page": [
+   "ARCO BANQUETTE",
+   "ARCO COUSSINS",
+   "TIUDORP"
+  ]
+ },
+ "KRF01CH": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "",
+  "page": 198,
+  "pdf": 100,
+  "titres_page": [
+   "NOS KITS ET",
+   "PIÈCES DÉTACHÉES",
+   "Etoile nylon noir 35cm",
+   "SECVIE01_KIT",
+   "+ Vérin standard noir",
+   "+ Roulettes sol dur"
+  ]
+ },
+ "KRF01NR": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "SECVIE02_KIT",
+  "page": 198,
+  "pdf": 100,
+  "titres_page": [
+   "NOS KITS ET",
+   "PIÈCES DÉTACHÉES",
+   "Etoile nylon noir 35cm",
+   "SECVIE01_KIT",
+   "+ Vérin standard noir",
+   "+ Roulettes sol dur"
+  ]
+ },
+ "KUR01BL": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR01BLA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR01GF": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR01VE": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR02BL": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR02BLA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR02GF": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR02VE": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "CANAPÉ 2 PLACES FAUTEUIL",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR03BLA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR03JA": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "KUR03TE": {
+  "cotes_page": [
+   40.0,
+   45.0,
+   58.0,
+   70.0,
+   86.0,
+   87.0,
+   127.0,
+   150.0
+  ],
+  "libelle": "POUF",
+  "page": 39,
+  "pdf": 20,
+  "titres_page": [
+   "KURLY",
+   "TIUDORP 3ANS 127 cm"
+  ]
+ },
+ "LAN01GFGR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE",
+  "page": 97,
+  "pdf": 49,
+  "titres_page": [
+   "LANDO",
+   "TIUDORP BSCI kg"
+  ]
+ },
+ "LAN02GMGR": {
+  "cotes_page": [],
+  "libelle": "APPUI-TÊTE",
+  "page": 97,
+  "pdf": 49,
+  "titres_page": [
+   "LANDO",
+   "TIUDORP BSCI kg"
+  ]
+ },
+ "LIB01NRGR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 188,
+  "pdf": 95,
+  "titres_page": [
+   "LIBERTY",
+   "TIUDORP",
+   "188"
+  ]
+ },
+ "LIB01NRNR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 188,
+  "pdf": 95,
+  "titres_page": [
+   "LIBERTY",
+   "TIUDORP",
+   "188"
+  ]
+ },
+ "LIB01NRRE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 188,
+  "pdf": 95,
+  "titres_page": [
+   "LIBERTY",
+   "TIUDORP",
+   "188"
+  ]
+ },
+ "LOO01BE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO01BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO01GR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO01JA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO01KA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO01NR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO01RE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02BE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02GR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02JA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02KA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02NR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO02RE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03BE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03GR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03JA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03KA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03NR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO03RE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04BE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04GR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04JA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04KA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04NR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO04RE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05BE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05GR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05JA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05KA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05NR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO05RE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO06BE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO06BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO06GR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO06JA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO06NR": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO06RE": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FAUTEUIL PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO07BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO08BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "CHAISE PIED 4 PIEDS PYRAMIDAL BOIS",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LOO09BLA": {
+  "cotes_page": [
+   36.5,
+   42.5,
+   44.5,
+   45.0,
+   47.0,
+   48.0,
+   55.5,
+   56.0,
+   57.0,
+   74.0,
+   110.0
+  ],
+  "libelle": "FENÊTRE HAUT",
+  "page": 133,
+  "pdf": 67,
+  "titres_page": [
+   "TIUDORP GARANTIE ISO 5.74",
+   "3ANS 9001 44.5 cm",
+   "TIUDORP mc mc",
+   "133"
+  ]
+ },
+ "LUG01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 61,
+  "pdf": 31,
+  "titres_page": [
+   "LUG",
+   "TIUDORP kg"
+  ]
+ },
+ "MAC01BL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 45,
+  "pdf": 23,
+  "titres_page": [
+   "MACARON",
+   "TIUDORP",
+   "KIT KIT MACARON",
+   "TIUDORP Gris MAC01GR-KIT Gris MAC01GR"
+  ]
+ },
+ "MAC01BL-KIT": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 45,
+  "pdf": 23,
+  "titres_page": [
+   "MACARON",
+   "TIUDORP",
+   "KIT KIT MACARON",
+   "TIUDORP Gris MAC01GR-KIT Gris MAC01GR"
+  ]
+ },
+ "MAC01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 45,
+  "pdf": 23,
+  "titres_page": [
+   "MACARON",
+   "TIUDORP",
+   "KIT KIT MACARON",
+   "TIUDORP Gris MAC01GR-KIT Gris MAC01GR"
+  ]
+ },
+ "MAC01GR-KIT": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 45,
+  "pdf": 23,
+  "titres_page": [
+   "MACARON",
+   "TIUDORP",
+   "KIT KIT MACARON",
+   "TIUDORP Gris MAC01GR-KIT Gris MAC01GR"
+  ]
+ },
+ "MAC01VE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 45,
+  "pdf": 23,
+  "titres_page": [
+   "MACARON",
+   "TIUDORP",
+   "KIT KIT MACARON",
+   "TIUDORP Gris MAC01GR-KIT Gris MAC01GR"
+  ]
+ },
+ "MAC01VE-KIT": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 45,
+  "pdf": 23,
+  "titres_page": [
+   "MACARON",
+   "TIUDORP",
+   "KIT KIT MACARON",
+   "TIUDORP Gris MAC01GR-KIT Gris MAC01GR"
+  ]
+ },
+ "MAN01GR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   50.0,
+   51.0,
+   56.0,
+   59.0,
+   63.0,
+   64.5,
+   66.0,
+   132.0
+  ],
+  "libelle": "FAUTEUIL",
+  "page": 59,
+  "pdf": 30,
+  "titres_page": [
+   "MANHATTAN",
+   "LIUETUAF RUETISIV 5ANS Uniquement mc mc 36",
+   "kg pour le fauteuil mc 231-5.321 011"
+  ]
+ },
+ "MAN01NR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   50.0,
+   51.0,
+   56.0,
+   59.0,
+   63.0,
+   64.5,
+   66.0,
+   132.0
+  ],
+  "libelle": "FAUTEUIL",
+  "page": 59,
+  "pdf": 30,
+  "titres_page": [
+   "MANHATTAN",
+   "LIUETUAF RUETISIV 5ANS Uniquement mc mc 36",
+   "kg pour le fauteuil mc 231-5.321 011"
+  ]
+ },
+ "MAN02GR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   50.0,
+   51.0,
+   56.0,
+   59.0,
+   63.0,
+   64.5,
+   66.0,
+   132.0
+  ],
+  "libelle": "VISITEUR",
+  "page": 59,
+  "pdf": 30,
+  "titres_page": [
+   "MANHATTAN",
+   "LIUETUAF RUETISIV 5ANS Uniquement mc mc 36",
+   "kg pour le fauteuil mc 231-5.321 011"
+  ]
+ },
+ "MAN02NR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   50.0,
+   51.0,
+   56.0,
+   59.0,
+   63.0,
+   64.5,
+   66.0,
+   132.0
+  ],
+  "libelle": "VISITEUR",
+  "page": 59,
+  "pdf": 30,
+  "titres_page": [
+   "MANHATTAN",
+   "LIUETUAF RUETISIV 5ANS Uniquement mc mc 36",
+   "kg pour le fauteuil mc 231-5.321 011"
+  ]
+ },
+ "NEST01GR": {
+  "cotes_page": [
+   23.0,
+   44.0,
+   44.5,
+   49.0,
+   51.0,
+   60.0,
+   66.0,
+   140.0
+  ],
+  "libelle": "",
+  "page": 95,
+  "pdf": 48,
+  "titres_page": [
+   "NEST",
+   "311-401 mc mc 5.911-5.68",
+   "5.65-5.74 59-07"
+  ]
+ },
+ "NEST01RS": {
+  "cotes_page": [
+   23.0,
+   44.0,
+   44.5,
+   49.0,
+   51.0,
+   60.0,
+   66.0,
+   140.0
+  ],
+  "libelle": "",
+  "page": 95,
+  "pdf": 48,
+  "titres_page": [
+   "NEST",
+   "311-401 mc mc 5.911-5.68",
+   "5.65-5.74 59-07"
+  ]
+ },
+ "NEST01VE": {
+  "cotes_page": [
+   23.0,
+   44.0,
+   44.5,
+   49.0,
+   51.0,
+   60.0,
+   66.0,
+   140.0
+  ],
+  "libelle": "",
+  "page": 95,
+  "pdf": 48,
+  "titres_page": [
+   "NEST",
+   "311-401 mc mc 5.911-5.68",
+   "5.65-5.74 59-07"
+  ]
+ },
+ "NEST02GF": {
+  "cotes_page": [
+   23.0,
+   44.0,
+   44.5,
+   49.0,
+   51.0,
+   60.0,
+   66.0,
+   140.0
+  ],
+  "libelle": "",
+  "page": 95,
+  "pdf": 48,
+  "titres_page": [
+   "NEST",
+   "311-401 mc mc 5.911-5.68",
+   "5.65-5.74 59-07"
+  ]
+ },
+ "NEST03GF": {
+  "cotes_page": [
+   23.0,
+   44.0,
+   44.5,
+   49.0,
+   51.0,
+   60.0,
+   66.0,
+   140.0
+  ],
+  "libelle": "",
+  "page": 95,
+  "pdf": 48,
+  "titres_page": [
+   "NEST",
+   "311-401 mc mc 5.911-5.68",
+   "5.65-5.74 59-07"
+  ]
+ },
+ "OFF01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 175,
+  "pdf": 88,
+  "titres_page": [
+   "OFFSEAT",
+   "TIUDORP 5ANS kg",
+   "175"
+  ]
+ },
+ "OMA01NRNR": {
+  "cotes_page": [
+   47.0,
+   50.0,
+   62.0
+  ],
+  "libelle": "",
+  "page": 183,
+  "pdf": 92,
+  "titres_page": [
+   "OMAHA",
+   "TIUDORP 611-601",
+   "183"
+  ]
+ },
+ "OPN01BL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 180,
+  "pdf": 91,
+  "titres_page": [
+   "OPEN",
+   "TIUDORP",
+   "195 0801-089 190-290"
+  ]
+ },
+ "OPN01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 180,
+  "pdf": 91,
+  "titres_page": [
+   "OPEN",
+   "TIUDORP",
+   "195 0801-089 190-290"
+  ]
+ },
+ "OPN01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 180,
+  "pdf": 91,
+  "titres_page": [
+   "OPEN",
+   "TIUDORP",
+   "195 0801-089 190-290"
+  ]
+ },
+ "PEP01BL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 193,
+  "pdf": 97,
+  "titres_page": [
+   "PEPITO",
+   "TIUDORP",
+   "193"
+  ]
+ },
+ "PEP01BLA": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 193,
+  "pdf": 97,
+  "titres_page": [
+   "PEPITO",
+   "TIUDORP",
+   "193"
+  ]
+ },
+ "PEP01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 193,
+  "pdf": 97,
+  "titres_page": [
+   "PEPITO",
+   "TIUDORP",
+   "193"
+  ]
+ },
+ "PEP01RE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 193,
+  "pdf": 97,
+  "titres_page": [
+   "PEPITO",
+   "TIUDORP",
+   "193"
+  ]
+ },
+ "PEP01RS": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 193,
+  "pdf": 97,
+  "titres_page": [
+   "PEPITO",
+   "TIUDORP",
+   "193"
+  ]
+ },
+ "PLA01BL": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01BL-PU": {
+  "cotes_page": [],
+  "libelle": "mc 064 480 POLYURÉTHANE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01BL2": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01GC": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01GR": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01GR-PU": {
+  "cotes_page": [],
+  "libelle": "mc 064 480 POLYURÉTHANE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01NR": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01NR-PU": {
+  "cotes_page": [],
+  "libelle": "mc 064 480 POLYURÉTHANE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01RG": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01TA": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01TA-PU": {
+  "cotes_page": [],
+  "libelle": "mc 064 480 POLYURÉTHANE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "PLA01VE": {
+  "cotes_page": [],
+  "libelle": "TISSU",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "POL01NRNR": {
+  "cotes_page": [],
+  "libelle": "TISSU MAILLE",
+  "page": 75,
+  "pdf": 38,
+  "titres_page": [
+   "POLAR Le fauteuil plébicité dans les projets",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "POL02GRGR": {
+  "cotes_page": [],
+  "libelle": "TISSU MAILLE",
+  "page": 75,
+  "pdf": 38,
+  "titres_page": [
+   "POLAR Le fauteuil plébicité dans les projets",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "POL02NRNR": {
+  "cotes_page": [],
+  "libelle": "TISSU MAILLE",
+  "page": 75,
+  "pdf": 38,
+  "titres_page": [
+   "POLAR Le fauteuil plébicité dans les projets",
+   "TIUDORP 8ANS BSCI kg"
+  ]
+ },
+ "PROS01NR": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "TOUT MAILLE",
+  "page": 93,
+  "pdf": 47,
+  "titres_page": [
+   "PROSEAT V2",
+   "Revêtement: 5431-5111 5611-0201 Maille, 60% Elastomère (Hytrel) & 40% "
+  ]
+ },
+ "PROS02NR": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "TOUT MAILLE",
+  "page": 93,
+  "pdf": 47,
+  "titres_page": [
+   "PROSEAT V2",
+   "Revêtement: 5431-5111 5611-0201 Maille, 60% Elastomère (Hytrel) & 40% "
+  ]
+ },
+ "PSN05NR": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "ETL05NR ETL10AL RSN05NA_AR RSN05NR_AR1",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "RJ-PROS01NR": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "TOUT MAILLE",
+  "page": 93,
+  "pdf": 47,
+  "titres_page": [
+   "PROSEAT V2",
+   "Revêtement: 5431-5111 5611-0201 Maille, 60% Elastomère (Hytrel) & 40% "
+  ]
+ },
+ "RSN05CH-AR4": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "ETL05NR ETL10AL RSN05NA_AR RSN05NR_AR1",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "RSN05GM-AR6": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "ETL05NR ETL10AL RSN05NA_AR RSN05NR_AR1",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "RSN05NR-AR5": {
+  "cotes_page": [
+   30.0,
+   35.0
+  ],
+  "libelle": "ETL05NR ETL10AL RSN05NA_AR RSN05NR_AR1",
+  "page": 199,
+  "pdf": 100,
+  "titres_page": [
+   "ACCESSOIRES REF",
+   "Vérin standard noir GAS01NR",
+   "Vérin standard chrome GAS01CH",
+   "Vérin grande longueur GAS02NR",
+   "Étoile nylon noir rayon 30cm ETL02NR",
+   "Étoile nylon noir rayon 35cm ETL05NR"
+  ]
+ },
+ "SCT05NRNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "APPUI- TÊTE",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SCT07BLNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "APPUI- TÊTE",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SCT07GRNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "APPUI- TÊTE",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SCT07NRNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "APPUI- TÊTE",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SCT08NRNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "APPUI- TÊTE",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SCT25NRNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SCY17NRNR": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0,
+   51.0,
+   55.0
+  ],
+  "libelle": "",
+  "page": 179,
+  "pdf": 90,
+  "titres_page": [
+   "SCOTT",
+   "TIUDORP TIUDORP kg TIUDORP kg BIFMAX5.1 mc",
+   "179"
+  ]
+ },
+ "SDCP01NR": {
+  "cotes_page": [],
+  "libelle": "BUDGET",
+  "page": 162,
+  "pdf": 82,
+  "titres_page": [
+   "STENO & BUDGET",
+   "TIUDORP TIUDORP kg",
+   "162"
+  ]
+ },
+ "SDSL02NR": {
+  "cotes_page": [],
+  "libelle": "BUDGET",
+  "page": 162,
+  "pdf": 82,
+  "titres_page": [
+   "STENO & BUDGET",
+   "TIUDORP TIUDORP kg",
+   "162"
+  ]
+ },
+ "SECVIE01_KIT": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "",
+  "page": 198,
+  "pdf": 100,
+  "titres_page": [
+   "NOS KITS ET",
+   "PIÈCES DÉTACHÉES",
+   "Etoile nylon noir 35cm",
+   "SECVIE01_KIT",
+   "+ Vérin standard noir",
+   "+ Roulettes sol dur"
+  ]
+ },
+ "SECVIE02_KIT": {
+  "cotes_page": [
+   35.0
+  ],
+  "libelle": "SECVIE01_KIT",
+  "page": 198,
+  "pdf": 100,
+  "titres_page": [
+   "NOS KITS ET",
+   "PIÈCES DÉTACHÉES",
+   "Etoile nylon noir 35cm",
+   "SECVIE01_KIT",
+   "+ Vérin standard noir",
+   "+ Roulettes sol dur"
+  ]
+ },
+ "SHE01BL": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 81,
+  "pdf": 41,
+  "titres_page": [
+   "SHERMAN",
+   "TIUDORP kg"
+  ]
+ },
+ "SHE01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 81,
+  "pdf": 41,
+  "titres_page": [
+   "SHERMAN",
+   "TIUDORP kg"
+  ]
+ },
+ "SHE01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 81,
+  "pdf": 41,
+  "titres_page": [
+   "SHERMAN",
+   "TIUDORP kg"
+  ]
+ },
+ "SHE03MA": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 83,
+  "pdf": 42,
+  "titres_page": [
+   "SHERMAN CHIC Toute l’ergonomie du Sherman",
+   "TIUDORP kg"
+  ]
+ },
+ "SHE03NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 83,
+  "pdf": 42,
+  "titres_page": [
+   "SHERMAN CHIC Toute l’ergonomie du Sherman",
+   "TIUDORP kg"
+  ]
+ },
+ "SHI01GR": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI02TE",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI01JA": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI01GR",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI01TE": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI01TU": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI02GR": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI02TE",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI02JA": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI02GR",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI02TE": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "PYRAMIDAL",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI02TU": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "PYRAMIDAL",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI03GR": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI03TE",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI03JA": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI03GR",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI03TE": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "PYRAMIDAL",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI03TU": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "PYRAMIDAL",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI04GR": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI04TE",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI04JA": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "SHI04GR",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI04TE": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "PYRAMIDAL",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SHI04TU": {
+  "cotes_page": [
+   39.0,
+   42.0,
+   44.0,
+   44.5,
+   56.0,
+   58.0,
+   60.0
+  ],
+  "libelle": "PYRAMIDAL",
+  "page": 103,
+  "pdf": 52,
+  "titres_page": [
+   "SHINEO",
+   "Epaisseur: 5 TIUDORP cm"
+  ]
+ },
+ "SPA01NR": {
+  "cotes_page": [
+   24.0
+  ],
+  "libelle": "ACCESSOIRE",
+  "page": 115,
+  "pdf": 58,
+  "titres_page": [
+   "SPACEMESH",
+   "TIUDORP kg",
+   "115"
+  ]
+ },
+ "SPO01NR": {
+  "cotes_page": [
+   45.3,
+   55.0
+  ],
+  "libelle": "",
+  "page": 54,
+  "pdf": 28,
+  "titres_page": [
+   "SPOT",
+   "TIUDORP",
+   "SQUARE",
+   "TIUDORP 2ANS 9001 14001 45001 55 cm"
+  ]
+ },
+ "SQU01BLA": {
+  "cotes_page": [
+   45.3,
+   55.0
+  ],
+  "libelle": "FSC BSCI SEDEX GRS 4.0 PLATEAU",
+  "page": 54,
+  "pdf": 28,
+  "titres_page": [
+   "SPOT",
+   "TIUDORP",
+   "SQUARE",
+   "TIUDORP 2ANS 9001 14001 45001 55 cm"
+  ]
+ },
+ "SQU01BS": {
+  "cotes_page": [
+   45.3,
+   55.0
+  ],
+  "libelle": "FSC BSCI SEDEX GRS 4.0 PLATEAU",
+  "page": 54,
+  "pdf": 28,
+  "titres_page": [
+   "SPOT",
+   "TIUDORP",
+   "SQUARE",
+   "TIUDORP 2ANS 9001 14001 45001 55 cm"
+  ]
+ },
+ "SQU01NR": {
+  "cotes_page": [
+   45.3,
+   55.0
+  ],
+  "libelle": "FSC BSCI SEDEX GRS 4.0 PLATEAU",
+  "page": 54,
+  "pdf": 28,
+  "titres_page": [
+   "SPOT",
+   "TIUDORP",
+   "SQUARE",
+   "TIUDORP 2ANS 9001 14001 45001 55 cm"
+  ]
+ },
+ "STA01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 173,
+  "pdf": 87,
+  "titres_page": [
+   "TECKNET 2.0 & TANET",
+   "TIUDORP kg kg"
+  ]
+ },
+ "STRP2-SEAT": {
+  "cotes_page": [],
+  "libelle": "EGAP POUTRE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "STRP3-SEAT": {
+  "cotes_page": [],
+  "libelle": "EGAP POUTRE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "STRP4-SEAT": {
+  "cotes_page": [],
+  "libelle": "EGAP POUTRE",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "SYNER01BE-MS-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "ACCESSOIRE Paire",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01BE-PU-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01BE-TS-TS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01BL-MS-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "ACCESSOIRE Paire",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01BL-MS-TS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "DOSSIER COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01BL-PU-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01BL-TS-TS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01GF-MS-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "ACCESSOIRE Paire",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01GF-MS-TS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "DOSSIER COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01GF-PU-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01GF-TS-TS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01NR-PU-MS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "ACCESSOIRE Paire",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01NR-PU-PU": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01NR-TS-MS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "DOSSIER COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "SYNER01NR-TS-TS": {
+  "cotes_page": [
+   43.0,
+   46.0,
+   49.0,
+   59.5
+  ],
+  "libelle": "COULEURS",
+  "page": 121,
+  "pdf": 61,
+  "titres_page": [
+   "TIUDORP mc",
+   "SYNERGY MAILLE ACCOUDOIRS",
+   "SYNERGY TISSU",
+   "SYNERGY CHIC",
+   "121"
+  ]
+ },
+ "TAAD01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 164,
+  "pdf": 83,
+  "titres_page": [
+   "JOLLY",
+   "TIUDORP",
+   "164"
+  ]
+ },
+ "TAB01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 165,
+  "pdf": 83,
+  "titres_page": [
+   "TAB L’assis-debout et !",
+   "TIUDORP 185",
+   "165"
+  ]
+ },
+ "TAN01NR": {
+  "cotes_page": [
+   45.0,
+   46.0,
+   47.0,
+   59.0,
+   64.0,
+   131.0
+  ],
+  "libelle": "",
+  "page": 182,
+  "pdf": 92,
+  "titres_page": [
+   "PHOENIX & TANIX",
+   "TIUDORP 185 mc kg 54 ISO",
+   "54 TIUDORP mc FSC",
+   "182"
+  ]
+ },
+ "TAS01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 181,
+  "pdf": 91,
+  "titres_page": [
+   "TAOS",
+   "TIUDORP 190",
+   "181"
+  ]
+ },
+ "TAS01NRGR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 181,
+  "pdf": 91,
+  "titres_page": [
+   "TAOS",
+   "TIUDORP 190",
+   "181"
+  ]
+ },
+ "TBT01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 52,
+  "pdf": 27,
+  "titres_page": [
+   "TIUDORP",
+   "3ANS 460 cm 460 cm 460 cm mc"
+  ]
+ },
+ "TCY01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 177,
+  "pdf": 89,
+  "titres_page": [
+   "TECSY",
+   "TIUDORP TIUDORP",
+   "177"
+  ]
+ },
+ "TCY02BE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 177,
+  "pdf": 89,
+  "titres_page": [
+   "TECSY",
+   "TIUDORP TIUDORP",
+   "177"
+  ]
+ },
+ "TCY02GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 177,
+  "pdf": 89,
+  "titres_page": [
+   "TECSY",
+   "TIUDORP TIUDORP",
+   "177"
+  ]
+ },
+ "TCY03NR-BE": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY03NR-BL": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY03NR-GR": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY03NR-NR": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TECSY DESSINATEUR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY03NR-TA": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05BE-BE": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05BE-JA": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-GR TCY03NR-GR TCY05BE-BE -",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05BE-TE": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05BE-VT -",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05BE-VT": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-GR TCY03NR-GR TCY05BE-BE -",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 91,
+  "pdf": 46,
+  "titres_page": [
+   "TECSY CHIC & PLATINIUM",
+   "TECSY TECSY",
+   "CHIC PLATINIUM",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "TCY05NR-BE": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05NR-BL": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05NR-GR": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05NR-NR": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TECSY CONCEPT",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TCY05NR-PU": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 91,
+  "pdf": 46,
+  "titres_page": [
+   "TECSY CHIC & PLATINIUM",
+   "TECSY TECSY",
+   "CHIC PLATINIUM",
+   "TIUDORP TIUDORP"
+  ]
+ },
+ "TCY05NR-RH": {
+  "cotes_page": [
+   45.0,
+   49.0,
+   50.0
+  ],
+  "libelle": "",
+  "page": 89,
+  "pdf": 45,
+  "titres_page": [
+   "TECSY ALTO",
+   "TIUDORP kg 5.411-001"
+  ]
+ },
+ "TCY05NR-TA": {
+  "cotes_page": [
+   23.5,
+   47.0,
+   48.0,
+   51.0,
+   67.0,
+   70.0,
+   76.0,
+   124.0
+  ],
+  "libelle": "TCY05NR-NR TCY03NR-NR",
+  "page": 87,
+  "pdf": 44,
+  "titres_page": [
+   "TIUDORP TIUDORP",
+   "mc 421-501 +"
+  ]
+ },
+ "TED01BLA": {
+  "cotes_page": [
+   86.0
+  ],
+  "libelle": "",
+  "page": 43,
+  "pdf": 22,
+  "titres_page": [
+   "TEDDY Teddy vous accueille sur son",
+   "TIUDORP 3ANS 9001"
+  ]
+ },
+ "TED01GR": {
+  "cotes_page": [
+   86.0
+  ],
+  "libelle": "",
+  "page": 43,
+  "pdf": 22,
+  "titres_page": [
+   "TEDDY Teddy vous accueille sur son",
+   "TIUDORP 3ANS 9001"
+  ]
+ },
+ "TET01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 173,
+  "pdf": 87,
+  "titres_page": [
+   "TECKNET 2.0 & TANET",
+   "TIUDORP kg kg"
+  ]
+ },
+ "TSE01BLA": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE01GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE01NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE02BLA": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE02GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE03GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE03NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE04BLA": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TSE03GR TECSEAT MEETING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE04GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TSE03GR TECSEAT MEETING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE04NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TSE03GR TECSEAT MEETING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE05BLA": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TUP03GR TECSEAT LEARNING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE05GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TUP03GR TECSEAT LEARNING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TSE05NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TUP03GR TECSEAT LEARNING",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP01BLA": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP01GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP01NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP02BLA": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP02GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP03GR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TUP03NR": {
+  "cotes_page": [
+   21.0,
+   30.0,
+   39.5,
+   45.0,
+   46.0,
+   52.0,
+   53.5,
+   62.0
+  ],
+  "libelle": "TECSUP (HAUTE)",
+  "page": 113,
+  "pdf": 57,
+  "titres_page": [
+   "TIUDORP",
+   "5ANS",
+   "5ANS 34",
+   "3ANS 94",
+   "113"
+  ]
+ },
+ "TWI01BC": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "TWI01BF": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "TWI01BLA": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "TWI01GR": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "TWI01JA": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "TWI01RE": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "TWI01VE": {
+  "cotes_page": [
+   30.0
+  ],
+  "libelle": "GRS 4.0 FSC EN12520 UV",
+  "page": 135,
+  "pdf": 68,
+  "titres_page": [
+   "TWIST",
+   "TIUDORP 45001",
+   "135"
+  ]
+ },
+ "VAS01GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 171,
+  "pdf": 86,
+  "titres_page": [
+   "VASEAT",
+   "140",
+   "TIUDORP 5ANS 9001 14001"
+  ]
+ },
+ "VAS01NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 171,
+  "pdf": 86,
+  "titres_page": [
+   "VASEAT",
+   "140",
+   "TIUDORP 5ANS 9001 14001"
+  ]
+ },
+ "VAS02NR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 171,
+  "pdf": 86,
+  "titres_page": [
+   "VASEAT",
+   "140",
+   "TIUDORP 5ANS 9001 14001"
+  ]
+ },
+ "VER01BE": {
+  "cotes_page": [],
+  "libelle": "CHAISE SANS ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER01CA": {
+  "cotes_page": [],
+  "libelle": "CHAISE SANS ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER01GR": {
+  "cotes_page": [],
+  "libelle": "CHAISE SANS ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER01JA": {
+  "cotes_page": [],
+  "libelle": "CHAISE SANS ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER01RE": {
+  "cotes_page": [],
+  "libelle": "CHAISE SANS ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER01VE": {
+  "cotes_page": [],
+  "libelle": "CHAISE SANS ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER02BE": {
+  "cotes_page": [],
+  "libelle": "CHAISE AVEC ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER02CA": {
+  "cotes_page": [],
+  "libelle": "CHAISE AVEC ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER02GR": {
+  "cotes_page": [],
+  "libelle": "CHAISE AVEC ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER02JA": {
+  "cotes_page": [],
+  "libelle": "CHAISE AVEC ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER02RE": {
+  "cotes_page": [],
+  "libelle": "CHAISE AVEC ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER02VE": {
+  "cotes_page": [],
+  "libelle": "CHAISE AVEC ACCOUDOIRS",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER03BE": {
+  "cotes_page": [],
+  "libelle": "FAUTEUIL LOUNGE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER03CA": {
+  "cotes_page": [],
+  "libelle": "FAUTEUIL LOUNGE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER03GR": {
+  "cotes_page": [],
+  "libelle": "FAUTEUIL LOUNGE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER03JA": {
+  "cotes_page": [],
+  "libelle": "FAUTEUIL LOUNGE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER03RE": {
+  "cotes_page": [],
+  "libelle": "FAUTEUIL LOUNGE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER03VE": {
+  "cotes_page": [],
+  "libelle": "FAUTEUIL LOUNGE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER04BE": {
+  "cotes_page": [],
+  "libelle": "CHAISE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER04CA": {
+  "cotes_page": [],
+  "libelle": "VER05VE VER05BE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER04GR": {
+  "cotes_page": [],
+  "libelle": "VER05VE VER05BE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER04JA": {
+  "cotes_page": [],
+  "libelle": "CHAISE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER04RE": {
+  "cotes_page": [],
+  "libelle": "CHAISE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER04VE": {
+  "cotes_page": [],
+  "libelle": "CHAISE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER05BE": {
+  "cotes_page": [],
+  "libelle": "TABOURET",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER05CA": {
+  "cotes_page": [],
+  "libelle": "VER05VE VER05BE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER05GR": {
+  "cotes_page": [],
+  "libelle": "VER05VE VER05BE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER05JA": {
+  "cotes_page": [],
+  "libelle": "TABOURET",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER05RE": {
+  "cotes_page": [],
+  "libelle": "TABOURET",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER05VE": {
+  "cotes_page": [],
+  "libelle": "TABOURET",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER06BE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER06CA": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER06RE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER06VE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER07BE": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER07CA": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER07GR": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER07JA": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER07RE": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER07VE": {
+  "cotes_page": [],
+  "libelle": "TABLE BASSE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER08BE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER08CA": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER08GR": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER08JA": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER08RE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER08VE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER09BE": {
+  "cotes_page": [],
+  "libelle": "MANGE DEBOUT",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER09GR": {
+  "cotes_page": [],
+  "libelle": "VER09VE VER09BE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER09JA": {
+  "cotes_page": [],
+  "libelle": "MANGE DEBOUT",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER09RE": {
+  "cotes_page": [],
+  "libelle": "MANGE DEBOUT",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER09VE": {
+  "cotes_page": [],
+  "libelle": "MANGE DEBOUT",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER10RE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER10VE": {
+  "cotes_page": [],
+  "libelle": "BANC 2 PLACES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER11BE": {
+  "cotes_page": [],
+  "libelle": "TABLE DE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER11GR": {
+  "cotes_page": [],
+  "libelle": "- VER11BE",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER12GR": {
+  "cotes_page": [],
+  "libelle": "SUPPORT POUR PLANTES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER12JA": {
+  "cotes_page": [],
+  "libelle": "SUPPORT POUR PLANTES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER12RE": {
+  "cotes_page": [],
+  "libelle": "SUPPORT POUR PLANTES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER12VE": {
+  "cotes_page": [],
+  "libelle": "SUPPORT POUR PLANTES",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER13BE": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER13GR": {
+  "cotes_page": [],
+  "libelle": "",
+  "page": 157,
+  "pdf": 79,
+  "titres_page": [
+   "3ANS EN581-1",
+   "TIUDORP 2ANS 9001",
+   "TIUDORP TIUDORP TIUDORP",
+   "157"
+  ]
+ },
+ "VER14GR": {
+  "cotes_page": [
+   50.0,
+   80.0,
+   85.0,
+   90.0
+  ],
+  "libelle": "",
+  "page": 159,
+  "pdf": 80,
+  "titres_page": [
+   "VERANO POUF",
+   "TIUDORP 2ANS 9001 85 cm 80 cm",
+   "159"
+  ]
+ },
+ "VER14JA": {
+  "cotes_page": [
+   50.0,
+   80.0,
+   85.0,
+   90.0
+  ],
+  "libelle": "",
+  "page": 159,
+  "pdf": 80,
+  "titres_page": [
+   "VERANO POUF",
+   "TIUDORP 2ANS 9001 85 cm 80 cm",
+   "159"
+  ]
+ },
+ "VER15RG": {
+  "cotes_page": [
+   50.0,
+   80.0,
+   85.0,
+   90.0
+  ],
+  "libelle": "",
+  "page": 159,
+  "pdf": 80,
+  "titres_page": [
+   "VERANO POUF",
+   "TIUDORP 2ANS 9001 85 cm 80 cm",
+   "159"
+  ]
+ },
+ "VER15VE": {
+  "cotes_page": [
+   50.0,
+   80.0,
+   85.0,
+   90.0
+  ],
+  "libelle": "BSCI 14001",
+  "page": 159,
+  "pdf": 80,
+  "titres_page": [
+   "VERANO POUF",
+   "TIUDORP 2ANS 9001 85 cm 80 cm",
+   "159"
+  ]
+ },
+ "WAV01GRBL": {
+  "cotes_page": [
+   49.0,
+   50.0,
+   50.5
+  ],
+  "libelle": "MAILLE",
+  "page": 77,
+  "pdf": 39,
+  "titres_page": [
+   "WAVE Aucun soutien lombaire ni appui-tête à régler, et pourtant",
+   "TIUDORP 5ANS 9001 45001 14001 5.621-5.611",
+   "EGAP cm 5.65-5.64"
+  ]
+ },
+ "WAV01GRGR": {
+  "cotes_page": [
+   49.0,
+   50.0,
+   50.5
+  ],
+  "libelle": "MAILLE",
+  "page": 77,
+  "pdf": 39,
+  "titres_page": [
+   "WAVE Aucun soutien lombaire ni appui-tête à régler, et pourtant",
+   "TIUDORP 5ANS 9001 45001 14001 5.621-5.611",
+   "EGAP cm 5.65-5.64"
+  ]
+ },
+ "WAV01NRGR": {
+  "cotes_page": [
+   49.0,
+   50.0,
+   50.5
+  ],
+  "libelle": "MAILLE",
+  "page": 77,
+  "pdf": 39,
+  "titres_page": [
+   "WAVE Aucun soutien lombaire ni appui-tête à régler, et pourtant",
+   "TIUDORP 5ANS 9001 45001 14001 5.621-5.611",
+   "EGAP cm 5.65-5.64"
+  ]
+ }
+}
