@@ -64,10 +64,38 @@ SORTIE = RACINE / "sokoa-references.json"
 # qui appartiennent aux colonnes de prix.
 PAS_UNE_REFERENCE = re.compile(r"^[\d.,%€]+$|^(REF|ECO|UC|i|x\d+)$", re.I)
 
+# Un mot tout en minuscules n'est jamais une référence : c'est du texte de
+# catalogue. Le manque coûtait seize déclinaisons fantômes — « iii KLA0/*P*A*D »
+# où iii est un renvoi de note, « noir LOK1/1 + » où le coloris précède le
+# code, « départ : » et « Élément départ (P » qui sont des en-têtes du tableau
+# Archikit, arrivés en base avec des prix de 2 à 42 euros.
+#
+# Seul « coloris » échappe à la règle : les références Sokoa s'écrivent
+# « NR87/B+coloris* », le mot fait partie du code commandé.
+MOT_MINUSCULE = re.compile(r"[a-zàâäéèêëïîôöùûüç]{3,}")
+
+
+def _sans_coloris(texte):
+    return re.sub(r"\+?\s*coloris\*?", "", str(texte), flags=re.I)
+
+
+def mot_de_catalogue(texte):
+    """Vrai si ce texte est de la prose, pas un code commandable."""
+    t = _sans_coloris(texte)
+    return bool(MOT_MINUSCULE.search(t)) or ":" in str(texte)
+
 
 def est_reference(texte):
     t = texte.strip()
-    return bool(t) and len(t) >= 3 and not PAS_UNE_REFERENCE.match(t)
+    if not t or len(t) < 3 or PAS_UNE_REFERENCE.match(t):
+        return False
+    # Une référence Sokoa porte toujours au moins une lettre. Sans cette
+    # exigence, « 700) » — la fin de « Élément départ (P 700) », une cote du
+    # tableau Archikit — passait pour un code : PAS_UNE_REFERENCE ne connaît
+    # pas la parenthèse.
+    if not re.search(r"[A-Za-z]", t):
+        return False
+    return not mot_de_catalogue(t)
 
 # Les intitulés de colonne qu'on rencontre après REF et avant ECO.
 CATEGORIES = {"B", "B+", "C", "D", "E", "H", "PP", "PRIX", "BOIS",
@@ -316,6 +344,7 @@ def main():
     sortie = []
     stats = Counter()
     sans_prix = []
+    ecartees = []
     intitules = Counter()
 
     with pdfplumber.open(PDF) as pdf:
@@ -403,13 +432,38 @@ def main():
                     # Entre la référence et les prix traînent des renvois de
                     # note — le « i » d'information, un « unitaire », un
                     # « p.190 ». Ils ne font pas partie du code commandé.
+                    # Le mot « Prix » s'ajoute à la liste : c'est l'intitulé de
+                    # la colonne voisine, avec sa capitale, que le
+                    # dépouillement des minuscules ne rattrapait pas
+                    # (« KEA00P0 Prix »). On ne jette pas les autres intitulés
+                    # de colonne : « B », « C », « D » sont des lettres qu'une
+                    # référence peut légitimement porter en dernier.
+                    def _a_jeter(mot):
+                        return (mot.islower() or mot.startswith("p.")
+                                or mot.strip(".").upper() == "PRIX")
+
                     while True:
                         mots_ref = complete.split()
-                        if len(mots_ref) > 1 and (mots_ref[-1].islower()
-                                                  or mots_ref[-1].startswith("p.")):
+                        if len(mots_ref) > 1 and _a_jeter(mots_ref[-1]):
                             complete = " ".join(mots_ref[:-1])
                         else:
                             break
+                    # Et en tête, ce que l'ancienne version ne dépouillait
+                    # pas : le renvoi de note « iii », le coloris « noir » ou
+                    # « blanc » écrit avant le code.
+                    while True:
+                        mots_ref = complete.split()
+                        if len(mots_ref) > 1 and _a_jeter(mots_ref[0]):
+                            complete = " ".join(mots_ref[1:])
+                        else:
+                            break
+
+                    # Dernier filet : si ce qui reste tient de la prose, cette
+                    # ligne n'est pas un produit. On la compte pour qu'aucune
+                    # ne disparaisse en silence.
+                    if mot_de_catalogue(complete or ref["text"]):
+                        ecartees.append((numero, complete or ref["text"]))
+                        continue
 
                     # L'intitulé de la variante : entre les cotes et la
                     # référence, les mots que les cotes n'ont pas consommés.
@@ -455,6 +509,7 @@ def main():
     print(f"\n{stats['tableaux']} tableaux lus")
     print(f"{len(refs)} références · {stats['lignes']} couples (référence, catégorie)")
     print(f"{len(sans_prix)} références vues sans aucun prix")
+    print(f"{len(ecartees)} lignes écartées : du texte de catalogue, pas un produit")
     avec_cotes = {x["reference"] for x in sortie if x["cotes"]}
     print(f"{len(avec_cotes)} références avec des cotes")
     sans_gamme = {x["reference"] for x in sortie if not x["gamme"]}
@@ -463,6 +518,11 @@ def main():
     print("\nIntitulés de colonne rencontrés :")
     for nom, n in intitules.most_common():
         print(f"   {n:5}  {nom}")
+
+    if ecartees:
+        print("\nÉcartées — texte de catalogue pris pour une référence :")
+        for page_, texte_ in ecartees:
+            print(f"   p.{page_:<4} {texte_!r}")
 
     if sans_prix:
         print(f"\nSans prix (15 premières) :")

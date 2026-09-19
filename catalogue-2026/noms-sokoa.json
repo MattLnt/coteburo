@@ -1975,8 +1975,6 @@
      "ZAK 25 075 SAG",
      "ZAK 25 076 SAG",
      "ZAK 25 077 SAG",
-     "Élément départ (P",
-     "Élément suite (P",
      "ZAK 30 073 DAG",
      "ZAK 30 074 DAG",
      "ZAK 30 075 DAG",
@@ -1987,7 +1985,6 @@
      "ZAK 30 075 SAG",
      "ZAK 30 076 SAG",
      "ZAK 30 077 SAG",
-     "départ : rajouter +",
      "ZAK 1N 073 AG",
      "ZAK 1N 074 AG",
      "ZAK 1N 075 AG",
@@ -2048,7 +2045,6 @@
      "ZAK 25 075 SPG",
      "ZAK 25 076 SPG",
      "ZAK 25 077 SPG",
-     "départ :",
      "ZAK 30 073 DPG",
      "ZAK 30 074 DPG",
      "ZAK 30 075 DPG",
@@ -4175,7 +4171,7 @@
     "titre_bloc": "Chaise 4 pieds métal, assise et dossier PP",
     "rubrique": "KKKllliiikkk",
     "refs": [
-     "iii KLA0/*P*A*D"
+     "KLA0/*P*A*D"
     ],
     "description": "La Klik dans sa forme d'origine : coque polypropylène sur quatre pieds métal, sans garnissage. Les sept coloris de métal et de coque se combinent librement — c'est ce qui fait l'intérêt de la gamme, on compose sa propre chaise plutôt que d'en choisir une.",
     "technique": [
@@ -5152,8 +5148,8 @@
     "refs": [
      "LCK0/1 +",
      "LCK0/7 +",
-     "noir LOK1/1 +",
-     "blanc LOK1/7 +"
+     "LOK1/1 +",
+     "LOK1/7 +"
     ],
     "description": "La Loria giratoire sur roulettes avec placet d'assise tapissé. La configuration la plus courante de la version mobile : on tourne, on roule, et l'assise reste confortable sur deux heures de réunion.",
     "technique": [
@@ -5665,7 +5661,7 @@
     "rubrique": "Maike",
     "refs": [
      "KEA00B0",
-     "KEA00P0 Prix",
+     "KEA00P0",
      "KEA00L0"
     ],
     "description": "La même chaise recyclée, mais à l'unité : 154 euros au lieu de 129 en lot. Vingt-cinq euros de décolisage, ce qui ne vaut la peine que pour compléter une série existante ou remplacer une chaise cassée.",
@@ -5722,7 +5718,7 @@
     "rubrique": "Maike",
     "refs": [
      "KEA0030",
-     "KEA00R Prix",
+     "KEA00R",
      "KEA0040",
      "KEA00V",
      "KEA0070",
@@ -7641,5 +7637,23 @@
     ]
    }
   ]
+ },
+ "_corrections": {
+  "2026-09-19_references_parasites": {
+   "motif": "Le parser Sokoa avait avalé du texte de tableau comme des codes : un renvoi de note, deux coloris écrits avant le code, l'intitulé de la colonne voisine, et quatre en-têtes du tableau Archikit.",
+   "corrigees": {
+    "iii KLA0/*P*A*D": "KLA0/*P*A*D",
+    "noir LOK1/1 +": "LOK1/1 +",
+    "blanc LOK1/7 +": "LOK1/7 +",
+    "KEA00P0 Prix": "KEA00P0",
+    "KEA00R Prix": "KEA00R"
+   },
+   "supprimees": {
+    "départ :": "En-tête du tableau Archikit, jamais un produit ; le prix relevé (2 à 42 €) était celui d'une cote.",
+    "départ : rajouter +": "En-tête du tableau Archikit, jamais un produit ; le prix relevé (2 à 42 €) était celui d'une cote.",
+    "Élément départ (P": "En-tête du tableau Archikit, jamais un produit ; le prix relevé (2 à 42 €) était celui d'une cote.",
+    "Élément suite (P": "En-tête du tableau Archikit, jamais un produit ; le prix relevé (2 à 42 €) était celui d'une cote."
+   }
+  }
  }
 }
