@@ -174,8 +174,14 @@ function gammeDuChemin(f, parGamme, marque) {
     const n = nu(seg);
     if (n.length < 3) continue;
     if (parGamme.has(n) && parGamme.get(n).marque === marque) return n;
+    // Le rapprochement va dans LES DEUX SENS. « arco dossier » contient la
+    // gamme « Arco » ; à l'inverse le dossier « ALAIA » ne porte pas le
+    // suffixe que le catalogue lui donne, « Alaia by Sokoa ». Ne tester
+    // qu'un sens laissait les images Alaia et Kanpoa sans gamme — elles
+    // finissaient dans les non rattachées au lieu de leur dépôt.
     for (const [g, info] of parGamme) {
-      if (g.length >= 4 && n.startsWith(g) && info.marque === marque) return g;
+      if (info.marque !== marque || g.length < 4) continue;
+      if (n.startsWith(g) || (n.length >= 4 && g.startsWith(n))) return g;
     }
   }
   return null;
