@@ -823,6 +823,12 @@ async function main() {
         }
       }
     }
+    // Sans axe, il n'y a rien à confronter : une fiche à finition unique ne
+    // fait pas choisir, donc ses déclinaisons ne portent pas de valeur de
+    // finition et sa ligne Finition n'est citée par personne. Ce n'est pas
+    // une divergence — c'est ce que l'import fait exprès. Sans cette
+    // exemption, le contrôle criait sur cent une fiches parfaitement saines.
+    if (!axe) continue;
     for (const l of libelles) {
       if (!citees.has(l)) jamaisUtilisees.push(`${v.gamme.marque.slug} · ${v.nom} · « ${l} »`);
     }
