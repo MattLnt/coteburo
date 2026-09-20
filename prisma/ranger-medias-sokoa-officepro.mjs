@@ -286,10 +286,32 @@ async function main() {
     return `${base}_${String(n).padStart(2, "0")}${ext}`;
   };
 
+  // Le même visuel vit souvent dans DEUX arborescences — « fichiers_sokoa/ »
+  // et « Sokoa/fichiers_sokoa/ » sont deux copies du même envoi. Sans ce
+  // filtre, quarante-six fiches recevaient deux fois la même photo et la
+  // galerie l'affichait en double. On reconnaît le doublon à son nom de
+  // fichier, pour une même fiche.
+  const dejaVu = new Set();
+  const uniques = [];
+  let doublons = 0;
   for (const x of versFiche.sort((a, b) => a.source.localeCompare(b.source))) {
+    const signature = `${x.cles.join("+")}|${basename(x.source).toLowerCase()}`;
+    if (dejaVu.has(signature)) { doublons += 1; continue; }
+    dejaVu.add(signature);
+    uniques.push(x);
+  }
+  if (doublons) console.log(`\n   ${doublons} doublons écartés (même visuel, deux arborescences)`);
+
+  for (const x of uniques) {
     const sansExt = basename(x.source).replace(/\.[^.]+$/, "");
+    // Le nom de gamme n'est pas un décor : « ADELA_ALB00.jpg » donnait
+    // « ALB0_adela », qui ne dit rien de la finition photographiée.
+    const gammeNue = nu(cat.fiches.get(x.cles[0])?.gamme || "");
     const reste = sansExt.split(/[\s_\-.()[\]]+/)
-      .filter((m) => !nu(m).startsWith(x.tronc)).join("-");
+      .filter((m) => {
+        const n = nu(m);
+        return n && !n.startsWith(x.tronc) && n !== gammeNue && !gammeNue.startsWith(n);
+      }).join("-");
     const decor = slugCourt(reste, MAX_DECOR);
     const base = decor ? `${x.tronc}_${decor}` : x.tronc;
     for (const cle of x.cles) {
@@ -306,9 +328,9 @@ async function main() {
   }
 
   titre("CE QUI SERAIT RANGÉ");
-  const fichesTouchees = new Set(versFiche.flatMap((x) => x.cles));
-  const dupliquees = versFiche.filter((x) => x.cles.length > 1);
-  console.log(`\n   dans une FICHE            ${String(versFiche.length).padStart(5)} images `
+  const fichesTouchees = new Set(uniques.flatMap((x) => x.cles));
+  const dupliquees = uniques.filter((x) => x.cles.length > 1);
+  console.log(`\n   dans une FICHE            ${String(uniques.length).padStart(5)} images `
     + `→ ${fichesTouchees.size} fiches`);
   console.log(`      dont copiées dans plusieurs fiches ${String(dupliquees.length).padStart(4)}`
     + "   (attribut invisible : lot, accotoirs, lift)");
