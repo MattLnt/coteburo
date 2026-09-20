@@ -74,3 +74,64 @@ au complet ? On sait de quelle famille ils relèvent, pas leur intitulé exact.
 Le troisième, en particulier, reste bancal : « Banc à droite ou à gauche »
 laisse entendre qu'un élément — accoudoir, angle, tablette — se monte d'un
 côté ou de l'autre, sans qu'on sache lequel.
+
+---
+
+## 4. Buronomic — que désigne la partie écrite après le tiret ?
+
+Les libellés de finition du tarif décrivent plusieurs pièces à la fois,
+séparées par des barres obliques puis par un tiret :
+
+```
+NOIR METAL / NEBRASKA / VERT EAU - VERT EAU
+HETRE / HETRE        - POIGNEES ALUMINIUM
+NOIR METAL / BLANC   - TIMBER
+```
+
+Ce qui précède le tiret se lit sans peine : le suffixe nomme la matière —
+`METAL`, `TISSU`, `PLASTIQUE` — et à défaut la position tranche, le
+piétement d'abord, puis le plateau, puis le tissu.
+
+Après le tiret, en revanche, deux cas :
+
+- **Un mot de rôle ouvre la partie** — `POIGNEES ALUMINIUM`, `SERRURE NOIR`,
+  `MEUBLE NEBRASKA`. Aucun doute, le groupe prend ce nom.
+- **Une teinte nue** — `TIMBER`, `VERT EAU`, `GRIS CARBONE`. Là, rien ne dit
+  de quelle pièce il s'agit.
+
+**La question :** dans ce second cas, que désigne la teinte ? Un chant de
+plateau, un second tissu, un panneau de fond ? Et est-ce la même pièce
+selon les gammes, ou cela dépend-il du produit ?
+
+En attendant, le site l'affiche sous le nom **« Complément »** — neutre et
+sans invention. Il suffira de renommer le rôle une fois la réponse connue.
+
+---
+
+## 5. Sokoa — soixante nuanciers sans pastille
+
+Les palettes de finition ont été recréées depuis la sauvegarde d'avant-purge :
+quinze palettes, deux cent dix-neuf modèles. Cent cinquante-neuf ont retrouvé
+leur pastille dans `sokoa_swatches`, grâce au manifeste qui donne le libellé
+exact de chaque fichier.
+
+**Les soixante autres n'ont aucune image.** Ce sont les modèles dont le nom
+est une teinte simple, sans code : les palettes **Blend**, **Spazio**,
+**Runner**, **Grain**, **Bouclé F.R.**, **Tissu E**, **Tissu H**, et les deux
+palettes OfficePro **Verano** et **Arco**.
+
+La liste complète est dans
+`COTEBURO-MEDIAS/CATALOGUE-2026/_NUANCIERS/_SANS-PASTILLE.txt`.
+
+**La demande :** les pastilles de ces nuanciers, au même format que celles de
+`sokoa_swatches` — une image par teinte, nommée par son code ou son libellé.
+
+---
+
+## 6. Sokoa — la gamme Adio n'a aucun visuel
+
+Vingt fiches, tout le catalogue de la gamme, et pas un seul fichier ne
+mentionne Adio dans les quatre arborescences de visuels reçues.
+
+**La demande :** les visuels produit de la gamme Adio. C'est le plus gros
+manque du catalogue : vingt fiches sur les vingt-cinq qui n'ont aucune source.
