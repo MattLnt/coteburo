@@ -53,6 +53,14 @@ const FILTRE_MARQUE = ((process.argv.find((a) => a.startsWith("--marque=")) || "
 // catalogue déjà en base. Utile quand l'import s'est fait en plusieurs
 // passages : rien à réécrire, juste les liens à refaire.
 const OPTIONS_SEULES = process.argv.includes("--options-seules");
+
+// L'upsert crée et met à jour, il ne supprime jamais. Une fiche renommée au
+// classeur laisse donc l'ancienne en base, et le catalogue enfle à chaque
+// correction de libellé : trois fiches Rhune renommées ont donné 558 fiches
+// pour 555 attendues. On repère systématiquement ces orphelines ; on ne les
+// supprime que sur demande, parce qu'effacer une fiche emporte ses
+// déclinaisons et ses rattachements.
+const SUPPRIMER_ORPHELINES = process.argv.includes("--supprimer-orphelines");
 const PARTIEL = !!(FILTRE_GAMME || FILTRE_MARQUE || OPTIONS_SEULES);
 
 const CLASSEUR = "catalogue-2026/catalogue-coteburo.xlsx";
@@ -639,7 +647,10 @@ async function main() {
   // personne à qui se lier. On relit donc la base entière : identifiants des
   // fiches, et références portées par leurs déclinaisons.
   const enBaseVitrines = await prisma.produitVitrine.findMany({
-    select: { id: true, slug: true, declinaisons: true,
+    // « nom » est indispensable : c'est lui qui dit si le classeur décrit
+    // encore cette fiche. Sans lui, la détection des orphelines les trouvait
+    // TOUTES orphelines — et aurait effacé le catalogue entier.
+    select: { id: true, slug: true, nom: true, declinaisons: true,
       gamme: { select: { nom: true, marque: { select: { slug: true } } } } },
   });
   const idParFiche = new Map();   // « marque|gamme|slug » → id
@@ -717,6 +728,53 @@ async function main() {
     for (const r of [...introuvables].slice(0, 10)) console.log(`      ${r}`);
   }
 
+  // ── Les fiches que le classeur ne connaît plus ──
+  //
+  // On ne juge que les marques effectivement importées : sur un passage
+  // partiel, les autres n'ont pas été relues et leurs fiches ne sauraient
+  // passer pour orphelines.
+  console.log("\n── FICHES ABSENTES DU CLASSEUR ──\n");
+  const marquesJugees = new Set(
+    PARTIEL && !OPTIONS_SEULES ? [...parMarque.keys()] : Object.values(MARQUES));
+  const attendues = new Set(toutes
+    .filter((f) => marquesJugees.has(f.marqueSlug))
+    .map((f) => `${f.marqueSlug}|${f.gamme}|${f.nom}`));
+  const orphelines = enBaseVitrines.filter((v) =>
+    marquesJugees.has(v.gamme.marque.slug)
+    && !attendues.has(`${v.gamme.marque.slug}|${v.gamme.nom}|${v.nom}`));
+
+  if (!orphelines.length) {
+    console.log("   aucune : la base ne contient que ce que le classeur décrit");
+  } else {
+    console.log(`   ${orphelines.length} fiche(s) en base que le classeur ne décrit plus.`);
+    console.log("   Presque toujours le reliquat d'un renommage : l'upsert a créé");
+    console.log("   la nouvelle fiche sans effacer l'ancienne.\n");
+    for (const v of orphelines.slice(0, 20)) {
+      const n = Array.isArray(v.declinaisons) ? v.declinaisons.length : 0;
+      console.log(`      ${v.gamme.marque.slug} · ${v.gamme.nom} · ${v.nom}  (${n} décl.)`);
+    }
+    if (orphelines.length > 20) console.log(`      … et ${orphelines.length - 20} autre(s)`);
+
+    // Garde-fou. Une orpheline est un accident de renommage : il y en a une
+    // poignée, jamais un tiers du catalogue. Au-delà, c'est la DÉTECTION qui
+    // est fautive, pas la base — et supprimer effacerait tout. Ce contrôle
+    // existe parce que le cas s'est produit : un « nom » oublié dans le
+    // select rendait les 558 fiches orphelines.
+    const part = orphelines.length / Math.max(1, enBaseVitrines.length);
+    if (part > 0.2) {
+      console.log(`\n   ⚠ ${Math.round(part * 100)} % du catalogue serait supprimé.`);
+      console.log("   C'est la détection qui est en cause, pas la base. On ne touche à rien.");
+      process.exitCode = 1;
+    } else if (SUPPRIMER_ORPHELINES) {
+      const r = await prisma.produitVitrine.deleteMany({
+        where: { id: { in: orphelines.map((v) => v.id) } },
+      });
+      console.log(`\n   ${r.count} supprimée(s).`);
+    } else {
+      console.log("\n   Relancer avec --supprimer-orphelines pour les effacer.");
+    }
+  }
+
   console.log("\n── CONTRÔLE APRÈS IMPORT ──\n");
   const enBase = {
     catégories: await prisma.categorie.count(),
@@ -728,10 +786,55 @@ async function main() {
   };
   for (const [k, v] of Object.entries(enBase)) console.log(`   ${k.padEnd(22)} ${String(v).padStart(6)}`);
 
-  const vitrines = await prisma.produitVitrine.findMany({ select: { declinaisons: true } });
+  const vitrines = await prisma.produitVitrine.findMany({
+    select: {
+      nom: true, declinaisons: true, axesDeclinaisons: true,
+      groupesFinition: { select: { finitions: { select: { nom: true } } } },
+      gamme: { select: { nom: true, marque: { select: { slug: true } } } },
+    },
+  });
   const decl = vitrines.reduce(
     (n, v) => n + (Array.isArray(v.declinaisons) ? v.declinaisons.length : 0), 0);
   console.log(`   ${"déclinaisons".padEnd(22)} ${String(decl).padStart(6)}`);
+
+  // ── Le lien entre une déclinaison et sa finition tient par le LIBELLÉ ──
+  //
+  // Une déclinaison porte « valeurs.finition = "NOIR METAL / NEBRASKA" » et une
+  // ligne Finition porte le même texte. Il n'y a pas de clé étrangère entre les
+  // deux : c'est la convention de la base d'avant, et l'admin s'en accommode.
+  // Mais un libellé retouché d'un seul côté romprait le lien sans bruit, et le
+  // client verrait une finition sans pastille ou une pastille sans prix. On le
+  // vérifie donc à chaque import, plutôt que de le découvrir en production.
+  console.log("\n── COHÉRENCE DES LIBELLÉS DE FINITION ──\n");
+  let axes = 0;
+  const sansFinition = [];     // valeur d'axe sans ligne Finition
+  const jamaisUtilisees = [];  // ligne Finition qu'aucune déclinaison ne cite
+  for (const v of vitrines) {
+    const libelles = new Set(v.groupesFinition.flatMap((g) => g.finitions.map((f) => f.nom)));
+    const axe = (Array.isArray(v.axesDeclinaisons) ? v.axesDeclinaisons : [])
+      .find((a) => a.id === "finition");
+    const citees = new Set((Array.isArray(v.declinaisons) ? v.declinaisons : [])
+      .map((d) => d?.valeurs?.finition).filter(Boolean));
+    if (axe) {
+      axes += 1;
+      for (const val of axe.valeurs || []) {
+        if (!libelles.has(val)) {
+          sansFinition.push(`${v.gamme.marque.slug} · ${v.nom} · « ${val} »`);
+        }
+      }
+    }
+    for (const l of libelles) {
+      if (!citees.has(l)) jamaisUtilisees.push(`${v.gamme.marque.slug} · ${v.nom} · « ${l} »`);
+    }
+  }
+  console.log(`   fiches avec un axe « finition »        ${String(axes).padStart(5)}`);
+  console.log(`   valeurs d'axe sans ligne Finition      ${String(sansFinition.length).padStart(5)}`);
+  console.log(`   lignes Finition qu'aucune déclinaison ne cite ${String(jamaisUtilisees.length).padStart(4)}`);
+  for (const x of sansFinition.slice(0, 8)) console.log(`      ⚠ ${x}`);
+  for (const x of jamaisUtilisees.slice(0, 8)) console.log(`      ⚠ ${x}`);
+  console.log(sansFinition.length || jamaisUtilisees.length
+    ? "   ⚠ un libellé a divergé : la pastille et le prix ne se retrouveront plus"
+    : "   ✓ chaque finition est citée par une déclinaison, et réciproquement");
   // On réconcilie contre le classeur ENTIER : c'est ce qui rend un import
   // découpé vérifiable, en disant combien il reste à écrire.
   const ref = PARTIEL ? lireClasseur(true) : { fiches, lignes };

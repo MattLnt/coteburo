@@ -6217,7 +6217,7 @@
     ]
    },
    {
-    "nom": "Inclus 2 coussins lombaires",
+    "nom": "Canapé 3 places, inclus 2 coussins lombaires",
     "nature": "Produit",
     "page": 130,
     "titre_bloc": "Inclus 2 coussins lombaires",
@@ -6354,7 +6354,7 @@
     ]
    },
    {
-    "nom": "avec tablette de rangement bois et électrification possible",
+    "nom": "Méridienne avec tablette de rangement bois et électrification possible",
     "nature": "Produit",
     "page": 129,
     "titre_bloc": "avec tablette de rangement bois et électrification possible",
@@ -6391,7 +6391,7 @@
     ]
    },
    {
-    "nom": "à droite ou à gauche et électrification possible",
+    "nom": "Banc à droite ou à gauche et électrification possible",
     "nature": "Produit",
     "page": 130,
     "titre_bloc": "à droite ou à gauche et électrification possible",
@@ -7654,6 +7654,26 @@
     "Élément départ (P": "En-tête du tableau Archikit, jamais un produit ; le prix relevé (2 à 42 €) était celui d'une cote.",
     "Élément suite (P": "En-tête du tableau Archikit, jamais un produit ; le prix relevé (2 à 42 €) était celui d'une cote."
    }
+  },
+  "2026-09-20_fiches_sans_tete_rhune": {
+   "motif": "Trois fiches Rhune n'étaient que la fin d'une phrase du catalogue : le parser avait gardé la queue et perdu le sujet. Elles apparaissaient comme des produits à part entière et rendaient ambigu le rattachement de six visuels.",
+   "methode": "La tête est reconstituée d'après les préfixes de référence — RUQ et RUR pour les bancs, RUY et RUZ pour les méridiennes, RUZT pour le canapé 3 places. Aucune caractéristique n'est inventée : le libellé d'origine est conservé mot pour mot.",
+   "a_confirmer": "Les intitulés exacts sont à valider avec Sokoa : on sait de quelle famille relève chaque fiche, pas comment le catalogue la nomme au complet.",
+   "corrections": {
+    "Inclus 2 coussins lombaires": {
+     "devient": "Canapé 3 places, inclus 2 coussins lombaires",
+     "references": 1
+    },
+    "avec tablette de rangement bois et électrification possible": {
+     "devient": "Méridienne avec tablette de rangement bois et électrification possible",
+     "references": 12
+    },
+    "à droite ou à gauche et électrification possible": {
+     "devient": "Banc à droite ou à gauche et électrification possible",
+     "references": 8
+    }
+   },
+   "portee": "Seul « nom » est corrigé — le nom sur le site. « titre_bloc » garde le libellé du catalogue : c'est la clé qui relie le produit aux lignes du tarif, et la renommer faisait disparaître quatre-vingt-quatre lignes."
   }
  }
 }

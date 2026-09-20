@@ -64,3 +64,8 @@ __pycache__/
 # Profil du navigateur des captures pCon : un cache local, reconstruit
 # tout seul au premier lancement.
 .pcon-cache/
+
+# Fichiers de travail des analyses de médias : régénérables par
+# analyse-medias-sokoa-officepro.mjs.
+_troncs.json
+troncs-4-a-trancher.md

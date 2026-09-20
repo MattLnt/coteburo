@@ -1,0 +1,391 @@
+{
+ "_lisezmoi": [
+  "Arbitrage des troncs de référence ambigus, fait en ouvrant les images.",
+  "",
+  "Un tronc Sokoa de quatre caractères — ALB0 — peut désigner deux fiches :",
+  "« dos PP » et « dos résille ». Le nom du fichier ne tranche pas, la photo",
+  "si. Chaque ligne ci-dessous a été décidée en regardant le visuel.",
+  "",
+  "Aucune règle ne se généralise : ALB0 montre un dos PP quand ALB1 montre",
+  "un dos résille, dans la même gamme et à un caractère près."
+ ],
+ "adela": {
+  "_source": "fichiers_sokoa/ADELA_BD/ et Sokoa/fichiers_sokoa/ADELA/ (mêmes visuels)",
+  "ALA0": {
+   "fiche": "Chaise 4 pieds, assise et dos PP - Adela",
+   "vu": "coque entièrement PP noire, 4 pieds métal, sans accoudoirs"
+  },
+  "ALA1": {
+   "fiche": "Fauteuil 4 pieds, assise et dos tapissés, accotoirs PP - Adela",
+   "vu": "assise et dos tapissés vert, accotoirs PP, 4 pieds chromés"
+  },
+  "ALB0": {
+   "fiche": "Chaise 4 pieds, assise tapissée et dos PP - Adela",
+   "vu": "assise tapissée bleue, dos PP noir, sans accoudoirs"
+  },
+  "ALB1": {
+   "fiche": "Fauteuil 4 pieds, assise tapissée, dos résille, accotoirs PP noirs - Adela",
+   "vu": "dos résille noire, assise tapissée bleue, accotoirs PP"
+  },
+  "ALE0": {
+   "fiche": "Chaise pieds traineau, assise et dos PP - Adela",
+   "vu": "piétement traineau, coque tout PP noire"
+  },
+  "ALE1": {
+   "fiche": "Fauteuil pieds traineau, assise et dos tapissés, accotoirs PP - Adela",
+   "vu": "traineau chromé, assise et dos tapissés vert, accotoirs PP"
+  },
+  "ALF0": {
+   "fiche": "Chaise pieds traineau, assise tapissée et dos PP - Adela",
+   "vu": "traineau, assise tapissée bleue, dos PP noir"
+  },
+  "ALF1": {
+   "fiche": "Fauteuil pieds traineau, assise tapissée et dos résille, accotoirs PP noirs - Adela",
+   "vu": "traineau, dos résille, assise tapissée bleue, accotoirs PP"
+  },
+  "ALG0": {
+   "fiche": "Tabouret pieds traineau, assise et dos PP - Adela",
+   "vu": "tabouret haut, traineau avec repose-pieds, coque tout PP"
+  },
+  "ALH0": {
+   "fiche": "Tabouret pieds traineau, assise tapissée et dos PP - Adela",
+   "vu": "tabouret haut, assise tapissée bleue, dos PP noir"
+  },
+  "ALJ1": {
+   "fiche": "Siège giratoire, assise et dos tapissés, accotoirs PP, base alu poli, roulettes ø50 - Adela",
+   "vu": "giratoire, base alu poli 5 branches, assise ET dos tapissés vert"
+  },
+  "ALK1": {
+   "fiche": "Siège giratoire, assise tapissée et dos résille, accotoirs PP, base alu poli, roulettes ø50 - Adela",
+   "vu": "giratoire, base alu poli, dos résille, assise tapissée bleue"
+  }
+ },
+ "eman": {
+  "_source": "Sokoa/EMAN_BD/",
+  "_note": "La couleur est fixée par le tronc — NB/NH/NL en blanc, NN/NR/NT en noir — et les visuels le confirment sans exception. Restent à lire sur la photo : accoudoirs (fauteuil) ou non (chaise), têtière, et base alu poli contre base standard. ATTENTION : les troncs en 16 et en 86 visent le même JEU de fiches mais pas forcément la même : NH16 est sans accoudoirs quand NH86 en a. Il faut donc bien regarder les deux.",
+  "NB16": {
+   "fiche": "Fauteuil haut dossier toile, finition blanc, roulettes ø50 sol moquette - Eman",
+   "vu": "structure et base blanches, accoudoirs, pas de têtière, roulettes standard"
+  },
+  "NB17": {
+   "fiche": "Fauteuil haut dossier toile avec têtière, finition blanc, roulettes ø50 sol moquette - Eman",
+   "vu": "têtière, accoudoirs, base blanche"
+  },
+  "NH16": {
+   "fiche": "Chaise haut dossier, finition blanc, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "dossier tapissé, SANS accoudoirs, base blanche"
+  },
+  "NL16": {
+   "fiche": "Fauteuil haut dossier, finition blanc, roulettes ø50 sol moquette — dossier résille - Eman",
+   "vu": "dossier résille gris, assise tapissée, accoudoirs, base blanche"
+  },
+  "NN16": {
+   "fiche": "Fauteuil haut dossier toile, finition noir, roulettes ø50 sol moquette - Eman",
+   "vu": "structure et base noires, accoudoirs, pas de têtière"
+  },
+  "NR16": {
+   "fiche": "Chaise haut dossier, finition noir, roulettes ø50 sol moquette — dossier résille - Eman",
+   "vu": "dossier résille, SANS accoudoirs, base noire"
+  },
+  "NT16": {
+   "fiche": "Fauteuil haut dossier, finition noir, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "dossier tapissé, accoudoirs, base noire"
+  },
+  "NH17": {
+   "fiche": "Fauteuil haut dossier avec têtière, finition blanc, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "tapissé, têtière, accoudoirs, base blanche"
+  },
+  "NH86": {
+   "fiche": "Fauteuil haut dossier, finition blanc, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "tapissé, AVEC accoudoirs — contrairement à NH16, base blanche"
+  },
+  "NH87": {
+   "fiche": "Fauteuil haut dossier avec têtière, finition blanc, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "identique à NH17"
+  },
+  "NL86": {
+   "fiche": "Fauteuil haut dossier, finition blanc, roulettes ø50 sol moquette — dossier résille - Eman",
+   "vu": "identique à NL16 : résille, accoudoirs, base blanche"
+  },
+  "NN17": {
+   "fiche": "Fauteuil haut dossier toile avec têtière, finition noir, roulettes ø50 sol moquette - Eman",
+   "vu": "toile, têtière, accoudoirs, base noire"
+  },
+  "NR86": {
+   "fiche": "Chaise haut dossier, finition noir, roulettes ø50 sol moquette — dossier résille - Eman",
+   "vu": "identique à NR16 : résille, SANS accoudoirs, base noire"
+  },
+  "NT17": {
+   "fiche": "Fauteuil haut dossier avec têtière, finition noir, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "tapissé, têtière, accoudoirs, base noire"
+  },
+  "NT86": {
+   "fiche": "Fauteuil haut dossier, finition noir, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "identique à NT16"
+  },
+  "NT87": {
+   "fiche": "Fauteuil haut dossier avec têtière, finition noir, roulettes ø50 sol moquette — dossier tapissé - Eman",
+   "vu": "identique à NT17"
+  }
+ },
+ "klik": {
+  "_source": "Sokoa/fichiers_sokoa/KLIK/",
+  "_note": "Les deux fiches de chaque tronc ne diffèrent que par « métal anthracite + PP 100% recyclé » contre « métal + PP ». Le métal anthracite est une teinte unique et visible ; aucune des images ne la montre — blanc, terracotta, corail, gris, vert, taupe, moutarde. Toutes vont donc à la fiche non recyclée.",
+  "KLA0": {
+   "fiche": "Chaise 4 pieds métal, assise et dossier PP - Klik",
+   "vu": "7 images, pieds métal peints en couleur, jamais anthracite"
+  },
+  "KLH0": {
+   "fiche": "Tabouret 4 pieds métal, assise et dossier PP - Klik",
+   "vu": "tabouret haut, pieds moutarde"
+  },
+  "KLM0": {
+   "fiche": "Tabouret 4 pieds métal, assise et dossier PP - Klik",
+   "vu": "tabouret mi-hauteur, pieds moutarde"
+  }
+ },
+ "alaia": {
+  "_source": "Sokoa/fichiers_sokoa/ALAIA/",
+  "IA36": {
+   "fiche": "Chaise haut dossier, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa",
+   "vu": "dossier tapissé, SANS accoudoirs, base nylon noire"
+  },
+  "IR66 (Alaia_IR660.jpg)": {
+   "fiche": "Chaise haut dossier résille, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa",
+   "vu": "résille, assise tapissée verte, SANS accoudoirs"
+  },
+  "IA56": {
+   "fiches": [
+    "Fauteuil haut dossier, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa",
+    "Fauteuil haut dossier, accotoirs 3D, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa"
+   ],
+   "vu": "dossier tapissé uni, accoudoirs présents — la chaise est écartée ; 1D et 3D dupliqués"
+  },
+  "IR56": {
+   "fiche": "Chaise haut dossier tissu Spazio, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa",
+   "vu": "tissu Spazio à nid d abeille, SANS accoudoirs — une seule fiche sur six"
+  },
+  "IR86": {
+   "fiches": [
+    "Fauteuil haut dossier résille, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa",
+    "Fauteuil haut dossier résille, accotoirs 3D, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa"
+   ],
+   "vu": "résille noire, accoudoirs — quatre fiches sur six écartées, 1D et 3D dupliqués"
+  },
+  "IR66 (les 3 images SPT)": {
+   "fiches": [
+    "Fauteuil haut dossier tissu Spazio, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa",
+    "Fauteuil haut dossier tissu Spazio, accotoirs 3D, base nylon noir, roulettes ø50 sol moquette - Alaia by Sokoa"
+   ],
+   "vu": "tissu Spazio, accoudoirs — SPT au nom du fichier vaut Spazio Tissu"
+  },
+  "IA32": {
+   "fiches": [
+    "Chaise multimédia moyen dossier, lift assis debout avec repose-pieds, base sur patins - Alaia by Sokoa",
+    "AlaiaT - chaise multimédia moyen dossier, lift assis-debout avec repose-pied, base sur patins - Sièges Hauts",
+    "AlaiaT - chaise multimédia moyen dossier, lift haut avec repose-pied, base sur patins - Sièges Hauts"
+   ],
+   "vu": "course de vérin, invisible sur un packshot sans échelle : les trois fiches. À noter, les deux premières décrivent le MÊME produit sous deux noms — doublon de catalogue à vérifier."
+  }
+ },
+ "_a_arbitrer": {
+  "_motif": "Ce que la photo ne permet pas de trancher.",
+  "accotoirs 1D contre 3D": {
+   "constat": "Les fiches Alaia distinguent « accotoirs 1D » et « accotoirs 3D ». Sur les packshots, le patin est un cap posé sur un montant, sans glissière ni décalage latéral visible — de face comme de trois-quarts. La distinction ne se lit pas.",
+   "images": [
+    "Alaia_IR66_SPT_Face.jpg",
+    "Alaia_IR66_SPT_3-4 face.jpg",
+    "Alaia_IR66_SPT_Dos.jpg",
+    "Alaia_IR860.jpg"
+   ],
+   "acquis": "IR66_SPT = fauteuil haut dossier tissu Spazio · IR860 = fauteuil haut dossier résille. Quatre fiches sur six sont écartées, il en reste deux à départager."
+  }
+ },
+ "loria": {
+  "_source": "Sokoa/fichiers_sokoa/LORIA/",
+  "_note": "Trois discriminants, tous nets sur les packshots : la matière des pieds (PP moulé, bois au grain visible, métal), patins contre roulettes, et le garnissage (nu, placet d assise, entièrement tapissé).",
+  "LCAB": {
+   "fiche": "Chaise 4 pieds PP, coque PP - Loria",
+   "vu": "pieds PP moulés même matière que la coque, sans accoudoirs, nu"
+  },
+  "LCJ0": {
+   "fiche": "Chaise et fauteuil giratoire sur roulettes, coque PP - Loria",
+   "vu": "base 4 branches sur roulettes, coque PP noire nue"
+  },
+  "LCK0": {
+   "fiche": "Chaise et fauteuil giratoire sur patins, coque PP avec placet assise tapissé - Loria",
+   "vu": "patins blancs, placet d assise beige"
+  },
+  "LOA1": {
+   "fiche": "Chaise et fauteuil 4 pieds bois, coque PP - Loria",
+   "vu": "pieds bois au grain visible, coque PP à accoudoirs intégrés"
+  },
+  "LOC1": {
+   "fiche": "Fauteuil 4 pieds PP, coque PP entièrement tapissée - Loria",
+   "vu": "coque entièrement tapissée, pieds PP gris moulés"
+  },
+  "LOJ1": {
+   "fiche": "Chaise et fauteuil giratoire sur patins, coque PP - Loria",
+   "vu": "base 4 branches sur patins, coque PP verte nue"
+  },
+  "LOL1": {
+   "fiche": "Chaise et fauteuil giratoire sur roulettes, coque PP entièrement tapissée - Loria",
+   "vu": "roulettes, coque entièrement tapissée bicolore"
+  },
+  "LCBB": {
+   "fiche": "Chaise et fauteuil 4 pieds bois, coque PP avec placet assise tapissé - Loria",
+   "vu": "pieds bois, coque PP rose, placet d assise gris, sans accoudoirs"
+  },
+  "LOB1": {
+   "fiche": "Chaise et fauteuil 4 pieds métal, coque PP avec placet assise tapissé - Loria",
+   "vu": "pieds métal tube noir, coque PP blanche, placet d assise"
+  },
+  "LOHB": {
+   "fiche": "Tabouret pieds métal, coque PP avec placet assise tapissé - Loria",
+   "vu": "tabouret haut, pieds métal noir, coque PP nue avec placet — pas entièrement tapissée"
+  },
+  "LOK1": {
+   "fiche": "Chaise et fauteuil giratoire sur roulettes, coque PP avec placet assise tapissé - Loria",
+   "vu": "base 4 branches sur roulettes, coque PP rose, placet d assise"
+  }
+ },
+ "_regle_duplication": {
+  "principe": "Quand les fiches candidates ne diffèrent QUE par un attribut invisible — vendu à l unité ou par lot, accotoirs 1D/3D/4D, course de lift, polypropylène recyclé ou non — la même image va dans TOUTES. Le produit photographié est le même ; mieux vaut deux fiches illustrées du même visuel qu une fiche vide.",
+  "nuance": "On élimine d abord ce que la photo contredit. Chez Tertio, les quatre fiches d un tronc opposent aussi base aluminium poli et base nylon noir, ce qui SE VOIT : une photo à base nylon va aux fiches 1D et 4D nylon, jamais à la fiche alu. La duplication ne s applique qu au reliquat vraiment indiscernable.",
+  "ne_s_applique_pas": "Aux différences visibles — dos PP contre résille, pieds bois contre métal, patins contre roulettes, chaise contre fauteuil. Celles-là se tranchent à l oeil, et une image mal placée coûte plus cher à défaire qu à ne pas faire."
+ },
+ "_fiches_fantomes": {
+  "constat": "Deux fiches Sokoa ne sont pas des produits mais des fins de phrase du catalogue, prises pour des noms : « avec tablette de rangement bois et électrification possible - Rhune » et « à droite ou à gauche et électrification possible - Rhune ».",
+  "consequence": "Toute l ambiguïté des six troncs Rhune venait de là. Écartées, les six désignent chacun une seule fiche.",
+  "a_faire": "À corriger dans noms-sokoa.json puis à réimporter, comme les seize références parasites de septembre. Les neuf fiches Eman qui commencent par BLANC ou NOIR sont en revanche de vrais produits : le préfixe est laid mais légitime."
+ },
+ "rhune": {
+  "_source": "Sokoa/fichiers_sokoa/RHUNE/",
+  "_note": "Chaque tronc ne visait qu une fiche réelle ; la seconde était un fragment de phrase.",
+  "RUYD": {
+   "fiche": "Méridienne 2 places - 1 pouf (1 angle, 1 pouf) - Rhune"
+  },
+  "RUYG": {
+   "fiche": "Méridienne 2 places - 1 pouf (1 angle, 1 pouf) - Rhune"
+  },
+  "RUZD": {
+   "fiche": "Méridienne 3 places - 1 pouf (1 angle, 1 chauffeuse, 1 pouf) - Rhune",
+   "vu": "méridienne 3 places avec tablette bois et prise d électrification visibles"
+  },
+  "RUZE": {
+   "fiche": "Méridienne 3 places - 2 poufs (1 angle, 2 poufs) - Rhune"
+  },
+  "RUZF": {
+   "fiche": "Méridienne 3 places - 2 poufs (1 angle, 2 poufs) - Rhune"
+  },
+  "RUZG": {
+   "fiche": "Méridienne 3 places - 1 pouf (1 angle, 1 chauffeuse, 1 pouf) - Rhune"
+  }
+ },
+ "tertio": {
+  "_source": "Sokoa/fichiers_sokoa/TERTIO/",
+  "RT56": {
+   "fiches": [
+    "Fauteuil haut dossier, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Tertio",
+    "Fauteuil haut dossier, accotoirs 4D, base nylon noir, roulettes ø50 sol moquette - Tertio"
+   ],
+   "vu": "fauteuil, dossier tapissé, base NYLON NOIRE — la fiche à base alu poli est écartée ; 1D et 4D restent indiscernables, image dupliquée"
+  },
+  "RZ56": {
+   "fiche": "Chaise haut dossier résille, finition blanc, base nylon blanc, roulettes ø50 sol moquette - Tertio",
+   "vu": "résille blanche, base blanche, SANS accoudoirs"
+  },
+  "RR56": {
+   "fiches": [
+    "Fauteuil haut dossier résille, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Tertio",
+    "Fauteuil haut dossier résille, accotoirs 4D, base nylon noir, roulettes ø50 sol moquette - Tertio"
+   ],
+   "vu": "résille blanche, fauteuil, base NYLON NOIRE — fiche alu poli écartée, 1D et 4D dupliquées"
+  },
+  "RR76": {
+   "fiches": [
+    "Fauteuil haut dossier résille, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Tertio",
+    "Fauteuil haut dossier résille, accotoirs 4D, base nylon noir, roulettes ø50 sol moquette - Tertio"
+   ],
+   "vu": "résille noire, fauteuil, base nylon noire — idem"
+  },
+  "RT76": {
+   "fiches": [
+    "Fauteuil haut dossier, accotoirs 1D, base nylon noir, roulettes ø50 sol moquette - Tertio",
+    "Fauteuil haut dossier, accotoirs 4D, base nylon noir, roulettes ø50 sol moquette - Tertio"
+   ],
+   "vu": "dossier tapissé, fauteuil, base nylon noire — idem"
+  },
+  "RZ76": {
+   "fiche": "Fauteuil haut dossier résille, finition blanc, accotoirs 1D, base nylon blanc, roulettes ø50 sol moquette - Tertio",
+   "vu": "résille et base blanches, accoudoirs — le blanc n existe qu en 1D, fiche unique"
+  },
+  "RT32": {
+   "fiches": [
+    "TertioT - chaise multimédia moyen dossier, lift assis-debout avec repose-pieds, base sur patins - Sièges Hauts",
+    "TertioT - chaise multimédia moyen dossier, lift haut avec repose-pieds, base sur patins - Sièges Hauts"
+   ],
+   "vu": "lift assis-debout contre lift haut : une course de vérin ne se photographie pas"
+  },
+  "RT52": {
+   "fiches": [
+    "TertioT - chaise multimédia moyen dossier, lift assis-debout avec repose-pieds, base sur patins - Sièges Hauts",
+    "TertioT - chaise multimédia moyen dossier, lift haut avec repose-pieds, base sur patins - Sièges Hauts"
+   ],
+   "vu": "idem RT32"
+  }
+ },
+ "wimax": {
+  "_source": "Sokoa/fichiers_sokoa/WI-MAX/",
+  "WL66": {
+   "fiches": [
+    "Fauteuil haut dossier résille, base nylon blanc, roulettes ø50 sol moquette - Wi-Max",
+    "Siège haut dossier résille, base nylon blanc, roulettes ø50 sol moquette - Wi-Max"
+   ],
+   "vu": "résille noire, base nylon blanche, accoudoirs. Les deux fiches ne diffèrent que par le mot « fauteuil » ou « siège », sans autre discriminant : image dupliquée."
+  },
+  "WR06": {
+   "fiches": [
+    "Fauteuil haut dossier résille, base nylon noir, roulettes ø50 sol moquette - Wi-Max",
+    "Siège haut dossier résille, base nylon noir, roulettes ø50 sol moquette - Wi-Max"
+   ],
+   "vu": "résille noire, base nylon noire, accoudoirs. Comme WL66, « fauteuil » et « siège » ne se distinguent par aucun autre mot : dupliquée."
+  }
+ },
+ "maike": {
+  "_source": "Sokoa/fichiers_sokoa/MAIKE/",
+  "KEA0": {
+   "fiches": [
+    "Chaise 4 pieds, polypropylène 100% recyclé, vendue par lot de 4 - Maike",
+    "Chaise 4 pieds, polypropylène 100% recyclé, vendue à l unité - Maike",
+    "Chaise 4 pieds, vendue par lot de 4 - Maike",
+    "Chaise 4 pieds, vendue à l unité - Maike"
+   ],
+   "vu": "une chaise monobloc PP verte. Ni le polypropylène recyclé ni le conditionnement par lot ne se voient : les quatre fiches reçoivent l image."
+  },
+  "KEH0": {
+   "fiches": [
+    "Tabouret 4 pieds, vendu par lot de 2 - Maike",
+    "Tabouret 4 pieds, vendu à l unité - Maike"
+   ],
+   "vu": "les deux fiches ne diffèrent que par le conditionnement, invisible par nature : image dupliquée sans qu il soit utile de l ouvrir."
+  }
+ },
+ "luz": {
+  "_source": "Sokoa/fichiers_sokoa/LUZ/",
+  "LU76": {
+   "fiches": [
+    "Fauteuil dos résille + RL, synchro+TA, accotoirs 1D, base nylon noir, RSM Ø50 - Luz",
+    "Fauteuil dos résille + RL, synchro+TA, accotoirs 3D, base nylon noir, RSM Ø50 - Luz"
+   ],
+   "vu": "accoudoirs présents — la fiche chaise est écartée ; dos résille avec renfort lombaire, base nylon noire. 1D et 3D indiscernables : dupliquée."
+  }
+ },
+ "batbi": {
+  "_source": "Sokoa/fichiers_sokoa/BATBI/",
+  "BBX0": {
+   "fiche": "Standard - Chauffeuse 1 place - tissu ou enduit - Batbi",
+   "vu": "chauffeuse jaune et pouf gris, tissu intégral, aucune bande enduite noire — ce n est pas la version Hybride"
+  }
+ }
+}
