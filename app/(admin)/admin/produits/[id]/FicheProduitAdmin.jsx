@@ -22,7 +22,10 @@ import {
 import EditeurFinitions from "./EditeurFinitions";
 import OngletIdentite from "./OngletIdentite";
 import OngletDescriptif from "./OngletDescriptif";
-import { etapesDe, choixTarifaires, choixFinition, assemblerReference } from "@/lib/modeleProduit";
+import {
+  etapesDe, choixTarifaires, choixFinition, assemblerReference,
+  decomposerComposite, choixRecouverts,
+} from "@/lib/modeleProduit";
 import { prixLigne } from "@/lib/prixCatalogue";
 
 const euros = (n) =>
@@ -77,6 +80,20 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
   const etapes = useMemo(() => etapesDe(produit), [produit]);
   const tarifaires = useMemo(() => choixTarifaires(produit), [produit]);
   const finitions = useMemo(() => choixFinition(produit), [produit]);
+
+  // Une question tarifaire dont chaque valeur agrège deux pièces — « NOIR
+  // METAL / NEBRASKA » — est lue par des groupes de finition qui n'ajoutent
+  // aucune question. L'écran montrait les trois côte à côte sans dire lequel
+  // porte le prix, ce qui les faisait passer pour des doublons.
+  const composites = useMemo(() => {
+    const m = new Map();
+    for (const c of choixTarifaires(produit)) {
+      const d = decomposerComposite(c, produit);
+      if (d) m.set(c.cle, d);
+    }
+    return m;
+  }, [produit]);
+  const recouverts = useMemo(() => choixRecouverts(produit), [produit]);
 
   const agir = (promesse) => demarrer(async () => {
     const r = await promesse;
@@ -198,6 +215,11 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
               agir={agir}
               bibliotheque={bibliotheque}
               estFinition={choix.nature === "finition"}
+              decomposition={composites.get(choix.cle) || null}
+              nomDuComposite={recouverts.has(choix.cle)
+                ? produit.choix.find((c) => composites.get(c.cle)
+                  ?.positions.some((x) => x.nom === choix.nom))?.nom || null
+                : null}
             />
           ))}
 
@@ -338,18 +360,34 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
  * les options gardent le tableau, qui leur convient — ce sont des libellés
  * et des jetons, rien à voir.
  */
-function BlocChoix({ choix, agir, estFinition, bibliotheque = [] }) {
+function BlocChoix({ choix, agir, estFinition, bibliotheque = [], decomposition = null, nomDuComposite = null }) {
   const [ouvert, setOuvert] = useState(false);
   const n = NATURES[choix.nature] || NATURES.finition;
 
   return (
-    <div className={`rounded-2xl border bg-surface ${ouvert ? "border-orange" : "border-line"}`}>
+    <div className={`rounded-2xl border bg-surface ${
+      ouvert ? "border-orange" : nomDuComposite ? "border-line/60" : "border-line"
+    }`}>
       <button
         type="button"
         onClick={() => setOuvert((o) => !o)}
         className="flex w-full items-center gap-4 px-5 py-3.5 text-left"
       >
-        <span className="w-[200px] text-sm font-semibold">{choix.nom}</span>
+        <span className="w-[200px] text-sm font-semibold">
+          {choix.nom}
+          {/* Deux rôles, et l'écran ne les distinguait pas : la question qui
+              porte le prix, et les groupes qui servent seulement à la lire. */}
+          {decomposition && (
+            <span className="mt-0.5 block text-[11px] font-normal leading-tight text-orange-dark">
+              porte le prix et la référence
+            </span>
+          )}
+          {nomDuComposite && (
+            <span className="mt-0.5 block text-[11px] font-normal leading-tight text-ink-soft">
+              lu depuis « {nomDuComposite} », pas reposé au client
+            </span>
+          )}
+        </span>
         <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${n.fond} ${n.texte}`}>
           {n.libelle}
         </span>
@@ -391,6 +429,46 @@ function BlocChoix({ choix, agir, estFinition, bibliotheque = [] }) {
         </div>
       ) : (
         <div className="border-t border-line px-5 pb-5 pt-4">
+
+          {/* Ce que le client voit vraiment. Sans cela, l'écran montre dix-sept
+              lignes « ALUMINIUM / HÊTRE » et laisse croire à un fouillis, là
+              où la fiche en fait deux rangées de pastilles. */}
+          {decomposition && (
+            <div className="mb-4 rounded-xl border border-line bg-surface-2/50 p-4">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
+                Ce que la fiche en fait
+              </div>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">
+                Chaque valeur du tarif agrège {decomposition.positions.length} pièces.
+                Le client ne voit pas cette liste : il choisit pièce par pièce,
+                et la fiche recompose la ligne du tarif — donc le prix et la
+                référence.
+              </p>
+              <div className="mt-3 flex flex-col gap-2">
+                {decomposition.positions.map((pos, i) => (
+                  <div key={pos.nom || i} className="flex flex-wrap items-center gap-2">
+                    <span className="w-[170px] shrink-0 text-[12.5px] font-semibold">{pos.nom}</span>
+                    {pos.valeurs.map((v) => (
+                      <span
+                        key={v.part}
+                        title={`${v.part} → ${v.libelle}`}
+                        className="flex items-center gap-1.5 rounded-full border border-line bg-surface py-0.5 pl-0.5 pr-2.5 text-[12px]"
+                      >
+                        <span
+                          className="h-4 w-4 rounded-full border border-line bg-cover bg-center"
+                          style={v.imageUrl
+                            ? { backgroundImage: `url(${v.imageUrl})` }
+                            : { background: v.couleur || "#f3efe8" }}
+                        />
+                        {v.libelle}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="mb-3 flex flex-wrap items-end gap-4">
             <label className="flex flex-col gap-1.5">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Nom du choix</span>
