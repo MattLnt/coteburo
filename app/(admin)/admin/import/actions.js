@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { ecrireModeleAChoix } from "@/lib/ecrireModeleAChoix";
 
 function slugify(s) {
   return (s || "")
@@ -529,6 +530,15 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
     });
 
     idsCrees.set(cleNom(p.nom), vitrine.id);
+
+    // Le modèle que la boutique lit vraiment. Les champs JSON ci-dessus sont
+    // conservés le temps que la reprise des données soit close ; c'est cette
+    // écriture-ci qui fait paraître la fiche, ses questions et ses prix.
+    await ecrireModeleAChoix(vitrine.id, {
+      axesDeclinaisons: p.axesDeclinaisons,
+      declinaisons: p.declinaisons,
+      groupesFinition: p.groupesFinition,
+    });
 
     for (const g of p.groupesFinition) {
       await prisma.groupeFinition.create({
