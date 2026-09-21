@@ -8,51 +8,52 @@ demander.
 
 ---
 
-## 1. Les visuels — 221 fiches sur 555 n'ont aucune image
+## 1. Les visuels — 163 produits à illustrer
 
-C'est le premier manque du catalogue, et de loin. 136 autres fiches n'ont
-qu'un seul visuel.
+197 fiches n avaient aucune image au 22 septembre. **Trente-quatre sont des
+accessoires** — vendus avec un produit, cités dans ses options — et ne
+demandent pas de visuel. Il en reste **163**.
 
-Les gammes entièrement dépourvues, à traiter en priorité parce qu'un lot
-d'images en règle vingt d'un coup :
-
-| | gamme | fiches sans visuel |
+| | fiches | |
 |---|---|---|
-| Sokoa | Adio | 20 / 20 |
-| OfficePro | Verano | 14 / 16 |
-| Buronomic | ALTO | 14 / 18 |
-| Sokoa | Adela | 12 / 24 |
-| Sokoa | Eman | 12 / 27 |
-| Sokoa | Loria | 10 / 23 |
-| OfficePro | Coigny | 8 / 8 |
-| OfficePro | Tecseat | 7 / 8 |
-| OfficePro | Beez | 6 / 6 |
-| Sokoa | Azkar, Bero | 4 / 4 chacune |
-| Sokoa | Eden | 3 / 3 |
+| un dépôt existe dans leur gamme | **131** | à faire dans /admin/visuels |
+| aucune source sur le disque | **32** | à demander au fournisseur |
 
-Par marque : **Sokoa 89 · OfficePro 70 · Buronomic 62**.
+### Les 131 à trier
 
-Le détail complet sort de `node prisma/etat-catalogue.mjs --visuels`.
+Les plus rentables d abord : beaucoup de fiches vides, et assez d images
+pour avoir le choix.
 
-### Ce qui existe déjà pour les combler
+| fiches | images | gamme |
+|---|---|---|
+| 12 | 78 | Sokoa · Eman |
+| 12 | 28 | Sokoa · Adela |
+| 10 | 90 | Sokoa · Loria |
+| 7 | 38 | Buronomic · ALTO |
+| 6 | 787 | OfficePro · Tecsy |
+| 6 | 83 | Sokoa · Klik |
+| 5 | 324 | OfficePro · Verano |
+| 4 | 66 | OfficePro · Coigny |
 
-**Cinq mille images sont classées** dans `COTEBURO-MEDIAS/CATALOGUE-2026`,
-gamme par gamme, et `prisma/televerser-medias.mjs` sait les envoyer. Le seul
-geste manquant est de répartir les dépôts `_A-TRIER` dans les dossiers de
-fiches. `prisma/repartir-depots.mjs` en propose une part — celle que le nom
-du fichier désigne sans ambiguïté — et laisse le reste.
+Le compte à jour : `node prisma/etat-catalogue.mjs --visuels`.
 
-**Les 221 fiches connaissent toutes leur page de catalogue fournisseur.** Le
-champ `Combinaison.pageCatalogue` est renseigné sur les 221, sans exception.
-Les photos du fabricant sont donc atteignables, page par page.
+### Les 32 sans source — à demander
 
-> Les catalogues OfficePro et Sokoa encodent leurs photos en JPEG 2000, que
-> pdfjs ne décode pas par défaut hors navigateur — les images se rendaient en
-> blanc. Le décodeur est pourtant livré avec la bibliothèque : il suffit de
-> passer `wasmUrl` pointant sur `node_modules/pdfjs-dist/wasm/`. Sans cela,
-> ni les photos ni le nuancier OfficePro ne sont lisibles.
+**Sokoa · Adio : 20 fiches.** C est de loin la demande la plus rentable du
+document : une gamme entière, sans une seule photo.
 
----
+Puis Sokoa Eden (3), OfficePro Vaseat (2), et neuf gammes à une fiche —
+Galet, Shineo, Budget, Wave, Archikit, Astrolite Réunion, Partage Réunion.
+
+### Ce que pCon ne donnera pas
+
+Un configurateur produit les captures des cinquante-trois fiches Buronomic
+vides ? **Non : zéro sur cinquante-trois.** Elles sont toutes hors du
+configurateur — coussins, goulottes, kits de poignées, châssis
+télescopiques. Les mille trois cent six captures qui existent concernent
+les produits que pCon porte, et ces fiches-là sont déjà illustrées.
+
+Inutile donc de relancer `capture-pcon.mjs` en espérant combler les trous.
 
 ## 2. Les pastilles de finition — 81 finitions sur 2 135
 
