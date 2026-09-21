@@ -86,6 +86,7 @@ export default async function ProduitPage({ params }) {
           connecte={payload.connecte}
           categorieSlug={payload.carte.categorieSlug}
           sousCategorieSlug={payload.carte.sousCategorieSlug}
+          options={payload.carte.optionsAdditionnelles || []}
         />
       </section>
 

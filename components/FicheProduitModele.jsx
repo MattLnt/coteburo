@@ -18,6 +18,7 @@ import { useCart } from "@/components/cart/CartContext";
 import { useDevis } from "@/components/devis/DevisContext";
 import FavoriButton from "@/components/FavoriButton";
 import GalerieProduit from "@/components/GalerieProduit";
+import { useOptionsAcheteur } from "@/components/OptionsAcheteur";
 import {
   prochaineEtape, etapesDe, etapesRestantes, prixDe,
   detailReference, visuelsPour, commandable, libelleChoix, identiteCommande,
@@ -78,10 +79,19 @@ function Pastille({ valeur, choisie, taille = 56 }) {
 
 export default function FicheProduitModele({
   produit, marge = 0, surDevis = false, favori = false, connecte = false,
-  categorieSlug = null, sousCategorieSlug = null,
+  categorieSlug = null, sousCategorieSlug = null, options = [],
 }) {
   const { addItem } = useCart();
   const { addDevis } = useDevis();
+
+  // Les accessoires vendus avec le produit. Cent quatre-vingt-seize fiches en
+  // ont, sous forme de produits liés ; le crochet qui sait les configurer
+  // existe déjà et marche, on le réutilise au lieu d'en écrire un second.
+  const { optionsUI, totalOptions, optionsOK, ajouterOptions } = useOptionsAcheteur({
+    options,
+    carte: { id: produit.id, nom: produit.nom, marque: produit.gamme?.marque?.nom },
+    addItem,
+  });
   const [reponses, setReponses] = useState({});
   const [qte, setQte] = useState(1);
   const [ajoute, setAjoute] = useState(false);
@@ -119,7 +129,7 @@ export default function FicheProduitModele({
   // paiement, qui n'a pas encore basculé, de retrouver sa ligne et son prix.
   const versPanier = () => {
     const identite = identiteCommande(produit, reponses, marge);
-    addItem(
+    const parentId = addItem(
       {
         type: "nouveau",
         vitrineId: produit.id,
@@ -141,6 +151,7 @@ export default function FicheProduitModele({
       identite.finition,
       qte,
     );
+    ajouterOptions(parentId);
     setAjoute(true);
     setTimeout(() => setAjoute(false), 2000);
   };
@@ -435,6 +446,9 @@ export default function FicheProduitModele({
           </div>
         )}
 
+        {/* Les accessoires, avant le prix : ils s'y ajoutent. */}
+        {optionsUI}
+
         {/* Le prix et l'action. */}
         <div className="mt-auto flex flex-wrap items-end gap-4 border-t border-line pt-5">
           <div className="flex flex-col">
@@ -442,8 +456,14 @@ export default function FicheProduitModele({
               {surDevis ? "estimation" : prix.ferme ? "votre prix" : "à partir de"}
             </span>
             <span className="font-display text-2xl font-bold">
-              {euros(prix.montant)} <span className="text-sm font-medium text-ink-soft">HT</span>
+              {euros(prix.montant == null ? null : prix.montant + (totalOptions || 0))}{" "}
+              <span className="text-sm font-medium text-ink-soft">HT</span>
             </span>
+            {totalOptions > 0 && (
+              <span className="text-xs text-ink-soft">
+                dont {euros(totalOptions)} d'accessoires
+              </span>
+            )}
             {!prix.ferme && prix.possibles > 1 && (
               <span className="text-xs text-ink-soft">{prix.possibles} configurations possibles</span>
             )}
@@ -472,7 +492,7 @@ export default function FicheProduitModele({
           <button
             type="button"
             onClick={surDevis ? versDevis : versPanier}
-            disabled={!verdict.ok}
+            disabled={!verdict.ok || !optionsOK}
             className={`h-12 flex-1 rounded-xl px-6 text-[15px] font-semibold ${
               verdict.ok
                 ? "bg-orange text-white hover:bg-orange-dark"
