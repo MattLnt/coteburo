@@ -394,7 +394,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
       </div>
 
       <div style={{ display: "flex", gap: 8 }}>
-        <Link href={`/admin/architecture/${l.gammeId}/carte/${l.carteId}`}
+        <Link href={`/admin/produits/${l.carteId}`}
           style={{ flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px", borderRadius: 10, border: "1px solid #e8e3da", background: "#faf8f4", color: "#23262a", textDecoration: "none", fontSize: 12.5, fontWeight: 600 }}>
           <Icon name="edit" size={14} /> Éditer
         </Link>
@@ -608,7 +608,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
                     {cellulePublie(p)}
                     <td style={{ ...td, textAlign: "right" }}>
                       <div style={{ display: "inline-flex", gap: 8 }}>
-                        <Link href={`/admin/architecture/${p.gammeId}/carte/${p.carteId}`} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 9, border: "1px solid #e8e3da", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>
+                        <Link href={`/admin/produits/${p.carteId}`} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 9, border: "1px solid #e8e3da", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>
                           <Icon name="edit" size={14} /> Éditer
                         </Link>
                         <button onClick={() => setASupprimer({ ...p, supprimerProduit: true, declinaisonId: null })} title="Supprimer le produit"
@@ -646,7 +646,7 @@ export function ProduitsTable({ lignes: lignesInit, gammes, margeGlobale }) {
                     {cellulePublie(l)}
                     <td style={{ ...td, textAlign: "right" }}>
                       <div style={{ display: "inline-flex", gap: 8 }}>
-                        <Link href={`/admin/architecture/${l.gammeId}/carte/${l.carteId}`} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 9, border: "1px solid #e8e3da", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>
+                        <Link href={`/admin/produits/${l.carteId}`} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 9, border: "1px solid #e8e3da", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>
                           <Icon name="edit" size={14} /> Éditer
                         </Link>
                         <button onClick={() => setASupprimer(l)} title="Supprimer"

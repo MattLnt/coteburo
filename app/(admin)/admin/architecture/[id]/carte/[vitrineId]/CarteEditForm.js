@@ -282,9 +282,39 @@ export default function CarteEditForm({ carte }) {
     </>
   );
 
+  // Le site ne lit plus les déclinaisons ni les finitions d'ici : il lit le
+  // modèle à choix, combinaisons et visuels. Les modifier sur cet écran reste
+  // possible — l'import s'en sert encore — mais n'a plus d'effet sur la fiche
+  // vue par le client. Le dire ici évite de chercher pendant une heure
+  // pourquoi une correction ne se voit pas.
+  const avertissementModele = (
+    <div style={{
+      border: "1px solid #f0c4a0", background: "#fce6d6", borderRadius: 14,
+      padding: "13px 16px", display: "flex", alignItems: "center", gap: 12,
+      fontSize: 13, color: "#8F4A16", marginBottom: 18,
+    }}>
+      <span style={{ lineHeight: 1.5 }}>
+        Les onglets <strong>déclinaisons</strong> et <strong>finitions</strong> de cet
+        écran alimentent l'ancien modèle. La fiche produit du site lit désormais
+        les choix, les combinaisons et les visuels.
+      </span>
+      <a
+        href={`/admin/produits/${carte.id}`}
+        style={{
+          marginLeft: "auto", whiteSpace: "nowrap", padding: "8px 14px",
+          borderRadius: 9, background: "#f0661b", color: "#fff",
+          fontWeight: 600, textDecoration: "none",
+        }}
+      >
+        Ouvrir la fiche du modèle →
+      </a>
+    </div>
+  );
+
   // Contenu de l'onglet actif — identique en mobile et desktop.
   const contenuOnglet = (
     <>
+      {avertissementModele}
       {onglet === "infos" && (
         <div style={{ ...card, display: "flex", flexDirection: "column", gap: 24 }}>
           <div>
