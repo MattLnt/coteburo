@@ -80,30 +80,46 @@ export default function FinitionsManager({ palettes: palettesInit, orphelines: o
     );
   };
 
-  // Une finition dans la liste dépliée.
+  // Une teinte de la bibliothèque.
+  //
+  // Le nom passe sur sa propre ligne, au-dessus du reste. Il était jusqu'ici
+  // en « flex: 1 » entre la pastille, l'étiquette « sans image », le compte
+  // d'usages et deux boutons : dans une cellule de deux cent trente pixels,
+  // les éléments fixes en consommaient deux cent onze, et le nom se réduisait
+  // à son ellipse. Il fallait ouvrir « modifier » pour savoir quelle teinte
+  // on avait sous les yeux.
   const ligneFinition = (f) => (
-    <div key={f.id} style={{ display: "flex", alignItems: "center", gap: 9, padding: "8px 10px", border: "1px solid #f0ece4", borderRadius: 9, background: "#fdfcfa" }}>
-      <span style={{ width: 28, height: 28, borderRadius: 7, flexShrink: 0, border: "1px solid #e0dacf", overflow: "hidden", background: f.couleur || "#f0ece4", display: "grid", placeItems: "center" }}>
+    <div key={f.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", border: "1px solid #f0ece4", borderRadius: 9, background: "#fdfcfa" }}>
+      <span style={{ width: 34, height: 34, borderRadius: 8, flexShrink: 0, border: "1px solid #e0dacf", overflow: "hidden", background: f.couleur || "#f0ece4", display: "grid", placeItems: "center" }}>
         {f.imageUrl ? <img src={f.imageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}
       </span>
-      <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, color: "#23262a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.nom}</span>
-      {/* Combien de produits emploient cette teinte, et lesquelles n'ont pas
-          encore de pastille. C'est ce qui rend la bibliothèque lisible : on
-          voit ce qui compte, ce qui dort, et les trous à combler. */}
-      {!f.imageUrl && (
-        <span title="sans pastille" style={{ flexShrink: 0, fontSize: 10.5, fontWeight: 600, color: "#8F4A16", background: "#fce6d6", padding: "3px 7px", borderRadius: 20 }}>
-          sans image
+
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ display: "block", fontSize: 13.5, fontWeight: 600, color: "#23262a", lineHeight: 1.25, overflowWrap: "anywhere" }}>
+          {f.nom}
         </span>
-      )}
-      <span title="produits qui emploient cette teinte" style={{ flexShrink: 0, fontSize: 11.5, color: f._count?.valeurs ? "#5c616a" : "#b8b2a7", minWidth: 58, textAlign: "right" }}>
-        {f._count?.valeurs ? `${f._count.valeurs} produit${f._count.valeurs > 1 ? "s" : ""}` : "inutilisée"}
+        {/* Sous le nom : ce qui compte, ce qui dort, et les trous à combler. */}
+        <span style={{ display: "block", fontSize: 11, color: "#9aa0a8", marginTop: 2 }}>
+          {f.couleur && (
+            <span style={{ fontFamily: "ui-monospace, monospace" }}>{f.couleur} · </span>
+          )}
+          {!f.couleur && !f.imageUrl && (
+            <span style={{ color: "#8F4A16" }}>sans pastille · </span>
+          )}
+          {f._count?.valeurs
+            ? `${f._count.valeurs} produit${f._count.valeurs > 1 ? "s" : ""}`
+            : "inutilisée"}
+        </span>
       </span>
-      <button onClick={() => setEdition({ paletteId: f.paletteId || "orphelines", finition: f })} title="Modifier"
-        style={{ width: 30, height: 30, display: "grid", placeItems: "center", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", color: "#5c616a", flexShrink: 0 }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
-      </button>
-      <button onClick={() => supprFinition(f.id, f.paletteId)} title="Supprimer"
-        style={{ width: 30, height: 30, display: "grid", placeItems: "center", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", color: "#c4735a", flexShrink: 0, fontSize: 13 }}>🗑</button>
+
+      <span style={{ display: "flex", gap: 5, flexShrink: 0 }}>
+        <button onClick={() => setEdition({ paletteId: f.paletteId || "orphelines", finition: f })} title="Modifier"
+          style={{ width: 30, height: 30, display: "grid", placeItems: "center", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", color: "#5c616a" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+        </button>
+        <button onClick={() => supprFinition(f.id, f.paletteId)} title="Supprimer"
+          style={{ width: 30, height: 30, display: "grid", placeItems: "center", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", color: "#c4735a", fontSize: 13 }}>🗑</button>
+      </span>
     </div>
   );
 
@@ -171,7 +187,7 @@ export default function FinitionsManager({ palettes: palettesInit, orphelines: o
           .fn-form { display: block; }
           .fn-form-champs { flex-direction: row; align-items: flex-end; flex-wrap: wrap; }
           .fn-form-marque { width: 180px; }
-          .fn-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+          .fn-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
         }
       `}</style>
 
