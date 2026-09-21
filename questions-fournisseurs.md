@@ -166,3 +166,110 @@ alors un nom prudent plutôt qu'un nom juste.
 **La question :** sur un comptoir, un casier, un module, que désignent la
 première et la seconde teinte ? Corps et plateau, façade et intérieur,
 autre chose ?
+
+---
+
+## 8. Sokoa — la table des codes coloris, celle qui débloque 71 fiches
+
+C'est la demande la plus rentable du document : une seule table
+débloquerait **soixante et onze fiches**.
+
+### Ce qui se passe aujourd'hui
+
+Sur une fiche produit, le client choisit sa déclinaison par étapes. Chez
+Buronomic les étapes sont Largeur, puis Profondeur, puis Passage des câbles.
+Chez Sokoa, il n'y a qu'une étape et elle propose **cinq boutons portant
+exactement le même texte** :
+
+```
+Chaise 4 pieds, assise tapissée, dos PP (AOB0/11)
+Chaise 4 pieds, assise tapissée, dos PP (AOB0/G2)
+Chaise 4 pieds, assise tapissée, dos PP (AOB0/V5)
+Chaise 4 pieds, assise tapissée, dos PP (AOB0/L4)
+Chaise 4 pieds, assise tapissée, dos PP (AOB0/T7)
+```
+
+La désignation du tarif est identique d'une ligne à l'autre ; seul change le
+suffixe de la référence, après la barre oblique. Le prix, lui, ne bouge pas :
+162 € pour `/11` comme pour `/G2`. Tout indique un **coloris de coque**.
+
+### Ce qui manque
+
+Le site sait afficher ces cinq lignes comme un axe « Coloris » à cinq
+pastilles — c'est prêt, une option du script l'active. Mais il afficherait
+« 11 », « G2 », « V5 » : des codes que personne ne sait lire.
+
+Les nuanciers déjà en base ne répondent pas : ils portent des codes d'une
+autre famille — `B 066`, `CUL`, `80M`, `SLB` — qui sont des références de
+**tissu**, pas de coque, et qui ne se raccordent pas à ces suffixes.
+
+### La demande
+
+**La correspondance entre le suffixe de référence et la teinte**, dans ce
+format :
+
+```
+11  →  Noir
+G2  →  Gris
+V5  →  Vert
+L4  →  …
+T7  →  …
+```
+
+Et, si les pastilles existent, une image par teinte — même format que
+`sokoa_swatches`.
+
+### Les 96 codes en usage, par gamme
+
+| gamme | fiches | codes | les codes | exemple de référence |
+|---|---|---|---|---|
+| Loria | 23 | 17 | 1, 1+, 10, 4, 4+, 40, 7, 7+, 70, A, B, B+, B0, E, P, T, W | LCA0/1 |
+| Eman | 27 | 16 | A, A0, B, B0, D, D0, E, E0, J, J0, K, K0 | NL86/E |
+| Klik | 18 | 14 | 0, 2, 3, 7, AA, AL, AP, BB, C, CC, CE, *P*A*D, *P*A*T*D, 2*A*D | KLA0/AP |
+| Adio | 20 | 12 | 1+, 11, 1N, 7+, G2, GB, L4, LL, T7, TT, V5, VV | AOB0/11 |
+| Wi-Max | 15 | 12 | 10, 15, 15+, 18, 1N, 70, 76, 7L, 7N | WL66/7L |
+| Alaia by Sokoa | 11 | 10 | 0*, 0G, 0K, 20, 4*, 4G, 4K, 5*, 5G, 5K | IR66/5K |
+| Tertio | 11 | 8 | 10, 14, 14+, 15, 55, 70, 70+, 7B | RT36/10 |
+| Bero | 3 | 6 | 10, 30, 31, 70, 71, B0 | ER05/30 |
+| Punta | 5 | 6 | 0B, 0G, 20, 2B, 2G, H0 | PNY1/20 |
+| Kanpoa by Colos | 2 | 5 | 10, 30, 60, 80, 90 | KPDC/10 |
+| Ildo | 4 | 4 | 3, 7, N, P | DOA1/3 |
+| Rhune | 11 | 4 | 00, 10, 11, 1B | RUYB/1B |
+| Eden | 3 | 3 | 33, 51, 72 | EI17/51 |
+| Azkar | 2 | 2 | 51, 55 | AK77/55 |
+| Luma | 1 | 2 | B1, N1 | LM05/N1 |
+| Sièges Hauts | 4 | 2 | 00, 20 | IA32/20 |
+| Adela | 4 | 2 | 5, 5N | ALJ1/5N |
+
+### Trois questions de lecture qui vont avec
+
+1. **Le `+` suffixe-t-il une teinte ou un supplément ?** On trouve côte à
+   côte `1` et `1+`, `4` et `4+`, `14` et `14+`, `70` et `70+`. Est-ce deux
+   teintes distinctes, ou la même avec une option ?
+
+2. **Le `0` final change-t-il quelque chose ?** Même remarque pour `A` / `A0`,
+   `B` / `B0`, `E` / `E0`, `J` / `J0`, `K` / `K0` chez Eman, et `7` / `70`,
+   `4` / `40` chez Loria.
+
+3. **`+coloris*` figure dans certaines références du tarif** — `NL86/E+coloris*`,
+   `WR66/10+coloris*`. Ce n'est manifestement pas un code mais un renvoi de
+   note de bas de page. Que signale cette note, et faut-il la lire comme
+   « coloris au choix » ?
+
+### Et pour les 104 autres fiches
+
+Un mot d'avertissement, qui n'appelle pas de réponse mais explique pourquoi
+elles ne sont pas dans le compte des 71.
+
+Sur cent quatre fiches, ce n'est pas le suffixe qui change d'une ligne à
+l'autre mais le **préfixe** de la référence, la désignation restant la même :
+
+```
+Siège haut dossier résille, base nylon noir, roulettes ø50 sol moquette (WR66/10)
+Siège haut dossier résille, base nylon noir, roulettes ø50 sol moquette (WR06/10)
+```
+
+`WR66` et `WR06` sont deux produits différents que le tarif décrit avec la
+même phrase. Aucune table de coloris ne résoudra cela : il faudra savoir ce
+qui les distingue — mécanisme, accotoirs, version. C'est le même genre de
+doute que les points 1 et 2 de ce document, en beaucoup plus large.
