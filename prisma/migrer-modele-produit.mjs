@@ -334,8 +334,12 @@ function planifier(v) {
       .filter((f) => f.nom != null && String(f.nom).trim() !== "")
       .sort((a, b) => a.ordre - b.ordre);
     if (!valeursFin.length) return;
+    // Le rang de ce groupe dans l'assemblage de la référence : la position
+    // qu'occupe son jeton, et non son rang d'affichage.
+    const rang = resolution ? resolution.ordreGroupes.indexOf(ig) : -1;
     choix.push({
       cle, nom: g.nom, nature: "finition", ordre: ordre++,
+      rangReference: rang >= 0 ? rang : null,
       valeurs: valeursFin.map((f, i) => ({
         libelle: f.nom, couleur: f.couleur, imageUrl: f.imageUrl,
         paletteNom: f.paletteNom, ordre: i,
@@ -346,7 +350,10 @@ function planifier(v) {
 
   // Les combinaisons : une par déclinaison, la finition en moins.
   const combinaisons = declinaisons.map((d) => {
-    const valeurs = { ...(d.valeurs || {}) };
+    const valeurs = {};
+    for (const [k, val] of Object.entries(d.valeurs || {})) {
+      if (val != null && String(val).trim() !== "") valeurs[k] = val;
+    }
     let base = d.referenceFournisseur || null;
     if (resolution) base = resolution.base;
     return {
@@ -585,6 +592,7 @@ async function main() {
       const cree = await prisma.choix.create({
         data: {
           cle: c.cle, nom: c.nom, nature: c.nature, ordre: c.ordre,
+          rangReference: c.rangReference ?? null,
           rendu: RENDU[c.nature], origine: "tarif", vitrineId: p.id,
           valeurs: {
             create: c.valeurs.map((v) => {

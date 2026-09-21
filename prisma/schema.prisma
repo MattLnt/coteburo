@@ -654,6 +654,12 @@ model Choix {
   nature      NatureChoix
   rendu       RenduChoix     @default(boutons)
   ordre       Int            @default(0)
+  // Le rang de ce choix dans l'assemblage de la référence commandée, qui
+  // n'est PAS son ordre d'affichage. Chez Eko la fiche montre la serrure
+  // avant la finition, mais la référence écrit DZ51 + finition + serrure.
+  // Sans ce rang, la référence ne peut pas se reconstruire — et c'est tout
+  // l'objet du modèle. Vide = ce choix n'ajoute rien à la référence.
+  rangReference Int?
   obligatoire Boolean        @default(true)
   origine     OrigineDonnee  @default(tarif)
   vitrineId   String

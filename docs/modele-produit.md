@@ -767,3 +767,70 @@ Les champs existent en base. Il reste à les remplir aux trois endroits qui
 fabriquent une ligne — le checkout, l'ajout au devis, et la conversion
 devis → commande — puis à poser l'invariant. Cela vient avec le front, qui
 est l'endroit d'où partent les choix.
+
+---
+
+## 16. L'ordre des travaux
+
+### Ce qui est déjà fait
+
+| | |
+|---|---|
+| le schéma | quatre tables, cinq migrations, toutes additives |
+| la migration des données | 555 produits reversés, rien de perdu |
+| le test de vérité | 224 fiches sur 224, 2 625 références regénérées |
+| `lib/modeleProduit.js` | le raisonnement, pur — étapes, référence, prix, visuels |
+| `lib/chargerProduit.js` | la lecture base, une requête, héritage des nuanciers |
+| `prisma/verifier-modele-produit.mjs` | le contrôle indépendant, cinq invariants |
+
+### Ce qui reste, dans l'ordre
+
+**1. La fiche produit publique.** Elle prouve le modèle de bout en bout, elle
+est déjà maquettée et validée, et les deux modules dont elle a besoin sont
+écrits. Tant qu'elle ne tourne pas, tout le reste s'appuierait sur une
+fondation non vérifiée.
+
+**2. Panier, devis, commande.** Le chemin de l'argent, et le plus court.
+C'est là que le bloc d'identité doit atterrir, et là que se trouve le défaut
+connu : une commande née d'un devis part avec un identifiant interne dans le
+champ « référence fournisseur ».
+
+**3. La fiche produit en administration.** L'écran à quatre onglets —
+Identité, Choix, Prix, Visuels. **Il n'existe pas aujourd'hui** : tout se fait
+en ligne dans le tableau des produits, qui sait renommer, publier, supprimer
+une ligne et créer une fiche vide. C'est le plus gros manque de
+l'administration, et c'est ce qui permettra de corriger une donnée sans
+écrire un script.
+
+**4. La liste des produits.** Tableau à une ligne par produit, filtres par
+marque, gamme et rayon, cinq pastilles de complétude, vues enregistrées,
+actions en lot. Utile dès le premier jour pour les 220 fiches sans visuel.
+
+**5. L'architecture.** Gammes et rayons séparés en deux axes, nuanciers
+branchés sur `modeleId`. Les écrans existent, ils sont à refondre.
+
+**6. La galerie et le détourage.** Rattachement par glissé, recadrage
+réversible écrit dans la donnée. L'outil de détourage garde sa logique au
+pixel près.
+
+**7. L'import à deux couches.** Ce qui referme le sujet : rejouer l'import du
+tarif ne détruit plus le travail éditorial.
+
+### Ce qui ne bouge pas
+
+Commandes, devis, clients, ventes, promotions, articles, réalisations,
+réglages, marques, import : ces écrans ne dépendent pas du modèle produit et
+restent tels quels. Les deux premiers afficheront simplement les champs
+nouveaux — référence assemblée, fournisseur, choix structurés — quand le
+point 2 les aura remplis.
+
+`lib/prixCatalogue.js` ne bouge pas non plus. C'est le seul endroit où naît
+un prix de vente, et il n'a jamais eu tort.
+
+### Le principe qui tient l'ensemble
+
+Chaque étape se termine par un compte qui peut être faux et qui le dira. Le
+test de référence, le contrôle des cinq invariants, le reversement 807/807 :
+c'est ce qui a permis de trouver que la référence fournisseur des commandes
+issues d'un devis était cassée, et que l'ordre d'assemblage de la référence
+n'existait nulle part en base.
