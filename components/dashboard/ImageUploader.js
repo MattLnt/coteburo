@@ -2,15 +2,11 @@
 import { useState, useRef, useEffect } from "react";
 import { MediathequeLocale } from "./MediathequeLocale";
 import { mediathequeActive, cheminSuggere } from "@/app/(admin)/admin/architecture/actionsMediatheque";
-import imageCompression from "browser-image-compression";
+import { televerserImage, cloudinaryPret } from "./televerser";
 import { removeBackground } from "@imgly/background-removal";
 import { Icon } from "./Icon";
 
-const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-// Au-delà de ce seuil, on compresse avant l'envoi (Cloudinary unsigned plafonne à 10 Mo).
-const SEUIL_COMPRESSION_MO = 3;
 
 export function ImageUploader({ images = [], onChange, gammeNom = null }) {
   const [uploading, setUploading] = useState(false);
@@ -64,41 +60,12 @@ export function ImageUploader({ images = [], onChange, gammeNom = null }) {
     return blob; // PNG transparent
   };
 
-  const preparerFichier = async (file) => {
-    const estImage = file.type.startsWith("image/");
-    const tropLourde = file.size > SEUIL_COMPRESSION_MO * 1024 * 1024;
-    if (!estImage || !tropLourde) return file;
-    try {
-      return await imageCompression(file, {
-        maxSizeMB: 2,
-        maxWidthOrHeight: 2500,
-        useWebWorker: true,
-        initialQuality: 0.82,
-        fileType: file.type === "image/png" ? "image/png" : undefined,
-      });
-    } catch {
-      return file;
-    }
-  };
-
-  const uploadBlob = async (blobOuFichier, nom = "image") => {
-    const prepared = await preparerFichier(blobOuFichier);
-    if (prepared.size > 10 * 1024 * 1024) {
-      throw new Error(`Image encore trop lourde après compression (${(prepared.size / 1024 / 1024).toFixed(1)} Mo). Réduis-la avant.`);
-    }
-    const fd = new FormData();
-    fd.append("file", prepared);
-    fd.append("upload_preset", PRESET);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`, { method: "POST", body: fd });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data?.error?.message || `Cloudinary a refusé le fichier (${res.status})`);
-    return data.secure_url;
-  };
+  const uploadBlob = (blobOuFichier) => televerserImage(blobOuFichier);
 
   // ─── Sélection : on ouvre la fenêtre de choix ───
   const onFilesSelected = (files) => {
     if (!files?.length) return;
-    if (!CLOUD || !PRESET) { setError("Cloudinary non configuré (variables .env manquantes)."); return; }
+    if (!cloudinaryPret()) { setError("Cloudinary non configuré (variables .env manquantes)."); return; }
     setError("");
     setEnAttente(Array.from(files));
     if (inputRef.current) inputRef.current.value = "";

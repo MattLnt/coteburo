@@ -365,3 +365,143 @@ export async function listerNuanciers() {
     select: { id: true, nom: true, marque: true, _count: { select: { finitions: true } } },
   });
 }
+
+// ── La bibliothèque de finitions ──────────────────────────────────────────
+//
+// Une teinte du produit n'est qu'un libellé tant qu'elle ne pointe pas vers
+// un modèle de la bibliothèque. Quand elle y pointe, sa pastille et sa
+// couleur viennent de là : corriger le nuancier corrige toutes les fiches
+// d'un coup, au lieu de rejouer un script sur deux mille finitions.
+
+/** Les nuanciers ET leurs teintes, pour choisir à la pastille. */
+export async function listerBibliotheque() {
+  await exigerAdmin();
+  return prisma.paletteFinition.findMany({
+    orderBy: [{ marque: "asc" }, { nom: "asc" }],
+    select: {
+      id: true, nom: true, marque: true,
+      finitions: {
+        orderBy: { ordre: "asc" },
+        select: { id: true, nom: true, couleur: true, imageUrl: true },
+      },
+    },
+  });
+}
+
+/** Lie une valeur à un modèle du nuancier — ou l'en détache si modeleId est vide. */
+export async function lierAuModele(valeurId, modeleId) {
+  await exigerAdmin();
+  const valeur = await prisma.valeurChoix.findUnique({
+    where: { id: valeurId }, select: { choix: { select: { vitrineId: true } } },
+  });
+  if (!valeur) return { ok: false, error: "Valeur introuvable." };
+
+  if (!modeleId) {
+    await prisma.valeurChoix.update({
+      where: { id: valeurId }, data: { modeleId: null, paletteId: null },
+    });
+    rafraichir(valeur.choix.vitrineId);
+    return { ok: true };
+  }
+
+  const modele = await prisma.finitionModele.findUnique({
+    where: { id: modeleId }, select: { id: true, paletteId: true },
+  });
+  if (!modele) return { ok: false, error: "Cette teinte n'est plus dans la bibliothèque." };
+
+  // On ne recopie ni la couleur ni la pastille : elles s'héritent. Et on efface
+  // la surcharge locale, sans quoi l'ancienne couleur masquerait la nouvelle.
+  await prisma.valeurChoix.update({
+    where: { id: valeurId },
+    data: { modeleId: modele.id, paletteId: modele.paletteId, couleur: null, imageUrl: null },
+  });
+  rafraichir(valeur.choix.vitrineId);
+  return { ok: true };
+}
+
+/**
+ * Relie d'un coup toutes les teintes d'un choix qui portent le nom d'une
+ * teinte du nuancier. C'est le geste courant : un groupe importé du tarif
+ * a les bons libellés et aucune pastille.
+ */
+export async function apparierNuancier(choixId, paletteId) {
+  await exigerAdmin();
+  const [choix, palette] = await Promise.all([
+    prisma.choix.findUnique({
+      where: { id: choixId },
+      select: { vitrineId: true, valeurs: { select: { id: true, libelle: true, modeleId: true } } },
+    }),
+    prisma.paletteFinition.findUnique({
+      where: { id: paletteId },
+      select: { id: true, finitions: { select: { id: true, nom: true } } },
+    }),
+  ]);
+  if (!choix) return { ok: false, error: "Choix introuvable." };
+  if (!palette) return { ok: false, error: "Nuancier introuvable." };
+
+  const clef = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim();
+  const parNom = new Map(palette.finitions.map((f) => [clef(f.nom), f.id]));
+
+  const aLier = choix.valeurs
+    .map((v) => ({ v, modeleId: parNom.get(clef(v.libelle)) }))
+    .filter((x) => x.modeleId && x.modeleId !== x.v.modeleId);
+
+  if (!aLier.length) {
+    return { ok: false, error: "Aucune teinte de ce choix ne porte le nom d'une teinte de ce nuancier." };
+  }
+
+  await prisma.$transaction(aLier.map(({ v, modeleId }) => prisma.valeurChoix.update({
+    where: { id: v.id },
+    data: { modeleId, paletteId: palette.id, couleur: null, imageUrl: null },
+  })));
+  rafraichir(choix.vitrineId);
+  return { ok: true, liees: aLier.length, restantes: choix.valeurs.length - aLier.length };
+}
+
+/** Ajoute à un choix existant les teintes cochées dans la bibliothèque. */
+export async function ajouterDuNuancier(choixId, modeleIds = []) {
+  await exigerAdmin();
+  const choix = await prisma.choix.findUnique({
+    where: { id: choixId },
+    select: { vitrineId: true, valeurs: { select: { libelle: true, ordre: true } } },
+  });
+  if (!choix) return { ok: false, error: "Choix introuvable." };
+  if (!modeleIds.length) return { ok: false, error: "Cochez au moins une teinte." };
+
+  const modeles = await prisma.finitionModele.findMany({
+    where: { id: { in: modeleIds } },
+    orderBy: { ordre: "asc" },
+    select: { id: true, nom: true, paletteId: true },
+  });
+
+  const deja = new Set(choix.valeurs.map((v) => v.libelle));
+  const nouvelles = modeles.filter((m) => !deja.has(m.nom));
+  if (!nouvelles.length) {
+    return { ok: false, error: "Ces teintes sont déjà dans ce choix." };
+  }
+
+  let ordre = choix.valeurs.reduce((m, v) => Math.max(m, v.ordre), -1) + 1;
+  await prisma.$transaction(nouvelles.map((m) => prisma.valeurChoix.create({
+    data: {
+      choixId, libelle: m.nom, modeleId: m.id, paletteId: m.paletteId, ordre: ordre++,
+      // Sans jeton : le tarif ne décline pas une teinte qu'on vient d'ajouter
+      // à la main. À renseigner si le fournisseur la code dans sa référence.
+      suffixeReference: null,
+    },
+  })));
+  rafraichir(choix.vitrineId);
+  return { ok: true, ajoutees: nouvelles.length, ignorees: modeles.length - nouvelles.length };
+}
+
+/** L'ordre des teintes, celui dans lequel le client les verra. */
+export async function reordonnerValeurs(choixId, idsDansLOrdre) {
+  await exigerAdmin();
+  const choix = await prisma.choix.findUnique({ where: { id: choixId }, select: { vitrineId: true } });
+  if (!choix) return { ok: false, error: "Choix introuvable." };
+  await prisma.$transaction(
+    idsDansLOrdre.map((id, ordre) => prisma.valeurChoix.update({ where: { id }, data: { ordre } })),
+  );
+  rafraichir(choix.vitrineId);
+  return { ok: true };
+}

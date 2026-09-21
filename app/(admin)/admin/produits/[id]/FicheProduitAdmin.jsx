@@ -19,6 +19,7 @@ import {
   creerValeur, majValeur, supprimerValeur, tirerDUnNuancier,
   majCombinaison, majVisuel, supprimerVisuel,
 } from "./actions";
+import EditeurFinitions from "./EditeurFinitions";
 import { etapesDe, choixTarifaires, choixFinition, assemblerReference } from "@/lib/modeleProduit";
 import { prixLigne } from "@/lib/prixCatalogue";
 
@@ -66,7 +67,7 @@ function ChampAuto({ valeur, onEnregistrer, className = "", type = "text", ...pr
   );
 }
 
-export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers }) {
+export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers, bibliotheque = [] }) {
   const [onglet, setOnglet] = useState("choix");
   const [message, setMessage] = useState(null);
   const [, demarrer] = useTransition();
@@ -254,6 +255,7 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers 
               key={choix.id}
               choix={choix}
               agir={agir}
+              bibliotheque={bibliotheque}
               estFinition={choix.nature === "finition"}
             />
           ))}
@@ -387,8 +389,15 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers 
   );
 }
 
-/** Un choix déplié : ses valeurs, une ligne chacune. */
-function BlocChoix({ choix, agir, estFinition }) {
+/**
+ * Un choix replié en une ligne, déplié en son éditeur.
+ *
+ * Les finitions ont le leur, une grille de pastilles : un nuancier se juge à
+ * l oeil, pas dans un tableau de codes hexadécimaux. Les choix tarifaires et
+ * les options gardent le tableau, qui leur convient — ce sont des libellés
+ * et des jetons, rien à voir.
+ */
+function BlocChoix({ choix, agir, estFinition, bibliotheque = [] }) {
   const [ouvert, setOuvert] = useState(false);
   const n = NATURES[choix.nature] || NATURES.finition;
 
@@ -403,16 +412,43 @@ function BlocChoix({ choix, agir, estFinition }) {
         <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${n.fond} ${n.texte}`}>
           {n.libelle}
         </span>
-        <span className="w-[90px] text-[13px] text-ink-soft">{choix.rendu}</span>
-        <span className="flex-1 truncate text-[13px] text-ink-soft">
-          {choix.valeurs.slice(0, 6).map((v) => v.libelle).join(" · ")}
-          {choix.valeurs.length > 6 ? " …" : ""}
+
+        {/* Un aperçu qu on lit d un coup d oeil : les teintes pour une
+            finition, les libellés pour le reste. */}
+        {estFinition ? (
+          <span className="flex flex-1 items-center gap-1 overflow-hidden">
+            {choix.valeurs.slice(0, 14).map((v) => (
+              <span
+                key={v.id}
+                title={v.libelle}
+                className="h-5 w-5 shrink-0 rounded border border-line bg-cover bg-center"
+                style={v.imageUrl
+                  ? { backgroundImage: `url(${v.imageUrl})` }
+                  : { background: v.couleur || "#f3efe8" }}
+              />
+            ))}
+            {choix.valeurs.length > 14 && (
+              <span className="text-[12px] text-ink-soft">+{choix.valeurs.length - 14}</span>
+            )}
+          </span>
+        ) : (
+          <span className="flex-1 truncate text-[13px] text-ink-soft">
+            {choix.valeurs.slice(0, 6).map((v) => v.libelle).join(" · ")}
+            {choix.valeurs.length > 6 ? " …" : ""}
+          </span>
+        )}
+
+        <span className="text-[13px] text-ink-soft/70">
+          {choix.valeurs.length} {estFinition ? "teintes" : "valeurs"}
         </span>
-        <span className="text-[13px] text-ink-soft/70">{choix.valeurs.length} valeurs</span>
         <span className="text-ink-soft">{ouvert ? "▴" : "▾"}</span>
       </button>
 
-      {ouvert && (
+      {ouvert && (estFinition ? (
+        <div className="border-t border-line">
+          <EditeurFinitions choix={choix} bibliotheque={bibliotheque} agir={agir} />
+        </div>
+      ) : (
         <div className="border-t border-line px-5 pb-5 pt-4">
           <div className="mb-3 flex flex-wrap items-end gap-4">
             <label className="flex flex-col gap-1.5">
@@ -423,19 +459,6 @@ function BlocChoix({ choix, agir, estFinition }) {
                 className="w-[220px]"
               />
             </label>
-            {estFinition && (
-              <label className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
-                  Rang dans la référence
-                </span>
-                <ChampAuto
-                  valeur={choix.rangReference ?? ""}
-                  onEnregistrer={(v) => majChoix(choix.id, { rangReference: v })}
-                  className="w-[90px]"
-                  placeholder="aucun"
-                />
-              </label>
-            )}
             <span className="flex-1" />
             <button
               type="button"
@@ -447,9 +470,7 @@ function BlocChoix({ choix, agir, estFinition }) {
           </div>
 
           <div className="flex gap-3 border-b border-line pb-2 pl-1 text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
-            <span className="w-[200px]">Libellé</span>
-            {estFinition && <span className="w-[150px]">Teinte</span>}
-            {estFinition && <span className="w-[130px]">Suffixe réf.</span>}
+            <span className="w-[260px]">Libellé</span>
             <span className="flex-1" />
           </div>
 
@@ -458,35 +479,9 @@ function BlocChoix({ choix, agir, estFinition }) {
               <ChampAuto
                 valeur={valeur.libelle}
                 onEnregistrer={(v) => majValeur(valeur.id, { libelle: v })}
-                className="w-[200px]"
+                className="w-[260px]"
               />
-              {estFinition && (
-                <span className="flex w-[150px] items-center gap-2">
-                  <span
-                    className="h-6 w-6 shrink-0 rounded-md border border-line bg-cover bg-center"
-                    style={valeur.imageUrl
-                      ? { backgroundImage: `url(${valeur.imageUrl})` }
-                      : { background: valeur.couleur || "#e8e3da" }}
-                  />
-                  <ChampAuto
-                    valeur={valeur.couleur || ""}
-                    onEnregistrer={(v) => majValeur(valeur.id, { couleur: v })}
-                    className="w-[100px] font-display"
-                    placeholder="#……"
-                  />
-                </span>
-              )}
-              {estFinition && (
-                <ChampAuto
-                  valeur={valeur.suffixeReference ?? ""}
-                  onEnregistrer={(v) => majValeur(valeur.id, { suffixeReference: v })}
-                  className="w-[130px] font-display font-semibold tracking-wide"
-                  placeholder="aucun"
-                />
-              )}
-              <span className="flex-1 truncate text-[12px] text-ink-soft">
-                {valeur.modele ? `lié au nuancier ${valeur.paletteNom || ""}`.trim() : ""}
-              </span>
+              <span className="flex-1" />
               <button
                 type="button"
                 onClick={() => agir(supprimerValeur(valeur.id))}
@@ -500,17 +495,12 @@ function BlocChoix({ choix, agir, estFinition }) {
 
           <FormulaireValeur onCreer={(libelle) => agir(creerValeur(choix.id, { libelle }))} />
 
-          {estFinition && (
-            <p className="mt-4 text-[12px] leading-relaxed text-ink-soft">
-              Le suffixe a trois états. Un code — il s'ajoute à la référence. Un
-              code <em>vide</em> — la valeur est commandable mais n'ajoute rien,
-              sa contribution étant déjà dans la référence de base.
-              <em> Aucun</em> code — le tarif ne décline pas cette valeur, qui
-              n'est donc pas commandable en ligne.
-            </p>
-          )}
+          <p className="mt-4 text-[12px] leading-relaxed text-ink-soft">
+            Renommer une valeur tarifaire réécrit du même mouvement les
+            combinaisons qui la citent : le prix ne se perd pas en chemin.
+          </p>
         </div>
-      )}
+      ))}
     </div>
   );
 }
