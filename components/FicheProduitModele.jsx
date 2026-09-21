@@ -475,6 +475,17 @@ export default function FicheProduitModele({
           </p>
         )}
 
+        {/* Le descriptif ferme la colonne, comme avant. Placé au-dessus de la
+            configuration, il repoussait les pastilles sous la ligne de
+            flottaison sur téléphone : cinquante-huit fiches publiées
+            dépassent six cents caractères ici. */}
+        {produit.descriptif && (
+          <div
+            className="prose prose-sm mt-5 max-w-none text-[13px] leading-relaxed text-ink-soft lg:mt-8 lg:text-base"
+            dangerouslySetInnerHTML={{ __html: produit.descriptif }}
+          />
+        )}
+
         {libelleChoix(produit, reponses) && (
           <p className="sr-only">Configuration : {libelleChoix(produit, reponses)}</p>
         )}
