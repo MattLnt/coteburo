@@ -208,14 +208,40 @@ export default function FinitionsManager({ palettes: palettesInit, orphelines: o
         </div>
       </div>
 
-      {/* Palettes */}
-      {palettes.map((p) => blocPalette({
-        id: p.id,
-        nom: p.nom,
-        marque: p.marque,
-        finitions: p.finitions || [],
-        supprimable: true,
-      }))}
+      {/* Palettes, groupées par marque.
+          Dix-neuf nuanciers mêlés se cherchaient à l'œil : « Bois » de
+          Buronomic tombait entre « Blend » et « Tissu B » de Sokoa, et son
+          fournisseur ne se lisait qu'en petit sous son nom. */}
+      {[...new Map(palettes.map((p) => [p.marque || "", true])).keys()]
+        .sort((a, b) => a.localeCompare(b, "fr"))
+        .map((marque) => {
+          const liste = palettes.filter((p) => (p.marque || "") === marque);
+          const teintes = liste.reduce((n, p) => n + (p.finitions?.length || 0), 0);
+          return (
+            <div key={marque || "sans-marque"} style={{ marginBottom: 6 }}>
+              <div style={{
+                display: "flex", alignItems: "baseline", gap: 9,
+                margin: "18px 2px 8px", paddingBottom: 6, borderBottom: "1px solid #ece8e0",
+              }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#23262a" }}>
+                  {marque || "Sans marque"}
+                </span>
+                <span style={{ fontSize: 11.5, color: "#9aa0a8" }}>
+                  {liste.length} nuancier{liste.length > 1 ? "s" : ""} · {teintes} teintes
+                </span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {liste.map((p) => blocPalette({
+                  id: p.id,
+                  nom: p.nom,
+                  marque: p.marque,
+                  finitions: p.finitions || [],
+                  supprimable: true,
+                }))}
+              </div>
+            </div>
+          );
+        })}
 
       {/* Finitions sans palette */}
       {blocPalette({
