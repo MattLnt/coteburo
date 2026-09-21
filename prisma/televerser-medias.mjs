@@ -242,22 +242,47 @@ async function main() {
   let n = 0;
   const echecs = [];
   for (const t of travaux) {
-    const urls = [];
+    const envoyees = [];
     for (const v of t.visuels) {
       const rel = `${t.dossier.slice(CIBLE.length + 1)}/${v}`;
       try {
-        urls.push(await envoyer(join(t.dossier, v), publicId(rel)));
+        envoyees.push({ url: await envoyer(join(t.dossier, v), publicId(rel)), nom: v });
         n += 1;
         if (n % 50 === 0) process.stdout.write(`\r   ${n} / ${nImages} images`);
       } catch (e) {
         echecs.push(`${rel} : ${e.message}`);
       }
     }
-    if (!urls.length) continue;
-    // La première est la vignette, les suivantes la galerie.
+    if (!envoyees.length) continue;
+
+    // ── Ce que la boutique lit vraiment ──
+    //
+    // Les visuels vivent dans la table Visuel depuis la refonte. Ce script
+    // n'écrivait que `imageUrl` et `images[]`, les champs d'avant : les
+    // photos partaient sur Cloudinary et n'apparaissaient nulle part.
+    //
+    // On n'efface pas les visuels existants — mille sept cent neuf d'entre
+    // eux portent un rattachement à une teinte, qui est du travail éditorial.
+    // On ajoute ce qui manque, en reconnaissant une image à son adresse.
+    const existants = await prisma.visuel.findMany({
+      where: { vitrineId: t.id }, select: { id: true, url: true },
+    });
+    const connues = new Set(existants.map((x) => x.url));
+    let ordre = existants.length;
+    for (let i = 0; i < envoyees.length; i += 1) {
+      const { url, nom } = envoyees[i];
+      if (connues.has(url)) continue;
+      // La première image d'une fiche qui n'en avait aucune fait la vignette.
+      const role = existants.length === 0 && i === 0 ? "vignette"
+        : estAmbiance(nom) ? "ambiance" : "galerie";
+      await prisma.visuel.create({ data: { vitrineId: t.id, url, role, ordre: ordre++ } });
+    }
+
+    // Les anciens champs restent alimentés tant que lib/catalogue s'en sert
+    // pour les vignettes de liste et pour les accessoires.
     await prisma.produitVitrine.update({
       where: { id: t.id },
-      data: { imageUrl: urls[0], images: urls.slice(1) },
+      data: { imageUrl: envoyees[0].url, images: envoyees.slice(1).map((x) => x.url) },
     });
   }
   console.log(`\r   ${n} images envoyées, ${echecs.length} en échec`);
@@ -278,6 +303,7 @@ async function main() {
 
   titre("CONTRÔLE");
   console.log(`   fiches avec vignette   ${await prisma.produitVitrine.count({ where: { imageUrl: { not: null } } })} / ${vitrines.length}`);
+  console.log(`   fiches avec un Visuel  ${await prisma.produitVitrine.count({ where: { visuels: { some: {} } } })} / ${vitrines.length}   ← ce que la boutique lit`);
   console.log(`   modèles avec pastille  ${await prisma.finitionModele.count({ where: { imageUrl: { not: null } } })} / ${modeles.length}`);
 }
 
