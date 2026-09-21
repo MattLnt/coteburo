@@ -61,7 +61,7 @@ export default async function ProduitsPage({ searchParams }) {
       skip: (page - 1) * PAR_PAGE,
       take: PAR_PAGE,
       select: {
-        id: true, nom: true, publie: true, venteSurDevis: true,
+        id: true, nom: true, publie: true, venteSurDevis: true, accessoireSeul: true,
         gamme: { select: { nom: true, slug: true, venteSurDevis: true, marque: { select: { nom: true } } } },
         sousCategories: { select: { nom: true }, take: 1 },
         choix: { select: { nature: true } },

@@ -199,7 +199,25 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers 
               />
               Vendu sur devis
             </label>
+            <label className="flex items-center gap-2.5 text-sm">
+              <input
+                type="checkbox"
+                defaultChecked={produit.accessoireSeul}
+                onChange={(e) => agir(majIdentite(produit.id, { accessoireSeul: e.target.checked }))}
+                className="h-4 w-4 accent-orange"
+              />
+              Vendu uniquement comme accessoire
+            </label>
           </div>
+
+          {produit.accessoireSeul && (
+            <div className="rounded-xl border border-line bg-surface-2 p-4 text-[12.5px] leading-relaxed text-ink-soft">
+              Cette fiche ne paraît ni dans les rayons ni dans la recherche.
+              Elle reste joignable par son adresse — un lien de devis ou de
+              commande continue de fonctionner — et reste proposée, cochable,
+              sur les fiches des produits qui la citent en accessoire.
+            </div>
+          )}
 
           <div className="rounded-xl bg-surface-2 p-4 text-[12.5px] leading-relaxed text-ink-soft">
             La gamme, les rayons et les prix viennent du tarif fournisseur et se

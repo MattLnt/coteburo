@@ -519,6 +519,16 @@ model ProduitVitrine {
   profondeurMin             Int?
   profondeurMax             Int?
   sansDeclinaisons          Boolean          @default(false)
+  // Vendu uniquement comme accessoire : la fiche sort des listes du
+  // catalogue et de la recherche, mais reste joignable par son adresse — un
+  // lien de devis ou de commande ne doit pas mourir — et reste proposée sur
+  // les fiches des produits qui la citent en option.
+  //
+  // Le réglage par catégorie (« Accessoires », estOption) ne suffisait pas :
+  // soixante-quatorze fiches sont option d'un produit, et cinquante-quatre
+  // d'entre elles vivent dans des rayons ordinaires — un voile de fond est
+  // rangé dans Bureaux. On ne va pas l'en sortir pour le masquer.
+  accessoireSeul           Boolean          @default(false)
   prixUnitaireTarifHT       Float?
   prixUnitaireHT            Float?
   prixUnitaireVerrouille    Boolean          @default(false)

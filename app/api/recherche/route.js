@@ -24,6 +24,9 @@ export async function GET(req) {
 
   const whereNouveau = {
     publie: true,
+    // Même règle que le catalogue : un accessoire vendu seulement avec un
+    // produit ne se cherche pas, il se coche sur la fiche qu'il complète.
+    accessoireSeul: false,
     gamme: { publie: true },
     OR: [
       { nom: { contains: q, mode: "insensitive" } },

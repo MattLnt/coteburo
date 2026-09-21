@@ -49,6 +49,7 @@ export async function majIdentite(vitrineId, champs) {
   if (typeof champs.descriptif === "string") data.descriptif = champs.descriptif.trim() || null;
   if (typeof champs.publie === "boolean") data.publie = champs.publie;
   if (typeof champs.venteSurDevis === "boolean") data.venteSurDevis = champs.venteSurDevis;
+  if (typeof champs.accessoireSeul === "boolean") data.accessoireSeul = champs.accessoireSeul;
   if (!Object.keys(data).length) return { ok: true };
 
   await prisma.produitVitrine.update({ where: { id: vitrineId }, data });

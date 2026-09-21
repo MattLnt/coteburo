@@ -235,6 +235,14 @@ export default function ProduitsListe({
                   {!l.publie && (
                     <span className="shrink-0 rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-semibold text-ink-soft">brouillon</span>
                   )}
+                  {l.accessoireSeul && (
+                    <span
+                      title="hors catalogue — vendu avec un produit"
+                      className="shrink-0 rounded-full bg-orange-tint px-2 py-0.5 text-[10px] font-semibold text-orange-dark"
+                    >
+                      accessoire
+                    </span>
+                  )}
                 </span>
                 <span className="block truncate text-[11.5px] text-ink-soft">
                   {l.gamme} · {l.marque}
