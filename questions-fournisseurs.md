@@ -135,3 +135,34 @@ mentionne Adio dans les quatre arborescences de visuels reçues.
 
 **La demande :** les visuels produit de la gamme Adio. C'est le plus gros
 manque du catalogue : vingt fiches sur les vingt-cinq qui n'ont aucune source.
+
+---
+
+## 7. Buronomic — quinze familles de produits sans nom de groupe connu
+
+Les noms des groupes de finition — « Piétement métal », « Plateau »,
+« Caisson », « Top », « Panneaux extérieurs » — ont été repris de l'ancienne
+base, qui les portait à la main sur quatre-vingt-quatre fiches. Ils y sont
+appris par famille de produit : un bureau à deux teintes, c'est
+« Piétement métal / Plateau » ; un caisson, « Caisson / Top » ; une cabine,
+« Panneaux extérieurs / Panneaux intérieurs ».
+
+Quinze familles n'y figuraient pas, soit quarante-cinq fiches :
+
+| famille | fiches | affiché en attendant |
+|---|---|---|
+| Comptoir | 8 | Structure / Plateau |
+| Module | 7 | Structure / Plateau |
+| Rangement, Casier, Cloison | 12 | Structure / Plateau |
+| Angle, Canapé | 6 | Structure / Plateau |
+| Bibliothèque, Meuble, Fauteuil, Séparateur | 8 | Structure / Plateau |
+| Porte, Station, Alcôve | 3 | Structure / Plateau / Tissu |
+
+Quand le libellé nomme lui-même la matière — `NOIR METAL` — le groupe prend
+« Piétement métal » sans hésitation. C'est seulement quand les deux teintes
+sont nues — `HETRE / BLANC` — que la position tranche, et « Structure » est
+alors un nom prudent plutôt qu'un nom juste.
+
+**La question :** sur un comptoir, un casier, un module, que désignent la
+première et la seconde teinte ? Corps et plateau, façade et intérieur,
+autre chose ?
