@@ -48,9 +48,14 @@ const nu = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "")
 const slug = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "")
   .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+// Un séparateur qui ne peut apparaître dans aucun libellé, écrit en toutes
+// lettres : les trois octets de contrôle qui traînaient ici rendaient le
+// fichier illisible et piégeaient les outils qui le relisaient.
+const SEP = "␟";
+
 // L'empreinte ne dépend pas de l'ordre des clés du JSON.
 const empreinteDe = (valeurs) => {
-  const ordonne = Object.keys(valeurs).sort().map((k) => `${k}=${valeurs[k]}`).join("");
+  const ordonne = Object.keys(valeurs).sort().map((k) => `${k}=${valeurs[k]}`).join(SEP);
   return createHash("md5").update(ordonne).digest("hex").slice(0, 16);
 };
 
@@ -86,21 +91,46 @@ function decoupages(longueur, minima) {
   return out;
 }
 
-/** La valeur du groupe que désigne un morceau de libellé. */
-function valeurDe(morceau, valeurs) {
+/**
+ * Toutes les valeurs du groupe que peut désigner un morceau de libellé.
+ *
+ * Le rapprochement va dans les deux sens, parce que le tarif et la fiche ne
+ * nomment pas les choses avec la même précision :
+ *   - le tarif en dit plus : « NOIR METAL », « MEUBLE NOIR », « POIGNEES
+ *     ALUMINIUM » désignent la valeur « Noir » ou « Aluminium » ;
+ *   - la fiche en dit plus : « Chêne Nebraska », « C1 — classique Aluminium »
+ *     sont désignés par « NEBRASKA » et « POIGNEES ALUMINIUM ».
+ *
+ * Plusieurs valeurs peuvent convenir — « C1 — classique Aluminium » et
+ * « D1 — design Aluminium » répondent toutes deux à « POIGNEES ALUMINIUM ».
+ * On rend donc la liste, et c'est le jeton observé dans la référence qui
+ * tranchera : celui qui commence par « C1 » désigne la classique. Une preuve,
+ * pas une préférence.
+ */
+function valeursDe(morceau, valeurs) {
   const k = nu(morceau);
-  let meilleure = null;
+  const dernier = k.split(" ").pop();
+  // Trois niveaux, du plus sûr au plus faible. On ne descend d'un cran que
+  // si le précédent est vide : « POIGNEES NOIR » ne partage que son dernier
+  // mot avec « C3 — classique Noir », mais aucune autre lecture n'existe, et
+  // la régénération complète des références vérifiera l'hypothèse.
+  const exact = [];
+  const contenu = [];
+  const memeDernierMot = [];
   for (const v of valeurs) {
     const kv = nu(v);
     if (!kv) continue;
-    // « NOIR METAL » désigne « Noir », « MEUBLE NOIR » aussi : le libellé du
-    // tarif porte la pièce, la valeur ne porte que la teinte.
-    if (k === kv || k.startsWith(`${kv} `) || k.endsWith(` ${kv}`)) {
-      if (!meilleure || kv.length > nu(meilleure).length) meilleure = v;
-    }
+    if (kv === k) { exact.push(v); continue; }
+    if (k.startsWith(`${kv} `) || k.endsWith(` ${kv}`)
+      || kv.startsWith(`${k} `) || kv.endsWith(` ${k}`)) { contenu.push(v); continue; }
+    if (dernier && dernier.length > 2 && kv.split(" ").pop() === dernier) memeDernierMot.push(v);
   }
-  return meilleure;
+  if (exact.length) return exact;
+  if (contenu.length) return contenu;
+  return memeDernierMot;
 }
+
+const valeurDe = (morceau, valeurs) => valeursDe(morceau, valeurs)[0] || null;
 
 /**
  * Retrouve, pour chaque groupe de finition, le jeton que chaque valeur ajoute
@@ -175,10 +205,11 @@ function resoudreSuffixes(refsParLibelle, groupes) {
 
   let meilleur = null;
   for (const ordreGroupes of schemas) {
-  // Le rattachement des morceaux, une fois le schéma fixé.
+  // Les valeurs possibles de chaque morceau, une fois le schéma fixé. Le
+  // choix définitif se fera jeton en main, dans la boucle de découpage.
   const parts = {};
   for (const l of libelles) {
-    parts[l] = ordreGroupes.map((g, j) => ({ g, valeur: valeurDe(morceauxPar[l][j], noms[g]) }));
+    parts[l] = ordreGroupes.map((g, j) => ({ g, choix: valeursDe(morceauxPar[l][j], noms[g]) }));
   }
 
   // Un seul jeton : il vaut le suffixe entier, quelle que soit sa longueur.
@@ -190,14 +221,29 @@ function resoudreSuffixes(refsParLibelle, groupes) {
   for (const decoupe of candidats) {
     const table = groupes.map(() => new Map());
     let bon = true;
+    // Le choix retenu pour chaque morceau, sous ce découpage.
+    const retenu = {};
     for (const l of libelles) {
       const s = refsParLibelle[l].slice(base.length);
       let i = 0;
+      retenu[l] = [];
       for (let j = 0; j < ordreGroupes.length; j += 1) {
         const g = ordreGroupes[j];
         const jeton = decoupe ? s.slice(i, i + decoupe[j]) : s;
         if (decoupe) i += decoupe[j];
-        const cle = nu(parts[l][j].valeur);
+        // Quand plusieurs valeurs répondent au morceau, c'est le jeton qui
+        // tranche : « C1 — classique Aluminium » porte le jeton « C1 ».
+        const candidats = parts[l][j].choix;
+        let valeur = candidats[0];
+        if (candidats.length > 1) {
+          const jk = nu(jeton);
+          const marquee = jk && candidats.find((v) => nu(v).startsWith(`${jk} `) || nu(v) === jk);
+          if (marquee) valeur = marquee;
+          else { bon = false; break; }
+        }
+        if (!valeur) { bon = false; break; }
+        retenu[l].push({ g, valeur });
+        const cle = nu(valeur);
         const connu = table[g].get(cle);
         if (connu === undefined) table[g].set(cle, jeton);
         else if (connu !== jeton) { bon = false; break; }
@@ -213,7 +259,7 @@ function resoudreSuffixes(refsParLibelle, groupes) {
     // construction, on le vérifie quand même, une par une.
     let exactes = true;
     for (const l of libelles) {
-      const reconstruite = base + parts[l].map((t) => table[t.g].get(nu(t.valeur)) ?? "").join("");
+      const reconstruite = base + retenu[l].map((t) => table[t.g].get(nu(t.valeur)) ?? "").join("");
       if (reconstruite !== refsParLibelle[l]) { exactes = false; break; }
     }
     if (!exactes) continue;
@@ -254,12 +300,15 @@ function planifier(v) {
   const choix = [];
   let ordre = 0;
 
-  // Les axes portent le prix : ce sont les choix tarifaires.
+  // Les axes portent le prix : ce sont les choix tarifaires. Une valeur vide
+  // ou nulle traîne parfois dans le JSON ; elle ne fait pas un choix, et la
+  // base refuserait un libellé absent.
   for (const a of axes) {
-    choix.push({
-      cle: a.id, nom: a.nom || a.id, nature: "tarifaire", ordre: ordre++,
-      valeurs: (a.valeurs || []).map((val, i) => ({ libelle: val, ordre: i })),
-    });
+    const valeurs = (a.valeurs || [])
+      .filter((val) => val != null && String(val).trim() !== "")
+      .map((val, i) => ({ libelle: String(val), ordre: i }));
+    if (!valeurs.length) continue;
+    choix.push({ cle: a.id, nom: a.nom || a.id, nature: "tarifaire", ordre: ordre++, valeurs });
   }
 
   // Les groupes de finition ne touchent pas au prix.
@@ -267,11 +316,27 @@ function planifier(v) {
   const brut = refsParFinition ? resoudreSuffixes(refsParFinition, groupes) : null;
   const resolution = brut && !brut.echec ? brut : null;
 
+  // Les clés doivent rester uniques sur la fiche : un axe « finition » et un
+  // groupe nommé « Finition » produisent le même slug, et la base refuse le
+  // doublon. On numérote le second plutôt que d'écraser le premier.
+  const clesPrises = new Set(choix.map((c) => c.cle));
+  const cleLibre = (base, secours) => {
+    let cle = base || secours;
+    let i = 2;
+    while (clesPrises.has(cle)) { cle = `${base || secours}-${i}`; i += 1; }
+    clesPrises.add(cle);
+    return cle;
+  };
+
   groupes.forEach((g, ig) => {
-    const cle = slug(g.nom) || `finition-${ig}`;
+    const cle = cleLibre(slug(g.nom), `finition-${ig}`);
+    const valeursFin = [...g.finitions]
+      .filter((f) => f.nom != null && String(f.nom).trim() !== "")
+      .sort((a, b) => a.ordre - b.ordre);
+    if (!valeursFin.length) return;
     choix.push({
       cle, nom: g.nom, nature: "finition", ordre: ordre++,
-      valeurs: [...g.finitions].sort((a, b) => a.ordre - b.ordre).map((f, i) => ({
+      valeurs: valeursFin.map((f, i) => ({
         libelle: f.nom, couleur: f.couleur, imageUrl: f.imageUrl,
         paletteNom: f.paletteNom, ordre: i,
         suffixeReference: resolution ? (resolution.table[ig].get(nu(f.nom)) || null) : null,
@@ -301,19 +366,25 @@ function planifier(v) {
     if (c.nature !== "finition") continue;
     for (const val of c.valeurs) valeursFinition.push({ cle: c.cle, libelle: val.libelle, slug: slug(val.libelle) });
   }
+  // Un visuel montre souvent DEUX pièces à la fois — « …-aluminium-chene-fil… »
+  // porte le piétement et le plateau. On retient donc toutes les valeurs que
+  // le nom nomme, une au plus par choix : le nom est écrit dans l'ordre des
+  // pièces, et deux plateaux ne peuvent pas coexister sur une photo.
   const rattacher = (url) => {
     const fichier = String(url).split("/").pop().replace(/\.[a-z0-9]+$/i, "");
-    let meilleur = null;
+    const parChoix = new Map();
     for (const val of valeursFinition) {
       if (!val.slug || val.slug.length < 4) continue;
-      if (fichier.includes(val.slug) && (!meilleur || val.slug.length > meilleur.slug.length)) meilleur = val;
+      if (!fichier.includes(val.slug)) continue;
+      const tenant = parChoix.get(val.cle);
+      if (!tenant || val.slug.length > tenant.slug.length) parChoix.set(val.cle, val);
     }
-    return meilleur;
+    return [...parChoix.values()];
   };
   const visuels = [];
   const vus = new Set();
   if (v.imageUrl) {
-    visuels.push({ url: v.imageUrl, role: "vignette", ordre: 0, rattache: null });
+    visuels.push({ url: v.imageUrl, role: "vignette", ordre: 0, rattache: [] });
     vus.add(v.imageUrl);
   }
   for (const url of v.images || []) {
@@ -342,6 +413,15 @@ async function main() {
 
   const palettes = await prisma.paletteFinition.findMany({ select: { id: true, nom: true } });
   const paletteParNom = new Map(palettes.map((p) => [nu(p.nom), p.id]));
+  // Les modèles de nuancier, cherchables par palette et par nom, puis par nom
+  // seul : une teinte peut exister dans une palette qu'on n'a pas su nommer.
+  const modeles = await prisma.finitionModele.findMany({ select: { id: true, nom: true, paletteId: true } });
+  const modeleParNom = new Map();
+  for (const m of modeles) {
+    modeleParNom.set(`${m.paletteId ?? ""}${SEP}${nu(m.nom)}`, m.id);
+    const seul = `${SEP}${nu(m.nom)}`;
+    if (!modeleParNom.has(seul)) modeleParNom.set(seul, m.id);
+  }
 
   const vitrines = await prisma.produitVitrine.findMany({
     select: {
@@ -383,7 +463,13 @@ async function main() {
   };
   console.log("");
   let sain = true;
-  sain = ligne("axes → choix tarifaires", axesAvant, parNature.tarifaire || 0) && sain;
+  // Un axe dont toutes les valeurs sont nulles ne fait pas un choix : les neuf
+  // axes « reference » vides des cabines et des tisaneries sont écartés
+  // volontairement, et aucune déclinaison ne les renseignait.
+  const axesVides = vitrines.reduce((n, v) => n + (Array.isArray(v.axesDeclinaisons) ? v.axesDeclinaisons : [])
+    .filter((a) => !(a.valeurs || []).some((x) => x != null && String(x).trim() !== "")).length, 0);
+  sain = ligne("axes → choix tarifaires", axesAvant - axesVides, parNature.tarifaire || 0) && sain;
+  if (axesVides) console.log(`   ${"dont axes vides écartés".padEnd(34)} ${String(axesVides).padStart(6)}          volontaire`);
   sain = ligne("groupes → choix de finition", groupesAvant, parNature.finition || 0) && sain;
   sain = ligne("déclinaisons → combinaisons", declAvant, nComb) && sain;
   const doublons = plans.reduce((n, p) => n + (p.combinaisons.length - new Set(p.combinaisons.map((c) => c.empreinte)).size), 0);
@@ -399,8 +485,13 @@ async function main() {
   console.log(`   dont la référence se reconstruit exactement       ${String(reussies.length).padStart(5)}`);
   console.log(`   dont le découpage échoue                          ${String(echouees.length).padStart(5)}`);
   console.log(`\n   références du tarif regénérées à l'identique      ${String(nRefs).padStart(5)}`);
-  const taux = concernees.length ? Math.round((reussies.length / concernees.length) * 100) : 0;
-  console.log(`\n   ${taux} % — ${taux === 100 ? "le modèle tient sur toutes les fiches concernées." : "à examiner avant d'aller plus loin."}`);
+  // Un arrondi ne doit pas pouvoir afficher « 100 % » tant qu'une fiche
+  // échoue : 223 sur 224 font 99,6, et c'est cela qu'il faut lire.
+  const taux = concernees.length ? (reussies.length / concernees.length) * 100 : 0;
+  const affiche = echouees.length && taux > 99.9 ? "99,9" : taux.toFixed(1).replace(".", ",");
+  console.log(`\n   ${affiche} % — ${echouees.length
+    ? `${echouees.length} fiche(s) restent à trancher.`
+    : "le modèle tient sur toutes les fiches concernées."}`);
 
   const avecExclusions = reussies.filter((p) => p.manquantes.length);
   const nExcl = avecExclusions.reduce((n, p) => n + p.manquantes.length, 0);
@@ -431,7 +522,7 @@ async function main() {
     }
   }
 
-  const rattaches = plans.reduce((n, p) => n + p.visuels.filter((v) => v.rattache).length, 0);
+  const rattaches = plans.reduce((n, p) => n + p.visuels.filter((v) => v.rattache.length).length, 0);
   console.log(`\n   visuels rattachés à une valeur de finition        ${String(rattaches).padStart(5)} / ${nVis}`);
 
   if (APERCU) {
@@ -469,7 +560,7 @@ async function main() {
       }
       console.log(`\n   ${p.visuels.length} visuels :`);
       for (const v of p.visuels.slice(0, 5)) {
-        console.log(`      ${v.role.padEnd(9)} ${v.rattache ? `→ ${v.rattache.libelle}` : "—"}   ${v.url.split("/").pop()}`);
+        console.log(`      ${v.role.padEnd(9)} ${v.rattache.length ? `→ ${v.rattache.map((r) => r.libelle).join(" + ")}` : "—"}   ${v.url.split("/").pop()}`);
       }
     }
   }
@@ -484,6 +575,7 @@ async function main() {
   let n = 0;
   for (const p of plans) {
     // On repart de zéro sur cette fiche : la migration est rejouable.
+    await prisma.exclusionFinition.deleteMany({ where: { vitrineId: p.id } });
     await prisma.visuel.deleteMany({ where: { vitrineId: p.id } });
     await prisma.combinaison.deleteMany({ where: { vitrineId: p.id } });
     await prisma.choix.deleteMany({ where: { vitrineId: p.id } });
@@ -495,16 +587,25 @@ async function main() {
           cle: c.cle, nom: c.nom, nature: c.nature, ordre: c.ordre,
           rendu: RENDU[c.nature], origine: "tarif", vitrineId: p.id,
           valeurs: {
-            create: c.valeurs.map((v) => ({
-              libelle: v.libelle, couleur: v.couleur ?? null, imageUrl: v.imageUrl ?? null,
-              suffixeReference: v.suffixeReference ?? null, ordre: v.ordre,
-              paletteId: v.paletteNom ? paletteParNom.get(nu(v.paletteNom)) ?? null : null,
-            })),
+            create: c.valeurs.map((v) => {
+              const paletteId = v.paletteNom ? paletteParNom.get(nu(v.paletteNom)) ?? null : null;
+              return {
+                libelle: v.libelle, couleur: v.couleur ?? null, imageUrl: v.imageUrl ?? null,
+                suffixeReference: v.suffixeReference ?? null, ordre: v.ordre,
+                paletteId,
+                // Le lien vers la bibliothèque, par clé. Une valeur qui porte
+                // le nom d'un modèle de nuancier le désigne : la couleur et la
+                // pastille suivront désormais la bibliothèque au lieu d'en
+                // être une copie qui se périme.
+                modeleId: modeleParNom.get(`${paletteId ?? ""}${SEP}${nu(v.libelle)}`)
+                  ?? modeleParNom.get(`${SEP}${nu(v.libelle)}`) ?? null,
+              };
+            }),
           },
         },
         select: { valeurs: { select: { id: true, libelle: true } } },
       });
-      for (const v of cree.valeurs) valeurIdParCle.set(`${c.cle}${v.libelle}`, v.id);
+      for (const v of cree.valeurs) valeurIdParCle.set(`${c.cle}${SEP}${v.libelle}`, v.id);
     }
 
     if (p.combinaisons.length) {
@@ -514,13 +615,32 @@ async function main() {
       });
     }
 
-    if (p.visuels.length) {
-      await prisma.visuel.createMany({
-        data: p.visuels.map((v) => ({
+    for (const v of p.visuels) {
+      const ids = (v.rattache || [])
+        .map((r) => valeurIdParCle.get(`${r.cle}${SEP}${r.libelle}`))
+        .filter(Boolean);
+      await prisma.visuel.create({
+        data: {
           url: v.url, role: v.role, ordre: v.ordre, vitrineId: p.id,
-          valeurChoixId: v.rattache ? valeurIdParCle.get(`${v.rattache.cle}${v.rattache.libelle}`) ?? null : null,
-        })),
+          valeurs: { create: ids.map((id) => ({ valeurChoixId: id })) },
+        },
       });
+    }
+
+    // Les associations de finitions que le tarif ne vend pas. On les écrit en
+    // identifiants de valeurs, pas en libellés : le front doit pouvoir fermer
+    // un choix, pas relire du texte.
+    for (const tuple of p.manquantes || []) {
+      const ids = tuple.map((cleValeur, i) => {
+        const g = p.resolution.ordreGroupes[i];
+        const choixFinition = p.choix.filter((c) => c.nature === "finition")[g];
+        if (!choixFinition) return null;
+        const val = choixFinition.valeurs.find((x) => nu(x.libelle) === cleValeur);
+        return val ? valeurIdParCle.get(`${choixFinition.cle}${SEP}${val.libelle}`) : null;
+      }).filter(Boolean);
+      if (ids.length === tuple.length) {
+        await prisma.exclusionFinition.create({ data: { vitrineId: p.id, valeurs: ids } });
+      }
     }
 
     n += 1;
@@ -529,13 +649,19 @@ async function main() {
   console.log(`   ${n} produits migrés`);
 
   titre("CONTRÔLE EN BASE");
-  const [cChoix, cVal, cComb, cVis, cSuf] = await Promise.all([
+  const [cChoix, cVal, cComb, cVis, cSuf, cLien, cModele, cExcl] = await Promise.all([
     prisma.choix.count(), prisma.valeurChoix.count(),
     prisma.combinaison.count(), prisma.visuel.count(),
     prisma.valeurChoix.count({ where: { suffixeReference: { not: null } } }),
+    prisma.visuelValeur.count(),
+    prisma.valeurChoix.count({ where: { modeleId: { not: null } } }),
+    prisma.exclusionFinition.count(),
   ]);
   console.log(`   choix ${cChoix} · valeurs ${cVal} · combinaisons ${cComb} · visuels ${cVis}`);
-  console.log(`   valeurs portant un suffixe de référence : ${cSuf}`);
+  console.log(`   valeurs portant un suffixe de référence  ${String(cSuf).padStart(5)}`);
+  console.log(`   valeurs reliées à un modèle de nuancier  ${String(cModele).padStart(5)}`);
+  console.log(`   rattachements visuel ↔ valeur            ${String(cLien).padStart(5)}`);
+  console.log(`   associations de finitions exclues        ${String(cExcl).padStart(5)}`);
 }
 
 main()
