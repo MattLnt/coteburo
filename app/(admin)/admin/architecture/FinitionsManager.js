@@ -285,10 +285,27 @@ function ModaleFinition({ contexte, onClose, onSaved }) {
         </div>
 
         <div style={{ marginBottom: 14 }}>
-          <label style={label}>Couleur (hex, optionnel)</label>
+          <label style={label}>Couleur (optionnel)</label>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            {/* Le carré était un aperçu mort : il montrait la couleur sans
+                permettre d'en choisir une, et il fallait connaître son code. */}
+            <input
+              type="color"
+              value={/^#[0-9a-f]{6}$/i.test(couleur) ? couleur : "#d8b384"}
+              onChange={(e) => setCouleur(e.target.value)}
+              aria-label="Choisir la couleur"
+              style={{ width: 44, height: 40, borderRadius: 9, border: "1px solid #e0dacf", padding: 3, flexShrink: 0, cursor: "pointer", background: "#fff" }}
+            />
             <input style={{ ...input, flex: 1, minWidth: 0 }} value={couleur} onChange={(e) => setCouleur(e.target.value)} placeholder="#d8b384" />
-            <span style={{ width: 40, height: 40, borderRadius: 9, border: "1px solid #e0dacf", background: couleur || "#f0ece4", flexShrink: 0 }} />
+            {couleur && (
+              <button
+                type="button"
+                onClick={() => setCouleur("")}
+                style={{ border: "none", background: "none", color: "#9aa0a8", fontSize: 12.5, cursor: "pointer", flexShrink: 0 }}
+              >
+                retirer
+              </button>
+            )}
           </div>
         </div>
 

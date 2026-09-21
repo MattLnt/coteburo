@@ -155,10 +155,18 @@ export default function DevisEditForm({ devis, tauxTva = TVA_DEFAUT }) {
       vitrineId: p.id,
       codeRacine: null,
       designation: p.nom,
+      marque: p.marqueNom || null,
       gammeNom: p.gammeNom,
       // La config affiche la déclinaison choisie ; les finitions seront
       // sélectionnées par le client au moment d'accepter le devis.
       config: declChoisie ? declChoisie.libelle : null,
+      // Ce qu'il faudra commander, emporté dès maintenant. La ligne le
+      // stockait déjà si on le lui donnait ; personne ne le lui donnait, et
+      // l'information était à retrouver au moment de l'acceptation.
+      combinaisonId: declChoisie?.combinaisonId || null,
+      referenceComplete: declChoisie?.referenceFournisseur || null,
+      fournisseur: p.marqueNom || null,
+      choix: declChoisie?.choix || null,
       imageUrl: p.imageUrl,
       prixHT: String(prix),
       ecoContribution: String(eco),
