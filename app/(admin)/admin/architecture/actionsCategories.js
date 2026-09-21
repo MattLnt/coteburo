@@ -164,3 +164,61 @@ export async function supprimerSousCategorie(id) {
   revalidatePath("/", "layout");
   return { ok: true };
 }
+/* ─────────────── DÉPLACER UN RAYON ───────────────
+   Un rayon change parfois de catégorie — « Tables d'extérieur » peut passer
+   de Tables à Espaces et acoustique. Le geste emporte toutes les fiches qui
+   s'y trouvent, et change le fil d'ariane de celles dont c'est le rayon
+   PRINCIPAL. On le montre avant de le faire. */
+
+export async function apercuDeplacementSousCategorie(id, versCategorieId) {
+  await exigerAdmin();
+  const sc = await prisma.sousCategorie.findUnique({
+    where: { id },
+    select: {
+      nom: true, categorieId: true,
+      categorie: { select: { nom: true } },
+      _count: { select: { vitrines: true } },
+    },
+  });
+  if (!sc) return { ok: false, error: "Rayon introuvable." };
+
+  const vers = await prisma.categorie.findUnique({
+    where: { id: versCategorieId }, select: { nom: true },
+  });
+  if (!vers) return { ok: false, error: "Catégorie de destination introuvable." };
+  if (sc.categorieId === versCategorieId) {
+    return { ok: false, error: `« ${sc.nom} » est déjà dans ${vers.nom}.` };
+  }
+
+  // Celles dont c'est le rayon principal verront leur fil d'ariane changer,
+  // et leur adresse avec : c'est le coût réel du déplacement.
+  const principales = await prisma.produitVitrine.count({
+    where: { sousCategoriePrincipaleId: id },
+  });
+
+  return {
+    ok: true,
+    nom: sc.nom,
+    depuis: sc.categorie?.nom || null,
+    vers: vers.nom,
+    fiches: sc._count.vitrines,
+    principales,
+  };
+}
+
+export async function deplacerSousCategorie(id, versCategorieId) {
+  await exigerAdmin();
+  const apercu = await apercuDeplacementSousCategorie(id, versCategorieId);
+  if (!apercu.ok) return apercu;
+
+  await prisma.sousCategorie.update({
+    where: { id },
+    // Le slug ne bouge pas : il est gelé à la création, et les adresses déjà
+    // partagées continuent de mener au bon rayon.
+    data: { categorieId: versCategorieId },
+  });
+
+  revalidatePath("/admin/architecture");
+  revalidatePath("/", "layout");
+  return { ok: true, deplacees: apercu.fiches };
+}

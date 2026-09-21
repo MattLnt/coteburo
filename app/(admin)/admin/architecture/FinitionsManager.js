@@ -87,6 +87,17 @@ export default function FinitionsManager({ palettes: palettesInit, orphelines: o
         {f.imageUrl ? <img src={f.imageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}
       </span>
       <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, color: "#23262a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.nom}</span>
+      {/* Combien de produits emploient cette teinte, et lesquelles n'ont pas
+          encore de pastille. C'est ce qui rend la bibliothèque lisible : on
+          voit ce qui compte, ce qui dort, et les trous à combler. */}
+      {!f.imageUrl && (
+        <span title="sans pastille" style={{ flexShrink: 0, fontSize: 10.5, fontWeight: 600, color: "#8F4A16", background: "#fce6d6", padding: "3px 7px", borderRadius: 20 }}>
+          sans image
+        </span>
+      )}
+      <span title="produits qui emploient cette teinte" style={{ flexShrink: 0, fontSize: 11.5, color: f._count?.valeurs ? "#5c616a" : "#b8b2a7", minWidth: 58, textAlign: "right" }}>
+        {f._count?.valeurs ? `${f._count.valeurs} produit${f._count.valeurs > 1 ? "s" : ""}` : "inutilisée"}
+      </span>
       <button onClick={() => setEdition({ paletteId: f.paletteId || "orphelines", finition: f })} title="Modifier"
         style={{ width: 30, height: 30, display: "grid", placeItems: "center", borderRadius: 7, border: "1px solid #ece8e0", background: "#fff", cursor: "pointer", color: "#5c616a", flexShrink: 0 }}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>

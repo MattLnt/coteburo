@@ -58,6 +58,21 @@ export async function supprimerGamme(id) {
   });
   if (!gamme) return { ok: false, error: "Gamme introuvable." };
 
+  // Une fiche est rattachée à sa gamme EN CASCADE : supprimer la gamme
+  // emporte ses produits, leurs choix, leurs combinaisons, leurs visuels et
+  // leurs exclusions, sans rien demander.
+  //
+  // Le contrôle ne regardait que l'ancienne table « Produit », vide sur les
+  // cent une gammes du catalogue — il laissait donc toujours passer. Cliquer
+  // « supprimer » sur Astrolite effaçait ses dix-sept fiches en silence.
+  if (gamme._count.vitrines > 0) {
+    const n = gamme._count.vitrines;
+    return {
+      ok: false,
+      error: `« ${gamme.nom} » contient ${n} fiche${n > 1 ? "s" : ""} produit. Les supprimer ou les déplacer vers une autre gamme avant d'effacer celle-ci.`,
+    };
+  }
+
   if (gamme._count.produits > 0) {
     return {
       ok: false,

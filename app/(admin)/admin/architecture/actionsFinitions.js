@@ -15,11 +15,21 @@ export async function getFinitionsAdmin() {
   const [palettes, orphelines] = await Promise.all([
     prisma.paletteFinition.findMany({
       orderBy: [{ ordre: "asc" }, { nom: "asc" }],
-      include: { finitions: { orderBy: [{ ordre: "asc" }, { nom: "asc" }] } },
+      include: {
+        finitions: {
+          orderBy: [{ ordre: "asc" }, { nom: "asc" }],
+          // Combien de produits emploient cette teinte. C'est ce qui rend la
+          // bibliothèque lisible d'un coup d'œil : ce qui compte, ce qui dort,
+          // et ce qui n'a pas encore de pastille.
+          include: { _count: { select: { valeurs: true } } },
+        },
+        _count: { select: { valeurs: true } },
+      },
     }),
     prisma.finitionModele.findMany({
       where: { paletteId: null },
       orderBy: [{ ordre: "asc" }, { nom: "asc" }],
+      include: { _count: { select: { valeurs: true } } },
     }),
   ]);
   return { palettes, orphelines };
