@@ -492,6 +492,7 @@ model ProduitVitrine {
   choix                     Choix[]
   combinaisons              Combinaison[]
   visuels                   Visuel[]
+  exclusionsFinition        ExclusionFinition[]
   produits                  Produit[]
   favoris                   Favori[]
   realisations              Realisation[]    @relation("RealisationProduits")
@@ -550,6 +551,7 @@ model FinitionModele {
   ordre     Int              @default(0)
   paletteId String?
   palette   PaletteFinition? @relation(fields: [paletteId], references: [id], onDelete: SetNull)
+  valeurs   ValeurChoix[]
   createdAt DateTime         @default(now())
 
   @@index([paletteId])
@@ -635,13 +637,23 @@ model ValeurChoix {
   ordre            Int              @default(0)
   choixId          String
   paletteId        String?
+  // Le lien vers la bibliothèque, par une CLÉ et non par un nom. La couleur
+  // et la pastille s'héritent du modèle ; les champs ci-dessus ne servent
+  // qu'à surcharger ce qui diffère vraiment.
+  //
+  // Le lien par le texte — « paletteNom » — a lâché deux fois en une
+  // semaine : il valait null sur les 2 135 finitions au moment d'écrire
+  // ceci, emporté par des groupes refaits. Une clé étrangère ne se rompt pas.
+  modeleId         String?
   choix            Choix            @relation(fields: [choixId], references: [id], onDelete: Cascade)
   palette          PaletteFinition? @relation(fields: [paletteId], references: [id], onDelete: SetNull)
-  visuels          Visuel[]
+  modele           FinitionModele?  @relation(fields: [modeleId], references: [id], onDelete: SetNull)
+  visuels          VisuelValeur[]
 
   @@unique([choixId, libelle])
   @@index([choixId])
   @@index([paletteId])
+  @@index([modeleId])
 }
 
 model Combinaison {
@@ -671,18 +683,48 @@ model Combinaison {
 }
 
 model Visuel {
-  id            String       @id @default(cuid())
-  url           String
-  role          RoleVisuel   @default(galerie)
-  ordre         Int          @default(0)
-  // La valeur de choix que ce visuel illustre — le décor, autrefois encodé
-  // dans le nom du fichier. Vide pour un visuel général.
-  valeurChoixId String?
-  vitrineId     String
-  createdAt     DateTime     @default(now())
-  vitrine       ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
-  valeurChoix   ValeurChoix?   @relation(fields: [valeurChoixId], references: [id], onDelete: SetNull)
+  id        String         @id @default(cuid())
+  url       String
+  role      RoleVisuel     @default(galerie)
+  ordre     Int            @default(0)
+  // Le recadrage se lit dans la donnée, plus dans le nom du fichier : un
+  // second passage ne peut pas recadrer deux fois, et l'original reste là,
+  // donc l'opération se défait.
+  recadre   Boolean        @default(false)
+  urlOrigine String?
+  vitrineId String
+  createdAt DateTime       @default(now())
+  vitrine   ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+  // Un visuel illustre souvent PLUSIEURS valeurs à la fois : une photo montre
+  // un piétement ET un plateau. Un champ unique obligeait à choisir, et
+  // choisissait mal une fois sur deux.
+  valeurs   VisuelValeur[]
 
   @@index([vitrineId])
+}
+
+// Le rattachement d'un visuel aux valeurs qu'il montre. Le front n'affiche
+// le visuel que lorsque TOUTES ses valeurs sont retenues par le client.
+model VisuelValeur {
+  visuelId      String
+  valeurChoixId String
+  visuel        Visuel      @relation(fields: [visuelId], references: [id], onDelete: Cascade)
+  valeurChoix   ValeurChoix @relation(fields: [valeurChoixId], references: [id], onDelete: Cascade)
+
+  @@id([visuelId, valeurChoixId])
   @@index([valeurChoixId])
+}
+
+// Les associations de finitions que le tarif ne vend pas. La règle de
+// référence reste exacte ; c'est la disponibilité qui n'est pas le produit
+// cartésien complet — les comptoirs Fifty Full n'acceptent pas Yukon sur
+// Nebraska. Quatre cent vingt-neuf associations sur trente-deux fiches.
+model ExclusionFinition {
+  id        String         @id @default(cuid())
+  // Les identifiants de ValeurChoix qui, ensemble, n'existent pas.
+  valeurs   Json
+  vitrineId String
+  vitrine   ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+
+  @@index([vitrineId])
 }
