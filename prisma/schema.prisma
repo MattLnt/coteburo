@@ -489,6 +489,9 @@ model ProduitVitrine {
   categoriePrincipaleId     String?
   sousCategoriePrincipaleId String?
   groupesFinition           GroupeFinition[]
+  choix                     Choix[]
+  combinaisons              Combinaison[]
+  visuels                   Visuel[]
   produits                  Produit[]
   favoris                   Favori[]
   realisations              Realisation[]    @relation("RealisationProduits")
@@ -536,6 +539,7 @@ model PaletteFinition {
   ordre     Int              @default(0)
   createdAt DateTime         @default(now())
   finitions FinitionModele[]
+  valeurs   ValeurChoix[]
 }
 
 model FinitionModele {
@@ -549,4 +553,136 @@ model FinitionModele {
   createdAt DateTime         @default(now())
 
   @@index([paletteId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Le modèle produit à choix, valeurs, combinaisons et visuels
+//
+// Documenté dans docs/modele-produit.md. Trois natures de variation y sont
+// distinguées, là où les anciens champs JSON les confondaient :
+//
+//   tarifaire  change le prix ET la référence   → entre dans la matrice
+//   finition   change la référence SEULE        → n'y entre pas
+//   option     s'ajoute au panier               → article à part
+//
+// La référence commandée s'assemble :
+//   Combinaison.referenceBase + Σ ValeurChoix.suffixeReference
+//   « BX86 » + « 1 » (piétement aluminium) + « A » (plateau hêtre) = BX861A
+//
+// Ces modèles vivent à côté de axesDeclinaisons / declinaisons / GroupeFinition
+// le temps de la bascule : rien n'est supprimé tant que le front n'a pas migré.
+// ─────────────────────────────────────────────────────────────
+
+enum NatureChoix {
+  tarifaire
+  finition
+  option
+}
+
+enum RenduChoix {
+  boutons
+  pastilles
+  nuancier
+  liste
+  vignettes
+  cases
+}
+
+enum RoleVisuel {
+  vignette
+  galerie
+  ambiance
+  schema
+}
+
+// D'où vient une donnée, et donc qui a le droit de l'écraser. Le réimport du
+// tarif ne touche jamais ce qui est marqué « editorial ».
+enum OrigineDonnee {
+  tarif
+  editorial
+}
+
+model Choix {
+  id          String         @id @default(cuid())
+  // Clé stable, employée dans Combinaison.valeurs : « largeur », « plateau ».
+  cle         String
+  nom         String
+  nature      NatureChoix
+  rendu       RenduChoix     @default(boutons)
+  ordre       Int            @default(0)
+  obligatoire Boolean        @default(true)
+  origine     OrigineDonnee  @default(tarif)
+  vitrineId   String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  vitrine     ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+  valeurs     ValeurChoix[]
+
+  @@unique([vitrineId, cle])
+  @@index([vitrineId])
+}
+
+model ValeurChoix {
+  id               String           @id @default(cuid())
+  libelle          String
+  couleur          String?
+  imageUrl         String?
+  // Ce qui s'ajoute à la référence de base quand cette valeur est retenue.
+  suffixeReference String?
+  // Presque toujours vide : le prix vient de la combinaison. Ne sert qu'aux
+  // fournisseurs qui facturent explicitement un supplément de finition.
+  supplementHT     Float?
+  ordre            Int              @default(0)
+  choixId          String
+  paletteId        String?
+  choix            Choix            @relation(fields: [choixId], references: [id], onDelete: Cascade)
+  palette          PaletteFinition? @relation(fields: [paletteId], references: [id], onDelete: SetNull)
+  visuels          Visuel[]
+
+  @@unique([choixId, libelle])
+  @@index([choixId])
+  @@index([paletteId])
+}
+
+model Combinaison {
+  id              String         @id @default(cuid())
+  // { largeur: "120 cm", profondeur: "143 cm" } — clés = Choix.cle tarifaires.
+  valeurs         Json
+  // Empreinte stable des valeurs : garantit l'unicité sans dépendre de
+  // l'ordre des clés du JSON.
+  empreinte       String
+  prixTarifHT     Float?
+  ecoContribution Float?
+  poids           Float?
+  ean             String?
+  referenceBase   String?
+  pageCatalogue   Int?
+  // L'identifiant de l'ancienne déclinaison, cité par les devis et les
+  // paniers déjà enregistrés. Conservé pour que rien ne se perde à la bascule.
+  ancienId        String?
+  vitrineId       String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  vitrine         ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+
+  @@unique([vitrineId, empreinte])
+  @@index([vitrineId])
+  @@index([ancienId])
+}
+
+model Visuel {
+  id            String       @id @default(cuid())
+  url           String
+  role          RoleVisuel   @default(galerie)
+  ordre         Int          @default(0)
+  // La valeur de choix que ce visuel illustre — le décor, autrefois encodé
+  // dans le nom du fichier. Vide pour un visuel général.
+  valeurChoixId String?
+  vitrineId     String
+  createdAt     DateTime     @default(now())
+  vitrine       ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+  valeurChoix   ValeurChoix?   @relation(fields: [valeurChoixId], references: [id], onDelete: SetNull)
+
+  @@index([vitrineId])
+  @@index([valeurChoixId])
 }
