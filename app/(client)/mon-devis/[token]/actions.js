@@ -73,7 +73,17 @@ export async function accepterDevis(token, { finitions, client }) {
       : "";
     return {
       codeRacine: l.codeRacine || null,
-      referenceFournisseur: l.codeRacine || null,
+      // La référence à commander, et non l'identifiant interne de la ligne.
+      // Ce champ recevait « codeRacine », qui vaut l'identifiant d'une
+      // déclinaison — « d13pufsd » là où le fournisseur attend « BX861A ».
+      // Une commande née d'un devis partait donc avec un code que personne
+      // ne pouvait honorer.
+      referenceFournisseur: l.referenceComplete || l.codeRacine || null,
+      vitrineId: l.vitrineId || null,
+      combinaisonId: l.combinaisonId || null,
+      referenceComplete: l.referenceComplete || null,
+      fournisseur: l.fournisseur || l.marque || null,
+      choix: l.choix || null,
       designation: l.designation,
       marque: l.marque || null,
       finition: [l.config, textesFinitions].filter(Boolean).join(" · ") || null,

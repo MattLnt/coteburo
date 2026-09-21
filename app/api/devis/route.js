@@ -42,6 +42,13 @@ export async function POST(req) {
           codeRacine: a.codeRacine || null,
           vitrineId: a.vitrineId || null,
           declinaisonId: a.declinaisonId || null,
+          // Le bloc d'identité passe la liste blanche, sans quoi il serait
+          // écarté avant d'atteindre la base : la demande de devis ne retient
+          // que les champs qu'elle nomme.
+          combinaisonId: a.combinaisonId || null,
+          referenceComplete: a.referenceComplete || null,
+          fournisseur: a.fournisseur || a.marque || null,
+          choix: a.choix && typeof a.choix === "object" ? a.choix : null,
           carteSlug: a.carteSlug || null,
           designation: a.designation || "",
           gammeNom: a.gammeNom || null,
@@ -130,6 +137,13 @@ export async function POST(req) {
               quantite: a.quantite,
               prixHT: a.prixHT,
               ordre: i,
+              // Le bloc d'identité : ce qu'il faudra commander, et chez qui.
+              // Sans lui, l'information était à retrouver au moment de
+              // l'acceptation du devis — et c'est là qu'elle se perdait.
+              combinaisonId: a.combinaisonId || null,
+              referenceComplete: a.referenceComplete || null,
+              fournisseur: a.fournisseur || null,
+              choix: a.choix || null,
             })),
           },
         },

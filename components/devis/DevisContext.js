@@ -45,7 +45,15 @@ export function DevisProvider({ children }) {
         carteSlug: item.carteSlug || null,
         designation: item.designation,                 // ex "Plan droit L120×P80 obturateurs" ou "Plan droit (Astro)"
         gammeNom: item.gammeNom || null,
-        marque: item.marque || "Buronomic",
+        // La marque vient du produit. Elle était figée à « Buronomic » par
+        // défaut : un siège Sokoa demandé en devis partait sous la mauvaise
+        // enseigne, jusque sur le document envoyé au client.
+        marque: item.marque || item.fournisseur || null,
+        // Le bloc d'identité : ce qu'il faudra commander, et chez qui.
+        combinaisonId: item.combinaisonId || null,
+        referenceComplete: item.referenceComplete || null,
+        fournisseur: item.fournisseur || null,
+        choix: item.choix || null,
         image: item.image || null,
         config: item.config || null,                   // récap lisible de la config choisie
         finitions: Array.isArray(item.finitions) ? item.finitions : [], // [{ nom, valeurs: [string] }] — finitions disponibles pour ce produit

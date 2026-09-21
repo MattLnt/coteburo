@@ -91,6 +91,12 @@ export async function enregistrerDevis(id, data) {
             ecoContribution: nb(l.ecoContribution),
             quantite: parseInt(l.quantite, 10) || 1,
             ordre: i,
+            // Le bloc d'identité voyage avec la ligne quand l'admin rechiffre :
+            // sans cela, chiffrer un devis effaçait ce qu'il fallait commander.
+            combinaisonId: l.combinaisonId || null,
+            referenceComplete: l.referenceComplete || null,
+            fournisseur: l.fournisseur || l.marque || null,
+            choix: l.choix || null,
           })),
         },
       },

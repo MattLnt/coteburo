@@ -134,6 +134,13 @@ export async function POST(req) {
           prixHT: prixOpt,
           quantite,
           imageUrl: (opt.images && opt.images[0]) || null,
+          // Une option se rattache au produit qu'elle complète, au lieu de
+          // flotter à côté de lui sur le bon de commande. Le panier connaît
+          // ce lien depuis toujours ; il s'arrêtait à la commande.
+          vitrineId: it.vitrineId || null,
+          referenceComplete: refOpt,
+          fournisseur: v.gamme?.marque?.nom || null,
+          cleParente: it.parentId || null,
         });
         continue;
       }
@@ -160,15 +167,29 @@ export async function POST(req) {
           ? (Array.isArray(v.declinaisons) ? v.declinaisons : []).find((d) => d.id === it.declinaisonId)
           : null;
 
+        // La référence assemblée par la règle du modèle l'emporte sur celle
+        // de la déclinaison : c'est elle qui tient compte des finitions
+        // retenues. On garde l'ancienne en secours tant que toutes les fiches
+        // ne portent pas de suffixes.
+        const reference = it.referenceComplete
+          || (decl ? decl.referenceFournisseur || null : v.referenceUnitaire || null);
+
         lignes.push({
           codeRacine: null,
-          referenceFournisseur: decl ? decl.referenceFournisseur || null : v.referenceUnitaire || null,
+          referenceFournisseur: reference,
           designation: it.designation || v.nom,
           marque: v.gamme?.marque?.nom || null,
           finition: it.finition || null,
           prixHT,
           quantite,
           imageUrl: v.imageUrl || null,
+          vitrineId: v.id || it.vitrineId || null,
+          combinaisonId: it.combinaisonId || null,
+          referenceComplete: it.referenceComplete || null,
+          fournisseur: v.gamme?.marque?.nom || null,
+          choix: it.choix || null,
+          cleParente: null,
+          clePanier: it.id || null,
         });
       }
     }
@@ -208,9 +229,29 @@ export async function POST(req) {
         avecInstallation: installationValidee,
         userId,
         paye: false,
-        lignes: { create: lignes },
+        // « cleParente » et « clePanier » sont des repères du panier, pas des
+        // colonnes : on les retire avant d'écrire, puis on s'en sert pour
+        // rattacher chaque option à son produit une fois les lignes créées.
+        lignes: { create: lignes.map(({ cleParente, clePanier, ...l }) => l) },
       },
+      include: { lignes: { select: { id: true, designation: true } } },
     });
+
+    // Second temps : l'option désigne sa ligne parente, qui n'existait pas
+    // encore au moment de l'écriture. Sur le bon de commande, une goulotte
+    // cesse ainsi de flotter à côté du bureau qu'elle complète.
+    const parId = new Map();
+    lignes.forEach((l, i) => {
+      if (l.clePanier) parId.set(l.clePanier, commande.lignes[i]?.id);
+    });
+    for (let i = 0; i < lignes.length; i += 1) {
+      const parenteId = lignes[i].cleParente ? parId.get(lignes[i].cleParente) : null;
+      if (!parenteId) continue;
+      await prisma.ligneCommande.update({
+        where: { id: commande.lignes[i].id },
+        data: { ligneParenteId: parenteId },
+      });
+    }
 
     // Création du PaymentIntent (le paiement reste sur ton site)
     const paymentIntent = await stripe.paymentIntents.create({
