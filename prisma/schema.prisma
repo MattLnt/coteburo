@@ -335,9 +335,37 @@ model LigneCommande {
   // impose qu'elle figure distinctement sur la facture, sans marge :
   // Côté BURO la paie au fabricant et la refacture à l'identique.
   ecoContribution      Float    @default(0)
-  commande             Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+
+  // ── Identité de ce qui est commandé ────────────────────────────────
+  // Figée à la commande, comme le reste de la ligne : une commande ne doit
+  // jamais changer parce que le catalogue a changé. Mais elle doit dire
+  // exactement QUOI commander, et chez qui.
+  //
+  // La fiche d'origine, pour remonter — service après-vente, recommande,
+  // statistique par gamme. Sans clé étrangère : la fiche peut disparaître
+  // du catalogue sans emporter l'historique.
+  vitrineId            String?
+  combinaisonId        String?
+  // La référence assemblée par la règle du modèle :
+  // referenceBase + Σ suffixeReference. « BX865F », pas « d13pufsd ».
+  // Une ligne de catalogue sans cette référence ne peut pas être commandée.
+  referenceComplete    String?
+  fournisseur          String?
+  // Les choix retenus, structurés — « finition » ci-dessus n'en est que la
+  // version lisible. Permet de reconstituer, de chercher et de compter :
+  // combien de plateaux Nebraska vendus ce trimestre.
+  choix                Json?
+  // Une option se rattache au produit qu'elle complète, au lieu de flotter
+  // à côté de lui sur le bon de commande.
+  ligneParenteId       String?
+
+  commande             Commande        @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+  ligneParente         LigneCommande?  @relation("OptionDeLigne", fields: [ligneParenteId], references: [id], onDelete: SetNull)
+  options              LigneCommande[] @relation("OptionDeLigne")
 
   @@index([commandeId])
+  @@index([vitrineId])
+  @@index([ligneParenteId])
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -431,9 +459,23 @@ model LigneDevis {
   // doit apparaître distinctement sur le document.
   ecoContribution Float @default(0)
   ordre       Int     @default(0)
-  devis       Devis   @relation(fields: [devisId], references: [id], onDelete: Cascade)
+
+  // Même bloc d'identité que sur la commande : le devis doit déjà savoir
+  // quoi commander, sans quoi l'information est à retrouver au moment de
+  // l'acceptation — et c'est là qu'elle se perdait.
+  combinaisonId     String?
+  referenceComplete String?
+  fournisseur       String?
+  choix             Json?
+  ligneParenteId    String?
+
+  devis        Devis        @relation(fields: [devisId], references: [id], onDelete: Cascade)
+  ligneParente LigneDevis?  @relation("OptionDeLigneDevis", fields: [ligneParenteId], references: [id], onDelete: SetNull)
+  options      LigneDevis[] @relation("OptionDeLigneDevis")
 
   @@index([devisId])
+  @@index([vitrineId])
+  @@index([ligneParenteId])
 }
 
 model Favori {

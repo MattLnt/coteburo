@@ -683,3 +683,87 @@ l'état publié. **Tout le reste ouvre la fiche**, avec ses quatre onglets.
 Pas de modale à moitié, pas de formulaire qui recopie la moitié de la fiche :
 une règle simple, valable partout, qu'on n'a pas à réapprendre écran par
 écran.
+
+---
+
+## 15. Commandes, devis et facturation
+
+Aucune commande ni aucun devis n'existe en base : la structure se juge donc
+sur pièces, pas sur un historique à ménager.
+
+### Ce qui est juste et ne bouge pas
+
+**L'instantané.** `LigneCommande` et `LigneDevis` portent leurs propres
+copies — désignation, prix, référence, éco-contribution, image — sans clé
+étrangère vers une déclinaison. Une commande ne doit jamais changer parce que
+le catalogue a changé. C'est la bonne décision, et elle est conservée telle
+quelle.
+
+**L'éco-contribution à part, sans marge.** Un champ dédié sur la ligne, un
+total sur l'entête. La loi impose qu'elle figure distinctement sur la
+facture ; Côté BURO la paie au fabricant et la refacture à l'identique.
+
+**Le prix recalculé au serveur.** `api/commande/checkout` ne fait jamais
+confiance au montant envoyé par le navigateur : il refait le calcul avec
+`prixVitrine`, et refuse la commande si la déclinaison a disparu du catalogue
+ou si le prix manque. Trois garde-fous, tous au bon endroit.
+
+**Le devis accessible sans compte**, par jeton, et sa conversion en commande
+par une relation un-à-un.
+
+### Les trois défauts, tous sur l'identité de ce qui est commandé
+
+**1. Le chemin du devis perd la référence.** Le panier est sain — il reprend
+`declinaison.referenceFournisseur` et la vraie marque de la gamme. Mais
+`mon-devis/[token]/actions.js` écrit `referenceFournisseur: l.codeRacine`, et
+`codeRacine` est **l'identifiant de déclinaison**, pas la référence du tarif.
+Une commande née d'un devis part donc avec `d13pufsd` là où il faudrait
+`BX865F`. Les deux chemins doivent produire la même chose.
+
+**2. Le devis ne sait pas quoi commander.** `LigneDevis` n'a aucun champ de
+référence fournisseur. L'information est à retrouver au moment de
+l'acceptation — et c'est exactement là qu'elle se perdait.
+
+**3. La finition n'est qu'une chaîne de texte.** `« Largeur: 160 cm · Noir /
+Nebraska »` se lit, mais ne se calcule pas : on ne peut ni en déduire la
+référence, ni compter combien de plateaux Nebraska ont été vendus.
+
+### Deux manques structurels
+
+**La commande ne remonte pas au produit.** `LigneDevis` porte un `vitrineId`,
+`LigneCommande` non. Depuis une commande, impossible de retrouver la fiche —
+ni pour un service après-vente, ni pour recommander, ni pour une statistique
+par gamme.
+
+**Le lien d'une option à son produit se perd.** Le panier connaît
+`parentId` et `estOption` ; rien n'arrive jusqu'à la commande. Sur le bon de
+commande, une goulotte flotte à côté du bureau qu'elle complète, sans qu'on
+sache lequel.
+
+### Le bloc d'identité
+
+Les mêmes champs sur la ligne de devis et sur la ligne de commande, figés
+comme le reste :
+
+| champ | rôle |
+|---|---|
+| `vitrineId` | la fiche d'origine — sans clé étrangère, pour que sa disparition n'emporte pas l'historique |
+| `combinaisonId` | la combinaison retenue |
+| `referenceComplete` | `BX865F`, assemblée par la règle du modèle |
+| `fournisseur` | chez qui commander |
+| `choix` | `{ largeur: "160 cm", pietement: "Noir", plateau: "Nebraska" }` |
+| `ligneParenteId` | l'option se rattache au produit qu'elle complète |
+
+`finition` reste, comme version lisible par un humain ; `choix` est sa
+version calculable.
+
+**L'invariant qui va avec :** une ligne de catalogue sans
+`referenceComplete` bloque la validation de la commande. Il vaut mieux
+l'apprendre au chiffrage que devant le bon de commande à envoyer.
+
+### Ce qui reste à faire dessus
+
+Les champs existent en base. Il reste à les remplir aux trois endroits qui
+fabriquent une ligne — le checkout, l'ajout au devis, et la conversion
+devis → commande — puis à poser l'invariant. Cela vient avec le front, qui
+est l'endroit d'où partent les choix.
