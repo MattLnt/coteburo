@@ -589,3 +589,97 @@ retenues par le client, et retombe sur la vignette sinon.
 
 Les trois écrivent dans `Visuel`. Aucune n'a sa propre notion de ce qu'est
 une image de produit.
+
+---
+
+## 14. La liste des produits en administration
+
+### Ce qui cloche, mesuré
+
+`/admin/produits` charge **tout**, calcule **tout**, et rend **tout**.
+
+```
+555 produits          →  5 022 lignes de tableau
+                         8,8 Mo envoyés au navigateur à chaque affichage
+```
+
+L'écart vient d'une décision de la page : elle déplie **une ligne par
+déclinaison**. La liste des produits n'est donc pas une liste de produits,
+c'est une liste de lignes tarifaires. Avant cette semaine et la sortie des
+finitions du prix, elle en comptait 22 745.
+
+Trois autres manques, plus discrets :
+
+- **Les filtres ne couvrent pas les axes qui structurent le catalogue.** On y
+  filtre par mode et par statut, mais ni par marque, ni par gamme, ni par
+  rayon — alors que ce sont eux qu'on emploie pour travailler.
+- **Rien ne montre ce qui manque.** 220 fiches sans visuel, 185 sans
+  finition, 66 sans choix, 10 sans prix : c'est le travail en cours, et il
+  faut le chercher fiche par fiche.
+- **Aucune action en lot.** Publier trente fiches, changer le rayon de vingt,
+  envoyer une gamme au détourage : trente, vingt, une gamme de clics.
+
+### Une ligne par produit
+
+Le tableau redevient ce qu'il prétend être. Les combinaisons se **déplient à
+la demande** sous leur produit, et l'onglet Prix de la fiche reste l'endroit
+où l'on travaille les tarifs en nombre.
+
+La pagination passe au serveur et l'agrégat — prix mini, prix maxi, nombre de
+combinaisons — se calcule en base. On ne charge plus jamais le JSON complet
+des déclinaisons pour afficher une liste.
+
+### Cinq pastilles qui disent l'essentiel
+
+Chaque ligne porte l'état de complétude du produit :
+
+```
+visuel · prix · choix · finition · rayon
+  ●       ●      ●        ○        ●
+```
+
+C'est le cœur de la proposition. Au lieu de chercher ce qui manque, on le
+voit ; et les **vues enregistrées** y mènent d'un clic :
+
+| vue | fiches |
+|---|---|
+| Tout | 555 |
+| Sans visuel | 220 |
+| Sans finition | 185 |
+| Sans choix | 66 |
+| Sans prix | 10 |
+| Sur devis | 17 |
+
+Ces vues ne sont pas des réglages cachés : ce sont des filtres nommés, et
+elles remplacent `_A-FAIRE.md` par quelque chose qui ne se périme pas.
+
+### Les filtres vivent dans l'URL
+
+```
+/admin/produits?vue=sans-visuel&marque=buronomic&page=1
+```
+
+Recherche, marque, gamme, rayon, état, tri, page : tout s'y écrit. Un lien
+vers « les 74 fiches Buronomic sans visuel » se met en favori, s'envoie à
+quelqu'un, et se retrouve au retour. C'est aussi ce qui rend la pagination
+serveur possible.
+
+### Les actions en lot, et ce qu'elles montrent avant d'agir
+
+La sélection **survit au changement de page et de filtre** — changer de vue
+ne la vide pas, et le bandeau dit combien d'éléments sont hors de la vue
+courante. Sans cela, une sélection de trente fiches se perd au premier
+filtre, et c'est ainsi qu'on finit par ne plus s'en servir.
+
+Quatre actions : publier ou dépublier, changer de rayon, affecter une gamme,
+envoyer au détourage. Chacune annonce son compte avant de s'exécuter, comme
+les gestes de l'architecture.
+
+### La règle d'édition
+
+**Ce qui tient dans un champ s'édite en ligne** — le nom, le prix unique,
+l'état publié. **Tout le reste ouvre la fiche**, avec ses quatre onglets.
+
+Pas de modale à moitié, pas de formulaire qui recopie la moitié de la fiche :
+une règle simple, valable partout, qu'on n'a pas à réapprendre écran par
+écran.
