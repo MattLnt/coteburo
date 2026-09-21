@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getMargeGlobale } from "@/lib/catalogue";
 import { prixLigne } from "@/lib/prixCatalogue";
@@ -38,6 +39,56 @@ function filtres({ q, marque, gamme, rayon, vue }) {
   return et.length ? { AND: et } : {};
 }
 
+/**
+ * Les six comptes des vues, en UN aller-retour.
+ *
+ * Ils en coûtaient six, soit une seconde six à eux seuls : la base est
+ * distante et chaque échange se paie cent soixante-quatorze millisecondes
+ * avant même de compter quoi que ce soit. Un FILTER par vue les rassemble.
+ */
+async function comptesDesVues() {
+  const [r] = await prisma.$queryRaw`
+    SELECT
+      COUNT(*) FILTER (WHERE NOT EXISTS (SELECT 1 FROM "Visuel" v WHERE v."vitrineId" = p.id)) AS "sans-visuel",
+      COUNT(*) FILTER (WHERE NOT EXISTS (SELECT 1 FROM "Choix" c WHERE c."vitrineId" = p.id AND c.nature = 'finition')) AS "sans-finition",
+      COUNT(*) FILTER (WHERE NOT EXISTS (SELECT 1 FROM "Choix" c WHERE c."vitrineId" = p.id)) AS "sans-choix",
+      COUNT(*) FILTER (WHERE NOT EXISTS (SELECT 1 FROM "Combinaison" k WHERE k."vitrineId" = p.id AND k."prixTarifHT" IS NOT NULL)) AS "sans-prix",
+      COUNT(*) FILTER (WHERE p."venteSurDevis" OR g."venteSurDevis") AS "sur-devis",
+      COUNT(*) FILTER (WHERE NOT p.publie) AS "brouillon",
+      COUNT(*) AS "total"
+    FROM "ProduitVitrine" p
+    JOIN "Gamme" g ON g.id = p."gammeId"`;
+  return Object.fromEntries(Object.entries(r).map(([k, v]) => [k, Number(v)]));
+}
+
+/**
+ * Ce qu'il faut savoir des vingt-cinq produits affichés, en UN aller-retour :
+ * compteurs de choix et de visuels, vignette, rayon, étendue des prix.
+ *
+ * C'était la requête la plus coûteuse de la page — trois secondes trois —
+ * parce que Prisma va chercher chaque relation séparément et rapportait au
+ * passage toutes les combinaisons pour n'en tirer qu'un minimum et un maximum.
+ */
+async function agregats(ids) {
+  if (!ids.length) return new Map();
+  const lignes = await prisma.$queryRaw`
+    SELECT
+      p.id,
+      (SELECT COUNT(*) FROM "Choix" c WHERE c."vitrineId" = p.id AND c.nature = 'tarifaire') AS tarifaires,
+      (SELECT COUNT(*) FROM "Choix" c WHERE c."vitrineId" = p.id AND c.nature = 'finition') AS finitions,
+      (SELECT COUNT(*) FROM "Visuel" v WHERE v."vitrineId" = p.id) AS visuels,
+      (SELECT v.url FROM "Visuel" v WHERE v."vitrineId" = p.id
+         ORDER BY (v.role <> 'vignette'), v.ordre LIMIT 1) AS vignette,
+      (SELECT COUNT(*) FROM "Combinaison" k WHERE k."vitrineId" = p.id) AS combinaisons,
+      (SELECT MIN(k."prixTarifHT") FROM "Combinaison" k WHERE k."vitrineId" = p.id) AS "tarifMin",
+      (SELECT MAX(k."prixTarifHT") FROM "Combinaison" k WHERE k."vitrineId" = p.id) AS "tarifMax",
+      (SELECT sc.nom FROM "SousCategorie" sc
+         JOIN "_VitrineSousCategories" j ON j."B" = sc.id AND j."A" = p.id LIMIT 1) AS rayon
+    FROM "ProduitVitrine" p
+    WHERE p.id IN (${Prisma.join(ids)})`;
+  return new Map(lignes.map((l) => [l.id, l]));
+}
+
 export default async function ProduitsPage({ searchParams }) {
   const sp = await searchParams;
   const q = (sp?.q || "").trim();
@@ -51,8 +102,7 @@ export default async function ProduitsPage({ searchParams }) {
 
   // La liste ne charge plus les déclinaisons : elle en chargeait huit méga-
   // octets pour afficher cinq mille lignes. Une ligne par produit, vingt-cinq
-  // par page, et l'agrégat de prix calculé sur les seules combinaisons de la
-  // page.
+  // par page, et les agrégats calculés en base plutôt que rapportés en vrac.
   const [total, produits, marges, marquesL, gammesL, rayonsL, comptes] = await Promise.all([
     prisma.produitVitrine.count({ where }),
     prisma.produitVitrine.findMany({
@@ -62,12 +112,7 @@ export default async function ProduitsPage({ searchParams }) {
       take: PAR_PAGE,
       select: {
         id: true, nom: true, publie: true, venteSurDevis: true, accessoireSeul: true,
-        gamme: { select: { nom: true, slug: true, venteSurDevis: true, marque: { select: { nom: true } } } },
-        sousCategories: { select: { nom: true }, take: 1 },
-        choix: { select: { nature: true } },
-        combinaisons: { select: { prixTarifHT: true } },
-        visuels: { where: { role: "vignette" }, take: 1, select: { url: true } },
-        _count: { select: { visuels: true, combinaisons: true } },
+        gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true } } } },
       },
     }),
     getMargeGlobale(),
@@ -77,35 +122,42 @@ export default async function ProduitsPage({ searchParams }) {
       orderBy: [{ categorie: { ordre: "asc" } }, { ordre: "asc" }],
       select: { nom: true, slug: true, categorie: { select: { nom: true } } },
     }),
-    Promise.all(
-      Object.entries(VUES).map(async ([cle, v]) => [cle, await prisma.produitVitrine.count({ where: v.where })]),
-    ),
+    comptesDesVues(),
   ]);
 
+  const parId = await agregats(produits.map((p) => p.id));
+
   const lignes = produits.map((p) => {
-    const prix = p.combinaisons.map((c) => prixLigne(c, marges)).filter((x) => x != null);
+    const a = parId.get(p.id) || {};
     const surDevis = p.gamme?.venteSurDevis || p.venteSurDevis;
+    const bornes = [a.tarifMin, a.tarifMax]
+      .filter((t) => t != null)
+      .map((t) => prixLigne({ prixTarifHT: Number(t) }, marges))
+      .filter((x) => x != null);
+    const nbTarifaires = Number(a.tarifaires || 0);
+    const nbFinitions = Number(a.finitions || 0);
     return {
       id: p.id,
       nom: p.nom,
       gamme: p.gamme?.nom || null,
       marque: p.gamme?.marque?.nom || null,
-      rayon: p.sousCategories[0]?.nom || null,
+      rayon: a.rayon || null,
       publie: p.publie,
       surDevis,
-      vignette: p.visuels[0]?.url || null,
-      nbTarifaires: p.choix.filter((c) => c.nature === "tarifaire").length,
-      nbFinitions: p.choix.filter((c) => c.nature === "finition").length,
-      nbCombinaisons: p._count.combinaisons,
-      prixMin: prix.length ? Math.min(...prix) : null,
-      prixMax: prix.length ? Math.max(...prix) : null,
+      accessoireSeul: p.accessoireSeul,
+      vignette: a.vignette || null,
+      nbTarifaires,
+      nbFinitions,
+      nbCombinaisons: Number(a.combinaisons || 0),
+      prixMin: bornes.length ? Math.min(...bornes) : null,
+      prixMax: bornes.length ? Math.max(...bornes) : null,
       // Les cinq pastilles : voir ce qui manque au lieu de le chercher.
       sante: [
-        p._count.visuels > 0,
-        p.combinaisons.some((c) => c.prixTarifHT != null),
-        p.choix.length > 0,
-        p.choix.some((c) => c.nature === "finition"),
-        !!p.sousCategories[0],
+        Number(a.visuels || 0) > 0,
+        a.tarifMin != null,
+        nbTarifaires + nbFinitions > 0,
+        nbFinitions > 0,
+        !!a.rayon,
       ],
     };
   });
@@ -120,10 +172,8 @@ export default async function ProduitsPage({ searchParams }) {
       marques={marquesL}
       gammes={gammesL}
       rayons={JSON.parse(JSON.stringify(rayonsL))}
-      vues={Object.entries(VUES).map(([cle, v]) => ({
-        cle, nom: v.nom, compte: Object.fromEntries(comptes)[cle] ?? 0,
-      }))}
-      totalCatalogue={await prisma.produitVitrine.count()}
+      vues={Object.entries(VUES).map(([cle, v]) => ({ cle, nom: v.nom, compte: comptes[cle] ?? 0 }))}
+      totalCatalogue={comptes.total ?? 0}
     />
   );
 }
