@@ -108,7 +108,11 @@ sans invention. Il suffira de renommer le rôle une fois la réponse connue.
 
 ---
 
-## 5. Sokoa — soixante nuanciers sans pastille
+## 5. Sokoa — soixante nuanciers sans pastille  ✔ RÉGLÉ
+
+> Le nuancier Sokoa 2026 a été livré le 21 septembre. Les quarante-huit
+> teintes sans pastille ont été découpées dedans par
+> `prisma/pastilles-sokoa.mjs` : la bibliothèque n en compte plus aucune.
 
 Les palettes de finition ont été recréées depuis la sauvegarde d'avant-purge :
 quinze palettes, deux cent dix-neuf modèles. Cent cinquante-neuf ont retrouvé
@@ -169,7 +173,10 @@ autre chose ?
 
 ---
 
-## 8. Sokoa — la table des codes coloris, celle qui débloque 71 fiches
+## 8. Sokoa — la table des codes coloris, celle qui débloque 71 fiches  ✔ RÉGLÉ
+
+> Réglé par le nuancier livré le 21 septembre : les codes y figurent en
+> regard de chaque teinte — `B 066 Rouille`, `C SPJ Jaune`, `D GRB Blanc gris`.
 
 C'est la demande la plus rentable du document : une seule table
 débloquerait **soixante et onze fiches**.
@@ -333,3 +340,49 @@ les autres restrictions du tarif ?
 En attendant, la valeur reste affichée telle quelle et **ne tire aucun
 nuancier** : c'est la seule des quatre catégories de ces fiches à ne montrer
 aucune teinte au client.
+
+---
+
+## 10. OfficePro — le nuancier, qu'on n'a pas
+
+**C'est la seule demande de nuancier encore ouverte.** Sokoa a livré le sien
+le 21 septembre 2026 ; il a réglé quarante-huit teintes d'un coup, points 5
+et 8 compris.
+
+### Ce qui manque
+
+Quatorze coloris, portés par dix-huit finitions du catalogue :
+
+```
+BLEU PAON ×3 · GRIS CHINÉ FONCÉ ×2 · GRIS CHINÉ CLAIR ×2 · VERT TILLEUL
+TURQUOISE · BLEU JEAN · VERT ANIS · PRUNE · BLEU CIEL · GRIS ANTHRACITE
+CITRON · PARME · GRIS BLANC · NOIR ET ROUGE
+```
+
+### Pourquoi le catalogue ne suffit pas
+
+`Catalogue_Officepro_Seating_2026.pdf` n'a **pas de planche de nuancier** :
+les coloris vivent sur les pages produits, et de deux façons.
+
+Là où ils sont dessinés en aplats vectoriels sous leur nom — page 79,
+« Restauration haute » — le PDF porte leur valeur exacte et trois coloris ont
+pu être relevés sans rien échantillonner : `MENTHE #75d1b5`,
+`KAKI #6a7357`, `ARDOISE #2d3d51`.
+
+Partout ailleurs — page 44, « Tecsy Concept » — les noms sont dans un tableau
+de références, et les carrés voisins ne sont pas des aplats mais des images
+JPEG 2000 que la bibliothèque de rendu ne décode pas : elles s'affichent en
+bleu uniforme. Il n'y a rien à en tirer, et surtout rien à en deviner.
+
+### La demande
+
+> Auriez-vous le nuancier OfficePro sous la forme d'une planche de coloris,
+> chaque teinte avec son nom, comme le `Sokoa_Nuancier_2026.pdf` ? Un PDF,
+> une image ou simplement la liste des codes hexadécimaux conviennent.
+
+`prisma/pastilles-officepro.mjs` le traitera tel quel, en simulation d'abord.
+
+### Et les six Buronomic
+
+`Chêne Nebraska` ×3, `ZINC METAL` ×2, `AQUA` : trop peu pour déranger le
+fournisseur, à saisir à la main dans l'onglet Choix.
