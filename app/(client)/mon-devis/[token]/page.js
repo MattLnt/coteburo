@@ -23,15 +23,34 @@ export default async function MonDevisPage({ params }) {
   if (["nouveau", "en_cours"].includes(devis.statut)) notFound();
 
   // Finitions disponibles pour chaque ligne issue du catalogue.
-  // Elles viennent de la fiche produit ET de sa gamme (deux niveaux possibles).
+  //
+  // Elles viennent des groupes de finition du modèle à choix, et non plus de
+  // l'ancienne table GroupeFinition que la boutique ne lit plus : un client
+  // acceptant son devis se voyait proposer des teintes d'avant la refonte,
+  // ou aucune.
   const vitrineIds = [...new Set(devis.lignes.map((l) => l.vitrineId).filter(Boolean))];
   const vitrines = vitrineIds.length
     ? await prisma.produitVitrine.findMany({
         where: { id: { in: vitrineIds } },
-        include: {
-          groupesFinition: { include: { finitions: { orderBy: { ordre: "asc" } } }, orderBy: { ordre: "asc" } },
-          gamme: {
-            include: { groupesFinition: { include: { finitions: { orderBy: { ordre: "asc" } } }, orderBy: { ordre: "asc" } } },
+        select: {
+          id: true,
+          choix: {
+            where: { nature: "finition" },
+            orderBy: { ordre: "asc" },
+            select: {
+              id: true, nom: true,
+              valeurs: {
+                orderBy: { ordre: "asc" },
+                select: {
+                  id: true, libelle: true, couleur: true, imageUrl: true,
+                  // La teinte hérite de son modèle de nuancier ce qu'elle ne
+                  // porte pas elle-même : corriger la bibliothèque corrige le
+                  // devis du même mouvement.
+                  modele: { select: { couleur: true, imageUrl: true } },
+                  palette: { select: { nom: true } },
+                },
+              },
+            },
           },
         },
       })
@@ -39,18 +58,17 @@ export default async function MonDevisPage({ params }) {
 
   const finitionsParVitrine = {};
   for (const v of vitrines) {
-    const groupes = [...(v.gamme?.groupesFinition || []), ...(v.groupesFinition || [])];
-    finitionsParVitrine[v.id] = groupes
-      .filter((g) => g.finitions.length > 0)
+    finitionsParVitrine[v.id] = v.choix
+      .filter((g) => g.valeurs.length > 0)
       .map((g) => ({
         id: g.id,
         nom: g.nom,
-        finitions: g.finitions.map((f) => ({
+        finitions: g.valeurs.map((f) => ({
           id: f.id,
-          nom: f.nom,
-          couleur: f.couleur,
-          imageUrl: f.imageUrl,
-          paletteNom: f.paletteNom,
+          nom: f.libelle,
+          couleur: f.couleur ?? f.modele?.couleur ?? null,
+          imageUrl: f.imageUrl ?? f.modele?.imageUrl ?? null,
+          paletteNom: f.palette?.nom ?? null,
         })),
       }));
   }

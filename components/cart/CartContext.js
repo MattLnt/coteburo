@@ -5,7 +5,7 @@ const CartContext = createContext(null);
 const STORAGE_KEY = "coteburo_panier";
 // Version du FORMAT des articles du panier. À incrémenter dès qu'on change leur structure
 // (nouveaux champs, options, etc.) → les paniers d'un autre format se vident tout seuls au chargement.
-const STORAGE_VERSION = 3;
+const STORAGE_VERSION = 4;
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
@@ -38,11 +38,16 @@ export function CartProvider({ children }) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: STORAGE_VERSION, items })); } catch {}
   }, [items, loaded]);
 
-  // Identifiant unique d'une ligne — distingue explicitement les deux systèmes de produits,
-  // pour que la route de paiement sache toujours dans quelle table revérifier le prix.
+  // Identifiant unique d'une ligne.
+  //
+  // La variante s'y désigne par sa COMBINAISON, qui est ce que la boutique
+  // lit aujourd'hui. L'ancien identifiant de déclinaison reste accepté en
+  // second : les accessoires liés le fournissent encore, et Combinaison.ancienId
+  // fait le pont côté serveur.
   const lineId = (item, finition) => {
     if (item.type === "nouveau") {
-      return `v:${item.vitrineId}::${item.declinaisonId}::${finition || "_"}`;
+      const variante = item.combinaisonId || item.declinaisonId || "_";
+      return `v:${item.vitrineId}::${variante}::${finition || "_"}`;
     }
     return `p:${item.codeRacine}::${finition || "_"}`;
   };
@@ -76,6 +81,15 @@ export function CartProvider({ children }) {
         optionId: produit.optionId || null,    // option → son id dans optionsAdditionnelles
         optionDeclinaisonId: produit.optionDeclinaisonId || null, // option à déclinaisons → id de la combinaison choisie
         reference: produit.reference || null,  // référence fournisseur (option)
+        // ── Le bloc d'identité ──
+        //
+        // La fiche le donnait déjà ; le panier le jetait, et la commande
+        // devait retrouver quoi commander à partir d'un identifiant d'avant
+        // la refonte. Il voyage maintenant jusqu'au bon de commande.
+        combinaisonId: produit.combinaisonId || null,
+        referenceComplete: produit.referenceComplete || null,
+        fournisseur: produit.fournisseur || produit.marque || null,
+        choix: produit.choix || null,
       };
       if (base.type === "nouveau") {
         return [...prev, { ...base, vitrineId: produit.vitrineId, declinaisonId: produit.declinaisonId }];

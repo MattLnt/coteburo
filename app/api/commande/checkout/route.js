@@ -87,6 +87,33 @@ export async function POST(req) {
     attacherCampagnes(vitrines, await getCampagnesActives());
     const vitrinesMap = Object.fromEntries(vitrines.map((v) => [v.id, v]));
 
+    // ── Les variantes, telles qu'elles sont AUJOURD'HUI ──
+    //
+    // Le prix facturé se lisait dans le champ JSON `declinaisons`, que la
+    // migration a laissé en place sans le maintenir. Corriger un prix dans
+    // l'administration écrit la combinaison, jamais ce JSON : la commande
+    // facturait donc le montant figé au jour de la reprise.
+    //
+    // On indexe par les DEUX identifiants. Le panier d'un client qui l'a
+    // rempli avant la bascule, et les accessoires liés, désignent encore la
+    // variante par son ancien identifiant ; `ancienId` fait le pont, et il
+    // est renseigné sur les sept mille trois cent quatre-vingt-dix.
+    const combinaisons = vitrineIds.length > 0
+      ? await prisma.combinaison.findMany({
+          where: { vitrineId: { in: vitrineIds } },
+          select: {
+            id: true, ancienId: true, vitrineId: true, valeurs: true,
+            prixTarifHT: true, ecoContribution: true, referenceBase: true,
+          },
+        })
+      : [];
+    const variantes = new Map();
+    for (const k of combinaisons) {
+      variantes.set(k.id, k);
+      if (k.ancienId) variantes.set(k.ancienId, k);
+    }
+    const varianteDe = (it) => variantes.get(it.combinaisonId) || variantes.get(it.declinaisonId) || null;
+
     // Marge globale actuelle — pour recalculer le vrai prix de vente des déclinaisons
     // non verrouillées, exactement comme sur la fiche produit publique.
     const reglagesPrix = await prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true, tva: true } });
@@ -150,8 +177,13 @@ export async function POST(req) {
         if (!v) return NextResponse.json({ error: `Produit indisponible : ${it.designation}` }, { status: 400 });
 
         // Un seul calcul, le même que la fiche et le devis : prixVitrine gère
-        // le prix unique, les déclinaisons et la promo.
+        // le prix unique, la variante et la promo.
+        const variante = varianteDe(it);
+        if (!variante && (it.combinaisonId || it.declinaisonId) && !v.sansDeclinaisons) {
+          return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
+        }
         const { prixHT, motif } = prixVitrine(v, {
+          combinaison: variante,
           declinaisonId: it.declinaisonId,
           surDevis: false,
           marge: margeGlobale,
@@ -163,16 +195,13 @@ export async function POST(req) {
           return NextResponse.json({ error: `Prix indisponible pour : ${it.designation}` }, { status: 400 });
         }
 
-        const decl = it.declinaisonId && !v.sansDeclinaisons
-          ? (Array.isArray(v.declinaisons) ? v.declinaisons : []).find((d) => d.id === it.declinaisonId)
-          : null;
-
-        // La référence assemblée par la règle du modèle l'emporte sur celle
-        // de la déclinaison : c'est elle qui tient compte des finitions
-        // retenues. On garde l'ancienne en secours tant que toutes les fiches
-        // ne portent pas de suffixes.
+        // La référence assemblée par la règle du modèle l'emporte : c'est
+        // elle qui tient compte des finitions retenues. À défaut, celle de la
+        // variante, puis celle de la fiche.
         const reference = it.referenceComplete
-          || (decl ? decl.referenceFournisseur || null : v.referenceUnitaire || null);
+          || variante?.referenceBase
+          || v.referenceUnitaire
+          || null;
 
         lignes.push({
           codeRacine: null,
@@ -184,11 +213,16 @@ export async function POST(req) {
           quantite,
           imageUrl: v.imageUrl || null,
           vitrineId: v.id || it.vitrineId || null,
-          combinaisonId: it.combinaisonId || null,
-          referenceComplete: it.referenceComplete || null,
+          combinaisonId: variante?.id || null,
+          referenceComplete: reference,
           fournisseur: v.gamme?.marque?.nom || null,
-          choix: it.choix || null,
-          cleParente: null,
+          // Les réponses du client, telles qu'il les a données. À défaut, celles
+          // de la variante : il faut bien savoir quoi commander.
+          choix: it.choix || variante?.valeurs || null,
+          // Un accessoire vendu comme produit lié passe par ici, et non par la
+          // branche des options : sans ce rattachement il flottait à côté du
+          // bureau qu'il complète sur le bon de commande.
+          cleParente: it.parentId || null,
           clePanier: it.id || null,
         });
       }
