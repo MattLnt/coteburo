@@ -7,6 +7,7 @@
 //   node prisma/televerser-medias.mjs --appliquer
 //   node prisma/televerser-medias.mjs --appliquer --marque=sokoa
 //   node prisma/televerser-medias.mjs --appliquer --nuanciers-seuls
+//   node prisma/televerser-medias.mjs --appliquer --manquantes
 //
 // CE QU'IL LIT DANS UN NOM DE FICHIER
 //   Deux choses, pas davantage.
@@ -36,11 +37,17 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { readdir, readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import sharp from "sharp";
 import { join, extname, basename } from "node:path";
 
 const prisma = new PrismaClient();
 const APPLIQUER = process.argv.includes("--appliquer");
 const NUANCIERS_SEULS = process.argv.includes("--nuanciers-seuls");
+// Rejouer le script entier renvoie les mille huit cent quarante-six images
+// déjà en ligne : c est sans danger — l identifiant Cloudinary est
+// déterministe, le second envoi écrase — mais c est une heure pour rien
+// quand on vient d illustrer vingt-quatre fiches.
+const MANQUANTES = process.argv.includes("--manquantes");
 const FILTRE_MARQUE = ((process.argv.find((a) => a.startsWith("--marque=")) || "")
   .slice(9) || null)?.toLowerCase() || null;
 
@@ -65,8 +72,26 @@ const estAmbiance = (nom) => /^amb/i.test(nom);
 const publicId = (rel) => `coteburo/${rel.split("/").map(slug).join("/")}`
   .replace(/\.[a-z0-9]+$/i, "");
 
+// L'envoi non signé de Cloudinary plafonne à dix mégaoctets. Les photos du
+// fonds Buronomic en font parfois douze : cinq mille pixels de large, ce
+// qu'aucun écran n'affiche. On les réduit plutôt que de les perdre — le
+// fichier d'origine, lui, n'est pas touché.
+const PLAFOND = 10 * 1024 * 1024;
+const LARGEUR_MAX = 2600;
+
+async function preparer(chemin) {
+  const brut = await readFile(chemin);
+  if (brut.length <= PLAFOND) return brut;
+  const reduit = await sharp(brut)
+    .resize({ width: LARGEUR_MAX, withoutEnlargement: true })
+    .jpeg({ quality: 86, mozjpeg: true })
+    .toBuffer();
+  console.log(`      réduite  ${basename(chemin)}  ${mo(brut.length)} → ${mo(reduit.length)}`);
+  return reduit;
+}
+
 async function envoyer(chemin, id) {
-  const buffer = await readFile(chemin);
+  const buffer = await preparer(chemin);
   const form = new FormData();
   form.append("file", new Blob([buffer]), basename(chemin));
   form.append("upload_preset", PRESET);
@@ -124,6 +149,7 @@ async function main() {
   // ── Les fiches ──
   const vitrines = await prisma.produitVitrine.findMany({
     select: { id: true, nom: true, imageUrl: true, images: true,
+      _count: { select: { visuels: true } },
       gamme: { select: { nom: true, marque: { select: { slug: true } } } } },
   });
   // On retrouve le dossier d'une fiche comme les scripts de rangement l'ont
@@ -149,6 +175,7 @@ async function main() {
     for (const v of vitrines) {
       const marque = v.gamme.marque.slug;
       if (FILTRE_MARQUE && marque !== FILTRE_MARQUE) continue;
+      if (MANQUANTES && v._count.visuels > 0) continue;
       const dossier = [CIBLE, marque, nomSain(v.gamme.nom, 30), nomSain(v.nom, 58)].join("/");
       const visuels = await visuelsDe(dossier);
       if (!visuels.length) { sansDossier += 1; continue; }
