@@ -1,170 +1,129 @@
 import { prisma } from "@/lib/prisma";
-import { ProduitsTable } from "./ProduitsTable";
+import { getMargeGlobale } from "@/lib/catalogue";
+import { prixLigne } from "@/lib/prixCatalogue";
 import { getGammesPourRecherche } from "./actions";
-import { prixLigne, prixUnitaire } from "@/lib/prixCatalogue";
+import ProduitsListe from "./ProduitsListe";
 
 export const dynamic = "force-dynamic";
+export const metadata = { title: "Produits · Admin" };
 
-function libelleDeclinaison(axes, valeurs) {
-  return (axes || [])
-    .map((a) => {
-      const val = valeurs?.[a.id];
-      return val ? `${a.nom}: ${val}` : null;
-    })
-    .filter(Boolean)
-    .join(" · ");
+const PAR_PAGE = 25;
+
+// Les vues enregistrées : des filtres nommés, pas des réglages cachés. Elles
+// remplacent _A-FAIRE.md par quelque chose qui ne se périme pas.
+const VUES = {
+  "sans-visuel": { nom: "Sans visuel", where: { visuels: { none: {} } } },
+  "sans-finition": { nom: "Sans finition", where: { choix: { none: { nature: "finition" } } } },
+  "sans-choix": { nom: "Sans choix", where: { choix: { none: {} } } },
+  "sans-prix": { nom: "Sans prix", where: { combinaisons: { none: { prixTarifHT: { not: null } } } } },
+  "sur-devis": { nom: "Sur devis", where: { OR: [{ venteSurDevis: true }, { gamme: { venteSurDevis: true } }] } },
+  brouillon: { nom: "Brouillons", where: { publie: false } },
+};
+
+function filtres({ q, marque, gamme, rayon, vue }) {
+  const et = [];
+  if (q) {
+    et.push({
+      OR: [
+        { nom: { contains: q, mode: "insensitive" } },
+        { gamme: { nom: { contains: q, mode: "insensitive" } } },
+        { combinaisons: { some: { referenceBase: { contains: q, mode: "insensitive" } } } },
+      ],
+    });
+  }
+  if (marque) et.push({ gamme: { marque: { slug: marque } } });
+  if (gamme) et.push({ gamme: { slug: gamme } });
+  if (rayon) et.push({ sousCategories: { some: { slug: rayon } } });
+  if (vue && VUES[vue]) et.push(VUES[vue].where);
+  return et.length ? { AND: et } : {};
 }
 
+export default async function ProduitsPage({ searchParams }) {
+  const sp = await searchParams;
+  const q = (sp?.q || "").trim();
+  const marque = sp?.marque || "";
+  const gamme = sp?.gamme || "";
+  const rayon = sp?.rayon || "";
+  const vue = sp?.vue || "";
+  const page = Math.max(1, parseInt(sp?.page || "1", 10) || 1);
 
-// Compte les visuels d'un produit sans compter deux fois la vignette
-// lorsqu'elle figure aussi dans la galerie.
-function compterImages(carte) {
-  const galerie = Array.isArray(carte.images) ? carte.images.filter(Boolean) : [];
-  if (!carte.imageUrl) return galerie.length;
-  return galerie.includes(carte.imageUrl) ? galerie.length : galerie.length + 1;
-}
+  const where = filtres({ q, marque, gamme, rayon, vue });
 
-export default async function ProduitsPage() {
-  const [cartes, gammes, reglages] = await Promise.all([
+  // La liste ne charge plus les déclinaisons : elle en chargeait huit méga-
+  // octets pour afficher cinq mille lignes. Une ligne par produit, vingt-cinq
+  // par page, et l'agrégat de prix calculé sur les seules combinaisons de la
+  // page.
+  const [total, produits, marges, marquesL, gammesL, rayonsL, comptes] = await Promise.all([
+    prisma.produitVitrine.count({ where }),
     prisma.produitVitrine.findMany({
+      where,
       orderBy: { nom: "asc" },
+      skip: (page - 1) * PAR_PAGE,
+      take: PAR_PAGE,
       select: {
-        id: true,
-        nom: true,
-        slug: true,
-        publie: true,
-        venteSurDevis: true,
-        axesDeclinaisons: true,
-        declinaisons: true,
-        prixAPartir: true,
-        sansDeclinaisons: true,
-        prixUnitaireTarifHT: true,
-        prixUnitaireHT: true,
-        prixUnitaireVerrouille: true,
-        referenceUnitaire: true,
-        imageUrl: true,
-        images: true,
-        categories: { select: { nom: true }, take: 1 },
+        id: true, nom: true, publie: true, venteSurDevis: true,
+        gamme: { select: { nom: true, slug: true, venteSurDevis: true, marque: { select: { nom: true } } } },
         sousCategories: { select: { nom: true }, take: 1 },
-        gamme: {
-          select: { id: true, nom: true, slug: true, venteSurDevis: true, marque: { select: { nom: true } } },
-        },
+        choix: { select: { nature: true } },
+        combinaisons: { select: { prixTarifHT: true } },
+        visuels: { where: { role: "vignette" }, take: 1, select: { url: true } },
+        _count: { select: { visuels: true, combinaisons: true } },
       },
     }),
+    getMargeGlobale(),
+    prisma.marque.findMany({ orderBy: { nom: "asc" }, select: { nom: true, slug: true } }),
     getGammesPourRecherche(),
-    prisma.reglages.findUnique({ where: { id: 1 }, select: { margeGlobale: true } }),
+    prisma.sousCategorie.findMany({
+      orderBy: [{ categorie: { ordre: "asc" } }, { ordre: "asc" }],
+      select: { nom: true, slug: true, categorie: { select: { nom: true } } },
+    }),
+    Promise.all(
+      Object.entries(VUES).map(async ([cle, v]) => [cle, await prisma.produitVitrine.count({ where: v.where })]),
+    ),
   ]);
 
-  const margeGlobale = reglages?.margeGlobale ?? 0.3;
-  const lignes = [];
-
-  for (const carte of cartes) {
-    const surDevis = carte.gamme.venteSurDevis || carte.venteSurDevis;
-    const axes = Array.isArray(carte.axesDeclinaisons) ? carte.axesDeclinaisons : [];
-    const declinaisons = Array.isArray(carte.declinaisons) ? carte.declinaisons : [];
-    const categorieNom = carte.categories?.[0]?.nom || null;
-    const sousCategorieNom = carte.sousCategories?.[0]?.nom || null;
-    const marqueNom = carte.gamme.marque?.nom || null;
-    const nbImages = compterImages(carte);
-
-    // Produit à PRIX UNIQUE (sans déclinaisons) : une seule ligne, prix depuis prixUnitaire*.
-    if (!surDevis && carte.sansDeclinaisons) {
-      const prix = prixUnitaire(carte, margeGlobale);
-      const tarif = carte.prixUnitaireTarifHT != null ? Number(carte.prixUnitaireTarifHT) : null;
-      lignes.push({
-        key: carte.id,
-        nom: carte.nom,
-        sousLibelle: "Prix unique",
-        reference: carte.referenceUnitaire || null,
-        gammeNom: carte.gamme.nom,
-        marqueNom,
-        categorieNom,
-        sousCategorieNom,
-        gammeId: carte.gamme.id,
-        carteId: carte.id,
-        publie: carte.publie,
-        nbImages,
-        // Une ligne à prix unique n'est pas éditable en ligne (pas de declinaisonId) :
-        // le mode "boutique-vide" reste utilisé quand le prix manque réellement.
-        mode: prix != null ? "boutique" : "boutique-vide",
-        declinaisonId: null,
-        prixTarif: tarif,
-        prix,
-        verrouille: !!carte.prixUnitaireVerrouille,
-      });
-    } else if (!surDevis && declinaisons.length > 0) {
-      for (const d of declinaisons) {
-        const tarif = d.prixTarifHT != null && d.prixTarifHT !== "" ? Number(d.prixTarifHT) : null;
-        lignes.push({
-          key: `${carte.id}-${d.id}`,
-          nom: carte.nom,
-          sousLibelle: libelleDeclinaison(axes, d.valeurs) || null,
-          reference: d.referenceFournisseur || null,
-          gammeNom: carte.gamme.nom,
-          marqueNom,
-          categorieNom,
-          sousCategorieNom,
-          gammeId: carte.gamme.id,
-          carteId: carte.id,
-          publie: carte.publie,
-          nbImages,
-          mode: "boutique",
-          declinaisonId: d.id,
-          prixTarif: tarif,
-          prix: prixLigne(d, margeGlobale),
-          verrouille: !!d.prixVerrouille,
-        });
-      }
-    } else if (!surDevis) {
-      lignes.push({
-        key: carte.id,
-        nom: carte.nom,
-        sousLibelle: null,
-        reference: null,
-        gammeNom: carte.gamme.nom,
-        marqueNom,
-        categorieNom,
-        sousCategorieNom,
-        gammeId: carte.gamme.id,
-        carteId: carte.id,
-        publie: carte.publie,
-        nbImages,
-        mode: "boutique-vide",
-        declinaisonId: null,
-        prixTarif: null,
-        prix: null,
-        verrouille: false,
-      });
-    } else {
-      lignes.push({
-        key: carte.id,
-        nom: carte.nom,
-        sousLibelle: null,
-        reference: null,
-        gammeNom: carte.gamme.nom,
-        marqueNom,
-        categorieNom,
-        sousCategorieNom,
-        gammeId: carte.gamme.id,
-        carteId: carte.id,
-        publie: carte.publie,
-        nbImages,
-        mode: "devis",
-        declinaisonId: null,
-        prixTarif: null,
-        prix: carte.prixAPartir != null ? Number(carte.prixAPartir) : null,
-        verrouille: false,
-      });
-    }
-  }
+  const lignes = produits.map((p) => {
+    const prix = p.combinaisons.map((c) => prixLigne(c, marges)).filter((x) => x != null);
+    const surDevis = p.gamme?.venteSurDevis || p.venteSurDevis;
+    return {
+      id: p.id,
+      nom: p.nom,
+      gamme: p.gamme?.nom || null,
+      marque: p.gamme?.marque?.nom || null,
+      rayon: p.sousCategories[0]?.nom || null,
+      publie: p.publie,
+      surDevis,
+      vignette: p.visuels[0]?.url || null,
+      nbTarifaires: p.choix.filter((c) => c.nature === "tarifaire").length,
+      nbFinitions: p.choix.filter((c) => c.nature === "finition").length,
+      nbCombinaisons: p._count.combinaisons,
+      prixMin: prix.length ? Math.min(...prix) : null,
+      prixMax: prix.length ? Math.max(...prix) : null,
+      // Les cinq pastilles : voir ce qui manque au lieu de le chercher.
+      sante: [
+        p._count.visuels > 0,
+        p.combinaisons.some((c) => c.prixTarifHT != null),
+        p.choix.length > 0,
+        p.choix.some((c) => c.nature === "finition"),
+        !!p.sousCategories[0],
+      ],
+    };
+  });
 
   return (
-    <>
-      <div style={{ marginBottom: 18 }}>
-        <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: 0 }}>Produits</h1>
-      </div>
-
-      <ProduitsTable lignes={JSON.parse(JSON.stringify(lignes))} gammes={JSON.parse(JSON.stringify(gammes))} margeGlobale={margeGlobale} />
-    </>
+    <ProduitsListe
+      lignes={lignes}
+      total={total}
+      page={page}
+      parPage={PAR_PAGE}
+      filtres={{ q, marque, gamme, rayon, vue }}
+      marques={marquesL}
+      gammes={gammesL}
+      rayons={JSON.parse(JSON.stringify(rayonsL))}
+      vues={Object.entries(VUES).map(([cle, v]) => ({
+        cle, nom: v.nom, compte: Object.fromEntries(comptes)[cle] ?? 0,
+      }))}
+      totalCatalogue={await prisma.produitVitrine.count()}
+    />
   );
 }

@@ -14,9 +14,11 @@ function slugify(s) {
 
 export async function getGammesPourRecherche() {
   await exigerAdmin();
+  // Le slug sert au filtre de la liste, qui écrit les filtres dans l'URL :
+  // « ?gamme=astrolite » se lit et se partage, « ?gamme=cmu85… » non.
   return prisma.gamme.findMany({
     orderBy: { nom: "asc" },
-    select: { id: true, nom: true },
+    select: { id: true, nom: true, slug: true },
   });
 }
 
