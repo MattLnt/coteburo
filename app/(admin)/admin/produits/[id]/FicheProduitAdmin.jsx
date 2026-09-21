@@ -98,6 +98,41 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
   }, [produit]);
   const recouverts = useMemo(() => choixRecouverts(produit), [produit]);
 
+  /**
+   * L'ordre de lecture des blocs : une question composite se place après les
+   * groupes de finition qu'elle croise.
+   *
+   * Elle en naît — « Finition » n'existe que parce que le tarif vend la paire
+   * « Structure × Portes » — et la lire avant eux oblige à deviner ce que
+   * « NOIR METAL / NOIR » agrège. L'ordre enregistré ne bouge pas : c'est
+   * celui des questions posées au client, où les groupes ne paraissent pas.
+   */
+  const blocs = useMemo(() => {
+    const rang = new Map(etapes.map((c, i) => [c.cle, i]));
+    const differes = new Map();
+    const reste = [];
+
+    for (const c of etapes) {
+      const d = composites.get(c.cle);
+      if (d) {
+        const lus = new Set(d.positions.map((p) => p.nom));
+        const dernier = etapes.filter((x) => lus.has(x.nom)).pop();
+        if (dernier && rang.get(dernier.cle) > rang.get(c.cle)) {
+          differes.set(dernier.cle, [...(differes.get(dernier.cle) || []), c]);
+          continue;
+        }
+      }
+      reste.push(c);
+    }
+
+    const ordonnes = [];
+    for (const c of reste) {
+      ordonnes.push(c);
+      for (const suivant of differes.get(c.cle) || []) ordonnes.push(suivant);
+    }
+    return ordonnes;
+  }, [etapes, composites]);
+
   const agir = (promesse) => demarrer(async () => {
     const r = await promesse;
     setMessage(r?.ok === false ? { type: "erreur", texte: r.error } : null);
@@ -212,7 +247,7 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
             </div>
           )}
 
-          {etapes.map((choix) => (
+          {blocs.map((choix) => (
             <BlocChoix
               key={choix.id}
               choix={choix}
@@ -384,7 +419,8 @@ function BlocChoix({ choix, agir, estFinition, bibliotheque = [], decomposition 
               porte le prix, et les groupes qui servent seulement à la lire. */}
           {decomposition && (
             <span className="mt-0.5 block text-[11px] font-normal leading-tight text-orange-dark">
-              porte le prix et la référence
+              croise {decomposition.positions.map((p) => p.nom).join(" × ")}
+              <span className="block text-ink-soft">porte le prix et la référence</span>
             </span>
           )}
           {nomDuComposite && (
