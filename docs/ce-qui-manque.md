@@ -34,6 +34,24 @@ Par marque : **Sokoa 89 · OfficePro 70 · Buronomic 62**.
 
 Le détail complet sort de `node prisma/etat-catalogue.mjs --visuels`.
 
+### Ce qui existe déjà pour les combler
+
+**Cinq mille images sont classées** dans `COTEBURO-MEDIAS/CATALOGUE-2026`,
+gamme par gamme, et `prisma/televerser-medias.mjs` sait les envoyer. Le seul
+geste manquant est de répartir les dépôts `_A-TRIER` dans les dossiers de
+fiches. `prisma/repartir-depots.mjs` en propose une part — celle que le nom
+du fichier désigne sans ambiguïté — et laisse le reste.
+
+**Les 221 fiches connaissent toutes leur page de catalogue fournisseur.** Le
+champ `Combinaison.pageCatalogue` est renseigné sur les 221, sans exception.
+Les photos du fabricant sont donc atteignables, page par page.
+
+> Les catalogues OfficePro et Sokoa encodent leurs photos en JPEG 2000, que
+> pdfjs ne décode pas par défaut hors navigateur — les images se rendaient en
+> blanc. Le décodeur est pourtant livré avec la bibliothèque : il suffit de
+> passer `wasmUrl` pointant sur `node_modules/pdfjs-dist/wasm/`. Sans cela,
+> ni les photos ni le nuancier OfficePro ne sont lisibles.
+
 ---
 
 ## 2. Les pastilles de finition — 81 finitions sur 2 135
