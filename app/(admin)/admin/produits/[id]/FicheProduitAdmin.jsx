@@ -20,6 +20,7 @@ import {
   majCombinaison, majVisuel, supprimerVisuel,
 } from "./actions";
 import EditeurFinitions from "./EditeurFinitions";
+import EditeurTarifaire from "./EditeurTarifaire";
 import OngletIdentite from "./OngletIdentite";
 import OngletDescriptif from "./OngletDescriptif";
 import {
@@ -423,103 +424,15 @@ function BlocChoix({ choix, agir, estFinition, bibliotheque = [], decomposition 
         <span className="text-ink-soft">{ouvert ? "▴" : "▾"}</span>
       </button>
 
-      {ouvert && (estFinition ? (
+      {ouvert && (
         <div className="border-t border-line">
-          <EditeurFinitions choix={choix} bibliotheque={bibliotheque} agir={agir} />
-        </div>
-      ) : (
-        <div className="border-t border-line px-5 pb-5 pt-4">
-
-          {/* Ce que le client voit vraiment. Sans cela, l'écran montre dix-sept
-              lignes « ALUMINIUM / HÊTRE » et laisse croire à un fouillis, là
-              où la fiche en fait deux rangées de pastilles. */}
-          {decomposition && (
-            <div className="mb-4 rounded-xl border border-line bg-surface-2/50 p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
-                Ce que la fiche en fait
-              </div>
-              <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">
-                Chaque valeur du tarif agrège {decomposition.positions.length} pièces.
-                Le client ne voit pas cette liste : il choisit pièce par pièce,
-                et la fiche recompose la ligne du tarif — donc le prix et la
-                référence.
-              </p>
-              <div className="mt-3 flex flex-col gap-2">
-                {decomposition.positions.map((pos, i) => (
-                  <div key={pos.nom || i} className="flex flex-wrap items-center gap-2">
-                    <span className="w-[170px] shrink-0 text-[12.5px] font-semibold">{pos.nom}</span>
-                    {pos.valeurs.map((v) => (
-                      <span
-                        key={v.part}
-                        title={`${v.part} → ${v.libelle}`}
-                        className="flex items-center gap-1.5 rounded-full border border-line bg-surface py-0.5 pl-0.5 pr-2.5 text-[12px]"
-                      >
-                        <span
-                          className="h-4 w-4 rounded-full border border-line bg-cover bg-center"
-                          style={v.imageUrl
-                            ? { backgroundImage: `url(${v.imageUrl})` }
-                            : { background: v.couleur || "#f3efe8" }}
-                        />
-                        {v.libelle}
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
+          {estFinition ? (
+            <EditeurFinitions choix={choix} bibliotheque={bibliotheque} agir={agir} />
+          ) : (
+            <EditeurTarifaire choix={choix} decomposition={decomposition} agir={agir} />
           )}
-
-          <div className="mb-3 flex flex-wrap items-end gap-4">
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Nom du choix</span>
-              <ChampAuto
-                valeur={choix.nom}
-                onEnregistrer={(v) => majChoix(choix.id, { nom: v })}
-                className="w-[220px]"
-              />
-            </label>
-            <span className="flex-1" />
-            <button
-              type="button"
-              onClick={() => agir(supprimerChoix(choix.id))}
-              className="h-9 rounded-lg border border-line px-3 text-[13px] text-ink-soft hover:border-orange hover:text-orange-dark"
-            >
-              Supprimer ce choix
-            </button>
-          </div>
-
-          <div className="flex gap-3 border-b border-line pb-2 pl-1 text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
-            <span className="w-[260px]">Libellé</span>
-            <span className="flex-1" />
-          </div>
-
-          {choix.valeurs.map((valeur) => (
-            <div key={valeur.id} className="flex items-center gap-3 border-b border-line/50 py-2 pl-1">
-              <ChampAuto
-                valeur={valeur.libelle}
-                onEnregistrer={(v) => majValeur(valeur.id, { libelle: v })}
-                className="w-[260px]"
-              />
-              <span className="flex-1" />
-              <button
-                type="button"
-                onClick={() => agir(supprimerValeur(valeur.id))}
-                className="text-[13px] text-ink-soft hover:text-orange-dark"
-                aria-label={`Supprimer ${valeur.libelle}`}
-              >
-                ×
-              </button>
-            </div>
-          ))}
-
-          <FormulaireValeur onCreer={(libelle) => agir(creerValeur(choix.id, { libelle }))} />
-
-          <p className="mt-4 text-[12px] leading-relaxed text-ink-soft">
-            Renommer une valeur tarifaire réécrit du même mouvement les
-            combinaisons qui la citent : le prix ne se perd pas en chemin.
-          </p>
         </div>
-      ))}
+      )}
     </div>
   );
 }
