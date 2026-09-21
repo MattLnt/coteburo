@@ -69,3 +69,7 @@ __pycache__/
 # analyse-medias-sokoa-officepro.mjs.
 _troncs.json
 troncs-4-a-trancher.md
+
+# Les pages du nuancier fournisseur, rendues par prisma/preparer-nuancier.mjs.
+# Reproductibles à partir du PDF, et lourdes : elles ne se versionnent pas.
+.tmp-nuancier/
