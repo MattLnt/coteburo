@@ -343,7 +343,11 @@ function planifier(v) {
       valeurs: valeursFin.map((f, i) => ({
         libelle: f.nom, couleur: f.couleur, imageUrl: f.imageUrl,
         paletteNom: f.paletteNom, ordre: i,
-        suffixeReference: resolution ? (resolution.table[ig].get(nu(f.nom)) || null) : null,
+        // Trois états, et il faut les trois : un jeton, un jeton VIDE — celui
+        // d'un groupe à valeur unique, absorbé par le préfixe commun — et
+        // l'absence de jeton, qui dit que le tarif ne décline pas cette
+        // valeur. Écraser le vide en absent rendait des teintes incommandables.
+        suffixeReference: resolution ? (resolution.table[ig].get(nu(f.nom)) ?? null) : null,
       })),
     });
   });

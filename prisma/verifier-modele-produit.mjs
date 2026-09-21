@@ -104,8 +104,12 @@ async function main() {
         if (!exclus.has(JSON.stringify([...ids].sort()))) obtenues.add(ref);
         return;
       }
+      // Seules les valeurs QUE LE TARIF DÉCLINE engendrent une référence.
+      // Une valeur sans jeton figure sur la fiche mais ne se commande pas :
+      // la compter fabriquerait des références qui n'existent nulle part.
       for (const val of finitions[i].valeurs) {
-        parcourir(i + 1, ref + (val.suffixeReference || ""), [...ids, val.id]);
+        if (val.suffixeReference == null) continue;
+        parcourir(i + 1, ref + val.suffixeReference, [...ids, val.id]);
       }
     };
     parcourir(0, base, []);
@@ -124,6 +128,19 @@ async function main() {
   for (const f of fautives.slice(0, 8)) {
     console.log(`      ${f.nom.slice(0, 50).padEnd(52)} ${f.manquantes} manquante(s), ${f.enTrop} en trop sur ${f.attendues}`);
   }
+
+  // Une valeur de finition sans jeton n'est pas commandable. Ce n'est pas une
+  // anomalie — le tarif ne décline pas tout — mais il faut savoir combien de
+  // teintes la fiche montre sans pouvoir les vendre.
+  let sansJeton = 0;
+  let finitionsTotal = 0;
+  for (const v of vitrines) {
+    for (const c of v.choix) {
+      if (c.nature !== "finition" || c.rangReference == null) continue;
+      for (const x of c.valeurs) { finitionsTotal += 1; if (x.suffixeReference == null) sansJeton += 1; }
+    }
+  }
+  console.log(`   valeurs de finition sans jeton, donc non commandables  ${String(sansJeton).padStart(4)} / ${finitionsTotal}`);
 
   titre("4. LES EXCLUSIONS DÉSIGNENT DES VALEURS RÉELLES");
   const tousIds = new Set();
