@@ -18,6 +18,7 @@ export const ADMIN_NAV = [
     section: "Catalogue",
     items: [
       { href: "/admin/produits", label: "Produits", short: "Produits", icon: "box" },
+      { href: "/admin/visuels", label: "Tri des visuels", short: "Visuels", icon: "image" },
       { href: "/admin/architecture", label: "Architecture", short: "Architecture", icon: "layers" },
       { href: "/admin/import", label: "Import de gamme", short: "Import", icon: "upload" },
       { href: "/admin/marques", label: "Marques", short: "Marques", icon: "layers" },
@@ -72,6 +73,7 @@ export const BOTTOM_NAV = {
   catalogue: [
     VUE_ENSEMBLE,
     { id: "produits", label: "Produits", icon: "box", href: "/admin/produits" },
+    { id: "visuels", label: "Visuels", icon: "image", href: "/admin/visuels" },
     { id: "architecture", label: "Architecture", icon: "layers", href: "/admin/architecture" },
     { id: "import", label: "Import", icon: "upload", href: "/admin/import" },
     { id: "marques", label: "Marques", icon: "layers", href: "/admin/marques" },
