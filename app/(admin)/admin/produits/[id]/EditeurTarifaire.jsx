@@ -18,7 +18,9 @@
 //      rarement et on ne la lit jamais pour comprendre.
 
 import { useState, useTransition } from "react";
-import { majChoix, supprimerChoix, creerValeur, majValeur, supprimerValeur } from "./actions";
+import {
+  majChoix, supprimerChoix, creerValeur, majValeur, supprimerValeur, basculerPaire,
+} from "./actions";
 
 const BTN = "h-9 rounded-lg border border-line px-3 text-[13px] hover:border-orange hover:text-orange-dark disabled:opacity-40";
 const ETIQ = "text-[11px] font-semibold uppercase tracking-wider text-ink-soft";
@@ -70,7 +72,10 @@ function Pastille({ couleur, imageUrl, taille = 18 }) {
  * Il ne vaut que pour deux pièces : au-delà, un tableau à trois entrées ne se
  * lit plus, et les rangées de pastilles ci-dessus disent déjà l'essentiel.
  */
-function TableauCroise({ decomposition }) {
+function TableauCroise({ decomposition, choix, agir }) {
+  // Le séparateur est celui qu'emploie déjà le tarif de cette fiche : certains
+  // fournisseurs écrivent « A / B », d'autres « A - B ».
+  const sep = choix.valeurs[0]?.libelle.match(/\s+\/\s+|\s+-\s+/)?.[0] || " / ";
   const [lignes, colonnes] = decomposition.positions;
   let vendues = 0;
   for (const L of lignes.valeurs) {
@@ -87,6 +92,10 @@ function TableauCroise({ decomposition }) {
         <span className="text-[12.5px] text-ink-soft">
           {vendues} paire{vendues > 1 ? "s" : ""} sur {possibles} possible{possibles > 1 ? "s" : ""}
           {vendues < possibles && ` — ${possibles - vendues} au tarif n'existe${possibles - vendues > 1 ? "nt" : ""} pas`}
+        </span>
+        <span className="flex-1" />
+        <span className="text-[12px] text-ink-soft/80">
+          Cliquez une case pour vendre la paire, ou cesser de la vendre.
         </span>
       </div>
 
@@ -120,15 +129,20 @@ function TableauCroise({ decomposition }) {
                 </th>
                 {colonnes.valeurs.map((C) => {
                   const paire = decomposition.recomposer([L.part, C.part]);
+                  const libelle = paire || `${L.part}${sep}${C.part}`;
                   return (
-                    <td
-                      key={C.part}
-                      title={paire || `${L.part} / ${C.part} — non vendu`}
-                      className={`px-1.5 py-1.5 text-center ${paire ? "" : "bg-surface-2/60"}`}
-                    >
-                      {paire
-                        ? <span className="text-emerald-600">●</span>
-                        : <span className="text-ink-soft/30">·</span>}
+                    <td key={C.part} className={`p-0 text-center ${paire ? "" : "bg-surface-2/60"}`}>
+                      <button
+                        type="button"
+                        title={paire ? `${paire} — vendue, cliquer pour retirer` : `${libelle} — cliquer pour vendre`}
+                        onClick={() => agir(basculerPaire(choix.id, libelle))}
+                        className="h-full w-full px-2.5 py-1.5 hover:bg-orange-tint/50"
+                        aria-label={libelle}
+                      >
+                        {paire
+                          ? <span className="text-emerald-600">●</span>
+                          : <span className="text-ink-soft/30">·</span>}
+                      </button>
                     </td>
                   );
                 })}
@@ -236,7 +250,9 @@ export default function EditeurTarifaire({ choix, decomposition, agir }) {
       )}
 
       {/* ── 2. Ce que le fournisseur vend ──────────────────────────── */}
-      {decomposition?.positions.length === 2 && <TableauCroise decomposition={decomposition} />}
+      {decomposition?.positions.length === 2 && (
+        <TableauCroise decomposition={decomposition} choix={choix} agir={agir} />
+      )}
 
       {/* ── 3. La donnée brute, repliée ────────────────────────────── */}
       <div className="border-t border-line pt-3">

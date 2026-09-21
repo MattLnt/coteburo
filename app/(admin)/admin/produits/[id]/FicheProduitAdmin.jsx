@@ -21,6 +21,8 @@ import {
 } from "./actions";
 import EditeurFinitions from "./EditeurFinitions";
 import EditeurTarifaire from "./EditeurTarifaire";
+import CreerQuestionTarifaire from "./CreerQuestionTarifaire";
+import GenererVariantes from "./GenererVariantes";
 import OngletIdentite from "./OngletIdentite";
 import OngletDescriptif from "./OngletDescriptif";
 import {
@@ -201,6 +203,7 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
               nuanciers={nuanciers}
               onTirer={(paletteId, nom) => agir(tirerDUnNuancier(produit.id, paletteId, nom))}
             />
+            <CreerQuestionTarifaire produit={produit} finitions={finitions} agir={agir} />
           </div>
 
           {!etapes.length && (
@@ -248,6 +251,7 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
               une ligne par combinaison de choix tarifaires
             </span>
             <span className="flex-1" />
+            <GenererVariantes produitId={produit.id} />
             <span className="text-[12.5px] text-ink-soft">
               vente = tarif × (1 {marge < 0 ? "−" : "+"} {Math.abs(Math.round(marge * 100))} %)
             </span>

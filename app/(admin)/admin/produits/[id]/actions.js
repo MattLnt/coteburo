@@ -14,6 +14,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { empreinteDe } from "@/lib/empreinteCombinaison";
 
 const nb = (v) => {
   if (v === "" || v == null) return null;
@@ -579,4 +580,149 @@ export async function reordonnerValeurs(choixId, idsDansLOrdre) {
   );
   rafraichir(choix.vitrineId);
   return { ok: true };
+}
+
+// ── Créer un produit à la main ────────────────────────────────────────────
+//
+// Le tarif fournisseur arrive par l'import, et il apporte ses questions, ses
+// paires et ses prix. Une fiche saisie à la main n'a rien de tout cela, et
+// l'écran ne savait pas la construire : il fallait taper dix-sept libellés
+// « NOIR METAL / NOIR », puis inventer soixante et onze combinaisons.
+//
+// Ces trois actions font le travail. Aucune n'invente de prix.
+
+/**
+ * Croise deux groupes de finition pour en faire une question tarifaire.
+ *
+ * C'est la forme qu'a le tarif quand la finition fait le prix : le
+ * fournisseur ne vend pas « une structure » et « des portes », il vend la
+ * paire, sous une référence unique. On part de toutes les paires ; celles
+ * qui ne se vendent pas se décochent ensuite dans le tableau croisé.
+ */
+export async function croiserGroupes(vitrineId, { nom, groupeAId, groupeBId, separateur = " / " }) {
+  await exigerAdmin();
+  if (!groupeAId || !groupeBId || groupeAId === groupeBId) {
+    return { ok: false, error: "Choisissez deux groupes différents." };
+  }
+  const groupes = await prisma.choix.findMany({
+    where: { id: { in: [groupeAId, groupeBId] }, vitrineId, nature: "finition" },
+    select: { id: true, nom: true, valeurs: { orderBy: { ordre: "asc" }, select: { libelle: true } } },
+  });
+  const A = groupes.find((g) => g.id === groupeAId);
+  const B = groupes.find((g) => g.id === groupeBId);
+  if (!A || !B) return { ok: false, error: "Groupe de finition introuvable sur cette fiche." };
+  if (!A.valeurs.length || !B.valeurs.length) {
+    return { ok: false, error: "Un groupe vide ne peut pas être croisé." };
+  }
+
+  const paires = [];
+  for (const a of A.valeurs) {
+    for (const b of B.valeurs) paires.push(`${a.libelle}${separateur}${b.libelle}`);
+  }
+  if (paires.length > 400) {
+    return { ok: false, error: `${A.valeurs.length} × ${B.valeurs.length} ferait ${paires.length} paires. Réduisez les groupes d'abord.` };
+  }
+
+  const existants = await prisma.choix.findMany({ where: { vitrineId }, select: { cle: true, ordre: true } });
+  const titre = (nom || "").trim() || `${A.nom} et ${B.nom}`;
+  const cle = cleDepuis(titre, new Set(existants.map((c) => c.cle)));
+
+  await prisma.choix.create({
+    data: {
+      vitrineId, cle, nom: titre, nature: "tarifaire", rendu: "boutons",
+      ordre: existants.reduce((m, c) => Math.max(m, c.ordre), -1) + 1,
+      origine: "editorial",
+      valeurs: { create: paires.map((libelle, i) => ({ libelle, ordre: i })) },
+    },
+  });
+  rafraichir(vitrineId);
+  return { ok: true, paires: paires.length };
+}
+
+/**
+ * Coche ou décoche une paire du tableau croisé.
+ *
+ * Cocher crée la ligne de tarif ; décocher la retire — mais jamais si une
+ * combinaison la cite, faute de quoi le prix qui s'y rattache deviendrait
+ * introuvable. supprimerValeur monte déjà cette garde.
+ */
+export async function basculerPaire(choixId, libelle) {
+  await exigerAdmin();
+  const propre = (libelle || "").trim();
+  if (!propre) return { ok: false, error: "Paire vide." };
+
+  const choix = await prisma.choix.findUnique({
+    where: { id: choixId },
+    select: { vitrineId: true, nature: true, valeurs: { select: { id: true, libelle: true, ordre: true } } },
+  });
+  if (!choix) return { ok: false, error: "Question introuvable." };
+  if (choix.nature !== "tarifaire") return { ok: false, error: "Le tableau croisé ne vaut que pour une question tarifaire." };
+
+  const deja = choix.valeurs.find((v) => v.libelle === propre);
+  if (deja) return supprimerValeur(deja.id);
+
+  await prisma.valeurChoix.create({
+    data: {
+      choixId, libelle: propre,
+      ordre: choix.valeurs.reduce((m, v) => Math.max(m, v.ordre), -1) + 1,
+    },
+  });
+  rafraichir(choix.vitrineId);
+  return { ok: true };
+}
+
+/**
+ * Les variantes qui manquent, c'est-à-dire tous les croisements de réponses
+ * tarifaires que la fiche ne porte pas encore.
+ *
+ * Sans `appliquer`, ne fait que compter : on ne crée pas quatre-vingts lignes
+ * sans prix par surprise.
+ */
+export async function genererCombinaisons(vitrineId, { appliquer = false } = {}) {
+  await exigerAdmin();
+  const produit = await prisma.produitVitrine.findUnique({
+    where: { id: vitrineId },
+    select: {
+      choix: {
+        where: { nature: "tarifaire" },
+        orderBy: { ordre: "asc" },
+        select: { cle: true, valeurs: { orderBy: { ordre: "asc" }, select: { libelle: true } } },
+      },
+      combinaisons: { select: { empreinte: true } },
+    },
+  });
+  if (!produit) return { ok: false, error: "Fiche introuvable." };
+
+  const axes = produit.choix.filter((c) => c.valeurs.length);
+  if (!axes.length) {
+    return { ok: false, error: "Aucune question tarifaire : il n'y a rien à croiser." };
+  }
+
+  let combos = [{}];
+  for (const c of axes) {
+    const suivant = [];
+    for (const partiel of combos) {
+      for (const v of c.valeurs) suivant.push({ ...partiel, [c.cle]: v.libelle });
+    }
+    combos = suivant;
+    if (combos.length > 5000) {
+      return { ok: false, error: `Le croisement dépasse cinq mille variantes. Vérifiez les questions avant de générer.` };
+    }
+  }
+
+  const connues = new Set(produit.combinaisons.map((k) => k.empreinte));
+  const manquantes = combos
+    .map((valeurs) => ({ valeurs, empreinte: empreinteDe(valeurs) }))
+    .filter((k) => !connues.has(k.empreinte));
+
+  if (!appliquer) {
+    return { ok: true, apercu: true, total: combos.length, existantes: connues.size, manquantes: manquantes.length };
+  }
+  if (!manquantes.length) return { ok: true, creees: 0, total: combos.length };
+
+  await prisma.combinaison.createMany({
+    data: manquantes.map((k) => ({ ...k, vitrineId })),
+  });
+  rafraichir(vitrineId);
+  return { ok: true, creees: manquantes.length, total: combos.length };
 }
