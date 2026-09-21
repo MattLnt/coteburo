@@ -14,6 +14,7 @@
 
 import { useState, useTransition, useMemo } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/dashboard/Icon";
 import {
   majIdentite, creerChoix, majChoix, supprimerChoix,
   creerValeur, majValeur, supprimerValeur, tirerDUnNuancier,
@@ -139,14 +140,15 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
     if (r?.ok === false) setTimeout(() => setMessage(null), 5000);
   });
 
-  // La complétude, les cinq mêmes pastilles que la liste.
-  const sante = [
-    ["visuel", produit.visuels.length > 0],
-    ["prix", produit.combinaisons.some((c) => c.prixTarifHT != null)],
-    ["choix", etapes.length > 0],
-    ["finition", finitions.length > 0],
-    ["rayon", true],
-  ];
+  // Ce qui manque à la fiche, nommé. Le rayon en fait partie : il se coche
+  // dans l'onglet Identité et ne relève d'aucun autre.
+  const manques = [
+    !produit.visuels.length && "visuel",
+    !produit.combinaisons.some((c) => c.prixTarifHT != null) && "prix",
+    !etapes.length && "choix",
+    !finitions.length && "finition",
+    !(produit.sousCategories || []).length && "rayon",
+  ].filter(Boolean);
 
   // Un exemple de référence assemblée, avec la première valeur de chaque choix.
   const exempleRef = useMemo(() => {
@@ -155,12 +157,35 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
     return assemblerReference(produit, reponses);
   }, [produit, etapes]);
 
+  // Chaque onglet porte son compte et, s'il manque quelque chose, un point.
+  // Le compte seul ne dit pas si la fiche est en état : vingt et un visuels et
+  // aucun prix se lisaient pareil.
+  const sansTarif = produit.combinaisons.filter((c) => c.prixTarifHT == null).length;
   const ONGLETS = [
-    ["identite", "Identité"],
-    ["descriptif", `Descriptif · ${(produit.sectionsDevis || []).length}`],
-    ["choix", `Choix · ${etapes.length}`],
-    ["prix", `Prix · ${produit.combinaisons.length}`],
-    ["visuels", `Visuels · ${produit.visuels.length}`],
+    { cle: "identite", nom: "Identité", icone: "box" },
+    {
+      cle: "descriptif", nom: "Descriptif", icone: "edit",
+      compte: (produit.sectionsDevis || []).length,
+      alerte: (produit.sectionsDevis || []).length ? null : "aucune section",
+    },
+    {
+      cle: "choix", nom: "Choix", icone: "layers",
+      compte: etapes.length,
+      alerte: etapes.length ? null : "aucune question",
+    },
+    {
+      cle: "prix", nom: "Prix", icone: "euro",
+      compte: produit.combinaisons.length,
+      // Toujours une chaîne ou null : « 0 && "…" » vaut 0, que JSX affiche.
+      alerte: !produit.combinaisons.length
+        ? "aucune variante"
+        : sansTarif ? `${sansTarif} sans tarif` : null,
+    },
+    {
+      cle: "visuels", nom: "Visuels", icone: "image",
+      compte: produit.visuels.length,
+      alerte: produit.visuels.length ? null : "aucun visuel",
+    },
   ];
 
   return (
@@ -184,14 +209,13 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
           {surDevis && (
             <span className="rounded-full bg-surface-2 px-3 py-1 text-[11px] font-semibold text-ink-soft">sur devis</span>
           )}
-          <span className="ml-auto flex items-center gap-1.5">
-            {sante.map(([nom, ok]) => (
-              <span
-                key={nom}
-                title={nom}
-                className={`h-2.5 w-2.5 rounded-full ${ok ? "bg-emerald-600" : "bg-line"}`}
-              />
-            ))}
+          {/* Les cinq pastilles de complétude ont disparu d'ici : les onglets
+              les disent mieux, chacune à sa place, et l'une d'elles — le
+              rayon — était codée en dur à vert quoi qu'il arrive. */}
+          <span className="ml-auto text-[12.5px] text-ink-soft">
+            {manques.length
+              ? `à compléter : ${manques.join(" · ")}`
+              : "fiche complète"}
           </span>
         </div>
       </div>
@@ -202,19 +226,42 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
         </div>
       )}
 
-      <div className="flex gap-1 border-b border-line">
-        {ONGLETS.map(([cle, libelle]) => (
-          <button
-            key={cle}
-            type="button"
-            onClick={() => setOnglet(cle)}
-            className={`border-b-2 px-4 py-2.5 text-sm ${
-              onglet === cle ? "border-orange font-semibold text-ink" : "border-transparent text-ink-soft"
-            }`}
-          >
-            {libelle}
-          </button>
-        ))}
+      {/* Un sélecteur segmenté plutôt qu'un trait sous le mot actif : les
+          cinq onglets se voient d'un bloc, l'actif se détache par son fond,
+          et chacun porte son compte au lieu d'un « · 5 » accolé au nom. */}
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-line bg-surface-2/60 p-1">
+        {ONGLETS.map((o) => {
+          const actif = onglet === o.cle;
+          return (
+            <button
+              key={o.cle}
+              type="button"
+              onClick={() => setOnglet(o.cle)}
+              title={o.alerte || undefined}
+              className={`group relative flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-sm transition ${
+                actif
+                  ? "bg-surface font-semibold text-ink shadow-sm ring-1 ring-line"
+                  : "text-ink-soft hover:bg-surface/70 hover:text-ink"
+              }`}
+            >
+              <Icon name={o.icone} size={15} strokeWidth={actif ? 2.2 : 1.8} />
+              {o.nom}
+              {o.compte != null && (
+                <span className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums ${
+                  actif ? "bg-surface-2 text-ink-soft" : "bg-surface/70 text-ink-soft/80"
+                }`}>
+                  {o.compte}
+                </span>
+              )}
+              {o.alerte && (
+                <span
+                  aria-label={o.alerte}
+                  className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-orange"
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* ── Identité ───────────────────────────────────────────────── */}
