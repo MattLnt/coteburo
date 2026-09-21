@@ -17,10 +17,40 @@ import { useMemo, useState } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useDevis } from "@/components/devis/DevisContext";
 import FavoriButton from "@/components/FavoriButton";
+import GalerieProduit from "@/components/GalerieProduit";
 import {
   prochaineEtape, etapesDe, etapesRestantes, prixDe,
   detailReference, visuelsPour, commandable, libelleChoix, identiteCommande,
+  decomposerComposite, combinaisonsCompatibles,
 } from "@/lib/modeleProduit";
+
+/** Section descriptive : repliée sur mobile, dépliée sur desktop. */
+function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
+  const [ouvert, setOuvert] = useState(!!ouvertParDefaut);
+  return (
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface lg:rounded-none lg:border-none lg:bg-transparent">
+      <button
+        type="button"
+        onClick={() => setOuvert((v) => !v)}
+        className="flex w-full items-center justify-between px-4 py-3.5 lg:hidden"
+      >
+        <span className="text-left text-[13.5px] font-semibold text-ink">{titre}</span>
+        <span className={`shrink-0 text-ink-soft transition-transform ${ouvert ? "rotate-180 text-orange-dark" : ""}`}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="m6 9 6 6 6-6" /></svg>
+        </span>
+      </button>
+      <div className={`${ouvert ? "block" : "hidden"} border-t border-line px-4 pb-4 pt-0 lg:block lg:border-none lg:p-0`}>
+        <h2 className="mb-4 hidden font-display text-2xl font-bold lg:block">{titre}</h2>
+        {contenu && (
+          <div
+            className="prose prose-sm mt-3 max-w-none text-[13px] leading-relaxed text-ink-soft lg:mt-0 lg:text-base"
+            dangerouslySetInnerHTML={{ __html: contenu }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
 
 const euros = (n) =>
   n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
@@ -144,35 +174,47 @@ export default function FicheProduitModele({
     return v?.couleur || null;
   };
 
+  // La décomposition du libellé composite de l'étape courante, s'il y en a un.
+  const decompo = useMemo(
+    () => (etape?.nature === "tarifaire" ? decomposerComposite(etape.choix, produit) : null),
+    [etape, produit],
+  );
+  // Les parties déjà choisies dans ce libellé, par position.
+  const [parties, setParties] = useState([]);
+
+  const choisirPartie = (i, part) => {
+    const suite = [...parties];
+    suite[i] = part;
+    // Une partie choisie peut rendre les suivantes impossibles : on efface
+    // celles qui ne tiennent plus, plutôt que de laisser un choix mort.
+    const possiblesApres = etape.valeurs.map((v) => v.libelle);
+    for (let j = i + 1; j < (decompo?.positions.length || 0); j += 1) {
+      const dispo = decompo.atteignables(j, suite, possiblesApres);
+      if (suite[j] != null && !dispo.has(suite[j])) suite[j] = null;
+    }
+    setParties(suite);
+
+    const libelle = decompo?.recomposer(suite);
+    // On ne valide l'étape que lorsque TOUTES les positions qui font question
+    // ont reçu une réponse : sinon on choisirait à la place du client.
+    const complet = decompo.positions.every((p, j) => p.valeurs.length < 2 || suite[j] != null);
+    if (libelle && complet) {
+      setParties([]);
+      repondre(etape.choix.cle, libelle);
+    }
+  };
+
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-12">
+    <>
+    {/* Deux colonnes égales, comme avant : l'image occupait les deux tiers et
+        écrasait le titre, le prix et les questions. */}
+    <div className="grid items-start gap-5 lg:grid-cols-2 lg:gap-10">
 
       {/* ── La galerie ─────────────────────────────────────────────── */}
-      <div className="flex flex-col gap-4">
-        <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl border border-line bg-surface">
-          {principal ? (
-            <img
-              src={principal.url}
-              alt={produit.nom}
-              className="h-full w-full object-contain"
-            />
-          ) : (
-            <span className="text-sm text-ink-soft">Visuel à venir</span>
-          )}
-        </div>
-        {visuels.length > 1 && (
-          <div className="flex gap-3 overflow-x-auto pb-1">
-            {visuels.slice(0, 6).map((v, i) => (
-              <span
-                key={v.id}
-                className={`h-16 w-20 shrink-0 overflow-hidden rounded-xl border bg-surface ${i === 0 ? "border-ink" : "border-line"}`}
-              >
-                <img src={v.url} alt="" className="h-full w-full object-contain" />
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Celle du site, avec ses miniatures verticales à gauche et son
+          cadrage qui distingue un packshot d'une photo d'ambiance. La
+          remplacer par une bande de vignettes inertes était une régression. */}
+      <GalerieProduit images={visuels.map((v) => v.url)} alt={produit.nom} />
 
       {/* ── Le configurateur ───────────────────────────────────────── */}
       <div className="flex flex-col gap-5">
@@ -240,17 +282,52 @@ export default function FicheProduitModele({
               </span>
             </div>
 
-            {etape.nature === "tarifaire" ? (
-              <div className="mt-4 flex flex-wrap gap-3">
+            {etape.nature === "tarifaire" && decompo ? (
+              // Un libellé composite se pose pièce par pièce, en pastilles.
+              // « NOIR METAL / NEBRASKA / VERT EAU - VERT EAU » demandait au
+              // client de lire quatre teintes dans une ligne de texte, sans
+              // en voir aucune.
+              <div className="mt-4 flex flex-col gap-5">
+                {decompo.positions.map((position, i) => {
+                  if (position.valeurs.length < 2) return null;
+                  const possibles = decompo.atteignables(i, parties, etape.valeurs.map((v) => v.libelle));
+                  return (
+                    <div key={i}>
+                      <div className="text-[12px] font-semibold text-ink-soft">{position.nom}</div>
+                      <div className="mt-2.5 flex flex-wrap gap-4">
+                        {position.valeurs.map((t) => {
+                          const dispo = possibles.has(t.part);
+                          const choisie = parties[i] === t.part;
+                          return (
+                            <button
+                              key={t.part}
+                              type="button"
+                              disabled={!dispo}
+                              onClick={() => choisirPartie(i, t.part)}
+                              className={`flex w-[68px] flex-col items-center gap-1.5 ${dispo ? "" : "opacity-30"}`}
+                              title={t.libelle}
+                            >
+                              <Pastille valeur={t} choisie={choisie} taille={46} />
+                              <span className="text-center text-[10.5px] leading-tight text-ink">{t.libelle}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : etape.nature === "tarifaire" ? (
+              <div className="mt-4 flex flex-wrap gap-2.5">
                 {etape.valeurs.map((v) => (
                   <button
                     key={v.id}
                     type="button"
                     onClick={() => repondre(etape.choix.cle, v.libelle)}
-                    className="min-w-[130px] rounded-xl border border-line bg-surface px-4 py-3 text-left hover:border-ink"
+                    className="min-w-[118px] rounded-xl border border-line bg-surface px-3.5 py-2.5 text-left hover:border-ink"
                   >
-                    <span className="block text-base font-semibold">{v.libelle}</span>
-                    <span className="mt-0.5 block text-xs text-ink-soft">
+                    <span className="block text-[15px] font-semibold">{v.libelle}</span>
+                    <span className="mt-0.5 block text-[11.5px] text-ink-soft">
                       {(() => {
                         const p = prixDe(produit, { ...reponses, [etape.choix.cle]: v.libelle }, marge);
                         return p.montant == null ? " " : `dès ${euros(p.montant)}`;
@@ -403,5 +480,22 @@ export default function FicheProduitModele({
         )}
       </div>
     </div>
+
+    {/* ── Les descriptions ───────────────────────────────────────────── */}
+    {/* Garnissage, mécanisme, dimensions… Elles existaient en base et ne
+        s'affichaient plus : c'est tout ce qui dit ce que le produit EST. */}
+    {produit.sectionsDevis?.length > 0 && (
+      <div className="mt-8 flex flex-col gap-3 lg:mt-14 lg:grid lg:grid-cols-2 lg:gap-x-14 lg:gap-y-10">
+        {produit.sectionsDevis.map((s, i) => (
+          <SectionRepliable
+            key={s.id || i}
+            titre={s.titre || "Détails"}
+            contenu={s.contenu}
+            ouvertParDefaut={i === 0}
+          />
+        ))}
+      </div>
+    )}
+    </>
   );
 }
