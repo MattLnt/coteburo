@@ -14,9 +14,12 @@
 // serveur de refaire le même calcul au moment de la commande.
 
 import { useMemo, useState } from "react";
+import { useCart } from "@/components/cart/CartContext";
+import { useDevis } from "@/components/devis/DevisContext";
+import FavoriButton from "@/components/FavoriButton";
 import {
   prochaineEtape, etapesDe, etapesRestantes, prixDe,
-  detailReference, visuelsPour, commandable, libelleChoix,
+  detailReference, visuelsPour, commandable, libelleChoix, identiteCommande,
 } from "@/lib/modeleProduit";
 
 const euros = (n) =>
@@ -43,9 +46,15 @@ function Pastille({ valeur, choisie, taille = 56 }) {
   );
 }
 
-export default function FicheProduitModele({ produit, marge = 0, surDevis = false }) {
+export default function FicheProduitModele({
+  produit, marge = 0, surDevis = false, favori = false, connecte = false,
+  categorieSlug = null, sousCategorieSlug = null,
+}) {
+  const { addItem } = useCart();
+  const { addDevis } = useDevis();
   const [reponses, setReponses] = useState({});
   const [qte, setQte] = useState(1);
+  const [ajoute, setAjoute] = useState(false);
 
   const etapes = useMemo(() => etapesDe(produit), [produit]);
   const etape = useMemo(() => prochaineEtape(produit, reponses), [produit, reponses]);
@@ -73,6 +82,62 @@ export default function FicheProduitModele({ produit, marge = 0, surDevis = fals
   });
 
   const principal = visuels[0] || null;
+  const principalUrl = principal?.url ?? null;
+
+  // Ce que le panier et le devis reçoivent. La combinaison porte « ancienId »,
+  // l'identifiant de l'ancienne déclinaison : c'est le pont qui permet au
+  // paiement, qui n'a pas encore basculé, de retrouver sa ligne et son prix.
+  const versPanier = () => {
+    const identite = identiteCommande(produit, reponses, marge);
+    addItem(
+      {
+        type: "nouveau",
+        vitrineId: produit.id,
+        declinaisonId: prix.combinaison?.ancienId ?? null,
+        combinaisonId: identite.combinaisonId,
+        referenceComplete: identite.referenceComplete,
+        fournisseur: identite.fournisseur,
+        choix: identite.choix,
+        slug: produit.slug,
+        categorieSlug,
+        sousCategorieSlug,
+        designation: produit.nom,
+        // La marque vient de la gamme, jamais d'une valeur écrite en dur :
+        // tout partait chez Buronomic, Sokoa et OfficePro compris.
+        marque: identite.fournisseur,
+        image: principalUrl,
+        prix: prix.montant,
+      },
+      identite.finition,
+      qte,
+    );
+    setAjoute(true);
+    setTimeout(() => setAjoute(false), 2000);
+  };
+
+  const versDevis = () => {
+    const identite = identiteCommande(produit, reponses, marge);
+    addDevis({
+      vitrineId: produit.id,
+      combinaisonId: identite.combinaisonId,
+      referenceComplete: identite.referenceComplete,
+      fournisseur: identite.fournisseur,
+      choix: identite.choix,
+      codeRacine: identite.referenceComplete,
+      gammeSlug: produit.gamme?.slug,
+      carteSlug: produit.slug,
+      designation: produit.nom,
+      gammeNom: produit.gamme?.nom,
+      image: principalUrl,
+      config: identite.finition,
+      finitions: [],
+      prixIndicatif: prix.montant,
+      quantite: qte,
+    });
+    setAjoute(true);
+    setTimeout(() => setAjoute(false), 2000);
+  };
+
   const teinteDe = (cle) => {
     const c = etapes.find((x) => x.cle === cle);
     const v = c?.valeurs.find((x) => x.libelle === reponses[cle]);
@@ -116,7 +181,10 @@ export default function FicheProduitModele({ produit, marge = 0, surDevis = fals
           <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-orange">
             {produit.gamme?.nom}
           </div>
-          <h1 className="mt-2 font-display text-2xl font-bold leading-tight lg:text-3xl">{produit.nom}</h1>
+          <div className="mt-2 flex items-start justify-between gap-4">
+            <h1 className="font-display text-2xl font-bold leading-tight lg:text-3xl">{produit.nom}</h1>
+            <FavoriButton vitrineId={produit.id} initial={favori} connecte={connecte} variant="inline" />
+          </div>
         </div>
 
         {total > 0 && (
@@ -305,6 +373,7 @@ export default function FicheProduitModele({ produit, marge = 0, surDevis = fals
 
           <button
             type="button"
+            onClick={surDevis ? versDevis : versPanier}
             disabled={!verdict.ok}
             className={`h-12 flex-1 rounded-xl px-6 text-[15px] font-semibold ${
               verdict.ok
@@ -312,7 +381,9 @@ export default function FicheProduitModele({ produit, marge = 0, surDevis = fals
                 : "cursor-not-allowed bg-surface-2 text-ink-soft"
             }`}
           >
-            {verdict.ok
+            {ajoute
+              ? "Ajouté ✓"
+              : verdict.ok
               ? surDevis ? "Demander un devis" : "Ajouter au panier"
               : etape ? `Choisissez ${etape.choix.nom.toLowerCase()}` : verdict.motif}
           </button>

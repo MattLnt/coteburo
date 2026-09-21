@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCarteFrontParCategorie, urlProduit } from "@/lib/catalogue";
+import { getCarteFrontParCategorie, urlProduit, getMargeGlobale } from "@/lib/catalogue";
 import { getFavorisContext } from "@/lib/favoris";
-import FicheProduit from "@/components/FicheProduit";
+import { chargerProduit, surDevis as estSurDevis } from "@/lib/chargerProduit";
+import FicheProduitModele from "@/components/FicheProduitModele";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +42,17 @@ export default async function ProduitPage({ params }) {
   const favCtx = await getFavorisContext();
   const favori = favCtx.favorisVitrines.includes(data.carte.id);
 
-  const payload = JSON.parse(JSON.stringify({ ...data, favori, connecte: favCtx.connecte }));
+  // Le produit lu dans le modèle à choix. La carte reste chargée pour le fil
+  // d'ariane et les suggestions, qui n'en dépendent pas.
+  const [produit, marge] = await Promise.all([
+    chargerProduit(data.carte.id),
+    getMargeGlobale(),
+  ]);
+  if (!produit) notFound();
+
+  const payload = JSON.parse(JSON.stringify({
+    ...data, favori, connecte: favCtx.connecte, produit, marge,
+  }));
 
   return (
     <main>
@@ -67,7 +78,15 @@ export default async function ProduitPage({ params }) {
 
       {/* pb : place laissée à la barre d'achat fixe en bas d'écran */}
       <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pb-[120px] lg:pb-16">
-        <FicheProduit data={payload} />
+        <FicheProduitModele
+          produit={payload.produit}
+          marge={payload.marge}
+          surDevis={estSurDevis(payload.produit)}
+          favori={payload.favori}
+          connecte={payload.connecte}
+          categorieSlug={payload.carte.categorieSlug}
+          sousCategorieSlug={payload.carte.sousCategorieSlug}
+        />
       </section>
 
       {/* Vous aimerez aussi — autres produits de la même catégorie, jamais "de la même gamme" */}
