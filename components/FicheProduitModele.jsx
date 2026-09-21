@@ -21,7 +21,7 @@ import GalerieProduit from "@/components/GalerieProduit";
 import {
   prochaineEtape, etapesDe, etapesRestantes, prixDe,
   detailReference, visuelsPour, commandable, libelleChoix, identiteCommande,
-  decomposerComposite, combinaisonsCompatibles,
+  decomposerComposite, combinaisonsCompatibles, impactPrix,
 } from "@/lib/modeleProduit";
 
 /** Section descriptive : repliée sur mobile, dépliée sur desktop. */
@@ -174,6 +174,15 @@ export default function FicheProduitModele({
     return v?.couleur || null;
   };
 
+  // Cette question coûte-t-elle quelque chose, ici et maintenant ? Un choix
+  // tarifaire ne fait pas toujours bouger le prix aux dimensions déjà
+  // retenues : l'annoncer quand ce n'est pas le cas trompe le client sur ce
+  // qu'il décide.
+  const impact = useMemo(
+    () => impactPrix(produit, etape, reponses, marge),
+    [produit, etape, reponses, marge],
+  );
+
   // La décomposition du libellé composite de l'étape courante, s'il y en a un.
   const decompo = useMemo(
     () => (etape?.nature === "tarifaire" ? decomposerComposite(etape.choix, produit) : null),
@@ -282,12 +291,12 @@ export default function FicheProduitModele({
               <h2 className="font-display text-lg font-semibold">{etape.choix.nom}</h2>
               <span
                 className={`whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-                  etape.nature === "tarifaire"
+                  impact.varie
                     ? "bg-orange-tint text-orange-dark"
                     : "bg-surface-2 text-ink-soft"
                 }`}
               >
-                {etape.nature === "tarifaire" ? "agit sur le prix" : "sans effet sur le prix"}
+                {impact.varie ? "agit sur le prix" : "sans effet sur le prix"}
               </span>
             </div>
 
@@ -336,12 +345,15 @@ export default function FicheProduitModele({
                     className="min-w-[118px] rounded-xl border border-line bg-surface px-3.5 py-2.5 text-left hover:border-ink"
                   >
                     <span className="block text-[15px] font-semibold">{v.libelle}</span>
-                    <span className="mt-0.5 block text-[11.5px] text-ink-soft">
-                      {(() => {
-                        const p = prixDe(produit, { ...reponses, [etape.choix.cle]: v.libelle }, marge);
-                        return p.montant == null ? " " : `dès ${euros(p.montant)}`;
-                      })()}
-                    </span>
+                    {impact.varie && (
+                      // Répéter le même montant sous chaque bouton n'apprend
+                      // rien et encombre : on ne l'écrit que s'il distingue.
+                      <span className="mt-0.5 block text-[11.5px] text-ink-soft">
+                        {impact.parValeur.get(v.libelle) == null
+                          ? " "
+                          : `dès ${euros(impact.parValeur.get(v.libelle))}`}
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
