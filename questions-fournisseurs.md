@@ -190,8 +190,24 @@ Chaise 4 pieds, assise tapissée, dos PP (AOB0/T7)
 ```
 
 La désignation du tarif est identique d'une ligne à l'autre ; seul change le
-suffixe de la référence, après la barre oblique. Le prix, lui, ne bouge pas :
-162 € pour `/11` comme pour `/G2`. Tout indique un **coloris de coque**.
+suffixe de la référence, après la barre oblique.
+
+Sur **quarante-deux** de ces fiches le prix ne bouge pas d'un suffixe à
+l'autre — 162 € pour `/11` comme pour `/G2` chez Adio. Tout y indique un
+**coloris de coque**.
+
+Sur les **vingt-neuf autres**, il bouge, et parfois beaucoup :
+
+| gamme | suffixes | prix |
+|---|---|---|
+| Azkar | 55 / 51 | 1 286 € / 1 273 € |
+| Bero | 30 / 70 | 595 € / 607 € |
+| Eden | 51 / 72 / 33 | 922 € / 958 € / 958 € |
+
+Treize euros d'écart ressemblent à un supplément de finition — une base
+aluminium poli contre une base noire. Trente-six euros, moins. **La question
+vaut donc pour les deux cas : que code ce suffixe — une teinte, une finition
+de piétement avec supplément, ou un autre produit ?**
 
 ### Ce qui manque
 
@@ -273,3 +289,47 @@ Siège haut dossier résille, base nylon noir, roulettes ø50 sol moquette (WR06
 même phrase. Aucune table de coloris ne résoudra cela : il faudra savoir ce
 qui les distingue — mécanisme, accotoirs, version. C'est le même genre de
 doute que les points 1 et 2 de ce document, en beaucoup plus large.
+
+---
+
+## 9. Sokoa — « XF3/B » est-il la catégorie B ?
+
+Cinq fiches de la gamme **Wi-Max Ergo** portent, dans leur liste de
+catégories de revêtement, une valeur qui ne ressemble pas aux autres :
+
+```
+Tissu B+   ·   Tissu C   ·   Tissu D   ·   XF3/B
+```
+
+Toutes les autres fiches du catalogue écrivent « Tissu B », « Tissu B+ »,
+« Tissu C ». Celle-ci écrit un code.
+
+Trois faits concordent pour en faire la **catégorie B** :
+
+1. **Le prix.** Sur les cinq fiches, `XF3/B` est systématiquement le moins
+   cher, juste en dessous de Tissu B+, et l'écart est toujours le même :
+
+   | fiche | XF3/B | Tissu B+ | Tissu C | Tissu D |
+   |---|---|---|---|---|
+   | JOF / Fauteuil moyen dossier + têtière | 1 065 € | 1 069 € | 1 074 € | 1 094 € |
+   | AIR/M Fauteuil haut dossier | 826 € | 829 € | 832 € | 842 € |
+   | ELO / Fauteuil haut dossier + têtière | 1 055 € | 1 060 € | 1 065 € | 1 085 € |
+
+   L'ordre B < B+ < C < D est celui de tout le tarif.
+
+2. **La place vide.** Aucune de ces cinq fiches n'a de valeur « Tissu B ».
+   `XF3/B` occupe exactement ce créneau.
+
+3. **Le `/B` final**, qui est la lettre de catégorie.
+
+`XF3` serait alors une référence de tissu — le catalogue mentionne ailleurs
+« Tissu B — Xtrevira uniquement », et l'Xtrevira est le tissu de base de la
+catégorie B.
+
+**La question :** `XF3/B` désigne-t-il bien la catégorie B, restreinte à un
+tissu précis ? Si oui, lequel, et faut-il l'écrire « Tissu B — XF3 » comme
+les autres restrictions du tarif ?
+
+En attendant, la valeur reste affichée telle quelle et **ne tire aucun
+nuancier** : c'est la seule des quatre catégories de ces fiches à ne montrer
+aucune teinte au client.
