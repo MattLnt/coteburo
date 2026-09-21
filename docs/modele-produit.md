@@ -436,3 +436,156 @@ portant le même texte. **Aucun modèle ne répare ça** : c'est un arbitrage
 profondeur sont déduites de « PLAN DROIT L120 x P80 ». Si Buronomic change son
 gabarit l'an prochain, le réimport produira d'autres choix sans prévenir. Le
 contrôle d'intégrité le verra ; il faudra le regarder.
+
+---
+
+## 11. Les gammes et les rayons — deux axes, pas deux onglets
+
+### Ce qui est confondu
+
+`/admin/architecture` présente trois onglets côte à côte : Gammes,
+Catégories, Finitions. Le voisinage laisse croire à trois listes de même
+nature. Il y en a deux, et elles ne disent pas la même chose.
+
+| axe | qui le décide | volume | un produit en a |
+|---|---|---|---|
+| **Marque → Gamme** | le fournisseur | 3 → 101 | exactement une |
+| **Catégorie → Sous-catégorie** | nous | 6 → 31 | une ou plusieurs, dont une principale |
+
+Le premier dit **qui fabrique**, le second **où l'on range**. Un bureau
+Astrolite est de la gamme Astrolite *et* dans Bureaux / Bureaux individuels.
+Les deux ensembles se croisent, ils ne s'emboîtent pas.
+
+État actuel : 101 gammes, aucune vide ; 555 fiches, aucune sans catégorie ni
+sans sous-catégorie. L'architecture est saine — c'est le moment de la rendre
+difficile à casser.
+
+### Deux écrans, une même forme
+
+Chacun est un arbre à gauche, le détail du nœud choisi à droite. Les gestes
+sont les mêmes des deux côtés : renommer, réordonner, déplacer, fusionner,
+supprimer. Les apprendre une fois suffit.
+
+### La robustesse est dans les quatre gestes dangereux
+
+Aucun ne s'exécute sans montrer d'abord ce qu'il emporte.
+
+| geste | ce qui s'affiche avant |
+|---|---|
+| **renommer** | le slug change-t-il ? combien d'adresses deviendraient mortes |
+| **déplacer une sous-catégorie** | combien de fiches changent de rayon |
+| **fusionner deux gammes** | combien de fiches reprises, quels slugs entrent en collision |
+| **supprimer** | refusé tant qu'il reste des fiches, avec leur compte |
+
+### Le slug ne suit plus le nom
+
+Aujourd'hui, renommer peut régénérer le slug et rompre les adresses déjà
+partagées. Le slug est **gelé à la création** et ne se modifie que
+délibérément, dans un champ à part ; l'ancien est conservé en redirection.
+Corriger une faute de frappe dans un nom ne doit jamais casser un lien.
+
+### Une seule source pour l'architecture
+
+`importer-catalogue.mjs` porte une constante `ARCHITECTURE` qui redéclare les
+six catégories et leurs sous-catégories. La base les porte aussi. Deux
+sources pour une même vérité, et la plus silencieuse gagne.
+
+La base devient la source. L'import la **lit**, et refuse de ranger une fiche
+dans un rayon qui n'existe pas : il le signale au lieu de le créer. Un rayon
+neuf est une décision, pas un effet de bord.
+
+---
+
+## 12. Les finitions — la bibliothèque doit être la source
+
+### Le défaut, mesuré
+
+Deux mondes parallèles coexistent :
+
+```
+PaletteFinition + FinitionModele     la bibliothèque    15 palettes · 219 modèles
+GroupeFinition  + Finition           posé sur la fiche  577 groupes · 2 135 finitions
+```
+
+Le lien entre les deux est un **champ texte**, `paletteNom`. À l'instant où
+ces lignes sont écrites, il vaut `null` sur **les 2 135 finitions**. Il avait
+été renseigné sur 749 d'entre elles il y a trois jours ; les groupes qui les
+portaient ont été refaits depuis, et le lien est reparti avec eux.
+
+C'est la même cause qui a fait disparaître 1 094 couleurs à la purge, et qui
+a coûté une journée de reconstruction par correspondance de teintes. Un lien
+qui n'est pas une clé étrangère finit toujours par se rompre.
+
+### Le correctif
+
+```
+ValeurChoix.modeleId  →  FinitionModele.id
+```
+
+Une clé, pas un nom. Trois conséquences immédiates :
+
+- **`couleur` et `imageUrl` sont héritées du modèle.** La valeur ne stocke
+  que ce qui diffère vraiment, et une valeur sans surcharge suit sa
+  bibliothèque.
+- **Corriger une pastille la corrige partout.** Les 85 teintes du Tissu C
+  arrivent une fois et bénéficient aux 180 fiches qui s'en servent.
+- **Une purge ne peut plus couper le lien**, la base le refuse.
+
+### L'écran
+
+Les palettes à gauche, leurs teintes en grille à droite. Chaque teinte porte
+**le nombre de produits qui l'emploient** — ce qui rend visible, d'un coup
+d'œil, ce qui compte et ce qui dort.
+
+Les trous se voient aussi : les 60 modèles sans pastille apparaissent en
+cases vides plutôt que dans un fichier texte à part.
+
+Deux gestes suffisent au quotidien :
+
+- **Téléverser un nuancier** — on dépose les images, le manifeste les
+  apparie, ce qui ne s'apparie pas reste en attente et se règle à la main.
+- **Tirer un nuancier vers un produit** — crée d'un coup un choix de finition
+  avec une valeur par modèle, toutes liées. C'est ce que fait déjà
+  `importerFinitionsVersProduit`, mais le lien y survivra.
+
+---
+
+## 13. La galerie et le détourage
+
+### L'outil de détourage reste
+
+Sa logique de recadrage est bonne et éprouvée : seuil de fond à 244, marge de
+4 %, qualité 92, sortie carrée. Elle ne change pas. Ce qui change, c'est ce
+qu'il lit et ce qu'il écrit.
+
+| aujourd'hui | demain |
+|---|---|
+| lit `images[]`, un tableau d'URL | lit des lignes `Visuel` |
+| téléverse un nouveau fichier `_cadre.jpg` | réécrit la même ligne, `urlOrigine` conservée |
+| « déjà traité » se lit dans le nom du fichier | se lit dans `Visuel.recadre` |
+| « c'est une ambiance » se devine sur `amb_`, `bodegon`, `zoom` | se lit dans `Visuel.role` |
+
+Ce que l'on y gagne : le recadrage devient **réversible**, un second passage
+ne peut plus recadrer deux fois, et plus aucune décision ne dépend d'un nom
+de fichier — la même règle que pour les décors.
+
+### Un visuel illustre souvent plusieurs valeurs
+
+La migration à vide l'a montré : `bx867n-aluminium-chene-fil-01` montre un
+piétement **et** un plateau. Un `valeurChoixId` au singulier oblige à choisir,
+et choisit mal une fois sur deux.
+
+Le rattachement devient donc une table de liaison : un visuel, plusieurs
+valeurs. Le front affiche un visuel dès que **toutes** ses valeurs sont
+retenues par le client, et retombe sur la vignette sinon.
+
+### Trois surfaces, un seul modèle
+
+1. **L'onglet Visuels d'un produit** — la galerie, le rôle, le rattachement.
+2. **La médiathèque** — déjà là, elle parcourt les dossiers locaux ; c'est par
+   elle que les dépôts `_A-TRIER` se vident, en rattachant au lieu de
+   renommer.
+3. **Le détourage** — le traitement en lot, par marque et par gamme.
+
+Les trois écrivent dans `Visuel`. Aucune n'a sa propre notion de ce qu'est
+une image de produit.
