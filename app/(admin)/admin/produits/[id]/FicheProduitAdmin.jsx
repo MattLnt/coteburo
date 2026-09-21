@@ -20,6 +20,8 @@ import {
   majCombinaison, majVisuel, supprimerVisuel,
 } from "./actions";
 import EditeurFinitions from "./EditeurFinitions";
+import OngletIdentite from "./OngletIdentite";
+import OngletDescriptif from "./OngletDescriptif";
 import { etapesDe, choixTarifaires, choixFinition, assemblerReference } from "@/lib/modeleProduit";
 import { prixLigne } from "@/lib/prixCatalogue";
 
@@ -67,7 +69,7 @@ function ChampAuto({ valeur, onEnregistrer, className = "", type = "text", ...pr
   );
 }
 
-export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers, bibliotheque = [] }) {
+export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers, bibliotheque = [], rangements = null }) {
   const [onglet, setOnglet] = useState("choix");
   const [message, setMessage] = useState(null);
   const [, demarrer] = useTransition();
@@ -100,6 +102,7 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
 
   const ONGLETS = [
     ["identite", "Identité"],
+    ["descriptif", `Descriptif · ${(produit.sectionsDevis || []).length}`],
     ["choix", `Choix · ${etapes.length}`],
     ["prix", `Prix · ${produit.combinaisons.length}`],
     ["visuels", `Visuels · ${produit.visuels.length}`],
@@ -161,72 +164,10 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
 
       {/* ── Identité ───────────────────────────────────────────────── */}
       {onglet === "identite" && (
-        <div className="flex flex-col gap-5 rounded-2xl border border-line bg-surface p-6">
-          <label className="flex flex-col gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Nom</span>
-            <ChampAuto
-              valeur={produit.nom}
-              onEnregistrer={(v) => majIdentite(produit.id, { nom: v })}
-              className="max-w-xl"
-            />
-          </label>
-
-          <label className="flex flex-col gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Descriptif</span>
-            <textarea
-              defaultValue={produit.descriptif || ""}
-              onBlur={(e) => agir(majIdentite(produit.id, { descriptif: e.target.value }))}
-              rows={6}
-              className="max-w-3xl rounded-lg border border-line px-3 py-2 text-[13px]"
-            />
-          </label>
-
-          <div className="flex flex-wrap gap-6 border-t border-line pt-5">
-            <label className="flex items-center gap-2.5 text-sm">
-              <input
-                type="checkbox"
-                defaultChecked={produit.publie}
-                onChange={(e) => agir(majIdentite(produit.id, { publie: e.target.checked }))}
-                className="h-4 w-4 accent-orange"
-              />
-              Publié sur le site
-            </label>
-            <label className="flex items-center gap-2.5 text-sm">
-              <input
-                type="checkbox"
-                defaultChecked={produit.venteSurDevis}
-                onChange={(e) => agir(majIdentite(produit.id, { venteSurDevis: e.target.checked }))}
-                className="h-4 w-4 accent-orange"
-              />
-              Vendu sur devis
-            </label>
-            <label className="flex items-center gap-2.5 text-sm">
-              <input
-                type="checkbox"
-                defaultChecked={produit.accessoireSeul}
-                onChange={(e) => agir(majIdentite(produit.id, { accessoireSeul: e.target.checked }))}
-                className="h-4 w-4 accent-orange"
-              />
-              Vendu uniquement comme accessoire
-            </label>
-          </div>
-
-          {produit.accessoireSeul && (
-            <div className="rounded-xl border border-line bg-surface-2 p-4 text-[12.5px] leading-relaxed text-ink-soft">
-              Cette fiche ne paraît ni dans les rayons ni dans la recherche.
-              Elle reste joignable par son adresse — un lien de devis ou de
-              commande continue de fonctionner — et reste proposée, cochable,
-              sur les fiches des produits qui la citent en accessoire.
-            </div>
-          )}
-
-          <div className="rounded-xl bg-surface-2 p-4 text-[12.5px] leading-relaxed text-ink-soft">
-            La gamme, les rayons et les prix viennent du tarif fournisseur et se
-            corrigent depuis leurs écrans respectifs. Ce que vous saisissez ici
-            vous appartient : le réimport du tarif ne l'écrasera pas.
-          </div>
-        </div>
+        <OngletIdentite produit={produit} rangements={rangements} agir={agir} />
       )}
+
+      {onglet === "descriptif" && <OngletDescriptif produit={produit} />}
 
       {/* ── Choix ──────────────────────────────────────────────────── */}
       {onglet === "choix" && (

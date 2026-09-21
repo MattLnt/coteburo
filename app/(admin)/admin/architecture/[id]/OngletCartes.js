@@ -70,7 +70,7 @@ export default function OngletCartes({ gammeId, gammeDevis = false }) {
     const res = await creerVitrine(gammeId, { nom: nouveauNom, venteSurDevis: nouveauDevis });
     setCreationEnCours(false);
     if (!res.ok) { setErreurCreation(res.error || "Une erreur est survenue."); return; }
-    router.push(`/admin/architecture/${gammeId}/carte/${res.id}`);
+    router.push(`/admin/produits/${res.id}`);
   };
 
   if (vitrines === null) {
@@ -188,7 +188,7 @@ export default function OngletCartes({ gammeId, gammeDevis = false }) {
                 {v.publie ? "Visible" : "Masqué"}
               </button>
 
-              <Link href={`/admin/architecture/${gammeId}/carte/${v.id}`}
+              <Link href={`/admin/produits/${v.id}`}
                 style={{ padding: "8px 16px", borderRadius: 8, background: "#23262a", color: "#fff", textDecoration: "none", fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>
                 Éditer
               </Link>

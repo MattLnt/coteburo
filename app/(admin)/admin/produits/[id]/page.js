@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { chargerProduit, surDevis } from "@/lib/chargerProduit";
 import { getMargeGlobale } from "@/lib/catalogue";
-import { listerNuanciers, listerBibliotheque } from "./actions";
+import { listerNuanciers, listerBibliotheque, listerRangements } from "./actions";
 import FicheProduitAdmin from "./FicheProduitAdmin";
 
 export const dynamic = "force-dynamic";
@@ -18,11 +18,12 @@ export async function generateMetadata({ params }) {
 // sans avoir à écrire un script.
 export default async function ProduitAdminPage({ params }) {
   const { id } = await params;
-  const [produit, marge, nuanciers, bibliotheque] = await Promise.all([
+  const [produit, marge, nuanciers, bibliotheque, rangements] = await Promise.all([
     chargerProduit(id),
     getMargeGlobale(),
     listerNuanciers(),
     listerBibliotheque(),
+    listerRangements(),
   ]);
   if (!produit) notFound();
 
@@ -33,6 +34,7 @@ export default async function ProduitAdminPage({ params }) {
       surDevis={surDevis(produit)}
       nuanciers={JSON.parse(JSON.stringify(nuanciers))}
       bibliotheque={JSON.parse(JSON.stringify(bibliotheque))}
+      rangements={JSON.parse(JSON.stringify(rangements))}
     />
   );
 }

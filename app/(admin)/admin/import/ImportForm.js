@@ -89,7 +89,7 @@ export default function ImportForm({ contexte }) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 18 }}>
           {resultat.produits.map((p) => (
-            <Link key={p.id} href={`/admin/architecture/${resultat.gammeId}/carte/${p.id}`}
+            <Link key={p.id} href={`/admin/produits/${p.id}`}
               style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 13px", borderRadius: 10, background: "#faf8f4", textDecoration: "none" }}>
               <span style={{ fontSize: 13, fontWeight: 600, color: "#23262a" }}>{p.nom}</span>
               <span style={{ fontSize: 11.5, color: "#f0661b", fontWeight: 600, whiteSpace: "nowrap" }}>Compléter →</span>

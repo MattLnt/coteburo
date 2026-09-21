@@ -7,9 +7,10 @@ export function Sidebar({ items, societe, email, collapsed }) {
   const pathname = usePathname();
   const width = collapsed ? 76 : 260;
 
-  // Une page produit vit techniquement sous /admin/architecture/[id]/carte/[vitrineId] —
-  // mais dans le menu, elle doit allumer "Produits", jamais "Gammes".
-  const surPageProduit = pathname.includes("/carte/");
+  // Une fiche produit s'édite sous /admin/produits/[id]. L'ancienne adresse,
+  // sous /admin/architecture/[id]/carte/[vitrineId], y redirige ; le menu doit
+  // allumer « Produits » dans les deux cas, jamais « Gammes ».
+  const surPageProduit = pathname.includes("/carte/") || /^\/admin\/produits\/./.test(pathname);
 
   return (
     <aside

@@ -3,7 +3,7 @@ import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "@/components/dashboard/ImageUploader";
 import TiptapEditor from "@/components/dashboard/TiptapEditor";
-import SectionsDescriptives from "./SectionsDescriptives";
+import SectionsDescriptives from "@/components/dashboard/SectionsDescriptives";
 import DeclinaisonsBoutique from "./DeclinaisonsBoutique";
 import OptionsAdditionnelles from "./OptionsAdditionnelles";
 import SelecteurOptionsLiees from "./SelecteurOptionsLiees";

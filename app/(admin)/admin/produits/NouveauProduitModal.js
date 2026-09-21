@@ -54,7 +54,7 @@ export default function NouveauProduitModal({ open, onClose, gammes }) {
         venteSurDevis,
       });
       if (!res.ok) { setErreur(res.error || "Une erreur est survenue."); return; }
-      router.push(`/admin/architecture/${res.gammeId}/carte/${res.id}`);
+      router.push(`/admin/produits/${res.id}`);
     });
   };
 

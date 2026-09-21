@@ -50,11 +50,86 @@ export async function majIdentite(vitrineId, champs) {
   if (typeof champs.publie === "boolean") data.publie = champs.publie;
   if (typeof champs.venteSurDevis === "boolean") data.venteSurDevis = champs.venteSurDevis;
   if (typeof champs.accessoireSeul === "boolean") data.accessoireSeul = champs.accessoireSeul;
+  if (typeof champs.bestSeller === "boolean") data.bestSeller = champs.bestSeller;
+  if (typeof champs.enAvant === "boolean") data.enAvant = champs.enAvant;
+  if (champs.prixAPartir !== undefined) data.prixAPartir = nb(champs.prixAPartir);
+  if (Array.isArray(champs.sectionsDevis)) data.sectionsDevis = champs.sectionsDevis;
+
+  // L'adresse publique. La changer casse les liens déjà partagés et ce que
+  // les moteurs ont indexé : elle ne bouge qu'à la demande, jamais en
+  // conséquence d'un renommage.
+  if (typeof champs.slug === "string") {
+    const slug = champs.slug.trim().toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    if (!slug) return { ok: false, error: "L'adresse ne peut pas être vide." };
+    data.slug = slug;
+  }
+
+  // Déplacer la fiche dans une autre gamme ; son adresse doit y rester unique.
+  if (typeof champs.gammeId === "string" && champs.gammeId) data.gammeId = champs.gammeId;
+
   if (!Object.keys(data).length) return { ok: true };
 
-  await prisma.produitVitrine.update({ where: { id: vitrineId }, data });
+  try {
+    await prisma.produitVitrine.update({ where: { id: vitrineId }, data });
+  } catch (e) {
+    if (e?.code === "P2002") {
+      return { ok: false, error: "Une autre fiche de cette gamme porte déjà cette adresse." };
+    }
+    throw e;
+  }
   rafraichir(vitrineId);
   return { ok: true };
+}
+
+/**
+ * Les rayons où la fiche paraît.
+ *
+ * La catégorie suit la sous-catégorie : une fiche rangée dans « Fauteuils de
+ * direction » appartient à « Sièges ». Laisser les deux se saisir séparément
+ * produit des fiches visibles dans un rayon dont la catégorie les ignore.
+ */
+export async function majRayons(vitrineId, sousCategorieIds = []) {
+  await exigerAdmin();
+  const sous = await prisma.sousCategorie.findMany({
+    where: { id: { in: sousCategorieIds } },
+    select: { id: true, categorieId: true },
+  });
+  const categorieIds = [...new Set(sous.map((s) => s.categorieId))];
+
+  await prisma.produitVitrine.update({
+    where: { id: vitrineId },
+    data: {
+      sousCategories: { set: sous.map((s) => ({ id: s.id })) },
+      categories: { set: categorieIds.map((id) => ({ id })) },
+      // Le rayon principal, qui porte l'adresse publique, ne peut pas désigner
+      // un rayon dont la fiche vient de sortir.
+      ...(sous.length ? {} : { sousCategoriePrincipaleId: null, categoriePrincipaleId: null }),
+    },
+  });
+  rafraichir(vitrineId);
+  revalidatePath("/", "layout");
+  return { ok: true, rayons: sous.length };
+}
+
+/** Les rayons et les gammes, pour les sélecteurs de l'onglet Identité. */
+export async function listerRangements() {
+  await exigerAdmin();
+  const [categories, gammes] = await Promise.all([
+    prisma.categorie.findMany({
+      orderBy: { ordre: "asc" },
+      select: {
+        id: true, nom: true,
+        sousCategories: { orderBy: { ordre: "asc" }, select: { id: true, nom: true } },
+      },
+    }),
+    prisma.gamme.findMany({
+      orderBy: [{ marque: { nom: "asc" } }, { nom: "asc" }],
+      select: { id: true, nom: true, marque: { select: { nom: true } } },
+    }),
+  ]);
+  return { categories, gammes };
 }
 
 // ── Choix ─────────────────────────────────────────────────────────────────
