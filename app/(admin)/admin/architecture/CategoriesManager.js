@@ -3,7 +3,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import SelecteurIcone from "./SelecteurIcone";
 import {
-  creerCategorie, renommerCategorie, changerIconeCategorie, supprimerCategorie, basculerOptionCategorie,
+  creerCategorie, renommerCategorie, changerIconeCategorie, changerIconeSousCategorie, supprimerCategorie, basculerOptionCategorie,
   creerSousCategorie, renommerSousCategorie, supprimerSousCategorie,
 } from "./actionsCategories";
 
@@ -117,6 +117,7 @@ export default function CategoriesManager({ categories }) {
             onSupprimer={() => setConfirmationSuppr({ type: "cat", id: cat.id, nom: cat.nom })}
             onAjouterSousCat={(nom) => startTransition(async () => { await creerSousCategorie(cat.id, nom); router.refresh(); })}
             onRenommerSousCat={(id, nom) => startTransition(async () => { await renommerSousCategorie(id, nom); router.refresh(); })}
+            onChangerIconeSousCat={(id, icone) => startTransition(async () => { await changerIconeSousCategorie(id, icone); router.refresh(); })}
             onSupprimerSousCat={(id, nom) => setConfirmationSuppr({ type: "sous", id, nom })}
             isPending={isPending}
           />
@@ -139,7 +140,7 @@ export default function CategoriesManager({ categories }) {
   );
 }
 
-function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone, onBasculerOption, onSupprimer, onAjouterSousCat, onRenommerSousCat, onSupprimerSousCat, isPending }) {
+function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone, onBasculerOption, onSupprimer, onAjouterSousCat, onRenommerSousCat, onChangerIconeSousCat, onSupprimerSousCat, isPending }) {
   const [edition, setEdition] = useState(false);
   const [nomEdite, setNomEdite] = useState(categorie.nom);
   const [nouvelleSousCatNom, setNouvelleSousCatNom] = useState("");
@@ -230,7 +231,7 @@ function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone
         <div style={{ borderTop: "1px solid #f2efe9", padding: "14px 16px 16px", background: "#faf8f4" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
             {categorie.sousCategories.map((sc) => (
-              <SousCategorieLigne key={sc.id} sousCategorie={sc} onRenommer={(nom) => onRenommerSousCat(sc.id, nom)} onSupprimer={() => onSupprimerSousCat(sc.id, sc.nom)} isPending={isPending} />
+              <SousCategorieLigne key={sc.id} sousCategorie={sc} onRenommer={(nom) => onRenommerSousCat(sc.id, nom)} onChangerIcone={(ic) => onChangerIconeSousCat(sc.id, ic)} onSupprimer={() => onSupprimerSousCat(sc.id, sc.nom)} isPending={isPending} />
             ))}
             {categorie.sousCategories.length === 0 && (
               <p style={{ fontSize: 13, color: "#9aa0a8", fontStyle: "italic", margin: 0 }}>Aucune sous-catégorie.</p>
@@ -251,7 +252,7 @@ function CategorieBloc({ categorie, deplie, onToggle, onRenommer, onChangerIcone
   );
 }
 
-function SousCategorieLigne({ sousCategorie, onRenommer, onSupprimer, isPending }) {
+function SousCategorieLigne({ sousCategorie, onRenommer, onChangerIcone, onSupprimer, isPending }) {
   const [edition, setEdition] = useState(false);
   const [nomEdite, setNomEdite] = useState(sousCategorie.nom);
 
@@ -262,6 +263,9 @@ function SousCategorieLigne({ sousCategorie, onRenommer, onSupprimer, isPending 
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, background: "#fff", border: "1px solid #ece8e0", borderRadius: 10, padding: "9px 12px" }}>
+      {/* Le rayon porte son icône comme la catégorie : le menu du site les
+          montre côte à côte, et un rayon sans icône y faisait un trou. */}
+      <SelecteurIcone valeur={sousCategorie.icone} onChange={onChangerIcone} taille={30} />
       {edition ? (
         <input value={nomEdite} onChange={(e) => setNomEdite(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && validerRenommage()} onBlur={validerRenommage}

@@ -40,6 +40,7 @@ export async function getCategoriesAdmin() {
       id: s.id,
       nom: s.nom,
       slug: s.slug,
+      icone: s.icone,
       nbProduits: s._count.vitrines,
     })),
   }));
@@ -221,4 +222,20 @@ export async function deplacerSousCategorie(id, versCategorieId) {
   revalidatePath("/admin/architecture");
   revalidatePath("/", "layout");
   return { ok: true, deplacees: apercu.fiches };
+}
+
+/**
+ * L'icône d'un rayon.
+ *
+ * Elle est facultative : un rayon sans la sienne retombe sur celle de sa
+ * catégorie, plutôt que de laisser un trou dans le menu du site.
+ */
+export async function changerIconeSousCategorie(id, icone) {
+  await exigerAdmin();
+  const sc = await prisma.sousCategorie.findUnique({ where: { id }, select: { id: true } });
+  if (!sc) return { ok: false, error: "Rayon introuvable." };
+  await prisma.sousCategorie.update({ where: { id }, data: { icone: icone || null } });
+  revalidatePath("/admin/architecture");
+  revalidatePath("/", "layout");
+  return { ok: true };
 }

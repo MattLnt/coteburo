@@ -231,7 +231,10 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
                             onMouseEnter={(e) => { e.currentTarget.style.background = "#fce6d6"; e.currentTarget.style.borderColor = "rgba(240,102,27,0.25)"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent"; }}>
                             <span className="bg-surface-2 group-hover:bg-white transition" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "grid", placeItems: "center" }}>
-                              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(content)}</svg>
+                              {/* L'icône du rayon, et non celle de la
+                                  catégorie répétée : les huit rayons de
+                                  Sièges portaient le même dessin. */}
+                              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(s.icone ? s : content)}</svg>
                             </span>
                             <span className="text-ink group-hover:text-orange-dark transition" style={{ fontSize: 14.5, fontWeight: 600, lineHeight: 1.25 }}>{s.nom}</span>
                           </Link>
@@ -330,8 +333,13 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
 
                 {catOuverte.sousCategories.map((s) => (
                   <Link key={s.slug} href={`/catalogue?categorie=${catOuverte.slug}&sousCategorie=${s.slug}`} onClick={fermer}
-                    className="flex items-center justify-between px-[17px] py-[15px] border-t border-line/70 active:bg-surface-2 transition">
-                    <span className="text-[14px] text-ink">{s.nom}</span>
+                    className="flex items-center gap-3 px-[17px] py-[15px] border-t border-line/70 active:bg-surface-2 transition">
+                    {/* Le rayon montre son icône, ou celle de sa catégorie
+                        quand il n'en a pas : le menu ne doit pas trouer. */}
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                      {iconeDe(s.icone ? s : catOuverte)}
+                    </svg>
+                    <span className="flex-1 text-[14px] text-ink">{s.nom}</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-ink-soft/50 shrink-0"><path d="m9 18 6-6-6-6" /></svg>
                   </Link>
                 ))}

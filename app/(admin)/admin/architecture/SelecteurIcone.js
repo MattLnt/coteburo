@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ICONES_CATEGORIE, LISTE_ICONES } from "@/lib/iconesCategories";
 
-export default function SelecteurIcone({ valeur, onChange }) {
+export default function SelecteurIcone({ valeur, onChange, taille = 40 }) {
   const [ouvert, setOuvert] = useState(false);
   const ref = useRef(null);
 
@@ -15,12 +15,12 @@ export default function SelecteurIcone({ valeur, onChange }) {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       <button type="button" onClick={() => setOuvert((v) => !v)}
-        style={{ width: 40, height: 40, borderRadius: 10, border: "1.5px solid #ece8e0", background: "#faf8f4", cursor: "pointer", display: "grid", placeItems: "center", color: "#5c616a" }}
+        style={{ width: taille, height: taille, borderRadius: taille > 34 ? 10 : 8, flexShrink: 0, border: "1.5px solid #ece8e0", background: "#faf8f4", cursor: "pointer", display: "grid", placeItems: "center", color: "#5c616a" }}
         title="Choisir une icône">
         {valeur && ICONES_CATEGORIE[valeur] ? (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{ICONES_CATEGORIE[valeur]}</svg>
+          <svg width={taille > 34 ? 20 : 16} height={taille > 34 ? 20 : 16} viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{ICONES_CATEGORIE[valeur]}</svg>
         ) : (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M9 9h.01M15 9h.01M9 15c1 1 5 1 6 0" /></svg>
+          <svg width={taille > 34 ? 18 : 15} height={taille > 34 ? 18 : 15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M9 9h.01M15 9h.01M9 15c1 1 5 1 6 0" /></svg>
         )}
       </button>
 

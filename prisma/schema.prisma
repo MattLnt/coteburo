@@ -571,6 +571,11 @@ model SousCategorie {
   nom         String
   slug        String
   ordre       Int              @default(0)
+  // Le rayon porte son icône, comme la catégorie. Le menu du site en montrait
+  // déjà une devant chaque rayon — mais celle de la catégorie, répétée : les
+  // huit rayons de Sièges affichaient le même dessin.
+  // Facultative — un rayon sans la sienne retombe sur celle de sa catégorie.
+  icone       String?
   categorieId String
   createdAt   DateTime         @default(now())
   categorie   Categorie        @relation(fields: [categorieId], references: [id], onDelete: Cascade)
