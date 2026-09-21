@@ -259,10 +259,14 @@ export default function FinitionsManager({ palettes: palettesInit, orphelines: o
           );
         })}
 
-      {/* Finitions sans palette */}
-      {blocPalette({
+      {/* Les teintes qui n'appartiennent à aucun nuancier.
+          Ce bac se remplit quand on retire un nuancier — ses teintes ne sont
+          pas détruites avec lui, elles atterrissent ici. Vide, il n'a rien à
+          montrer : il occupait le bas de l'écran et se lisait comme un
+          nuancier de plus, sans en être un. */}
+      {orphelines.length > 0 && blocPalette({
         id: "orphelines",
-        nom: "Sans palette",
+        nom: "Sans nuancier",
         marque: null,
         finitions: orphelines,
         supprimable: false,
