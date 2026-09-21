@@ -227,6 +227,15 @@ export default function FicheProduitModele({
             <h1 className="font-display text-2xl font-bold leading-tight lg:text-3xl">{produit.nom}</h1>
             <FavoriButton vitrineId={produit.id} initial={favori} connecte={connecte} variant="inline" />
           </div>
+
+          {/* La présentation du produit, sous son titre : c'est ce qu'on lit
+              avant de configurer quoi que ce soit. */}
+          {produit.descriptif && (
+            <div
+              className="prose prose-sm mt-3 max-w-none text-[13px] leading-relaxed text-ink-soft lg:text-[15px]"
+              dangerouslySetInnerHTML={{ __html: produit.descriptif }}
+            />
+          )}
         </div>
 
         {total > 0 && (
@@ -473,17 +482,6 @@ export default function FicheProduitModele({
             Cette configuration ne peut pas être commandée en ligne : {verdict.motif}.
             Demandez-nous un devis, nous la traiterons à la main.
           </p>
-        )}
-
-        {/* Le descriptif ferme la colonne, comme avant. Placé au-dessus de la
-            configuration, il repoussait les pastilles sous la ligne de
-            flottaison sur téléphone : cinquante-huit fiches publiées
-            dépassent six cents caractères ici. */}
-        {produit.descriptif && (
-          <div
-            className="prose prose-sm mt-5 max-w-none text-[13px] leading-relaxed text-ink-soft lg:mt-8 lg:text-base"
-            dangerouslySetInnerHTML={{ __html: produit.descriptif }}
-          />
         )}
 
         {libelleChoix(produit, reponses) && (
