@@ -25,6 +25,7 @@ import {
   lierAuModele, apparierNuancier, ajouterDuNuancier, reordonnerValeurs,
 } from "./actions";
 import { televerserImage, cloudinaryPret } from "@/components/dashboard/televerser";
+import Selecteur from "@/components/dashboard/Selecteur";
 
 const RENDUS = [
   ["pastilles", "Pastilles de couleur"],
@@ -174,17 +175,17 @@ function PanneauTeinte({ valeur, choix, bibliotheque, agir, onFermer, position, 
 
           {bibliotheque.length > 0 && (
             <>
-              <select
-                value={paletteId}
-                onChange={(e) => setPaletteId(e.target.value)}
-                className="mt-2 h-9 w-full rounded-lg border border-line px-2 text-[13px]"
-              >
-                {bibliotheque.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.marque ? `${p.marque} · ` : ""}{p.nom} ({p.finitions.length})
-                  </option>
-                ))}
-              </select>
+              <Selecteur
+                className="mt-2 w-full"
+                ariaLabel="Nuancier"
+                valeur={paletteId}
+                onChange={setPaletteId}
+                options={bibliotheque.map((p) => ({
+                  valeur: p.id, libelle: p.nom, groupe: p.marque || null,
+                  detail: `${p.finitions.length} teintes`,
+                  couleur: p.finitions[0]?.couleur, imageUrl: p.finitions[0]?.imageUrl,
+                }))}
+              />
               <div className="mt-2 flex max-h-[168px] flex-wrap gap-1.5 overflow-y-auto">
                 {(palette?.finitions || []).map((f) => (
                   <button
@@ -362,13 +363,13 @@ export default function EditeurFinitions({ choix, bibliotheque, agir }) {
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Affichage</span>
-          <select
-            defaultValue={choix.rendu}
-            onChange={(e) => agir(majChoix(choix.id, { rendu: e.target.value }))}
-            className="h-9 rounded-lg border border-line px-2 text-[13px]"
-          >
-            {RENDUS.map(([cle, nom]) => <option key={cle} value={cle}>{nom}</option>)}
-          </select>
+          <Selecteur
+            className="w-[240px]"
+            ariaLabel="Affichage"
+            valeur={choix.rendu}
+            onChange={(v) => agir(majChoix(choix.id, { rendu: v }))}
+            options={RENDUS.map(([cle, nom]) => ({ valeur: cle, libelle: nom }))}
+          />
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
@@ -476,17 +477,17 @@ export default function EditeurFinitions({ choix, bibliotheque, agir }) {
           ) : (
             <div className="mt-3 rounded-xl border border-line bg-surface p-4">
               <div className="flex flex-wrap items-center gap-3">
-                <select
-                  value={paletteId}
-                  onChange={(e) => { setPaletteId(e.target.value); setCochees(new Set()); }}
-                  className="h-9 rounded-lg border border-line px-2 text-[13px]"
-                >
-                  {bibliotheque.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.marque ? `${p.marque} · ` : ""}{p.nom} ({p.finitions.length})
-                    </option>
-                  ))}
-                </select>
+                <Selecteur
+                  className="w-[240px]"
+                  ariaLabel="Nuancier"
+                  valeur={paletteId}
+                  onChange={(v) => { setPaletteId(v); setCochees(new Set()); }}
+                  options={bibliotheque.map((p) => ({
+                    valeur: p.id, libelle: p.nom, groupe: p.marque || null,
+                    detail: `${p.finitions.length} teintes`,
+                    couleur: p.finitions[0]?.couleur, imageUrl: p.finitions[0]?.imageUrl,
+                  }))}
+                />
                 <button
                   type="button"
                   className={BTN}

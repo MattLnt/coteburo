@@ -31,6 +31,7 @@ import {
   decomposerComposite, choixRecouverts,
 } from "@/lib/modeleProduit";
 import { prixLigne } from "@/lib/prixCatalogue";
+import Selecteur from "@/components/dashboard/Selecteur";
 
 const euros = (n) =>
   n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
@@ -547,16 +548,19 @@ function BlocVisuel({ visuel, valeursFinition, agir }) {
       <div className="flex flex-col gap-2.5 p-3">
         <label className="flex flex-col gap-1">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-soft">Rôle</span>
-          <select
-            defaultValue={visuel.role}
-            onChange={(e) => agir(majVisuel(visuel.id, { role: e.target.value }))}
-            className="h-8 rounded-lg border border-line px-2 text-[12px]"
-          >
-            <option value="vignette">vignette</option>
-            <option value="galerie">galerie</option>
-            <option value="ambiance">ambiance</option>
-            <option value="schema">schéma</option>
-          </select>
+          <Selecteur
+            taille="sm"
+            className="w-[130px]"
+            ariaLabel="Rôle du visuel"
+            valeur={visuel.role}
+            onChange={(v) => agir(majVisuel(visuel.id, { role: v }))}
+            options={[
+              { valeur: "vignette", libelle: "Vignette" },
+              { valeur: "galerie", libelle: "Galerie" },
+              { valeur: "ambiance", libelle: "Ambiance" },
+              { valeur: "schema", libelle: "Schéma" },
+            ]}
+          />
         </label>
 
         <div className="flex flex-col gap-1">
@@ -621,15 +625,17 @@ function FormulaireChoix({ onCreer }) {
         placeholder="Nom du choix"
         className="h-9 w-[180px] rounded-lg border border-line px-2.5 text-[13px]"
       />
-      <select
-        value={nature}
-        onChange={(e) => setNature(e.target.value)}
-        className="h-9 rounded-lg border border-line px-2 text-[13px]"
-      >
-        <option value="tarifaire">tarifaire</option>
-        <option value="finition">finition</option>
-        <option value="option">option</option>
-      </select>
+      <Selecteur
+        className="w-[200px]"
+        ariaLabel="Nature du choix"
+        valeur={nature}
+        onChange={setNature}
+        options={[
+          { valeur: "tarifaire", libelle: "Tarifaire", detail: "fait le prix" },
+          { valeur: "finition", libelle: "Finition", detail: "couleur et image" },
+          { valeur: "option", libelle: "Option", detail: "article ajouté" },
+        ]}
+      />
       <button
         type="button"
         onClick={() => { if (nom.trim()) { onCreer(nom, nature); setNom(""); setOuvert(false); } }}
@@ -662,17 +668,16 @@ function FormulaireNuancier({ nuanciers, onTirer }) {
   }
   return (
     <span className="flex items-center gap-2">
-      <select
-        value={paletteId}
-        onChange={(e) => setPaletteId(e.target.value)}
-        className="h-9 rounded-lg border border-line px-2 text-[13px]"
-      >
-        {nuanciers.map((n) => (
-          <option key={n.id} value={n.id}>
-            {n.nom}{n.marque ? ` · ${n.marque}` : ""} ({n._count.finitions})
-          </option>
-        ))}
-      </select>
+      <Selecteur
+        className="w-[230px]"
+        ariaLabel="Nuancier"
+        valeur={paletteId}
+        onChange={setPaletteId}
+        options={nuanciers.map((n) => ({
+          valeur: n.id, libelle: n.nom, groupe: n.marque || null,
+          detail: `${n._count.finitions} teintes`,
+        }))}
+      />
       <input
         value={nom}
         onChange={(e) => setNom(e.target.value)}

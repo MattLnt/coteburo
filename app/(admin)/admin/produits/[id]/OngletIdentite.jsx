@@ -15,6 +15,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { majIdentite, majRayons } from "./actions";
+import Selecteur from "@/components/dashboard/Selecteur";
 
 const BTN = "h-9 rounded-lg border border-line px-3 text-[13px] hover:border-orange hover:text-orange-dark disabled:opacity-40";
 const CARTE = "flex flex-col gap-5 rounded-2xl border border-line bg-surface p-6";
@@ -111,17 +112,15 @@ export default function OngletIdentite({ produit, rangements, agir }) {
         <div className="flex flex-wrap items-end gap-5 border-t border-line pt-5">
           <label className="flex flex-col gap-2">
             <span className={ETIQ}>Gamme</span>
-            <select
-              defaultValue={produit.gamme?.id || ""}
-              onChange={(e) => agir(majIdentite(produit.id, { gammeId: e.target.value }))}
-              className="h-9 min-w-[260px] rounded-lg border border-line px-2 text-[13px]"
-            >
-              {gammes.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.marque?.nom ? `${g.marque.nom} · ` : ""}{g.nom}
-                </option>
-              ))}
-            </select>
+            <Selecteur
+              className="w-[280px]"
+              ariaLabel="Gamme"
+              valeur={produit.gamme?.id || ""}
+              onChange={(v) => agir(majIdentite(produit.id, { gammeId: v }))}
+              options={gammes.map((g) => ({
+                valeur: g.id, libelle: g.nom, groupe: g.marque?.nom || null,
+              }))}
+            />
           </label>
 
           <label className="flex flex-col gap-2">

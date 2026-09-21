@@ -24,6 +24,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toggleProduitPublie } from "./actions";
+import Selecteur from "@/components/dashboard/Selecteur";
 
 const euros = (n) => (n == null ? "—" : Math.round(n).toLocaleString("fr-FR") + " €");
 const SANTE = ["visuel", "prix", "choix", "finition", "rayon"];
@@ -101,34 +102,35 @@ export default function ProduitsListe({
           className="h-9 w-[280px] rounded-lg border border-line bg-surface px-3 text-[13px]"
         />
 
-        <select
-          value={filtres.marque}
-          onChange={(e) => naviguer({ marque: e.target.value })}
-          className={`h-9 rounded-lg border px-2.5 text-[13px] ${filtres.marque ? "border-orange bg-orange-tint font-semibold text-orange-dark" : "border-line bg-surface"}`}
-        >
-          <option value="">Toutes les marques</option>
-          {marques.map((m) => <option key={m.slug} value={m.slug}>{m.nom}</option>)}
-        </select>
+        <Selecteur
+          className="w-[180px]"
+          ariaLabel="Marque"
+          valeur={filtres.marque}
+          actif={!!filtres.marque}
+          onChange={(v) => naviguer({ marque: v })}
+          options={[{ valeur: "", libelle: "Toutes les marques" },
+            ...marques.map((m) => ({ valeur: m.slug, libelle: m.nom }))]}
+        />
 
-        <select
-          value={filtres.gamme}
-          onChange={(e) => naviguer({ gamme: e.target.value })}
-          className={`h-9 max-w-[200px] rounded-lg border px-2.5 text-[13px] ${filtres.gamme ? "border-orange bg-orange-tint font-semibold text-orange-dark" : "border-line bg-surface"}`}
-        >
-          <option value="">Toutes les gammes</option>
-          {gammes.map((g) => <option key={g.id} value={g.slug}>{g.nom}</option>)}
-        </select>
+        <Selecteur
+          className="w-[200px]"
+          ariaLabel="Gamme"
+          valeur={filtres.gamme}
+          actif={!!filtres.gamme}
+          onChange={(v) => naviguer({ gamme: v })}
+          options={[{ valeur: "", libelle: "Toutes les gammes" },
+            ...gammes.map((g) => ({ valeur: g.slug, libelle: g.nom }))]}
+        />
 
-        <select
-          value={filtres.rayon}
-          onChange={(e) => naviguer({ rayon: e.target.value })}
-          className={`h-9 max-w-[240px] rounded-lg border px-2.5 text-[13px] ${filtres.rayon ? "border-orange bg-orange-tint font-semibold text-orange-dark" : "border-line bg-surface"}`}
-        >
-          <option value="">Tous les rayons</option>
-          {rayons.map((r) => (
-            <option key={r.slug} value={r.slug}>{r.categorie?.nom} · {r.nom}</option>
-          ))}
-        </select>
+        <Selecteur
+          className="w-[240px]"
+          ariaLabel="Rayon"
+          valeur={filtres.rayon}
+          actif={!!filtres.rayon}
+          onChange={(v) => naviguer({ rayon: v })}
+          options={[{ valeur: "", libelle: "Tous les rayons" },
+            ...rayons.map((r) => ({ valeur: r.slug, libelle: r.nom, groupe: r.categorie?.nom }))]}
+        />
       </div>
 
       {/* ── Vues enregistrées ──────────────────────────────────────── */}

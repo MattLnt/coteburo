@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { analyserImport, lancerImport } from "./actions";
+import Selecteur from "@/components/dashboard/Selecteur";
 
 const champ = {
   width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #e8e3da",
@@ -175,12 +176,17 @@ export default function ImportForm({ contexte }) {
             {modeGamme === "existante" ? (
               <div>
                 <label style={mini}>Choisir la gamme</label>
-                <select value={gammeId} onChange={(e) => { setGammeId(e.target.value); setApercu(null); }} style={champ}>
-                  <option value="">— Sélectionner —</option>
-                  {contexte.gammes.map((g) => (
-                    <option key={g.id} value={g.id}>{g.nom}{g.marque ? ` · ${g.marque}` : ""}</option>
-                  ))}
-                </select>
+                <Selecteur
+                  className="w-full"
+                  ariaLabel="Gamme"
+                  placeholder="— Sélectionner —"
+                  valeur={gammeId}
+                  onChange={(v) => { setGammeId(v); setApercu(null); }}
+                  options={[{ valeur: "", libelle: "— Sélectionner —" },
+                    ...contexte.gammes.map((g) => ({
+                      valeur: g.id, libelle: g.nom, groupe: g.marque || null,
+                    }))]}
+                />
               </div>
             ) : (
               <div>

@@ -18,6 +18,7 @@
 
 import { useState } from "react";
 import { croiserGroupes } from "./actions";
+import Selecteur from "@/components/dashboard/Selecteur";
 
 const BTN = "h-9 rounded-lg border border-line px-3 text-[13px] hover:border-orange hover:text-orange-dark disabled:opacity-40";
 
@@ -55,16 +56,30 @@ export default function CreerQuestionTarifaire({ produit, finitions, agir }) {
       <div className="mt-3 flex flex-wrap items-end gap-3">
         <label className="flex flex-col gap-1.5">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Première pièce</span>
-          <select value={a} onChange={(e) => setA(e.target.value)} className="h-9 rounded-lg border border-line px-2 text-[13px]">
-            {finitions.map((g) => <option key={g.id} value={g.id}>{g.nom} ({g.valeurs.length})</option>)}
-          </select>
+          <Selecteur
+            className="w-[220px]"
+            ariaLabel="Première pièce"
+            valeur={a}
+            onChange={setA}
+            options={finitions.map((g) => ({
+              valeur: g.id, libelle: g.nom, detail: `${g.valeurs.length} teintes`,
+              couleur: g.valeurs[0]?.couleur, imageUrl: g.valeurs[0]?.imageUrl,
+            }))}
+          />
         </label>
         <span className="pb-2 text-ink-soft">×</span>
         <label className="flex flex-col gap-1.5">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Seconde pièce</span>
-          <select value={b} onChange={(e) => setB(e.target.value)} className="h-9 rounded-lg border border-line px-2 text-[13px]">
-            {finitions.map((g) => <option key={g.id} value={g.id}>{g.nom} ({g.valeurs.length})</option>)}
-          </select>
+          <Selecteur
+            className="w-[220px]"
+            ariaLabel="Seconde pièce"
+            valeur={b}
+            onChange={setB}
+            options={finitions.map((g) => ({
+              valeur: g.id, libelle: g.nom, detail: `${g.valeurs.length} teintes`,
+              couleur: g.valeurs[0]?.couleur, imageUrl: g.valeurs[0]?.imageUrl,
+            }))}
+          />
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Nom de la question</span>
