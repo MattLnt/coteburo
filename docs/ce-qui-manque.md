@@ -60,12 +60,23 @@ la bibliothèque de rendu : elles s'affichent en aplat bleu uniforme.
 **À demander à OfficePro : le nuancier, au format du Sokoa_Nuancier_2026.pdf.**
 `prisma/pastilles-officepro.mjs` le traitera tel quel.
 
-### b. Buronomic — 3 coloris, 6 finitions
+### b. Buronomic — 3 coloris, 6 finitions  *(et deux teintes à trancher)*
 
 `Chêne Nebraska` ×3 · `ZINC METAL` ×2 · `AQUA`
 
 Trop peu pour déranger le fournisseur : à saisir à la main dans l'onglet
 Choix, le sélecteur de couleur est en place.
+
+Deux libellés portent en outre **deux couleurs différentes** selon les fiches,
+et ont été laissés hors nuancier faute de savoir laquelle est la bonne :
+
+| libellé | couleurs en usage |
+|---|---|
+| `Sauge` | `#9aad8f` ×8 · `#4a6350` ×1 |
+| `Ombre` | `#6b655e` ×7 · `#3d3d3d` ×1 |
+
+C est une erreur de saisie ou deux teintes distinctes. À regarder avant de
+trancher ; une couleur qui n est pas unanime ne se factorise pas.
 
 ### c. 57 finitions qu'aucun nuancier ne réglera
 
@@ -109,7 +120,14 @@ n'a donc pas lieu d'être.
   31 rayons).
 - **Les descriptifs** : 0 fiche sans descriptif ; les 555 portent leurs
   sections techniques.
-- **La bibliothèque de finitions** : 219 teintes, toutes avec pastille.
+- **La bibliothèque de finitions** : 268 teintes, toutes avec pastille.
+  2 008 finitions du catalogue sur 2 135 y sont liées — corriger une teinte
+  les corrige toutes.
+- **Les nuanciers Buronomic** : ses teintes de fond n avaient aucun nuancier.
+  Chêne fil, Nebraska, Yukon et Hêtre portaient chacun sa copie de la couleur,
+  six cent trente-six fois. `prisma/nuancier-buronomic.mjs` les a factorisées
+  en quatre nuanciers — Bois, Métal et plastique, Tissus, Teintes unies — sans
+  rien inventer : les couleurs étaient déjà là, dispersées.
 - **Les nuanciers** : 7 employés, 8 dormants (156 teintes) — Bouclé F.R.,
   Grain, Tissu B, B+, C, D, E, H. Soit ils servent à des fiches pas encore
   rattachées, soit ils sont à retirer. Personne ne supprime sans validation.
