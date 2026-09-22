@@ -214,6 +214,23 @@ async function main() {
       const modele = v.choix.find((c) => /mod[èe]le|r[ée]f[ée]rence/i.test(c.nom));
       if (!modele) { refuses.push(`${v.nom} — pas de question « Modèle »`); continue; }
 
+      // Les libellés de catégorie de tissu, relevés AVANT les combinaisons :
+      // quand on en renomme un, les combinaisons doivent suivre. Le raccord
+      // entre une valeur tarifaire et sa combinaison se fait par la chaîne de
+      // caractères, et par elle seule ; renommer d'un côté seulement laisse
+      // une réponse proposée à laquelle rien ne répond, donc invisible — et
+      // rien ne casse pour le dire. C'est ce qui est arrivé aux cinq fiches
+      // Ergo, réparées par prisma/reparer-libelles-combinaisons.mjs.
+      const table = f.libelles || null;
+      const axeTissu = table ? v.choix.find((c) => c.valeurs.some((x) => table[x.libelle])) : null;
+      const renomme = new Map();
+      if (axeTissu) {
+        for (const x of axeTissu.valeurs) {
+          const t = table[x.libelle];
+          if (t?.nom && t.nom !== x.libelle) renomme.set(x.libelle, t.nom);
+        }
+      }
+
       const combos = [];
       let ennui = null;
       for (const k of v.combinaisons) {
@@ -223,6 +240,9 @@ async function main() {
         if (axes.length !== f.axes(m).length) { ennui = `référence « ${k.referenceBase} » : un code sans nom`; break; }
         const { [modele.cle]: _, ...reste } = k.valeurs || {};
         const valeurs = { ...reste };
+        if (axeTissu && renomme.has(valeurs[axeTissu.cle])) {
+          valeurs[axeTissu.cle] = renomme.get(valeurs[axeTissu.cle]);
+        }
         for (const a of axes) valeurs[a.cle] = a.valeur;
         combos.push({ id: k.id, valeurs, empreinte: empreinteDe(valeurs), axes });
       }
@@ -248,9 +268,6 @@ async function main() {
       }
       if (!aCreer.length) continue;
 
-      // Les libellés de catégorie de tissu.
-      const table = f.libelles || null;
-      const axeTissu = table ? v.choix.find((c) => c.valeurs.some((x) => table[x.libelle])) : null;
       const libelles = axeTissu
         ? axeTissu.valeurs
             .map((x) => ({ id: x.id, avant: x.libelle, ordre: x.ordre, ...(table[x.libelle] || {}) }))

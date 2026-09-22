@@ -59,6 +59,7 @@
 //   reste vide, et aucune référence plausible et fausse ne part à l'usine.
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
+import { empreinteDe } from "../lib/empreinteCombinaison.js";
 
 const prisma = new PrismaClient();
 const APPLIQUER = process.argv.includes("--appliquer");
@@ -223,7 +224,36 @@ async function main() {
       for (const f of tissusDe(r.regle, nuanciers)) tissus.push({ f, paletteId: p.id });
     }
 
-    plans.push({ v, categorie, regles, tissus });
+    // Renommer un libellé TARIFAIRE sans réécrire ce que les combinaisons
+    // stockent les décroche : le raccord se fait par la chaîne de caractères,
+    // et par elle seule. La valeur resterait proposée sans qu'aucune
+    // combinaison ne lui réponde, donc disparaîtrait de l'écran — sans que
+    // rien ne casse. Voir prisma/reparer-libelles-combinaisons.mjs.
+    const couples = new Map();
+    for (const r of regles) {
+      if (r.regle.nom && r.regle.nom !== r.valeur.libelle) couples.set(r.valeur.libelle, r.regle.nom);
+    }
+    let combos = [];
+    if (couples.size) {
+      const ks = await prisma.combinaison.findMany({
+        where: { vitrineId: v.id }, select: { id: true, valeurs: true },
+      });
+      const finales = new Map();
+      for (const k of ks) {
+        const val = (k.valeurs || {})[categorie.cle];
+        const apres = couples.get(val);
+        const valeurs = apres == null ? (k.valeurs || {}) : { ...(k.valeurs || {}), [categorie.cle]: apres };
+        const empreinte = empreinteDe(valeurs);
+        finales.set(k.id, empreinte);
+        if (apres != null) combos.push({ id: k.id, valeurs, empreinte });
+      }
+      if (new Set(finales.values()).size !== finales.size) {
+        refuses.push(`${v.nom} — renommer un libellé ferait deux combinaisons identiques`);
+        continue;
+      }
+    }
+
+    plans.push({ v, categorie, regles, tissus, combos });
   }
 
   titre(`${plans.length} FICHES BRANCHÉES`);
@@ -289,7 +319,15 @@ async function main() {
       });
     }
 
-    // 2. La question du revêtement, après tout le reste.
+    // 2. Les combinaisons suivent le libellé renommé, sans quoi la valeur
+    //    serait proposée sans que rien ne lui réponde.
+    for (const k of p.combos) {
+      await prisma.combinaison.update({
+        where: { id: k.id }, data: { valeurs: k.valeurs, empreinte: k.empreinte },
+      });
+    }
+
+    // 3. La question du revêtement, après tout le reste.
     await prisma.choix.create({
       data: {
         vitrineId: p.v.id, cle: CLE, nom: NOM,

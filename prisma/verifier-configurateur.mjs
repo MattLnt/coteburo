@@ -96,6 +96,43 @@ async function main() {
     }
   }
 
+  // ── Ce qu'une configuration réussie ne prouve pas ───────────────────
+  //
+  // Une fiche peut se configurer et se commander tout en ayant des réponses
+  // mortes. Renommer une valeur tarifaire sans réécrire ce que les
+  // combinaisons stockent les décroche l'une de l'autre : le libellé est
+  // proposé, aucune combinaison ne lui répond, la valeur disparaît de
+  // l'écran — et le parcours marche toujours par les autres.
+  //
+  // C'est arrivé aux cinq fiches Wi-Max Ergo, dont deux catégories de tissu
+  // sur quatre étaient devenues inatteignables sans que rien ne le dise.
+  const decroches = [];
+  for (const v of vitrines) {
+    for (const c of v.choix || []) {
+      if (c.nature !== "tarifaire") continue;
+      const declares = new Set((c.valeurs || []).map((x) => x.libelle));
+      const stockes = new Set((v.combinaisons || [])
+        .map((k) => k.valeurs?.[c.cle]).filter((x) => x != null && x !== ""));
+      if (!stockes.size) continue;                 // choix hors grille : pas le sujet
+      const muettes = [...declares].filter((l) => !stockes.has(l));
+      const orphelines = [...stockes].filter((l) => !declares.has(l));
+      if (muettes.length || orphelines.length) decroches.push({ v, c, muettes, orphelines });
+    }
+  }
+
+  titre(`${decroches.length} QUESTIONS DÉCROCHÉES DE LEURS COMBINAISONS`);
+  if (!decroches.length) {
+    console.log("\n   Aucune. Chaque réponse proposée mène à une combinaison, et l'inverse.");
+  } else {
+    console.log("");
+    for (const d of decroches.slice(0, BAVARD ? 200 : 10)) {
+      console.log(`   ${d.v.gamme?.nom} · ${d.v.nom.slice(0, 46)} — « ${d.c.nom} »`);
+      if (d.muettes.length) console.log(`      proposées sans combinaison : ${d.muettes.join(" · ").slice(0, 96)}`);
+      if (d.orphelines.length) console.log(`      stockées sans libellé     : ${d.orphelines.join(" · ").slice(0, 96)}`);
+    }
+    if (!BAVARD && decroches.length > 10) console.log(`   … et ${decroches.length - 10} autres (--bavard pour tout voir)`);
+  }
+
   titre("CE QUI A ÉTÉ JOUÉ");
   console.log(`\n   ${vitrines.length} fiches · ${jouees} configurations menées jusqu'au bout`);
   console.log(`   ${sansPrix} sans prix au tarif — normal, ce sont les fiches sur devis`);
