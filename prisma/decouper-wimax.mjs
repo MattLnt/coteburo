@@ -313,6 +313,21 @@ async function main() {
     }
     await prisma.choix.delete({ where: { id: p.modele.id } });
 
+    // Les nouveaux axes prennent la tête, et les survivants reculent d'autant.
+    // Deux questions au même rang s'afficheraient dans un ordre laissé à la
+    // base — c'est arrivé à trente et une fiches. Et la tête est leur place :
+    // le mécanisme et les accotoirs disent ce que le siège EST, la catégorie
+    // de tissu ce qu'il COÛTE, et le tarif lui-même les range ainsi, les
+    // premiers en lignes et la seconde en colonnes.
+    const survivants = p.v.choix
+      .filter((c) => c.id !== p.modele.id)
+      .sort((a, b) => a.ordre - b.ordre);
+    for (let i = 0; i < survivants.length; i++) {
+      await prisma.choix.update({
+        where: { id: survivants[i].id }, data: { ordre: p.aCreer.length + i },
+      });
+    }
+
     let rang = 0;
     for (const a of p.aCreer) {
       await prisma.choix.create({
@@ -336,7 +351,7 @@ async function main() {
         data: {
           vitrineId: p.v.id, cle: "resille", nom: "Coloris de la résille",
           nature: "finition", rendu: "pastilles", origine: "tarif",
-          ordre: Math.max(rang, ...p.v.choix.map((x) => x.ordre)) + 1,
+          ordre: p.aCreer.length + survivants.length,
           valeurs: { create: RESILLE.map((c, i) => ({ libelle: c.libelle, couleur: c.couleur, ordre: i, suffixeReference: "" })) },
         },
       });
