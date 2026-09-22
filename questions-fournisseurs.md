@@ -386,3 +386,119 @@ bleu uniforme. Il n'y a rien à en tirer, et surtout rien à en deviner.
 
 `Chêne Nebraska` ×3, `ZINC METAL` ×2, `AQUA` : trop peu pour déranger le
 fournisseur, à saisir à la main dans l'onglet Choix.
+
+---
+
+## 11. Sokoa — quel code de coloris complète la référence du giratoire Adio ?
+
+Pages 68 et 70, la colonne du siège giratoire écrit sa référence ainsi :
+
+```
+AOJ0/1  + coloris**
+AOJ0/7  + coloris**
+```
+
+Les cinq accords sont nommés juste dessous, chacun avec son code : page 68 en
+chiffres — « Noir / Noir (1), Gris / Blanc (2), Vert foncé / clair (5),
+Bleu foncé / clair (4) et Taupe foncé / clair (7) » — et page 70 en lettres,
+« (N), (B), (V), (L), (T) ».
+
+Pour les piétements fixes, ce code est **dans** la référence : `AOA0/11` se lit
+« quatre pieds, sans accotoirs, noir / noir ». Pour le giratoire, les deux
+caractères après la barre servent déjà à autre chose : `/1` = base et roulettes
+noires, `/7` = base et roulettes blanches, à quarante euros d'écart.
+
+**La question :** comment s'écrit la référence complète d'un giratoire Adio ?
+`AOJ0/1` suivi du code de coloris — `AOJ0/11` — ou un troisième groupe
+ailleurs dans la référence ?
+
+En attendant, la fiche `Siège giratoire - Adio` pose les cinq accords comme une
+question de finition sans jeton de référence : le client choisit sa teinte, et
+le coloris est reporté en clair sur la commande.
+
+---
+
+## 12. Sokoa — une coquille dans la référence du giratoire Adela
+
+Page 102, colonne « Siège giratoire, assise et dos tapissés » :
+
+```
+ALJ1/5N   373 €
+ALJO/5N   331 €     ← un O, pas un zéro
+```
+
+Page 105 écrit bien `ALJ0/5` pour le même siège en version polypropylène, et
+l'écart de quarante-deux euros entre les deux lignes est celui des accotoirs
+partout ailleurs dans la gamme. C'est donc `ALJ0/5N`.
+
+**La question :** peut-on commander sur `ALJ0/5N`, ou le O est-il significatif ?
+
+En attendant, la référence reste imprimée telle qu'elle figure au tarif :
+réécrire la référence d'un fournisseur ne nous appartient pas.
+
+---
+
+## 13. Sokoa — trois modèles rangés dans la gamme Wi-Max
+
+La gamme Wi-Max porte vingt fiches. Cinq d'entre elles ne sont pas des Wi-Max :
+
+```
+AIR/M Fauteuil haut dossier                          WI36F50 · WI36F58 · WI36F5P
+AIR/M Fauteuil haut dossier résille + têtière        WI37F50 · WI37F58 · WI37F5P
+ELO / Fauteuil haut dossier                          WE36F50 · WE36F58 · WE36F5P
+ELO / Fauteuil haut dossier + têtière                WE37F50 · WE37F58 · WE37F5P
+JOF / Fauteuil moyen dossier + têtière               WE34F50 · WE34F58 · WE34F5P
+```
+
+Leurs références commencent par `WI` et `WE`, non par les troncs Wi-Max
+(`WH`, `WM`, `WW`, `WX`, `WL`, `WR`), et leurs intitulés portent le nom du
+modèle en tête : « AIR/M », « ELO / », « JOF / ». Les prix, eux, ne tranchent
+pas : 537 à 1 094 € pour ces cinq fiches, 395 à 893 € pour les quinze autres.
+C'est le préfixe de référence et l'intitulé qui les distinguent, pas le tarif.
+
+**La question :** AIR/M, ELO et JOF sont-ils trois gammes distinctes, ou des
+versions d'une même collection ? Et `WE34`, `WE36`, `WE37` — le dernier chiffre
+désigne-t-il la hauteur de dossier, comme chez Wi-Max ?
+
+C'est ce qui bloque le regroupement de Wi-Max : on ne regroupe pas des fiches
+avant de savoir lesquelles sont du même produit.
+
+---
+
+## 14. Sokoa — que distingue `W_06` de `W_66` chez Wi-Max ?
+
+Chaque fiche Wi-Max porte deux troncs de référence que rien dans son intitulé
+ne sépare :
+
+```
+Siège haut dossier, base nylon noir, roulettes ø50 sol moquette
+    WM06/10 · WM06/15 · WM06/1N
+    WM66/10 · WM66/15 · WM66/1N
+```
+
+Le deuxième chiffre se lit : `5` = moyen dossier, `6` = haut dossier,
+`7` = haut dossier avec têtière. Le **premier** — 0 ou 6 — varie sans que la
+fiche ni la section « Mécanisme » ne l'expliquent.
+
+**La question :** que change le premier chiffre ? Chez Eman, deux troncs
+voisins désignaient deux mécanismes, nommés en bas de page ; ici rien n'est
+écrit.
+
+---
+
+## 15. Sokoa — « gris roche » ou « gris perle » chez Klik ?
+
+Page 84, la version 100 % recyclée de la Klik est annoncée en deux teintes :
+
+> KLIK version coque PP 100 % recyclé **gris roche** et **lave**
+
+Les références sont `KLA0/AL` et `KLA0/AP` pour la chaise, `KLH0/AL`,
+`KLH0/AP`, `KLM0/AL` et `KLM0/AP` pour les tabourets. Le `L` de `AL` va bien
+avec « lave ». Le `P` de `AP` irait avec « perle » — et page 205, le bloc KLIK
+nomme justement **Gris perle** et **Gris lave**, sans jamais écrire « roche ».
+
+**La question :** « gris roche » et « gris perle » sont-ils la même teinte ?
+Et `AL` / `AP` désignent-ils bien lave et perle ?
+
+En attendant, les deux fiches « polypropylène 100 % recyclé » restent telles
+quelles, hors du regroupement de la gamme.

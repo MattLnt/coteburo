@@ -152,3 +152,59 @@ n'a donc pas lieu d'être.
   rattachées, soit ils sont à retirer. Personne ne supprime sans validation.
 - **Runner et les 7 teintes de Tissu C sont les mêmes tissus** (codes `R4E`,
   `R4G`…). Les deux palettes les portent ; une seule suffirait sans doute.
+
+---
+
+## 6. Le regroupement des gammes — ce qui a été fait, ce qui bloque
+
+Le tarif Sokoa donne une référence par combinaison ; l'import a fait une fiche
+par ligne. Quatre gammes ont été regroupées sur le modèle à choix :
+
+| gamme | avant | après | fiches vides récupérées |
+|---|---|---|---|
+| Eman | 27 | 2 | 12 |
+| Adio | 20 | 3 | 3 |
+| Adela | 24 | 4 | 12 |
+| Klik | 29 | 11 | 6 |
+
+Chaque script vit dans `prisma/regrouper-<gamme>.mjs`, refuse d'écrire si deux
+variantes aboutissent aux mêmes réponses, et dépublie les fiches remplacées
+sans jamais les détruire.
+
+### L'outil qui a tout débloqué
+
+`prisma/lire-tableau-catalogue.mjs` relit une page de tarif **par
+coordonnées**. Le texte brut d'un PDF à six colonnes mélange les colonnes :
+page 73, `LCJ0/1` apparaît deux fois, à 224 € et à 232 €, sans qu'on sache
+laquelle est « sur patins ». Lue par position, la page répond elle-même :
+`/000` = roulettes, `/010` = patins. C'est ainsi que les codes de coloris
+d'Adio, d'Adela et de Klik ont été établis — jamais par un ordre d'apparition.
+
+### Loria — à réimporter, pas à regrouper
+
+Les vingt-trois fiches Loria portent des affectations fausses, venues de
+l'import : deux références contiennent un prix (`LCBB/B + coloris* 414`), une
+fiche mélange trois lignes de tarif (`LCHC`, `LOHB` et `LOHC` ensemble), et un
+doublon « NEW » reprend les mêmes références qu'une autre fiche.
+
+Regrouper par-dessus propagerait les erreurs. Les pages 72 à 75 se relisent
+maintenant proprement par coordonnées : **la bonne réparation est un
+réimport de ce bloc**, pas un regroupement.
+
+À noter aussi : page 74, la chaise 4 pieds PP entièrement tapissée est
+imprimée `LCBB/A`, la même référence que la version à placet — alors que le
+fauteuil correspondant s'écrit `LOC1/A`. C'est vraisemblablement `LCCB/A`.
+
+### ALTO — rien à regrouper
+
+Les dix-huit fiches ALTO sont dix-huit produits distincts : bureaux, caissons,
+goulottes, séparateurs, tablettes. Elles portent déjà leurs vraies questions
+(largeur, profondeur, plateau, piétement). Les treize sans photo ont besoin de
+photos, pas d'un regroupement.
+
+### Klik — six variantes que l'import n'a pas prises
+
+La fiche « Tabouret 4 pieds métal » ne porte que quatre variantes. Page 84, les
+références `KLHB` et `KLMB` ont chacune quatre prix — un par catégorie de
+tissu — dont l'import n'a retenu que le premier. Six prix manquent donc à
+cette fiche. À reprendre avec le réimport par coordonnées.
