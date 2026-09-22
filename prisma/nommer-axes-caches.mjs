@@ -68,6 +68,40 @@ const TABLES = [
     },
     ordre: ["À droite", "À gauche"],
   },
+  // ── Deux gammes où l'axe caché est le MÉCANISME, et où il déplace le
+  //    prix : chez Alaia, 269 € en contact permanent contre 324 € en synchro
+  //    automatique. Ce sont donc des choix tarifaires, pas des finitions.
+  {
+    gamme: "Alaia by Sokoa", page: 52,
+    cle: "mecanisme", nom: "Mécanisme", nature: "tarifaire",
+    // IA = dossier tapissé (p. 52), IR = dossier résille (p. 53). Le chiffre
+    // veut dire la même chose des deux côtés ; le résille ajoute seulement la
+    // translation d'assise, que le tarif abrège « + TA » et facture +28 € —
+    // le prix exact de l'option « Translation assise » de la page 48.
+    racine: /^I[AR]\d/,
+    depuisReference: (ref) => ({
+      3: "Contact permanent",
+      5: "Synchro",
+      7: "Synchro + translation d'assise",
+      6: "Synchro automatique",
+      8: "Synchro automatique + translation d'assise",
+    })[ref[2]] || null,
+    ordre: [
+      "Contact permanent",
+      "Synchro", "Synchro + translation d'assise",
+      "Synchro automatique", "Synchro automatique + translation d'assise",
+    ],
+  },
+  {
+    gamme: "Tertio", page: 48,
+    cle: "mecanisme", nom: "Mécanisme", nature: "tarifaire",
+    racine: /^R[TRZ]\d/,
+    depuisReference: (ref) => ({
+      3: "Contact permanent", 4: "Contact permanent Plus",
+      5: "Synchrone", 7: "Synchrone + translation d'assise",
+    })[ref[2]] || null,
+    ordre: ["Contact permanent", "Contact permanent Plus", "Synchrone", "Synchrone + translation d'assise"],
+  },
 ];
 
 /** Le code d'une référence, pour une table donnée. */
@@ -168,7 +202,8 @@ async function main() {
     await prisma.choix.create({
       data: {
         vitrineId: p.vitrine.id, cle: p.table.cle, nom: p.table.nom,
-        nature: "finition", rendu: p.table.couleurs ? "pastilles" : "boutons",
+        nature: p.table.nature || "finition",
+        rendu: p.table.couleurs ? "pastilles" : "boutons",
         ordre: 1, origine: "tarif",
         valeurs: {
           create: ordonnes.map((libelle, i) => ({
