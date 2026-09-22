@@ -240,7 +240,7 @@ export default function TriVisuels({ gammes, racine }) {
                             src={`/admin/visuels/vignette?f=${encodeURIComponent(img.rel)}`}
                             alt=""
                             loading="lazy"
-                            className="h-[110px] w-full bg-surface-2 object-contain"
+                            className="h-[110px] w-full bg-white object-contain"
                           />
                           <span className="block truncate px-1.5 py-1 text-left text-[10.5px] text-ink-soft">
                             {img.nom}
@@ -288,7 +288,7 @@ export default function TriVisuels({ gammes, racine }) {
                       onClick={() => versFiche(f)}
                       className="flex min-w-0 flex-1 items-center gap-2 text-left disabled:cursor-not-allowed"
                     >
-                      <span className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-line bg-surface-2">
+                      <span className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-line bg-white">
                         {f.vignette
                           ? <img src={f.vignette} alt="" className="h-full w-full object-cover" />
                           : null}
@@ -325,7 +325,7 @@ export default function TriVisuels({ gammes, racine }) {
             <img
               src={`/admin/visuels/vignette?t=600&f=${encodeURIComponent(zoom.rel)}`}
               alt=""
-              className="max-h-[75vh] object-contain"
+              className="max-h-[75vh] bg-white object-contain"
             />
             <div className="flex items-center gap-3 px-2 py-2">
               <span className="min-w-0 flex-1 truncate text-[12.5px] text-ink-soft">{zoom.nom}</span>

@@ -27,6 +27,7 @@ import GenererVariantes from "./GenererVariantes";
 import OngletIdentite from "./OngletIdentite";
 import OngletDescriptif from "./OngletDescriptif";
 import { AjouterVisuels } from "./AjouterVisuels";
+import { surFondBlanc } from "@/lib/imageProduit";
 import {
   etapesDe, choixTarifaires, choixFinition, assemblerReference,
   decomposerComposite, choixRecouverts,
@@ -542,9 +543,11 @@ function BlocVisuel({ visuel, valeursFinition, agir }) {
 
   return (
     <div className="w-[230px] overflow-hidden rounded-xl border border-line bg-surface">
-      <div className="flex h-[140px] items-center justify-center bg-surface-2/50">
+      {/* Fond blanc, comme en boutique : beaucoup de visuels fournisseurs sont
+          des PNG détourés, et l'aperçu doit montrer ce que le client verra. */}
+      <div className="flex h-[140px] items-center justify-center bg-white">
         {visuel.url ? (
-          <img src={visuel.url} alt="" className="h-full w-full object-contain" />
+          <img src={surFondBlanc(visuel.url, 460)} alt="" className="h-full w-full object-contain" />
         ) : (
           <span className="text-[12px] text-ink-soft">sans image</span>
         )}
