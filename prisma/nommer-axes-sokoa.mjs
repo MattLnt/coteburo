@@ -86,6 +86,18 @@ const TABLES = [
     ordre: ["Noire", "Blanche", "Blanche, patins noirs"],
   },
   {
+    gamme: "Sièges Hauts", page: 61, cle: "mecanisme", nom: "Mécanisme",
+    // L'axe est aux deux caractères qui suivent le préfixe de modèle :
+    // RT32/20 contre RT52/20. Le /20 ou /00 dit le lift, et ne varie pas.
+    code: (ref) => ref.slice(2, 4),
+    codes: {
+      32: { mot: "Contact permanent", preuve: "Contact permanent" },
+      52: { mot: "Synchro", preuve: "Synchro" },
+      62: { mot: "Synchro automatique", preuve: "Synchro automatique" },
+    },
+    ordre: ["Contact permanent", "Synchro", "Synchro automatique"],
+  },
+  {
     gamme: "Ildo", page: 120, cle: "pietement", nom: "Piétement",
     codes: {
       3: { mot: "Giratoire pyramidal noir", preuve: "Base giratoire pyramidale noire" },
@@ -100,8 +112,16 @@ const TABLES = [
   },
 ];
 
-/** Le suffixe d'une référence Sokoa : ce qui suit la barre. */
+/**
+ * Le code que porte une référence Sokoa.
+ *
+ * Par défaut c'est le suffixe, ce qui suit la barre. Mais tout Sokoa ne code
+ * pas au même endroit : chez les Sièges Hauts l'axe est AVANT la barre —
+ * RT32/20 contre RT52/20 — et le suffixe, lui, dit la hauteur de lift, qui
+ * ne varie pas dans une fiche. Chaque table donne donc son extracteur.
+ */
 const suffixeDe = (ref) => /\/([A-Z0-9]{1,2})$/.exec(String(ref || "").trim())?.[1] ?? null;
+const codeDe = (table, ref) => (table.code ? table.code(String(ref || "").trim()) : suffixeDe(ref));
 
 async function textePage(doc, n) {
   const t = await (await doc.getPage(n)).getTextContent();
@@ -143,7 +163,7 @@ async function main() {
       const combos = [];
       let manque = null;
       for (const k of v.combinaisons) {
-        const s = suffixeDe(k.referenceBase);
+        const s = codeDe(table, k.referenceBase);
         const code = s && table.codes[s];
         if (!code) { manque = k.referenceBase; break; }
         const { [modele.cle]: _vieux, ...reste } = k.valeurs || {};

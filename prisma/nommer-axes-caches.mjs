@@ -43,8 +43,14 @@ const titre = (t) => console.log(`\n${"═".repeat(72)}\n${t}\n${"═".repeat(72
 const TABLES = [
   {
     gamme: "Maike", page: 156,
+    // TARIFAIRE, pas finition : la référence de BASE change avec le coloris
+    // — KEA0030 contre KEA00R. Posé en finition, l'axe n'entre pas dans le
+    // filtrage et resoudreCombinaison() rend la première teinte venue, quelle
+    // que soit celle du client. Voir prisma/requalifier-axes-selectifs.mjs.
+    nature: "tarifaire",
     cle: "coloris", nom: "Coloris",
-    racine: /^KE[AH]0[04]/,          // KEA00…, KEA04…, KEH00…, KEH04…
+    // KEA00…, KEA04…, KEH00…, KEH02… (le tabouret par lot de 2), KEH04…
+    racine: /^KE[AH]0[024]/,
     codes: {
       30: "Rose Corail", R: "Rose Poudré", 40: "Bleu Pastel", V: "Vert Menthol",
       70: "Beige Sable", 80: "Orange Mandarine", 90: "Blanc Neige",
