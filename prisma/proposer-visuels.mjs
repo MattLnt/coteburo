@@ -40,7 +40,27 @@ import { racineMediatheque, dossierDepot, CATALOGUE, EST_IMAGE, nomSain } from "
 
 const prisma = new PrismaClient();
 const FILTRE = (process.argv.find((a) => a.startsWith("--gamme=")) || "").slice(8) || null;
-const VIDES_SEULEMENT = process.argv.includes("--vides");
+const VIDES_SEULEMENT = process.argv.includes("--vides") || process.argv.includes("--reste");
+const RESTE = process.argv.includes("--reste");
+
+// Ce qui se vend AVEC un produit et n'a pas besoin de sa propre photo : le
+// catalogue fournisseur ne les montre pas non plus, ils sont cités en option
+// au bas d'une page. La liste est explicite et se relit — un classement qu'on
+// ne peut pas vérifier n'est pas un classement.
+//
+// Le mot doit être la TÊTE du nom, pas y figurer n'importe où : « Fauteuil
+// giratoire sur patins » et « Méridienne avec tablette de rangement » sont
+// des produits, et la première version de cette liste les écartait comme des
+// accessoires parce qu'ils contiennent « patins » et « tablette ».
+const ACCESSOIRES = [
+  "goulotte", "kit", "patins?", "obturateurs?", "barre", "chariot", "accroche",
+  "bac", "coussins?", "ch[aâ]ssis", "poign[ée]es?", "serrure", "tablette",
+  "support", "voile de fond", "s[ée]parateur", "cache[- ]\\S+", "passe[- ]c[aâ]bles?",
+  "prise", "[ée]lectrification", "socle", "rallonge", "traverse",
+  "pied suppl\\S*", "fixation", "crochet", "porte[- ]manteau",
+];
+const TETE = new RegExp(`^(?:new\\s+)?(?:${ACCESSOIRES.join("|")})\\b`, "i");
+const estAccessoire = (nom) => TETE.test(String(nom).trim());
 
 const titre = (t) => console.log(`\n${"═".repeat(72)}\n${t}\n${"═".repeat(72)}`);
 
@@ -211,6 +231,57 @@ async function main() {
       sures,
       fichesCouvertes: new Set(sures.map((p) => p.fiche)).size,
     });
+  }
+
+  if (RESTE) {
+    // Toutes les fiches vides du catalogue, y compris celles des gammes sans
+    // dépôt — sinon le compte oublierait celles qu'aucune image n'attend.
+    const toutes = await prisma.produitVitrine.findMany({
+      where: { publie: true, visuels: { none: {} } },
+      orderBy: { nom: "asc" },
+      select: { nom: true, gamme: { select: { nom: true, marque: { select: { nom: true } } } } },
+    });
+    const couvertes = new Set(parGamme.flatMap((g) => g.sures.map((p) => p.fiche)));
+
+    const restantes = toutes.filter((v) => !couvertes.has(v.nom));
+    const accessoires = restantes.filter((v) => estAccessoire(v.nom));
+    const produits = restantes.filter((v) => !estAccessoire(v.nom));
+
+    titre("CE QUI RESTERAIT SANS IMAGE");
+    console.log(`
+   fiches publiées sans aucune image .......... ${toutes.length}
+   ─ rattachées par leur nom de fichier ....... ${toutes.length - restantes.length}
+   ─ accessoires, pas de photo attendue ....... ${accessoires.length}
+   ───────────────────────────────────────────────────
+   PRODUITS ENCORE SANS IMAGE ................. ${produits.length}`);
+
+    console.log(`\n   Les ${accessoires.length} classés accessoires — à relire :\n`);
+    for (const v of accessoires) console.log(`      ${v.gamme.marque.nom} · ${v.gamme.nom} — ${v.nom.slice(0, 54)}`);
+
+    // Un produit dont la gamme n'a aucune image sur le disque ne se trie pas :
+    // il se demande au fournisseur. C'est la seule coupure qui change ce qu'on
+    // en fait.
+    const avecDepot = new Set(parGamme.filter((g) => g.images > 0).map((g) => g.nom));
+    const cle = (v) => `${v.gamme.marque.nom} · ${v.gamme.nom}`;
+    const aTrier = produits.filter((v) => avecDepot.has(cle(v)));
+    const aDemander = produits.filter((v) => !avecDepot.has(cle(v)));
+    console.log(`
+   dont des images attendent dans leur gamme .. ${aTrier.length}   → à trier
+   dont aucune source sur le disque ........... ${aDemander.length}   → à demander au fournisseur`);
+
+    console.log(`\n   Les ${produits.length} produits qui restent :\n`);
+    const parG = new Map();
+    for (const v of produits) {
+      const k = `${v.gamme.marque.nom} · ${v.gamme.nom}`;
+      if (!parG.has(k)) parG.set(k, []);
+      parG.get(k).push(v.nom);
+    }
+    for (const [k, noms] of [...parG].sort((a, b) => b[1].length - a[1].length)) {
+      console.log(`      ${String(noms.length).padStart(2)}  ${k}`);
+      for (const n of noms) console.log(`          ${n.slice(0, 62)}`);
+    }
+    console.log("\nAucune image n'a été déplacée, aucune fiche modifiée.");
+    return;
   }
 
   titre("CE QUE LES NOMS DE FICHIERS PERMETTENT");
