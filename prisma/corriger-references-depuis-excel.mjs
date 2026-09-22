@@ -77,6 +77,7 @@ async function main() {
 
   // ── Ce que le tarif dit, fiche par fiche ─────────────────────────────
   const parFiche = new Map();          // nom → [ { designation, refBase, prix } ]
+  const parRacine = new Map();         // référence de base → fiches du tarif
   for (const [marque, chemin] of Object.entries(SOURCES)) {
     if (FILTRE && marque !== FILTRE) continue;
     const wb = XLSX.readFile(chemin);
@@ -99,6 +100,11 @@ async function main() {
       if (!refBase) continue;
       if (!parFiche.has(g.fiche)) parFiche.set(g.fiche, []);
       parFiche.get(g.fiche).push({ designation: g.des, refBase, prix: g.prix, marque });
+      // Un second index, par référence. Une fiche que j'ai renommée — ou que
+      // le fournisseur nomme autrement que le site — ne se retrouve plus par
+      // son nom. Sa référence, elle, n'a pas bougé.
+      if (!parRacine.has(refBase)) parRacine.set(refBase, new Set());
+      parRacine.get(refBase).add(g.fiche);
     }
   }
   console.log(`   ${parFiche.size} fiches décrites par les fichiers de tarif\n`);
@@ -115,7 +121,15 @@ async function main() {
   const inconnues = [];
 
   for (const v of vitrines) {
-    const groupes = parFiche.get(v.nom);
+    let groupes = parFiche.get(v.nom);
+    if (!groupes) {
+      // Repli : quelle fiche du tarif porte la référence que celle-ci
+      // utilise ? Une référence partagée par deux fiches ne dit pas laquelle,
+      // et on s'abstient.
+      const actuelle = v.combinaisons.map((k) => k.referenceBase).filter(Boolean)[0];
+      const noms = actuelle ? parRacine.get(actuelle) : null;
+      if (noms && noms.size === 1) groupes = parFiche.get([...noms][0]);
+    }
     if (!groupes) continue;
     // Une fiche dont toutes les combinaisons ont déjà des références
     // distinctes n'a rien à corriger.
