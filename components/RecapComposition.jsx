@@ -30,7 +30,10 @@ export default function RecapComposition({ elements = [], marge = 0, titre = "Ce
   if (!elements.length) return null;
 
   const prixVente = (ht) => (ht == null ? null : ht * (1 + marge));
-  const total = elements.reduce((a, e) => a + (prixVente(e.prixTarifHT) ?? 0), 0);
+  // Un élément peut compter plusieurs exemplaires : chez Eko il faut trois
+  // kits de portes pour un casier neuf cases. Le total les compte tous.
+  const totalDe = (e) => prixVente(e.prixTotalHT ?? e.prixTarifHT) ?? 0;
+  const total = elements.reduce((a, e) => a + totalDe(e), 0);
   const complet = elements.every((e) => e.reference);
 
   return (
@@ -48,7 +51,14 @@ export default function RecapComposition({ elements = [], marge = 0, titre = "Ce
             key={`${e.cle}-${i}`}
             className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 px-5 py-3 ${i ? "border-t border-line" : ""}`}
           >
-            <span className="min-w-0 flex-1 text-sm text-ink">{e.designation}</span>
+            <span className="min-w-0 flex-1 text-sm text-ink">
+              {e.designation}
+              {e.quantite > 1 && (
+                <span className="ml-1.5 text-xs font-semibold text-ink-soft">
+                  × {e.quantite}
+                </span>
+              )}
+            </span>
 
             {/* La référence, décomposée : la base en sombre, ce que les
                 finitions y ajoutent en orange. Le client voit d'où vient
@@ -65,7 +75,7 @@ export default function RecapComposition({ elements = [], marge = 0, titre = "Ce
             </span>
 
             <span className="w-20 shrink-0 text-right text-sm tabular-nums text-ink-soft">
-              {euros(prixVente(e.prixTarifHT))}
+              {euros(totalDe(e))}
             </span>
           </li>
         ))}

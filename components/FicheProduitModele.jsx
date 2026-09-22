@@ -170,7 +170,9 @@ export default function FicheProduitModele({
             elementCle: e.cle,
           },
           i === 0 ? identite.finition : null,
-          qte,
+          // Trois kits de portes pour un casier neuf cases, et autant de
+          // fois la quantité commandée.
+          qte * (e.quantite ?? 1),
         );
         if (i === 0) racine = id;
       }
