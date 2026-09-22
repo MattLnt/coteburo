@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import CatalogueFilters from "@/components/CatalogueFilters";
+import { surFondBlanc } from "@/lib/imageProduit";
 
 export default function RechercheClient({ resultats, filtres, query, valeursInitiales }) {
   const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);

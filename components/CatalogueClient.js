@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import CatalogueFilters from "@/components/CatalogueFilters";
 import FavoriButton from "@/components/FavoriButton";
+import { surFondBlanc } from "@/lib/imageProduit";
 import { urlProduit } from "@/lib/catalogue";
 
 const fmt = (n) => (n == null ? null : `${Math.round(n).toLocaleString("fr-FR")} €`);
