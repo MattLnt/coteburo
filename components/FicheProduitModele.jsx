@@ -23,7 +23,9 @@ import {
   prochaineEtape, etapesDe, etapesRestantes, prixDe,
   detailReference, visuelsPour, commandable, libelleChoix, identiteCommande,
   decomposerComposite, combinaisonsCompatibles, impactPrix,
+  estComposee, elementsDe,
 } from "@/lib/modeleProduit";
+import RecapComposition from "@/components/RecapComposition";
 
 /** Section descriptive : repliée sur mobile, dépliée sur desktop. */
 function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
@@ -103,6 +105,14 @@ export default function FicheProduitModele({
   const reference = useMemo(() => detailReference(produit, reponses), [produit, reponses]);
   const visuels = useMemo(() => visuelsPour(produit, reponses), [produit, reponses]);
   const verdict = useMemo(() => commandable(produit, reponses), [produit, reponses]);
+  // Une fiche composée ne se commande pas par une référence mais par
+  // plusieurs : page 241 du tarif Buronomic, un rangement, une alcôve, des
+  // portes et des poignées.
+  const composee = useMemo(() => estComposee(produit), [produit]);
+  const elements = useMemo(
+    () => (composee ? elementsDe(produit, reponses) : []),
+    [composee, produit, reponses],
+  );
 
   // Les réponses déjà données, dans l'ordre où on les a posées.
   const repondues = etapes.filter((c) => reponses[c.cle] != null);
@@ -129,6 +139,47 @@ export default function FicheProduitModele({
   // paiement, qui n'a pas encore basculé, de retrouver sa ligne et son prix.
   const versPanier = () => {
     const identite = identiteCommande(produit, reponses, marge);
+
+    // Une fiche composée pose une ligne par élément : quatre vraies
+    // références Buronomic, au lieu d'une qui n'existerait pas. La première
+    // porte les suivantes par parentId — le mécanisme qui rattache déjà une
+    // option à son produit — pour qu'elles se suppriment et s'affichent
+    // ensemble.
+    if (composee && identite.elements.length) {
+      let racine = null;
+      for (const [i, e] of identite.elements.entries()) {
+        const id = addItem(
+          {
+            type: "nouveau",
+            vitrineId: produit.id,
+            declinaisonId: prix.combinaison?.ancienId ?? null,
+            combinaisonId: identite.combinaisonId,
+            referenceComplete: e.reference,
+            fournisseur: identite.fournisseur,
+            choix: i === 0 ? identite.choix : null,
+            slug: produit.slug,
+            categorieSlug,
+            sousCategorieSlug,
+            designation: e.designation,
+            marque: identite.fournisseur,
+            image: i === 0 ? principalUrl : null,
+            prix: e.prixTarifHT == null ? null : e.prixTarifHT * (1 + marge),
+            parentId: racine,
+            // Sans elle, les quatre lignes partagent un identifiant et se
+            // fondent en une seule dont la quantité monte.
+            elementCle: e.cle,
+          },
+          i === 0 ? identite.finition : null,
+          qte,
+        );
+        if (i === 0) racine = id;
+      }
+      ajouterOptions(racine);
+      setAjoute(true);
+      setTimeout(() => setAjoute(false), 2000);
+      return;
+    }
+
     const parentId = addItem(
       {
         type: "nouveau",
@@ -445,6 +496,9 @@ export default function FicheProduitModele({
             ) : null}
           </div>
         )}
+
+        {/* Une fiche composée montre ses quatre références plutôt qu'une. */}
+        {!etape && composee && <RecapComposition elements={elements} marge={marge} />}
 
         {/* Les accessoires, avant le prix : ils s'y ajoutent. */}
         {optionsUI}

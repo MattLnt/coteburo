@@ -45,11 +45,20 @@ export function CartProvider({ children }) {
   // second : les accessoires liés le fournissent encore, et Combinaison.ancienId
   // fait le pont côté serveur.
   const lineId = (item, finition) => {
+    // Une fiche composée pose plusieurs lignes qui partagent la fiche ET la
+    // combinaison : le rangement, l'alcôve, les portes, les poignées. Sans la
+    // clé de l'élément, elles portent le même identifiant et se fondent en
+    // une seule ligne dont la quantité monte — le panier affichait « Alcôve,
+    // quantité 3 » à la place des trois éléments.
+    //
+    // Le segment ne s'ajoute QUE s'il existe : les identifiants des paniers
+    // déjà en localStorage ne bougent pas.
+    const element = item.elementCle ? `::${item.elementCle}` : "";
     if (item.type === "nouveau") {
       const variante = item.combinaisonId || item.declinaisonId || "_";
-      return `v:${item.vitrineId}::${variante}::${finition || "_"}`;
+      return `v:${item.vitrineId}::${variante}${element}::${finition || "_"}`;
     }
-    return `p:${item.codeRacine}::${finition || "_"}`;
+    return `p:${item.codeRacine}${element}::${finition || "_"}`;
   };
 
   // Renvoie l'id de la ligne ajoutée (utile pour rattacher des options à leur parent).
@@ -77,6 +86,8 @@ export function CartProvider({ children }) {
         quantite,
         parentId: produit.parentId || null,   // si renseigné → c'est une option rattachée à un produit
         estOption: !!produit.parentId,
+        // L'élément d'une fiche composée dont cette ligne est la commande.
+        elementCle: produit.elementCle || null,
         vitrineId: produit.vitrineId || null,  // produit "nouveau" ou option → id de la fiche produit
         optionId: produit.optionId || null,    // option → son id dans optionsAdditionnelles
         optionDeclinaisonId: produit.optionDeclinaisonId || null, // option à déclinaisons → id de la combinaison choisie

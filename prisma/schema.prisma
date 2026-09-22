@@ -675,6 +675,13 @@ model Choix {
   // Sans ce rang, la référence ne peut pas se reconstruire — et c'est tout
   // l'objet du modèle. Vide = ce choix n'ajoute rien à la référence.
   rangReference Int?
+  // Sur une fiche composée, l'élément auquel ce choix apporte son jeton.
+  // La page 241 du tarif Buronomic se commande en quatre références — la
+  // structure, l'alcove, les portes, les poignées — et chacune porte ses
+  // propres suffixes. « rangReference » ordonne les jetons D'UNE référence ;
+  // « element » dit DE LAQUELLE. Vide = la fiche n'a qu'une référence, le cas
+  // de cinq cent soixante-douze fiches sur cinq cent soixante-treize.
+  element     String?
   obligatoire Boolean        @default(true)
   origine     OrigineDonnee  @default(tarif)
   vitrineId   String
@@ -731,6 +738,14 @@ model Combinaison {
   poids           Float?
   ean             String?
   referenceBase   String?
+  // Une fiche composée ne se commande pas par une référence mais par
+  // plusieurs, chacune avec son prix :
+  //   [{ cle: "structure", designation: "Rangement H 69,5 ouvert L 80",
+  //      referenceBase: "BH693", prixTarifHT: 150 }, …]
+  // « referenceBase » et « prixTarifHT » ci-dessus restent la somme et la
+  // première référence, pour que tout ce qui ne connaît pas les compositions
+  // continue de fonctionner. Vide = fiche ordinaire, à référence unique.
+  elements        Json?
   pageCatalogue   Int?
   // L'identifiant de l'ancienne déclinaison, cité par les devis et les
   // paniers déjà enregistrés. Conservé pour que rien ne se perde à la bascule.

@@ -134,7 +134,14 @@ export default function PanierPage() {
           </div>
 
           <div className="flex-1 min-w-0">
-            <span className="inline-block text-[9px] sm:text-[10px] font-bold uppercase tracking-wide text-orange-dark bg-orange-tint rounded px-1.5 py-0.5">Option</span>
+            {/* « Option » et « Élément » se rattachent de la même façon à leur
+                ligne parente, mais ce n'est pas la même chose : une option
+                s'ajoute au produit, un élément EST le produit. Page 241 du
+                tarif Buronomic, l'alcôve et les portes ne sont pas des extras
+                — sans elles il n'y a pas de rangement avec alcôve. */}
+            <span className="inline-block text-[9px] sm:text-[10px] font-bold uppercase tracking-wide text-orange-dark bg-orange-tint rounded px-1.5 py-0.5">
+              {it.elementCle ? "Élément" : "Option"}
+            </span>
             <p className="font-semibold text-ink text-[12.5px] sm:text-[13.5px] leading-snug mt-1 line-clamp-2 sm:truncate">{it.designation}</p>
           </div>
 
