@@ -125,6 +125,18 @@ const CATEGORIES = {
     { palette: "Tissu C", retire: ["R4"], nom: "Tissu C — Runner exclu" },
   "Tissu C — Spazio exclu Visiteurs assortis":
     { palette: "Tissu C", retire: ["SP"], nom: "Tissu C — Spazio exclu" },
+
+  // ── Les libellés APRÈS redressement ─────────────────────────────────
+  //
+  // Sans eux, une fiche dont le libellé a été renommé mais dont la question
+  // « Revêtement » n'a pas eu le temps d'être posée — une exécution
+  // interrompue en chemin — serait refusée à la reprise, au motif d'un
+  // libellé inconnu qu'on venait pourtant d'écrire soi-même.
+  "Tissu C — Runner exclu": { palette: "Tissu C", retire: ["R4"] },
+  "Tissu D — Select uniquement": { palette: "Tissu D", garde: ["SL"] },
+  "Tissu D — Select et Grain uniquement": { palette: "Tissu D", garde: ["SL", "GR"] },
+  "Tissu B+ — Eden Free uniquement": { palette: "Tissu B+", garde: ["EF"] },
+  "Tissu B — X-Trevira uniquement": { palette: "Tissu B", garde: ["B 0", "B 1", "B 2", "B 3", "B 5", "B 7"] },
 };
 
 const commence = (nom, codes) => codes.some((c) => nom.startsWith(c));
@@ -273,11 +285,17 @@ async function main() {
   const renommes = plans.flatMap((p) => p.regles.filter((r) => r.regle.nom && r.regle.nom !== r.valeur.libelle));
   if (renommes.length) {
     titre("LIBELLÉS REDRESSÉS");
+    // La clé encode le couple en JSON : les libellés contiennent tirets,
+    // virgules et espaces, et le moindre séparateur choisi à la main
+    // finirait par tomber dedans.
     const m = new Map();
-    for (const r of renommes) m.set(`${r.valeur.libelle} ${r.regle.nom}`, (m.get(`${r.valeur.libelle} ${r.regle.nom}`) || 0) + 1);
+    for (const r of renommes) {
+      const k = JSON.stringify([r.valeur.libelle, r.regle.nom]);
+      m.set(k, (m.get(k) || 0) + 1);
+    }
     console.log("");
     for (const [k, n] of [...m].sort((a, b) => b[1] - a[1])) {
-      const [avant, apres] = k.split(" ");
+      const [avant, apres] = JSON.parse(k);
       console.log(`   ${String(n).padStart(4)}×  « ${avant.slice(0, 60)} »`);
       console.log(`            → « ${apres} »`);
     }
@@ -307,6 +325,7 @@ async function main() {
 
   titre("ÉCRITURE");
   let faites = 0;
+  let dejaPosees = 0;
   for (const p of plans) {
     // 1. La catégorie désigne son nuancier — c'est ce lien qui fait le filtre.
     for (const r of p.regles) {
@@ -328,24 +347,37 @@ async function main() {
     }
 
     // 3. La question du revêtement, après tout le reste.
-    await prisma.choix.create({
-      data: {
-        vitrineId: p.v.id, cle: CLE, nom: NOM,
-        nature: "finition", rendu: "pastilles", origine: "tarif",
-        ordre: Math.max(0, ...p.v.choix.map((c) => c.ordre)) + 1,
-        // rangReference vide : voir l'en-tête.
-        valeurs: {
-          create: p.tissus.map((t, i) => ({
-            libelle: t.f.nom, ordre: i, suffixeReference: "",
-            modeleId: t.f.id, paletteId: t.paletteId,
-          })),
+    //
+    // Le plan a été bâti au départ ; si une autre exécution du même script
+    // tourne en parallèle, elle a pu poser la question entre-temps. Deux
+    // exécutions concurrentes ont fait exactement cela, et la seconde est
+    // morte sur la contrainte d'unicité au milieu des écritures. On la
+    // laisse passer : la question est là, c'est ce qu'on voulait.
+    try {
+      await prisma.choix.create({
+        data: {
+          vitrineId: p.v.id, cle: CLE, nom: NOM,
+          nature: "finition", rendu: "pastilles", origine: "tarif",
+          ordre: Math.max(0, ...p.v.choix.map((c) => c.ordre)) + 1,
+          // rangReference vide : voir l'en-tête.
+          valeurs: {
+            create: p.tissus.map((t, i) => ({
+              libelle: t.f.nom, ordre: i, suffixeReference: "",
+              modeleId: t.f.id, paletteId: t.paletteId,
+            })),
+          },
         },
-      },
-    });
+      });
+    } catch (e) {
+      if (e?.code !== "P2002") throw e;
+      dejaPosees++;
+      continue;
+    }
     faites++;
     if (faites % 25 === 0) console.log(`   ${faites}/${plans.length}…`);
   }
   console.log(`   ${faites} fiches branchées.`);
+  if (dejaPosees) console.log(`   ${dejaPosees} l'étaient déjà — une autre exécution est passée avant.`);
 
   titre("CONTRÔLE");
   const avec = await prisma.choix.count({ where: { cle: CLE, vitrine: { publie: true } } });
