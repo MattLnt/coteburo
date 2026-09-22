@@ -387,6 +387,59 @@ export async function supprimerCombinaison(combinaisonId) {
 
 // ── Visuels ───────────────────────────────────────────────────────────────
 
+/**
+ * Rattache des images déjà envoyées à Cloudinary.
+ *
+ * L'onglet Visuels savait afficher, réordonner et supprimer, mais pas
+ * ajouter : une photo ne pouvait entrer que par un dépôt _A-TRIER de la
+ * médiathèque, c'est-à-dire par le disque. Une image reçue par courriel d'un
+ * fournisseur n'avait aucun chemin. L'envoi se fait côté navigateur
+ * (components/dashboard/televerser), il ne reste ici qu'à créer les lignes.
+ *
+ * La première image d'une fiche nue devient sa vignette — sans quoi la fiche
+ * reste sans aperçu dans les listes, alors qu'elle a des photos.
+ */
+export async function ajouterVisuels(vitrineId, urls = []) {
+  await exigerAdmin();
+  const propres = urls.map((u) => String(u || "").trim()).filter(Boolean);
+  if (!propres.length) return { ok: false, error: "Aucune image à rattacher." };
+
+  const vitrine = await prisma.produitVitrine.findUnique({
+    where: { id: vitrineId },
+    select: { id: true, visuels: { select: { url: true }, orderBy: { ordre: "asc" } } },
+  });
+  if (!vitrine) return { ok: false, error: "Fiche introuvable." };
+
+  // Une image déjà rattachée ne l'est pas deux fois : Cloudinary rend la même
+  // adresse pour un second envoi du même fichier.
+  const connues = new Set(vitrine.visuels.map((v) => v.url));
+  const nouvelles = propres.filter((u) => !connues.has(u));
+  if (!nouvelles.length) return { ok: true, ajoutes: 0, doublons: propres.length };
+
+  let ordre = vitrine.visuels.length;
+  await prisma.visuel.createMany({
+    data: nouvelles.map((url, i) => ({
+      vitrineId,
+      url,
+      ordre: ordre + i,
+      role: ordre === 0 && i === 0 ? "vignette" : "galerie",
+    })),
+  });
+
+  // Les anciens champs restent alimentés tant que lib/catalogue s'en sert
+  // pour les vignettes de liste et pour les accessoires.
+  const tous = await prisma.visuel.findMany({
+    where: { vitrineId }, orderBy: { ordre: "asc" }, select: { url: true },
+  });
+  await prisma.produitVitrine.update({
+    where: { id: vitrineId },
+    data: { imageUrl: tous[0]?.url || null, images: tous.slice(1).map((v) => v.url) },
+  });
+
+  rafraichir(vitrineId);
+  return { ok: true, ajoutes: nouvelles.length, doublons: propres.length - nouvelles.length };
+}
+
 export async function majVisuel(visuelId, champs) {
   await exigerAdmin();
   const visuel = await prisma.visuel.findUnique({ where: { id: visuelId }, select: { vitrineId: true } });

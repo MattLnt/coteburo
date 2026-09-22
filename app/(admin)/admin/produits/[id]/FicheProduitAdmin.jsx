@@ -18,7 +18,7 @@ import { Icon } from "@/components/dashboard/Icon";
 import {
   majIdentite, creerChoix, majChoix, supprimerChoix,
   creerValeur, majValeur, supprimerValeur, tirerDUnNuancier,
-  majCombinaison, majVisuel, supprimerVisuel,
+  majCombinaison, majVisuel, supprimerVisuel, ajouterVisuels,
 } from "./actions";
 import EditeurFinitions from "./EditeurFinitions";
 import EditeurTarifaire from "./EditeurTarifaire";
@@ -26,6 +26,7 @@ import CreerQuestionTarifaire from "./CreerQuestionTarifaire";
 import GenererVariantes from "./GenererVariantes";
 import OngletIdentite from "./OngletIdentite";
 import OngletDescriptif from "./OngletDescriptif";
+import { AjouterVisuels } from "./AjouterVisuels";
 import {
   etapesDe, choixTarifaires, choixFinition, assemblerReference,
   decomposerComposite, choixRecouverts,
@@ -410,9 +411,12 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
       {/* ── Visuels ────────────────────────────────────────────────── */}
       {onglet === "visuels" && (
         <div className="flex flex-col gap-4">
+          <AjouterVisuels vitrineId={produit.id} ajouter={ajouterVisuels} />
+
           {!produit.visuels.length && (
             <div className="rounded-2xl border border-dashed border-line bg-surface p-8 text-center text-sm text-ink-soft">
-              Aucun visuel. Les dépôts en attente se rattachent depuis la médiathèque.
+              Aucun visuel pour l&apos;instant. Déposez-en ci-dessus, ou rattachez
+              un dépôt en attente depuis la médiathèque.
             </div>
           )}
 
