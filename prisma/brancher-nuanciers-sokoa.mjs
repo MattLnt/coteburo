@@ -62,7 +62,17 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 const APPLIQUER = process.argv.includes("--appliquer");
-const GAMME = (process.argv.find((a) => a.startsWith("--gamme=")) || "").slice(8) || null;
+// « --gamme=Wi-Max Ergo » sans guillemets arrive en deux arguments. Les
+// recoller vaut mieux que de filtrer sur « Wi-Max » en silence et d'écrire
+// sur quinze fiches quand on en visait cinq.
+const GAMME = (() => {
+  const args = process.argv.slice(2);
+  const i = args.findIndex((a) => a.startsWith("--gamme="));
+  if (i === -1) return null;
+  const suite = [args[i].slice(8)];
+  for (let j = i + 1; j < args.length && !args[j].startsWith("--"); j++) suite.push(args[j]);
+  return suite.join(" ").trim() || null;
+})();
 const titre = (t) => console.log(`\n${"═".repeat(72)}\n${t}\n${"═".repeat(72)}`);
 
 const CLE = "revetement";
@@ -84,7 +94,11 @@ const CATEGORIES = {
 
   "Tissu C — Spazio exclu": { palette: "Tissu C", retire: ["SP"] },
   "Tissu C — Spazio exclu pour Tertio et TO32": { palette: "Tissu C", retire: ["SP"] },
+  // Le catalogue nomme la même restriction de deux façons : celle de l'import
+  // d'origine, et celle que prisma/decouper-wimax.mjs a reprise de la note de
+  // la page 57 (« C = Tissus Boucle FR, Runner et Spazio exclus »).
   "Tissu C — Runner, Boucle, Spazio exclus": { palette: "Tissu C", retire: ["R4", "BC", "SP"] },
+  "Tissu C — Boucle FR, Runner et Spazio exclus": { palette: "Tissu C", retire: ["R4", "BC", "SP"] },
   "Tissu C — Enduits Ginkgo et Natural Linen exclus": { palette: "Tissu C", retire: ["8", "NL"] },
   "Tissu C — Tissus Blend, Boucle F.R., Spazio et Runner uniquement":
     { palette: "Tissu C", garde: ["BL", "BC", "SP", "R4"] },
