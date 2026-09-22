@@ -48,6 +48,22 @@ const RESTE = process.argv.includes("--reste");
 // au bas d'une page. La liste est explicite et se relit — un classement qu'on
 // ne peut pas vérifier n'est pas un classement.
 //
+// ⚠ CETTE LISTE N'EST PLUS UTILISÉE POUR ÉCARTER QUOI QUE CE SOIT.
+//
+//   Elle partait d'une idée fausse : qu'une goulotte ou un appui-tête ne
+//   mérite pas de photo. Vérification faite, les trente fiches qu'elle
+//   écartait sont TOUTES rangées dans une sous-catégorie, donc visibles au
+//   catalogue comme n'importe quel produit ; aucune n'est marquée
+//   accessoireSeul en base ; et leurs semblables sont photographiés —
+//   quatorze tablettes sur dix-sept, six voiles de fond sur dix, trois
+//   goulottes sur cinq.
+//
+//   Si quatorze tablettes ont une photo, les trois autres n'ont aucune
+//   raison d'en être dispensées. La liste reste ici pour mémoire, et parce
+//   qu'elle pourra servir à trier par TYPE de visuel à faire — un packshot
+//   de goulotte n'est pas une mise en situation de bureau — mais plus à
+//   décider qu'une fiche peut rester vide.
+//
 // Le mot doit être la TÊTE du nom, pas y figurer n'importe où : « Fauteuil
 // giratoire sur patins » et « Méridienne avec tablette de rangement » sont
 // des produits, et la première version de cette liste les écartait comme des
@@ -243,20 +259,18 @@ async function main() {
     });
     const couvertes = new Set(parGamme.flatMap((g) => g.sures.map((p) => p.fiche)));
 
-    const restantes = toutes.filter((v) => !couvertes.has(v.nom));
-    const accessoires = restantes.filter((v) => estAccessoire(v.nom));
-    const produits = restantes.filter((v) => !estAccessoire(v.nom));
+    // Plus d'exclusion : tout ce qui est publié et rangé dans une catégorie
+    // se voit au catalogue, et mérite donc une photo.
+    const produits = toutes.filter((v) => !couvertes.has(v.nom));
+    const pieces = produits.filter((v) => estAccessoire(v.nom));
 
-    titre("CE QUI RESTERAIT SANS IMAGE");
+    titre("CE QUI RESTE SANS IMAGE");
     console.log(`
    fiches publiées sans aucune image .......... ${toutes.length}
-   ─ rattachées par leur nom de fichier ....... ${toutes.length - restantes.length}
-   ─ accessoires, pas de photo attendue ....... ${accessoires.length}
+   ─ rattachables par leur nom de fichier ..... ${toutes.length - produits.length}
    ───────────────────────────────────────────────────
-   PRODUITS ENCORE SANS IMAGE ................. ${produits.length}`);
-
-    console.log(`\n   Les ${accessoires.length} classés accessoires — à relire :\n`);
-    for (const v of accessoires) console.log(`      ${v.gamme.marque.nom} · ${v.gamme.nom} — ${v.nom.slice(0, 54)}`);
+   PRODUITS À ILLUSTRER ....................... ${produits.length}
+   dont pièces et accessoires ................. ${pieces.length}   (photo attendue aussi)`);
 
     // Un produit dont la gamme n'a aucune image sur le disque ne se trie pas :
     // il se demande au fournisseur. C'est la seule coupure qui change ce qu'on
