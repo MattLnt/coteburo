@@ -171,7 +171,11 @@ const OUTDOOR_FICHE = {
   piétement: "Quatre pieds en polypropylène recyclé, usage extérieur (coque non tapissée uniquement)",
   descriptif: "<p>La version extérieure de Loria : piétement et coque en polypropylène recyclé, garantis pour un usage en terrasse. Cinq coloris de piétement, six coloris de coque — seule la version non tapissée est utilisable dehors, les versions garnies restent des sièges d'intérieur.</p>",
   lignes: OUTDOOR_LIGNES,
-  finitionAxe: { cle: "coloris", nom: "Coloris du piétement", ordonne: OUTDOOR.map((c) => c.libelle) },
+  // Pas de finitionAxe ici : le coloris du piétement outdoor est créé par un
+  // bloc dédié, en pastilles colorées. Le déclarer aussi ici le créait deux
+  // fois, et la contrainte d'unicité (vitrineId, cle) a — à raison — refusé
+  // la seconde en plein milieu de l'écriture.
+  finitionAxe: null,
   dimensions: "<ul><li>Hauteur : de 79,5 à 80 cm</li><li>Largeur : de 53,5 à 59 cm</li><li>Profondeur : de 52,5 à 54,5 cm</li></ul>",
   avertissement: "<p><strong>Attention à la commande.</strong> Le catalogue Sokoa imprime la même référence pour la coque avec placet et la coque entièrement tapissée (de 179 à 320 € selon le tissu). La version doit être précisée en clair sur la commande.</p>",
 };
@@ -324,12 +328,19 @@ async function main() {
     [GIRATOIRE.nom]: /giratoire/i,
     [HAUTE.nom]: /haute|tabouret/i,
   };
+  // Rejouable : une fiche qui porte DÉJÀ exactement le nom cible est
+  // l'accueil, avant tout mot-clé. Sans ça, une relance après une écriture
+  // interrompue ne reconnaît plus l'accueil renommé (« …4 pieds Outdoor… »
+  // ne contient plus « 4 pieds PP, coque PP »), en choisit un autre, et
+  // plante sur le slug déjà pris. C'est arrivé.
   const dejaPrises = new Set();
   for (const fiche of FICHES) {
     const regex = motsCles[fiche.nom];
+    const dejaRenommee = gamme.vitrines.find((v) => v.nom === fiche.nom);
     const porteurs = gamme.vitrines
-      .filter((v) => !dejaPrises.has(v.id) && regex.test(v.nom))
+      .filter((v) => !dejaPrises.has(v.id) && v !== dejaRenommee && regex.test(v.nom))
       .sort((a, b) => b.visuels.length - a.visuels.length);
+    if (dejaRenommee) porteurs.unshift(dejaRenommee);
     fiche.cible = porteurs[0] || null;
     fiche.autresDeLaFamille = porteurs.slice(1);
     if (fiche.cible) dejaPrises.add(fiche.cible.id);
