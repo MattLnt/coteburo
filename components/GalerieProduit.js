@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { surFondBlanc } from "@/lib/imageProduit";
 
 // Nombre de miniatures visibles avant scroll (colonne desktop).
 const VIGNETTES_VISIBLES = 5;
@@ -181,9 +182,9 @@ export default function GalerieProduit({ images = [], alt = "" }) {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       style={{ touchAction: "pan-y" }}
-      className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f0ece4)]">
+      className="relative flex-1 aspect-square rounded-[16px] lg:rounded-[24px] overflow-hidden border border-line bg-white">
       {urlActive ? (
-        <img src={urlActive} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain" : "object-cover"}`} />
+        <img src={surFondBlanc(urlActive)} alt={alt} className={`w-full h-full ${modeActive === "contain" ? "object-contain" : "object-cover"}`} />
       ) : (
         <div className="w-full h-full grid place-items-center text-charcoal/15">
           <svg width="38%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
@@ -229,9 +230,9 @@ export default function GalerieProduit({ images = [], alt = "" }) {
                   onClick={() => setImgActive(i)}
                   aria-label={`Voir l'image ${i + 1}`}
                   aria-pressed={i === imgActive}
-                  className={`relative w-[52px] h-[52px] rounded-[10px] overflow-hidden border-2 shrink-0 transition bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] ${i === imgActive ? "border-orange" : "border-line"}`}
+                  className={`relative w-[52px] h-[52px] rounded-[10px] overflow-hidden border-2 shrink-0 transition bg-white ${i === imgActive ? "border-orange" : "border-line"}`}
                 >
-                  <img src={img} alt="" className={`w-full h-full ${m === "contain" ? "object-contain" : "object-cover"}`} />
+                  <img src={surFondBlanc(img, 160)} alt="" className={`w-full h-full ${m === "contain" ? "object-contain" : "object-cover"}`} />
                 </button>
               );
             })}
@@ -259,9 +260,9 @@ export default function GalerieProduit({ images = [], alt = "" }) {
                     onClick={() => setImgActive(i)}
                     aria-label={`Voir l'image ${i + 1}`}
                     aria-pressed={i === imgActive}
-                    className={`relative aspect-square rounded-2xl overflow-hidden border-2 shrink-0 transition bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] ${i === imgActive ? "border-orange shadow-[0_4px_14px_rgba(240,102,27,0.18)]" : "border-line hover:border-orange/40"}`}
+                    className={`relative aspect-square rounded-2xl overflow-hidden border-2 shrink-0 transition bg-white ${i === imgActive ? "border-orange shadow-[0_4px_14px_rgba(240,102,27,0.18)]" : "border-line hover:border-orange/40"}`}
                   >
-                    <img src={img} alt="" className={`w-full h-full ${m === "contain" ? "object-contain" : "object-cover"}`} />
+                    <img src={surFondBlanc(img, 160)} alt="" className={`w-full h-full ${m === "contain" ? "object-contain" : "object-cover"}`} />
                   </button>
                 );
               })}

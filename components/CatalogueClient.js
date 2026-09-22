@@ -194,7 +194,7 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
             entrait en conflit avec les photos d'ambiance rectangulaires. */}
         <div className="aspect-[4/3] bg-white overflow-hidden">
           {c.imageUrl ? (
-            <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-2.5 sm:p-[10px] rounded-[14px] group-hover:scale-[1.03] transition" />
+            <img src={surFondBlanc(c.imageUrl, 600)} alt={c.nom} className="w-full h-full object-contain p-2.5 sm:p-[10px] rounded-[14px] group-hover:scale-[1.03] transition" />
           ) : (
             <div className="w-full h-full grid place-items-center text-charcoal/15">
               <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>

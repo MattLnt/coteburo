@@ -93,7 +93,7 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
                   className="group rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden relative">
                     {r.imageUrl ? (
-                      <img src={r.imageUrl} alt={r.nom} className="w-full h-full object-contain p-4 group-hover:scale-[1.03] transition" />
+                      <img src={surFondBlanc(r.imageUrl, 400)} alt={r.nom} className="w-full h-full object-contain p-4 group-hover:scale-[1.03] transition" />
                     ) : (
                       <div className="w-full h-full grid place-items-center text-charcoal/15">
                         <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
