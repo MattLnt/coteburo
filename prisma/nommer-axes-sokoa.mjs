@@ -86,6 +86,20 @@ const TABLES = [
     ordre: ["Noire", "Blanche", "Blanche, patins noirs"],
   },
   {
+    gamme: "Rhune", page: 131, cle: "hauteur", nom: "Hauteur",
+    // Les tables basses gigognes codent leur hauteur dans le PRÉFIXE :
+    // LTAC/1B est la carrée de 25 cm, LTT0/1B la même en 37,5 cm.
+    // « 2 hauteurs au choix : 25 cm, 37,5 cm », dit l'en-tête de la page.
+    code: (ref) => ref.slice(0, 4),
+    codes: {
+      LTAC: { mot: "25 cm", preuve: "Hauteur 250, Structure métal noir" },
+      LTAR: { mot: "25 cm", preuve: "Hauteur 250, Structure métal noir" },
+      LTT0: { mot: "37,5 cm", preuve: "Hauteur 380, Structure métal noir" },
+      LTTR: { mot: "37,5 cm", preuve: "Hauteur 380, Structure métal noir" },
+    },
+    ordre: ["25 cm", "37,5 cm"],
+  },
+  {
     gamme: "Sièges Hauts", page: 61, cle: "mecanisme", nom: "Mécanisme",
     // L'axe est aux deux caractères qui suivent le préfixe de modèle :
     // RT32/20 contre RT52/20. Le /20 ou /00 dit le lift, et ne varie pas.
