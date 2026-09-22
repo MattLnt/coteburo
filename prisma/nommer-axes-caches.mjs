@@ -127,7 +127,7 @@ async function main() {
       where: { publie: true, gamme: { nom: table.gamme } },
       select: {
         id: true, nom: true,
-        choix: { select: { id: true, cle: true, nom: true } },
+        choix: { select: { id: true, cle: true, nom: true, ordre: true } },
         combinaisons: { select: { id: true, valeurs: true, referenceBase: true, prixTarifHT: true } },
       },
     });
@@ -204,7 +204,13 @@ async function main() {
         vitrineId: p.vitrine.id, cle: p.table.cle, nom: p.table.nom,
         nature: p.table.nature || "finition",
         rendu: p.table.couleurs ? "pastilles" : "boutons",
-        ordre: 1, origine: "tarif",
+        // Le rang se prend APRÈS la question qu'on retire, et non en dur :
+        // écrire 1 quand « Finition » l'occupe déjà met deux questions au
+        // même rang, et leur ordre d'affichage tombe alors au hasard de la
+        // base. C'est ce qui est arrivé à trente et une fiches, réparées par
+        // prisma/departager-rangs-questions.mjs.
+        ordre: Math.max(0, ...p.vitrine.choix.filter((c) => c.id !== p.modele.id).map((c) => c.ordre), -1) + 1,
+        origine: "tarif",
         valeurs: {
           create: ordonnes.map((libelle, i) => ({
             libelle, ordre: i, suffixeReference: "",
