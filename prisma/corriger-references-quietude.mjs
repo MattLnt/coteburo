@@ -14,6 +14,7 @@
 //     Kit de 2 portes battantes      8 combinaisons,  8 prix   →  EH783 ×8
 //     Kit de 2 poignées              2 combinaisons,  2 prix   →  BA00  ×2
 //     Alcôve                         2 combinaisons,  2 prix   →  DZ07  ×2
+//     Top pour rangement             5 combinaisons,  5 prix   →  BH713 ×5
 //
 //   Aucune de ces fiches n'a de choix tarifaire porteur de jeton : la
 //   référence ne peut donc jamais se différencier, et `assemblerReference`
@@ -43,6 +44,14 @@
 //
 //   Page 239, bloc ④ Poignées :   classique BA00   ·   design DX21
 //   Page 241, bloc ② Alcôve :     L 80 DZ07        ·   L 100 DZ08
+//
+//   Page 238, bloc ② Tops — la largeur du top dit combien de meubles il
+//   couvre, et c'est elle qui change la référence :
+//     L 80  pour 1 meuble                            BH713
+//     L 100 pour 1 meuble                            BH723
+//     L 160 pour 2 meubles L 80 juxtaposés           BJ083
+//     L 200 pour 2 meubles L 100 juxtaposés          BJ103
+//     L 240 pour 3 meubles L 80 juxtaposés           BJ093
 //
 // LE FILET
 //   Chaque référence écrite est cherchée dans la page du tarif qui la donne.
@@ -102,6 +111,14 @@ const FICHES = [
     nom: "Alcôve - Quiétude",
     page: 241,
     reference: (v) => (v.largeur === "100 cm" ? "DZ08" : "DZ07"),
+  },
+  {
+    nom: "Top pour rangement - Quiétude",
+    page: 238,
+    reference: (v) => ({
+      "80 cm": "BH713", "100 cm": "BH723",
+      "160 cm": "BJ083", "200 cm": "BJ103", "240 cm": "BJ093",
+    }[v.largeur] ?? null),
   },
 ];
 
