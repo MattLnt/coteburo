@@ -104,6 +104,12 @@ export async function POST(req) {
           select: {
             id: true, ancienId: true, vitrineId: true, valeurs: true,
             prixTarifHT: true, ecoContribution: true, referenceBase: true,
+            // Les éléments d'une fiche composée : page 241 du tarif
+            // Buronomic, un « rangement avec alcôve » se commande en quatre
+            // références, et le panier pose une ligne par référence. Sans ce
+            // champ, chaque ligne serait facturée au prix de la COMPOSITION
+            // ENTIÈRE, soit quatre fois le total.
+            elements: true,
           },
         })
       : [];
@@ -182,12 +188,32 @@ export async function POST(req) {
         if (!variante && (it.combinaisonId || it.declinaisonId) && !v.sansDeclinaisons) {
           return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
         }
-        const { prixHT, motif } = prixVitrine(v, {
-          combinaison: variante,
-          declinaisonId: it.declinaisonId,
-          surDevis: false,
-          marge: margeGlobale,
-        });
+        // La ligne d'un ÉLÉMENT de composition se facture au prix de son
+        // élément, pas à celui de la combinaison. Le panier a déjà multiplié
+        // la quantité de l'élément par celle que le client a commandée ; ici
+        // on ne prend donc que le prix unitaire.
+        const element = it.elementCle && Array.isArray(variante?.elements)
+          ? variante.elements.find((e) => e.cle === it.elementCle)
+          : null;
+        if (it.elementCle && !element) {
+          return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
+        }
+
+        const { prixHT, motif } = element
+          ? prixVitrine(v, {
+            // On soumet l'élément au MÊME calcul que n'importe quelle
+            // variante — marge, promotion, verrouillage — en lui donnant la
+            // forme d'une combinaison à un seul prix.
+            combinaison: { ...variante, prixTarifHT: element.prixTarifHT, prixVenteHT: null, prixVerrouille: false },
+            surDevis: false,
+            marge: margeGlobale,
+          })
+          : prixVitrine(v, {
+            combinaison: variante,
+            declinaisonId: it.declinaisonId,
+            surDevis: false,
+            marge: margeGlobale,
+          });
         if (motif === "déclinaison disparue du catalogue") {
           return NextResponse.json({ error: `Cette configuration n'est plus disponible : ${it.designation}` }, { status: 400 });
         }
@@ -199,6 +225,7 @@ export async function POST(req) {
         // elle qui tient compte des finitions retenues. À défaut, celle de la
         // variante, puis celle de la fiche.
         const reference = it.referenceComplete
+          || element?.referenceBase
           || variante?.referenceBase
           || v.referenceUnitaire
           || null;

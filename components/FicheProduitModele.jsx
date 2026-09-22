@@ -211,6 +211,37 @@ export default function FicheProduitModele({
 
   const versDevis = () => {
     const identite = identiteCommande(produit, reponses, marge);
+
+    // Une fiche composée demande un devis comme elle remplit un panier : une
+    // ligne par référence. Sans cela le devis portait UNE ligne sans
+    // référence — une composition n'en a pas d'unique — et le commercial
+    // devait tout retrouver.
+    if (composee && identite.elements.length) {
+      for (const [i, e] of identite.elements.entries()) {
+        addDevis({
+          vitrineId: produit.id,
+          combinaisonId: identite.combinaisonId,
+          elementCle: e.cle,
+          referenceComplete: e.reference,
+          fournisseur: identite.fournisseur,
+          choix: i === 0 ? identite.choix : null,
+          codeRacine: e.reference,
+          gammeSlug: produit.gamme?.slug,
+          carteSlug: produit.slug,
+          designation: e.designation,
+          gammeNom: produit.gamme?.nom,
+          image: i === 0 ? principalUrl : null,
+          config: i === 0 ? identite.finition : null,
+          finitions: [],
+          prixIndicatif: e.prixTarifHT == null ? null : e.prixTarifHT * (1 + marge),
+          quantite: qte * (e.quantite ?? 1),
+        });
+      }
+      setAjoute(true);
+      setTimeout(() => setAjoute(false), 2000);
+      return;
+    }
+
     addDevis({
       vitrineId: produit.id,
       combinaisonId: identite.combinaisonId,

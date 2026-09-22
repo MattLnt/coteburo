@@ -46,6 +46,9 @@ export async function POST(req) {
           // écarté avant d'atteindre la base : la demande de devis ne retient
           // que les champs qu'elle nomme.
           combinaisonId: a.combinaisonId || null,
+          // L'élément d'une fiche composée : sans lui, les quatre lignes se
+          // confondent et reçoivent le prix de la composition entière.
+          elementCle: a.elementCle || null,
           referenceComplete: a.referenceComplete || null,
           fournisseur: a.fournisseur || a.marque || null,
           choix: a.choix && typeof a.choix === "object" ? a.choix : null,
@@ -70,7 +73,9 @@ export async function POST(req) {
     // (ou modifié à la main) fixerait le montant d'un document commercial.
     const prixBase = await prixDepuisBase(articles);
     for (const a of articles) {
-      const resolu = a.vitrineId ? prixBase.get(clePrixLigne(a.vitrineId, a.declinaisonId)) : null;
+      const resolu = a.vitrineId
+        ? prixBase.get(clePrixLigne(a.vitrineId, a.declinaisonId, a.combinaisonId, a.elementCle))
+        : null;
       if (resolu && resolu.motif == null) {
         a.prixHT = resolu.prixHT ?? 0;
       } else {
