@@ -136,9 +136,13 @@ async function main() {
 
     let liste = [...candidats];
     // Le giratoire porte la même référence en roulettes et en patins : c'est
-    // le marqueur du nom de fichier qui tranche.
-    if (liste.length > 1 && lu.base) {
-      const filtre = liste.filter((v) => new RegExp(lu.base, "i").test(v.nom));
+    // le marqueur du nom de fichier qui tranche. Son ABSENCE tranche aussi —
+    // le dépôt contient « lcj001-noir-010 » ET « lcj001-noir », et le tarif
+    // écrit « /000 » pour les roulettes, la version standard, « /010 » pour
+    // les patins. Un nom sans marqueur est donc une photo sur roulettes.
+    if (liste.length > 1 && liste.some((v) => /giratoire/i.test(v.nom))) {
+      const base = lu.base || "roulettes";
+      const filtre = liste.filter((v) => new RegExp(base, "i").test(v.nom));
       if (filtre.length === 1) liste = filtre;
     }
     if (liste.length !== 1) {
