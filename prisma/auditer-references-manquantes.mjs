@@ -103,28 +103,34 @@ async function main() {
       const codes = [...new Set(texte.match(t.motif) || [])];
       vues += codes.length;
       const absentes = codes.filter((code) => !connues.has(code));
-      if (absentes.length) orphelinesParPage.set(n, absentes);
+      // Les références CONNUES que cette page imprime aussi : ce sont elles
+      // qui disent de quel produit la page parle.
+      const presentes = codes.filter((code) => connues.has(code));
+      if (absentes.length) orphelinesParPage.set(n, { absentes, presentes });
     }
 
     titre(`TARIF ${nom.toUpperCase()} — ${orphelinesParPage.size} pages avec des codes absents du catalogue`);
-    // Les pages où l'on connaît DÉJÀ des références sont les plus parlantes :
-    // c'est là qu'un produit manque à une fiche qui existe.
     const lignes = [];
-    for (const [page, absentes] of orphelinesParPage) {
+    for (const [page, { absentes, presentes }] of orphelinesParPage) {
       for (const code of absentes) {
-        // La voisine connue la plus proche, à deux caractères près.
+        // La voisine la plus proche parmi les références que CETTE PAGE
+        // imprime. C'est tout le resserrement : un code absent qui ressemble
+        // à une référence d'une AUTRE page est presque toujours un produit
+        // d'une autre gamme — ODJ0/3 chez Klik, JHA0/1N chez Adio. Sur la
+        // même page, en revanche, la ressemblance désigne le même bloc de
+        // tarif, donc une variante qui nous manque.
         let proche = null, d = 99;
-        for (const [k, fiche] of connues) {
+        for (const k of presentes) {
           const dd = distance(code, k);
-          if (dd < d) { d = dd; proche = { code: k, fiche }; }
+          if (dd < d) { d = dd; proche = { code: k, fiche: connues.get(k) }; }
         }
-        if (d <= 2) lignes.push({ page, code, d, proche });
+        if (proche && d <= 2) lignes.push({ page, code, d, proche });
       }
     }
     lignes.sort((a, b) => a.d - b.d || a.page - b.page);
 
-    console.log(`\n   ${lignes.length} codes absents qui ressemblent à une référence connue`);
-    console.log(`   (à deux caractères près — les autres sont sans doute des options ou des renvois)\n`);
+    console.log(`\n   ${lignes.length} codes absents qui ressemblent à une référence de LA MÊME PAGE`);
+    console.log(`   (à deux caractères près : même bloc de tarif, donc variante qui nous manque)\n`);
     const parFiche = new Map();
     for (const l of lignes) {
       if (!parFiche.has(l.proche.fiche)) parFiche.set(l.proche.fiche, []);
