@@ -453,7 +453,7 @@ nature. Il y en a deux, et elles ne disent pas la même chose.
 | **Catégorie → Sous-catégorie** | nous | 6 → 31 | une ou plusieurs, dont une principale |
 
 Le premier dit **qui fabrique**, le second **où l'on range**. Un bureau
-Astrolite est de la gamme Astrolite *et* dans Bureaux / Bureaux individuels.
+Astrolite est de la gamme Astrolite *et* dans Bureaux / Bureaux classiques.
 Les deux ensembles se croisent, ils ne s'emboîtent pas.
 
 État actuel : 101 gammes, aucune vide ; 555 fiches, aucune sans catégorie ni
@@ -486,13 +486,22 @@ Corriger une faute de frappe dans un nom ne doit jamais casser un lien.
 
 ### Une seule source pour l'architecture
 
-`importer-catalogue.mjs` porte une constante `ARCHITECTURE` qui redéclare les
-six catégories et leurs sous-catégories. La base les porte aussi. Deux
-sources pour une même vérité, et la plus silencieuse gagne.
+Depuis le 23 septembre 2026, l'arborescence est celle que le client a
+fournie : huit catégories, trente rayons, chaque fiche dans un seul rayon.
+Elle est écrite par `prisma/reclasser-architecture-client.mjs`, qui range
+chaque fiche d'après son nom et sa gamme, par des règles lues dans l'ordre.
+Une fiche qu'aucune règle n'attrape fait échouer le script : rien ne
+s'écrit tant qu'il en reste une.
 
-La base devient la source. L'import la **lit**, et refuse de ranger une fiche
-dans un rayon qui n'existe pas : il le signale au lieu de le créer. Un rayon
-neuf est une décision, pas un effet de bord.
+`importer-catalogue.mjs` porte encore une constante `ARCHITECTURE` — les six
+catégories d'origine, celles des colonnes du Excel. Il **refuse d'écrire**
+tant que la base porte l'arbre du client, sauf en `--options-seules`. Une
+fiche importée demain se classe en relançant le reclasseur, pas en
+retouchant le Excel.
+
+Trois noms de rayons vivent dans deux catégories — Direction, Collaboratif,
+Convivialité. Un rayon ne se lit donc jamais sans sa catégorie : le filtre
+du catalogue ignore `sousCategorie` quand `categorie` manque.
 
 ---
 

@@ -16,7 +16,9 @@ export default async function CataloguePage({ searchParams }) {
   // ensuite, tout le filtrage se fait côté navigateur, sans redemander au serveur.
   const valeursInitiales = {
     categorieSlug: sp?.categorie || null,
-    sousCategorieSlug: sp?.sousCategorie || null,
+    // Un rayon ne se lit qu'avec sa catégorie : « direction », « collaboratif »
+    // et « convivialité » existent chacun dans deux catégories.
+    sousCategorieSlug: sp?.categorie ? (sp?.sousCategorie || null) : null,
     marqueSlug: sp?.marque || null,
     prixMin: sp?.prixMin || null,
     prixMax: sp?.prixMax || null,

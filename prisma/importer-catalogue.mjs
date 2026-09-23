@@ -599,6 +599,24 @@ async function main() {
     if (!marques.has(s)) throw new Error(`Marque absente de la base : ${s}`);
   }
 
+  // Depuis le 23 septembre 2026, le site porte l'arborescence du client,
+  // écrite par prisma/reclasser-architecture-client.mjs. Le Excel, lui,
+  // porte encore l'ancienne dans ses colonnes Catégorie / Sous-catégorie.
+  // Réécrire ARCHITECTURE remettrait les six rayons d'origine et y rangerait
+  // chaque fiche : on refuse. Seul --options-seules, qui ne touche ni aux
+  // rayons ni aux fiches, reste permis.
+  const arbreClient = await prisma.categorie.findFirst({ where: { slug: "mobilier-d-accueil" } });
+  if (arbreClient && !OPTIONS_SEULES) {
+    console.log("");
+    console.log("── ARBORESCENCE VERROUILLÉE — RIEN NE SERA ÉCRIT ──");
+    console.log("");
+    console.log("   La base porte l'arborescence du client, pas celle du Excel.");
+    console.log("   Cet import n'écrit plus qu'en --options-seules.");
+    console.log("   Pour reclasser des fiches : prisma/reclasser-architecture-client.mjs");
+    process.exitCode = 1;
+    return;
+  }
+
   const parRefComplete = new Map();   // réf. complète → id de fiche
 
   if (OPTIONS_SEULES) {

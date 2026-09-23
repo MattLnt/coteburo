@@ -240,7 +240,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
                           </Link>
                         ))}
                       </div>
-                    ) : (
+                    ) : content?.nbFiches ? null : (
                       <p style={{ fontSize: 13.5, color: "#9aa0a8", padding: "10px 12px" }}>Nouveautés à venir dans cette catégorie.</p>
                     )}
 
@@ -316,7 +316,9 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
                   <p className="text-[12px] text-ink-soft mt-0.5">
                     {catOuverte.sousCategories.length > 0
                       ? `${catOuverte.sousCategories.length} sous-catégorie${catOuverte.sousCategories.length > 1 ? "s" : ""}`
-                      : "Nouveautés à venir"}
+                      : catOuverte.nbFiches
+                        ? `${catOuverte.nbFiches} produit${catOuverte.nbFiches > 1 ? "s" : ""}`
+                        : "Nouveautés à venir"}
                   </p>
                 </div>
               </div>
