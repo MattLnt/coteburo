@@ -22,8 +22,8 @@
 //   de nature finition, rang 0, dont chaque valeur ajoute son chiffre et
 //   porte une couleur — donc une pastille. Quantité 1 = un lot.
 //
-//   L'écotaxe du tarif est par pièce (colonne voisine de « Kg/u ») ; la
-//   combinaison vend un lot, elle porte donc pièce × conditionnement.
+//   L'écotaxe imprimée sur une ligne de lot est déjà celle du lot — la page
+//   Maike le montre : 3,34 pour le lot de 4, 0,84 à l'unité. On la recopie.
 //
 // LE FILET
 //   Chaque référence reconstruite doit être imprimée sur la page 154 du
@@ -49,10 +49,10 @@ const COLORIS = [
 ];
 
 const FICHES = [
-  { nom: "Chaise 4 pieds, lot de 4 - Kanpoa by Colos", racine: "KPA04", lot: 4, prixLot: 1174, ecoPiece: 1.64 },
-  { nom: "Fauteuil 4 pieds, lot de 4 - Kanpoa by Colos", racine: "KPA14", lot: 4, prixLot: 1463, ecoPiece: 1.82 },
-  { nom: "Tabouret 4 pieds, lot de 2 - Kanpoa by Colos", racine: "KPB02", lot: 2, prixLot: 922, ecoPiece: 1.11 },
-  { nom: "Fauteuil lounge 4 pieds, lot de 2 - Kanpoa by Colos", racine: "KPX12", lot: 2, prixLot: 1219, ecoPiece: 0.98 },
+  { nom: "Chaise 4 pieds, lot de 4 - Kanpoa by Colos", racine: "KPA04", lot: 4, prixLot: 1174, eco: 1.64 },
+  { nom: "Fauteuil 4 pieds, lot de 4 - Kanpoa by Colos", racine: "KPA14", lot: 4, prixLot: 1463, eco: 1.82 },
+  { nom: "Tabouret 4 pieds, lot de 2 - Kanpoa by Colos", racine: "KPB02", lot: 2, prixLot: 922, eco: 1.11 },
+  { nom: "Fauteuil lounge 4 pieds, lot de 2 - Kanpoa by Colos", racine: "KPX12", lot: 2, prixLot: 1219, eco: 0.98 },
 ];
 
 async function textePage() {
@@ -82,7 +82,7 @@ async function main() {
     const bases = [...new Set(v.combinaisons.map((k) => k.referenceBase))];
     if (bases.length !== 1 || bases[0] !== f.racine + "1") { console.log(`   ✗ combinaisons inattendues : ${bases.join(", ")}`); continue; }
 
-    const eco = Math.round(f.ecoPiece * f.lot * 100) / 100;
+    const eco = f.eco;
     console.log(`   ${v.combinaisons.length} combinaisons (${v.combinaisons.map((k) => k.prixTarifHT + " €").join(", ")}) → une seule : ${f.racine} à ${f.prixLot} € le lot de ${f.lot}, éco ${eco}`);
     console.log(`   axes retirés : ${v.choix.map((c) => `« ${c.nom} »`).join(", ")}`);
     console.log(`   axe « Coloris » : ${COLORIS.map((c) => `${c.libelle} → ${f.racine}${c.chiffre}`).join(" · ")}`);
