@@ -4,7 +4,7 @@ import Link from "next/link";
 import CatalogueFilters from "@/components/CatalogueFilters";
 import FavoriButton from "@/components/FavoriButton";
 import { surFondBlanc } from "@/lib/imageProduit";
-import { urlProduit } from "@/lib/catalogue";
+import { urlProduit, trieurMiseEnAvant } from "@/lib/catalogue";
 
 const fmt = (n) => (n == null ? null : `${Math.round(n).toLocaleString("fr-FR")} €`);
 const num = (v) => (v === "" || v == null ? null : Number(v));
@@ -159,7 +159,8 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
         return b.prixMini - a.prixMini;
       });
     } else {
-      arr.sort(parNom);
+      // Les cartes mises en avant pour la cible ouverte passent devant.
+      arr.sort(trieurMiseEnAvant({ categorieSlug, sousCategorieSlug, parNom }));
     }
     return arr;
   }, [cartes, categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);

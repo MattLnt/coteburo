@@ -34,6 +34,7 @@ model Categorie {
   sousCategories SousCategorie[]
   gammes         Gamme[]          @relation("GammeCategories")
   vitrines       ProduitVitrine[] @relation("VitrineCategories")
+  misesEnAvant   MiseEnAvant[]
 
   @@unique([marqueId, slug])
   @@index([marqueId])
@@ -552,6 +553,7 @@ model ProduitVitrine {
   categories                Categorie[]      @relation("VitrineCategories")
   sousCategories            SousCategorie[]  @relation("VitrineSousCategories")
   promotions                PromotionVitrine[]
+  misesEnAvant              MiseEnAvant[]
   optionsLiees              ProduitVitrine[] @relation("ProduitOptions")
   optionPour                ProduitVitrine[] @relation("ProduitOptions")
   // Produits suggeres sur la fiche (bloc « Vous aimerez aussi »). Distincts
@@ -580,6 +582,7 @@ model SousCategorie {
   createdAt   DateTime         @default(now())
   categorie   Categorie        @relation(fields: [categorieId], references: [id], onDelete: Cascade)
   vitrines    ProduitVitrine[] @relation("VitrineSousCategories")
+  misesEnAvant MiseEnAvant[]
 
   @@unique([categorieId, slug])
   @@index([categorieId])
@@ -805,4 +808,26 @@ model ExclusionFinition {
   vitrine   ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
 
   @@index([vitrineId])
+}
+
+// Les produits mis en avant dans un rayon : les douze premières cartes du
+// catalogue quand on ouvre une catégorie ou une sous-catégorie.
+//
+// Sans ça, l'ordre est alphabétique et « Bureaux » s'ouvre sur un
+// accroche-câbles. Une ligne par (fiche, cible) ; la cible est une catégorie
+// OU une sous-catégorie, jamais les deux. L'ordre est celui de l'admin.
+model MiseEnAvant {
+  id              String         @id @default(cuid())
+  vitrineId       String
+  categorieId     String?
+  sousCategorieId String?
+  ordre           Int            @default(0)
+  vitrine         ProduitVitrine @relation(fields: [vitrineId], references: [id], onDelete: Cascade)
+  categorie       Categorie?     @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+  sousCategorie   SousCategorie? @relation(fields: [sousCategorieId], references: [id], onDelete: Cascade)
+
+  @@unique([vitrineId, categorieId])
+  @@unique([vitrineId, sousCategorieId])
+  @@index([categorieId])
+  @@index([sousCategorieId])
 }
