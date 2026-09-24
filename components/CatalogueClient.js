@@ -24,7 +24,7 @@ function dansPlage(cMin, cMax, selMin, selMax) {
 
 const LIBELLES_TRI = { nom: "Nom (A–Z)", "prix-asc": "Prix croissant", "prix-desc": "Prix décroissant" };
 
-export default function CatalogueClient({ cartes, filtres, favorisVitrines, connecte, valeursInitiales, basePath = "/catalogue" }) {
+export default function CatalogueClient({ cartes, filtres, favorisVitrines, connecte, estAdmin = false, valeursInitiales, basePath = "/catalogue" }) {
   const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);
   const [sousCategorieSlug, setSousCategorieSlug] = useState(valeursInitiales.sousCategorieSlug || null);
   const [prixMin, setPrixMin] = useState(valeursInitiales.prixMin || null);
@@ -47,7 +47,18 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   const [menuTriOuvert, setMenuTriOuvert] = useState(false);
   const menuTriRef = useRef(null);
 
-  const favSet = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
+  // Les favoris vivent ici, pas seulement dans les props : une bascule sur
+  // une carte met à jour les compteurs et le filtre sans recharger la page.
+  const [favSet, setFavSet] = useState(() => new Set(favorisVitrines));
+  const basculerFavori = (id, actif) => setFavSet((prev) => {
+    const suite = new Set(prev);
+    if (actif) suite.add(id); else suite.delete(id);
+    return suite;
+  });
+  // Réservé à l'admin : « favoris » / « sans favori », pour pointer ce qui
+  // est validé pendant le travail sur les visuels. Pas dans l'URL — c'est
+  // un outil de travail, pas un filtre du catalogue.
+  const [filtreFavoris, setFiltreFavoris] = useState("tous");
 
   // Ferme le menu de tri au clic extérieur
   useEffect(() => {
@@ -125,6 +136,8 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
 
   const filtered = useMemo(() => {
     let list = cartes;
+    if (estAdmin && filtreFavoris === "favoris") list = list.filter((c) => favSet.has(c.id));
+    if (estAdmin && filtreFavoris === "sans") list = list.filter((c) => !favSet.has(c.id));
     if (categorieSlug) list = list.filter((c) => c.categorieSlug === categorieSlug);
     if (sousCategorieSlug) list = list.filter((c) => c.sousCategorieSlug === sousCategorieSlug);
 
@@ -163,7 +176,7 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
       arr.sort(trieurMiseEnAvant({ categorieSlug, sousCategorieSlug, parNom }));
     }
     return arr;
-  }, [cartes, categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
+  }, [cartes, categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri, estAdmin, filtreFavoris, favSet]);
 
   const categorieActive = filtres.categories.find((c) => c.slug === categorieSlug);
   const sousCategorieActive = categorieActive?.sousCategories.find((s) => s.slug === sousCategorieSlug);
@@ -189,7 +202,7 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   const carteProduit = (c) => (
     <div key={c.id} className="group relative rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
       <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20">
-        <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" />
+        <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" onChange={(actif) => basculerFavori(c.id, actif)} />
       </div>
       <Link href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
         {/* Fond blanc uni + coins arrondis sur l'image : le dégradé crème
@@ -224,6 +237,20 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
             <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Catalogue</p>
             <h1 className="font-display font-bold text-[27px] sm:text-5xl mt-1.5 sm:mt-3">{titre}</h1>
             <p className="text-ink-soft mt-1.5 sm:mt-3 text-[13px] sm:text-base">{filtered.length} produit{filtered.length > 1 ? "s" : ""}</p>
+            {estAdmin && (
+              <div className="mt-3 inline-flex rounded-full border border-line bg-white p-1 text-[12.5px]">
+                {[["tous", "Tous"], ["favoris", `Favoris · ${cartes.filter((c) => favSet.has(c.id)).length}`], ["sans", `Sans favori · ${cartes.filter((c) => !favSet.has(c.id)).length}`]].map(([val, label]) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setFiltreFavoris(val)}
+                    className={`rounded-full px-3 py-1 font-semibold transition ${filtreFavoris === val ? "bg-ink text-white" : "text-ink-soft hover:text-ink"}`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="hidden lg:flex items-center gap-3 flex-wrap">

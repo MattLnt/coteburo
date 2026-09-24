@@ -41,6 +41,7 @@ export default async function CataloguePage({ searchParams }) {
         filtres={JSON.parse(JSON.stringify(filtres))}
         favorisVitrines={favCtx.favorisVitrines}
         connecte={favCtx.connecte}
+        estAdmin={favCtx.estAdmin}
         valeursInitiales={valeursInitiales}
         basePath="/catalogue"
       />

@@ -3,7 +3,9 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toggleFavori } from "@/app/(compte)/compte/favoris/actions";
 
-export default function FavoriButton({ codeRacine, vitrineId, initial = false, connecte = true, variant = "float" }) {
+// onChange(actif) : prévient le parent à chaque bascule, optimiste puis
+// confirmée — le catalogue tient ses compteurs de favoris à jour sans recharger.
+export default function FavoriButton({ codeRacine, vitrineId, initial = false, connecte = true, variant = "float", onChange = null }) {
   const router = useRouter();
   const [favori, setFavori] = useState(initial);
   const [isPending, startTransition] = useTransition();
@@ -19,11 +21,13 @@ export default function FavoriButton({ codeRacine, vitrineId, initial = false, c
     }
 
     // Optimistic UI
-    setFavori((v) => !v);
+    const poser = (v) => { setFavori(v); onChange?.(v); };
+    const vise = !favori;
+    poser(vise);
     startTransition(async () => {
       const res = await toggleFavori({ codeRacine, vitrineId });
-      if (res?.error) setFavori((v) => !v); // rollback en cas d'erreur
-      else if (typeof res?.favori === "boolean") setFavori(res.favori);
+      if (res?.error) poser(!vise); // rollback en cas d'erreur
+      else if (typeof res?.favori === "boolean") poser(res.favori);
     });
   };
 
