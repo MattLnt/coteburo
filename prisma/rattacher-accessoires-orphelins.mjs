@@ -36,6 +36,12 @@ const RATTACHEMENTS = [
     sur: { gamme: { nom: "Rhune" }, nom: { contains: "électrification possible" } } },
   { accessoire: "Extension de retour - Astrolite",
     sur: { gamme: { nom: "ASTROLITE" }, nom: { startsWith: "Bureau plan" } } },
+  // Fifty Full, pages 327-328 : les modules « se positionnent obligatoirement
+  // en intermédiaire » — ils étendent un comptoir, ils ne se vendent pas seuls.
+  ...["Module bas avec angle 90°", "Module bas intermédiaire", "Module haut intermédiaire",
+    "Module PMR final", "Module PMR intermédiaire", "Module retour bas", "Module retour haut"]
+    .map((m) => ({ accessoire: `${m} - Fifty Full`,
+      sur: { gamme: { nom: "FIFTY-FULL" }, nom: { startsWith: "Comptoir d'accueil" } } })),
 ];
 
 async function main() {
