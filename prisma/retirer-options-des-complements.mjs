@@ -12,9 +12,16 @@
 //   vend seul ou en option d'un bureau ; il ne porte pas d'options lui-même.
 //
 // CE QU'IL FAIT
-//   Pour chaque fiche du rayon Bureaux › Compléments & accessoires, vide sa
-//   liste optionsLiees. Les liens dans l'autre sens — un bureau qui propose
-//   ce complément — ne bougent pas : c'est eux qui ont un sens.
+//   Vide la liste optionsLiees de toute fiche qui est un complément : celles
+//   du rayon Bureaux › Compléments & accessoires, et celles qui sont
+//   elles-mêmes proposées en option d'une autre fiche — un châssis pour
+//   dossiers suspendus, un kit de poignées, un top, un dos tissu ne
+//   proposent pas d'options. Les liens dans l'autre sens — un bureau qui
+//   propose ce complément — ne bougent pas : c'est eux qui ont un sens.
+//
+//   Second passage le 24 septembre 2026 : le premier ne regardait que le
+//   rayon, et trente-six compléments rangés ailleurs (Archivage, Armoires,
+//   Convivialité…) gardaient leurs options.
 //
 //   Les liens retirés sont écrits dans un fichier JSON avant l'écriture, pour
 //   pouvoir les remettre si le tri était trop large.
@@ -32,7 +39,13 @@ async function main() {
   console.log("");
 
   const complements = await prisma.produitVitrine.findMany({
-    where: { sousCategories: { some: { slug: "complements-accessoires" } }, optionsLiees: { some: {} } },
+    where: {
+      optionsLiees: { some: {} },
+      OR: [
+        { sousCategories: { some: { slug: "complements-accessoires" } } },
+        { optionPour: { some: {} } },
+      ],
+    },
     orderBy: { nom: "asc" },
     select: { id: true, nom: true, optionsLiees: { select: { id: true, nom: true } } },
   });
