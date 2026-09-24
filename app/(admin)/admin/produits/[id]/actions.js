@@ -469,6 +469,35 @@ export async function majVisuel(visuelId, champs) {
   return { ok: true };
 }
 
+/**
+ * L'étoile : ce visuel devient la vignette et passe en tête de liste.
+ *
+ * Un seul geste pour deux choses que l'admin faisait en deux temps — choisir
+ * le rôle dans un menu, puis déplacer l'image — et qui ne se faisaient jamais
+ * ensemble. La vignette est toujours la première : ce que l'admin voit en
+ * tête est ce que la carte montre.
+ */
+export async function mettreEnAvant(visuelId) {
+  await exigerAdmin();
+  const visuel = await prisma.visuel.findUnique({ where: { id: visuelId }, select: { vitrineId: true } });
+  if (!visuel) return { ok: false, error: "Visuel introuvable." };
+
+  const tous = await prisma.visuel.findMany({
+    where: { vitrineId: visuel.vitrineId }, orderBy: { ordre: "asc" }, select: { id: true, role: true },
+  });
+  const suite = [visuelId, ...tous.map((v) => v.id).filter((id) => id !== visuelId)];
+  await prisma.$transaction([
+    ...tous.filter((v) => v.role === "vignette" && v.id !== visuelId)
+      .map((v) => prisma.visuel.update({ where: { id: v.id }, data: { role: "galerie" } })),
+    ...suite.map((id, ordre) => prisma.visuel.update({
+      where: { id }, data: id === visuelId ? { ordre, role: "vignette" } : { ordre },
+    })),
+  ]);
+  await synchroniserImagePrincipale(prisma, visuel.vitrineId);
+  rafraichir(visuel.vitrineId);
+  return { ok: true };
+}
+
 export async function reordonnerVisuels(vitrineId, idsDansLOrdre) {
   await exigerAdmin();
   await prisma.$transaction(

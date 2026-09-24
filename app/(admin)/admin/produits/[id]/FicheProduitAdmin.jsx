@@ -18,7 +18,7 @@ import { Icon } from "@/components/dashboard/Icon";
 import {
   majIdentite, creerChoix, majChoix, supprimerChoix,
   creerValeur, majValeur, supprimerValeur, tirerDUnNuancier,
-  majCombinaison, majVisuel, supprimerVisuel, ajouterVisuels,
+  majCombinaison, majVisuel, mettreEnAvant, supprimerVisuel, ajouterVisuels,
 } from "./actions";
 import EditeurFinitions from "./EditeurFinitions";
 import EditeurTarifaire from "./EditeurTarifaire";
@@ -531,6 +531,7 @@ function BlocChoix({ choix, agir, estFinition, bibliotheque = [], decomposition 
 }
 
 function BlocVisuel({ visuel, valeursFinition, agir }) {
+  const estVignette = visuel.role === "vignette";
   const rattachees = new Set((visuel.valeurs || []).map((v) => v.valeurChoixId));
   const [selection, setSelection] = useState(rattachees);
 
@@ -545,30 +546,54 @@ function BlocVisuel({ visuel, valeursFinition, agir }) {
     <div className="w-[230px] overflow-hidden rounded-xl border border-line bg-surface">
       {/* Fond blanc, comme en boutique : beaucoup de visuels fournisseurs sont
           des PNG détourés, et l'aperçu doit montrer ce que le client verra. */}
-      <div className="flex h-[140px] items-center justify-center bg-white">
+      <div className="relative flex h-[140px] items-center justify-center bg-white">
         {visuel.url ? (
           <img src={surFondBlanc(visuel.url, 460)} alt="" className="h-full w-full object-contain" />
         ) : (
           <span className="text-[12px] text-ink-soft">sans image</span>
         )}
+        {/* L'étoile : la vignette, celle que la carte montre. Un clic la
+            choisit et la remonte en tête — un seul geste, pas un menu. */}
+        <button
+          type="button"
+          title={estVignette ? "Vignette de la fiche" : "Mettre en avant"}
+          aria-pressed={estVignette}
+          disabled={estVignette}
+          onClick={() => agir(mettreEnAvant(visuel.id))}
+          className={`absolute left-2 top-2 grid h-8 w-8 place-items-center rounded-full border transition ${
+            estVignette
+              ? "border-orange bg-orange text-white"
+              : "border-line bg-white/90 text-ink-soft hover:border-orange hover:text-orange"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill={estVignette ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
+            <path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.9l-5.3 2.8 1.1-5.9-4.3-4.1 5.9-.8z" />
+          </svg>
+        </button>
       </div>
       <div className="flex flex-col gap-2.5 p-3">
-        <label className="flex flex-col gap-1">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-soft">Rôle</span>
-          <Selecteur
-            taille="sm"
-            className="w-[130px]"
-            ariaLabel="Rôle du visuel"
-            valeur={visuel.role}
-            onChange={(v) => agir(majVisuel(visuel.id, { role: v }))}
-            options={[
-              { valeur: "vignette", libelle: "Vignette" },
-              { valeur: "galerie", libelle: "Galerie" },
-              { valeur: "ambiance", libelle: "Ambiance" },
-              { valeur: "schema", libelle: "Schéma" },
-            ]}
-          />
-        </label>
+        {/* Ambiance et schéma restent des rôles à part : l'ambiance ferme la
+            galerie, le schéma ne fait jamais vignette. Une pastille chacun,
+            qui se décoche en recliquant. */}
+        {!estVignette && (
+          <div className="flex gap-1.5">
+            {[["ambiance", "Ambiance"], ["schema", "Schéma"]].map(([role, libelle]) => (
+              <button
+                key={role}
+                type="button"
+                aria-pressed={visuel.role === role}
+                onClick={() => agir(majVisuel(visuel.id, { role: visuel.role === role ? "galerie" : role }))}
+                className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold transition ${
+                  visuel.role === role
+                    ? "border-ink bg-ink text-white"
+                    : "border-line bg-white text-ink-soft hover:border-ink hover:text-ink"
+                }`}
+              >
+                {libelle}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="flex flex-col gap-1">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-soft">Illustre</span>
