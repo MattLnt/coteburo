@@ -329,7 +329,7 @@ function OptionRow({ o, cfg, avecVisuels, onToggle, onQte, onValeur, onFinition,
                         const actif = cfg.finitions?.[gr.id] === val;
                         return (
                           <button key={val} type="button" onClick={() => onFinition(o.id, gr.id, val)} title={f.nom} className="flex flex-col items-center gap-1">
-                            <span className={`rounded-full border-2 overflow-hidden block ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
+                            <span className={`rounded-full border-2 overflow-hidden block transition-transform duration-150 ease-out hover:scale-125 hover:relative hover:z-10 hover:shadow-[0_6px_18px_rgba(33,36,40,0.22)] ${actif ? "border-orange" : "border-line hover:border-orange/40"}`} style={{ width: 36, height: 36, background: !f.imageUrl ? (f.couleur || "#e8e3da") : undefined }}>
                               {f.imageUrl && <img src={f.imageUrl} alt={f.nom} className="w-full h-full object-cover rounded-full" />}
                             </span>
                             <span className={`text-[10.5px] ${actif ? "text-orange-dark font-semibold" : "text-ink-soft"}`}>{f.nom}</span>

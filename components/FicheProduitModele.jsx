@@ -58,20 +58,28 @@ function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
 const euros = (n) =>
   n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 
-/** Une pastille de finition : la pastille du nuancier, sinon la couleur. */
+/**
+ * Une pastille de finition : la pastille du nuancier, sinon la couleur.
+ *
+ * Au survol du bouton parent (classe « group »), la pastille grossit d'un
+ * quart : la teinte se lit avant de cliquer. Le dessin ne bouge pas, seule
+ * la pastille s'agrandit, au-dessus des voisines.
+ */
 function Pastille({ valeur, choisie, taille = 56 }) {
   const style = { width: taille, height: taille };
+  const anneau = choisie ? "ring-2 ring-ink ring-offset-2 ring-offset-surface" : "ring-1 ring-line";
+  const survol = "transition-transform duration-150 ease-out group-hover:scale-125 group-hover:relative group-hover:z-10 group-hover:shadow-[0_6px_18px_rgba(33,36,40,0.22)]";
   if (valeur.imageUrl) {
     return (
       <span
-        className={`block rounded-full bg-cover bg-center ${choisie ? "ring-2 ring-ink ring-offset-2 ring-offset-surface" : "ring-1 ring-line"}`}
+        className={`block rounded-full bg-cover bg-center ${anneau} ${survol}`}
         style={{ ...style, backgroundImage: `url(${valeur.imageUrl})` }}
       />
     );
   }
   return (
     <span
-      className={`block rounded-full ${choisie ? "ring-2 ring-ink ring-offset-2 ring-offset-surface" : "ring-1 ring-line"}`}
+      className={`block rounded-full ${anneau} ${survol}`}
       // Sans couleur ni pastille, le beige neutre dit « teinte inconnue »
       // plutôt que de mentir avec une couleur inventée.
       style={{ ...style, background: valeur.couleur || "#e8e3da" }}
@@ -417,7 +425,7 @@ export default function FicheProduitModele({
                               type="button"
                               disabled={!dispo}
                               onClick={() => choisirPartie(i, t.part)}
-                              className={`flex w-[68px] flex-col items-center gap-1.5 ${dispo ? "" : "opacity-30"}`}
+                              className={`group flex w-[68px] flex-col items-center gap-1.5 ${dispo ? "" : "opacity-30"}`}
                               title={t.libelle}
                             >
                               <Pastille valeur={t} choisie={choisie} taille={46} />
@@ -460,7 +468,7 @@ export default function FicheProduitModele({
                       key={v.id}
                       type="button"
                       onClick={() => repondre(etape.choix.cle, v.libelle)}
-                      className="flex w-[76px] flex-col items-center gap-2"
+                      className="group flex w-[76px] flex-col items-center gap-2"
                       title={v.libelle}
                     >
                       <Pastille valeur={v} choisie={reponses[etape.choix.cle] === v.libelle} />
