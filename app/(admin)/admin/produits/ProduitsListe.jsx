@@ -23,7 +23,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toggleProduitPublie } from "./actions";
+import { toggleProduitPublie, supprimerLigneProduit } from "./actions";
 import Selecteur from "@/components/dashboard/Selecteur";
 
 const euros = (n) => (n == null ? "—" : Math.round(n).toLocaleString("fr-FR") + " €");
@@ -34,7 +34,7 @@ export default function ProduitsListe({
 }) {
   const router = useRouter();
   const params = useSearchParams();
-  const [, demarrer] = useTransition();
+  const [enCours, demarrer] = useTransition();
   const [selection, setSelection] = useState(new Set());
   const [recherche, setRecherche] = useState(filtres.q || "");
 
@@ -67,6 +67,17 @@ export default function ProduitsListe({
 
   const publierSelection = (publie) => demarrer(async () => {
     for (const id of selection) await toggleProduitPublie(id, publie);
+    setSelection(new Set());
+    router.refresh();
+  });
+
+  // La suppression se confirme sur place, avec les noms sous les yeux : pas
+  // de boîte de dialogue du navigateur, et rien ne part sur un clic isolé.
+  const [confirmerSuppr, setConfirmerSuppr] = useState(false);
+  const nomsSelection = lignes.filter((l) => selection.has(l.id)).map((l) => l.nom);
+  const supprimerSelection = () => demarrer(async () => {
+    for (const id of selection) await supprimerLigneProduit({ mode: "modele", carteId: id });
+    setConfirmerSuppr(false);
     setSelection(new Set());
     router.refresh();
   });
@@ -182,8 +193,31 @@ export default function ProduitsListe({
             className="h-8 rounded-lg border border-white/20 px-3 text-[13px] text-white">Publier</button>
           <button type="button" onClick={() => publierSelection(false)}
             className="h-8 rounded-lg border border-white/20 px-3 text-[13px] text-white">Dépublier</button>
-          <button type="button" onClick={() => setSelection(new Set())}
+          <button type="button" onClick={() => setConfirmerSuppr(true)}
+            className="h-8 rounded-lg border border-red-400/60 px-3 text-[13px] text-red-200 hover:bg-red-500/20">Supprimer…</button>
+          <button type="button" onClick={() => { setSelection(new Set()); setConfirmerSuppr(false); }}
             className="h-8 w-8 rounded-lg border border-white/20 text-white" aria-label="Vider la sélection">×</button>
+        </div>
+      )}
+
+      {/* ── Confirmation de suppression ─────────────────────────────── */}
+      {selection.size > 0 && confirmerSuppr && (
+        <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3">
+          <p className="text-[13.5px] font-semibold text-red-800">
+            Supprimer {selection.size} produit{selection.size > 1 ? "s" : ""} ? La fiche, ses choix, ses prix et ses visuels partent pour de bon.
+          </p>
+          <ul className="mt-2 max-h-[160px] overflow-y-auto text-[13px] text-red-900">
+            {nomsSelection.map((n) => <li key={n}>· {n}</li>)}
+            {horsPage > 0 && <li className="text-red-700">· … et {horsPage} hors de la page affichée</li>}
+          </ul>
+          <div className="mt-3 flex gap-2">
+            <button type="button" onClick={supprimerSelection} disabled={enCours}
+              className="h-8 rounded-lg bg-red-600 px-3 text-[13px] font-semibold text-white hover:bg-red-700 disabled:opacity-50">
+              Supprimer définitivement
+            </button>
+            <button type="button" onClick={() => setConfirmerSuppr(false)}
+              className="h-8 rounded-lg border border-red-300 px-3 text-[13px] text-red-800">Annuler</button>
+          </div>
         </div>
       )}
 
