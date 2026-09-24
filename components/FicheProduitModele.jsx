@@ -496,9 +496,29 @@ export default function FicheProduitModele({
                   className={`flex items-center justify-between gap-3 bg-surface px-4 py-3 ${i ? "border-t border-line" : ""}`}
                 >
                   <span className="text-sm text-ink-soft">{c.nom}</span>
-                  <span className="text-xs text-ink-soft/70">
-                    {c.nature === "finition" ? "sans effet sur le prix" : `${c.valeurs.length} choix`}
-                  </span>
+                  {c.nature === "finition" ? (
+                    // Les teintes se voient avant leur tour : de petites
+                    // pastilles, cliquables — répondre en avance est permis,
+                    // la question courante reste ouverte.
+                    <span className="flex flex-wrap items-center justify-end gap-1.5">
+                      {c.valeurs.slice(0, 12).map((v) => (
+                        <button
+                          key={v.id}
+                          type="button"
+                          title={v.libelle}
+                          onClick={() => repondre(c.cle, v.libelle)}
+                          className="group"
+                        >
+                          <Pastille valeur={v} choisie={false} taille={22} />
+                        </button>
+                      ))}
+                      {c.valeurs.length > 12 && (
+                        <span className="text-xs text-ink-soft/70">+{c.valeurs.length - 12}</span>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-ink-soft/70">{c.valeurs.length} choix</span>
+                  )}
                 </div>
               ))}
           </div>
