@@ -110,9 +110,9 @@ export default async function ConseilsPage() {
                       <span className="sm:hidden">Devis gratuit</span>
                       <span className="hidden sm:inline">Demander un devis →</span>
                     </Link>
-                    <a href="tel:0781020631" className="flex-1 text-center rounded-full border border-white/20 text-white font-semibold px-4 sm:px-5 py-3 text-[12.5px] sm:text-base sm:mt-3 hover:bg-white/10 transition">
+                    <a href="tel:0635584378" className="flex-1 text-center rounded-full border border-white/20 text-white font-semibold px-4 sm:px-5 py-3 text-[12.5px] sm:text-base sm:mt-3 hover:bg-white/10 transition">
                       <span className="sm:hidden">Appeler</span>
-                      <span className="hidden sm:inline">07 81 02 06 31</span>
+                      <span className="hidden sm:inline">06 35 58 43 78</span>
                     </a>
                   </div>
                 </div>

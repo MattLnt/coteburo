@@ -79,7 +79,7 @@ export default async function MonDevisPage({ params }) {
     <MonDevisClient
       devis={JSON.parse(JSON.stringify(devis))}
       finitionsParVitrine={JSON.parse(JSON.stringify(finitionsParVitrine))}
-      telephone={reglages?.telephone || "07 81 02 06 31"}
+      telephone={reglages?.telephone || "06 35 58 43 78"}
       email={reglages?.email || "contact@coteburo.fr"}
     />
   );

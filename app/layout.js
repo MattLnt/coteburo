@@ -82,7 +82,7 @@ const donneesStructurees = {
   url: "https://coteburo.fr",
   logo: "https://coteburo.fr/logo-coteburo-bicolore.svg",
   image: "https://coteburo.fr/og-image.jpg",
-  telephone: "+33781020631",
+  telephone: "+33635584378",
   email: "contact@coteburo.fr",
   priceRange: "€€",
   address: {
