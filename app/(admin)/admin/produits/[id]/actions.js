@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { empreinteDe } from "@/lib/empreinteCombinaison";
 import { synchroniserImagePrincipale } from "@/lib/imagePrincipale";
+import { listerCandidatsOptions as candidatsOptions } from "@/lib/optionsLiees";
 
 const nb = (v) => {
   if (v === "" || v == null) return null;
@@ -467,6 +468,29 @@ export async function majVisuel(visuelId, champs) {
 
   rafraichir(visuel.vitrineId);
   return { ok: true };
+}
+
+// ── Les options liées ─────────────────────────────────────────────────────
+//
+// Les accessoires vendus AVEC le produit — un bac à crochet sur un bureau
+// Alto. Ils gardent leur fiche, leur prix et leurs finitions ; ici on ne
+// décide que du lien.
+
+export async function listerCandidatsOptions(vitrineId) {
+  await exigerAdmin();
+  return candidatsOptions(prisma, vitrineId);
+}
+
+/** Remplace la liste des options d'une fiche par celle qu'on lui donne. */
+export async function majOptionsLiees(vitrineId, ids = []) {
+  await exigerAdmin();
+  const propres = [...new Set(ids.filter((id) => id && id !== vitrineId))];
+  await prisma.produitVitrine.update({
+    where: { id: vitrineId },
+    data: { optionsLiees: { set: propres.map((id) => ({ id })) } },
+  });
+  rafraichir(vitrineId);
+  return { ok: true, total: propres.length };
 }
 
 /**

@@ -2,6 +2,7 @@
 
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
+import { listerCandidatsOptions } from "@/lib/optionsLiees";
 import { chargerCatalogueAdmin } from "@/lib/catalogueAdmin";
 import { revalidatePath } from "next/cache";
 
@@ -108,38 +109,14 @@ export async function getCarteEdition(vitrineId) {
 // se lier à lui-même). Prix indicatif : prix unique si sansDeclinaisons, sinon le mini des déclinaisons.
 export async function getOptionsDisponibles(vitrineId) {
   await exigerAdmin();
-  const vitrines = await prisma.produitVitrine.findMany({
-    where: {
-      id: { not: vitrineId },
-      categories: { some: { estOption: true } },
-    },
-    orderBy: { nom: "asc" },
-    select: {
-      id: true, nom: true, imageUrl: true, images: true,
-      sansDeclinaisons: true, prixUnitaireHT: true, declinaisons: true, publie: true,
-      categories: { where: { estOption: true }, select: { nom: true } },
-    },
-  });
-
-  return vitrines.map((v) => {
-    let prix = null;
-    if (v.sansDeclinaisons) {
-      prix = v.prixUnitaireHT ?? null;
-    } else {
-      const ps = (Array.isArray(v.declinaisons) ? v.declinaisons : [])
-        .map((d) => Number(d.prixVenteHT))
-        .filter((x) => !Number.isNaN(x) && x > 0);
-      prix = ps.length ? Math.min(...ps) : null;
-    }
-    return {
-      id: v.id,
-      nom: v.nom,
-      image: v.imageUrl || (Array.isArray(v.images) && v.images[0]) || null,
-      prix,
-      publie: v.publie,
-      categorieNom: v.categories[0]?.nom || "Accessoire",
-    };
-  });
+  // Le même chargeur que la fiche produit : rayon Compléments, même gamme,
+  // fiches déjà liées. Le prix n'est plus calculé ici — l'ancien code lisait
+  // les déclinaisons du modèle d'avant, vides sur les fiches d'aujourd'hui.
+  const candidats = await listerCandidatsOptions(prisma, vitrineId);
+  return candidats.map((c) => ({
+    id: c.id, nom: c.nom, image: c.image, prix: null, publie: c.publie,
+    categorieNom: c.memeGamme ? `Gamme ${c.gammeNom}` : (c.rayonNom || "Complément"),
+  }));
 }
 
 // ─────────── SAUVEGARDE UNIQUE : tout en un clic ───────────

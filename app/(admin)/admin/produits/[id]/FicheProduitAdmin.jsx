@@ -34,6 +34,7 @@ import {
 } from "@/lib/modeleProduit";
 import { prixLigne } from "@/lib/prixCatalogue";
 import Selecteur from "@/components/dashboard/Selecteur";
+import OngletOptions from "./OngletOptions";
 
 const euros = (n) =>
   n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
@@ -79,7 +80,7 @@ function ChampAuto({ valeur, onEnregistrer, className = "", type = "text", ...pr
   );
 }
 
-export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers, bibliotheque = [], rangements = null }) {
+export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers, bibliotheque = [], rangements = null, optionsLieesIds = [] }) {
   const [onglet, setOnglet] = useState("choix");
   const [message, setMessage] = useState(null);
   const [, demarrer] = useTransition();
@@ -189,6 +190,7 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
       compte: produit.visuels.length,
       alerte: produit.visuels.length ? null : "aucun visuel",
     },
+    { cle: "options", nom: "Options", icone: "layers", compte: optionsLieesIds.length },
   ];
 
   return (
@@ -407,6 +409,11 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
             il finirait par diverger du panier.
           </div>
         </div>
+      )}
+
+      {/* ── Options liées ──────────────────────────────────────────── */}
+      {onglet === "options" && (
+        <OngletOptions vitrineId={produit.id} idsInitiaux={optionsLieesIds} agir={agir} />
       )}
 
       {/* ── Visuels ────────────────────────────────────────────────── */}
