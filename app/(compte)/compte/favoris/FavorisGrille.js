@@ -32,7 +32,7 @@ export default function FavorisGrille({ items }) {
     return (
       <div className="rounded-2xl border border-line bg-surface p-8 sm:p-12 text-center">
         <p className="text-ink-soft text-[14px]">Vous avez retiré tous vos favoris.</p>
-        <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+        <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function FavorisGrille({ items }) {
           const prixAffiche = prixDe(it);
           return (
             <div key={it.id} className="rounded-2xl border border-line bg-surface p-3 flex items-center gap-3">
-              <Link href={it.href} className="flex-shrink-0">
+              <Link prefetch={false} href={it.href} className="flex-shrink-0">
                 <div className="w-[74px] h-[74px] rounded-xl bg-surface-2 overflow-hidden">
                   {it.imageUrl ? (
                     <img src={it.imageUrl} alt={it.designation} className="w-full h-full object-cover" />
@@ -86,7 +86,7 @@ export default function FavorisGrille({ items }) {
                 </div>
               </Link>
 
-              <Link href={it.href} className="min-w-0 flex-1">
+              <Link prefetch={false} href={it.href} className="min-w-0 flex-1">
                 {it.gamme && <p className="text-[9.5px] font-bold uppercase tracking-wide text-orange">{it.gamme}</p>}
                 <h3 className="font-display font-bold text-[13.5px] text-ink mt-0.5 leading-snug line-clamp-2">{it.designation}</h3>
                 <p className="font-display font-bold text-[15px] text-ink mt-1.5">
@@ -106,7 +106,7 @@ export default function FavorisGrille({ items }) {
           const prixAffiche = prixDe(it);
           return (
             <div key={it.id} className="group rounded-2xl border border-line bg-surface overflow-hidden hover:shadow-[0_20px_50px_-30px_rgba(33,36,40,0.3)] transition">
-              <Link href={it.href} className="block">
+              <Link prefetch={false} href={it.href} className="block">
                 <div className="aspect-[4/3] bg-surface-2 overflow-hidden relative">
                   {it.imageUrl ? (
                     <img src={it.imageUrl} alt={it.designation} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -119,7 +119,7 @@ export default function FavorisGrille({ items }) {
               </Link>
               <div className="p-5">
                 {it.gamme && <p className="text-[11px] font-bold uppercase tracking-wide text-orange">{it.gamme}</p>}
-                <Link href={it.href}>
+                <Link prefetch={false} href={it.href}>
                   <h3 className="font-display font-bold text-[15px] text-ink mt-1 leading-snug line-clamp-2 group-hover:text-orange transition min-h-[42px]">{it.designation}</h3>
                 </Link>
                 <div className="flex items-center justify-between mt-3">

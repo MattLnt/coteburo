@@ -21,7 +21,7 @@ export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId
   };
 
   return (
-    <Link href={href} className="group h-full flex flex-col bg-surface border border-line rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(33,36,40,0.05)] hover:border-transparent transition">
+    <Link prefetch={false} href={href} className="group h-full flex flex-col bg-surface border border-line rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(33,36,40,0.05)] hover:border-transparent transition">
       {/* Fond blanc uni : le dégradé crème créait un halo qui entrait en
           conflit avec les photos d'ambiance. */}
       <div className="relative aspect-square grid place-items-center border-b border-line/60 bg-white overflow-hidden">

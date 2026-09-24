@@ -121,7 +121,7 @@ function FooterCol({ title, links }) {
       <h4 className="text-white font-display text-[14px] sm:text-[15px] mb-3 sm:mb-3.5">{title}</h4>
       <ul className="space-y-2 sm:space-y-2.5">
         {links.map(([label, href]) => (
-          <li key={label}><Link href={href} className="text-[12.5px] sm:text-sm hover:text-orange transition">{label}</Link></li>
+          <li key={label}><Link prefetch={false} href={href} className="text-[12.5px] sm:text-sm hover:text-orange transition">{label}</Link></li>
         ))}
       </ul>
     </div>

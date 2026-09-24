@@ -97,7 +97,7 @@ function ConfirmationContent() {
       </Link>
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-center gap-2.5 sm:gap-3 mt-6 sm:mt-8">
-        <Link href="/catalogue" className="rounded-full bg-orange text-white font-semibold px-6 py-3.5 text-[13.5px] sm:text-base hover:bg-orange-dark transition">Continuer mes achats</Link>
+        <Link prefetch={false} href="/catalogue" className="rounded-full bg-orange text-white font-semibold px-6 py-3.5 text-[13.5px] sm:text-base hover:bg-orange-dark transition">Continuer mes achats</Link>
         <Link href="/" className="rounded-full border border-line font-semibold px-6 py-3.5 text-[13.5px] sm:text-base hover:bg-ink hover:text-white transition">Retour à l&apos;accueil</Link>
       </div>
     </main>

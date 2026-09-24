@@ -59,7 +59,7 @@ export default function PanierPage() {
           </div>
           <h1 className="font-display font-bold text-[22px] sm:text-3xl">Votre panier est vide</h1>
           <p className="text-ink-soft mt-2 max-w-md mx-auto text-[13px] sm:text-base">Parcourez notre catalogue pour découvrir nos mobiliers de bureau et ajoutez vos articles au panier.</p>
-          <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-7 py-3.5 mt-6 sm:mt-7 text-[13.5px] sm:text-base hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+          <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-7 py-3.5 mt-6 sm:mt-7 text-[13.5px] sm:text-base hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
         </div>
       </main>
     );
@@ -89,7 +89,7 @@ export default function PanierPage() {
     return (
       <div key={it.id} className="rounded-2xl border border-line bg-surface p-3 sm:p-5">
         <div className="flex gap-3 sm:gap-5">
-          <Link href={href} className="shrink-0 w-[76px] h-[76px] sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-surface-2 grid place-items-center">
+          <Link prefetch={false} href={href} className="shrink-0 w-[76px] h-[76px] sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-surface-2 grid place-items-center">
             {it.image ? (
               <Image src={it.image} alt={it.designation} width={112} height={112} className="w-full h-full object-cover" />
             ) : (
@@ -99,7 +99,7 @@ export default function PanierPage() {
           <div className="flex-1 min-w-0 flex justify-between gap-2.5">
             <div className="min-w-0">
               {it.marque && <p className="text-[9.5px] sm:text-[11px] font-bold uppercase tracking-wide text-orange">{it.marque}</p>}
-              <Link href={href} className="block font-semibold text-ink text-[13.5px] sm:text-base hover:text-orange transition line-clamp-2 leading-snug mt-0.5">{it.designation}</Link>
+              <Link prefetch={false} href={href} className="block font-semibold text-ink text-[13.5px] sm:text-base hover:text-orange transition line-clamp-2 leading-snug mt-0.5">{it.designation}</Link>
               {it.finition && <p className="text-[11.5px] sm:text-[12.5px] text-ink-soft mt-1">{it.finition}</p>}
             </div>
             {boutonSuppr(it)}
@@ -185,7 +185,7 @@ export default function PanierPage() {
         {/* Liste des articles */}
         <div className="flex flex-col gap-2.5 sm:gap-4">
           {lignes}
-          <Link href="/catalogue" className="text-orange font-semibold hover:text-orange-dark transition mt-1 inline-flex items-center justify-center lg:justify-start gap-2 text-[13px] sm:text-base py-2">← Continuer mes achats</Link>
+          <Link prefetch={false} href="/catalogue" className="text-orange font-semibold hover:text-orange-dark transition mt-1 inline-flex items-center justify-center lg:justify-start gap-2 text-[13px] sm:text-base py-2">← Continuer mes achats</Link>
         </div>
 
         {/* Récapitulatif */}

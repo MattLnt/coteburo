@@ -30,7 +30,7 @@ export default async function MesCommandesPage() {
             <svg width="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>
           </div>
           <p className="text-ink-soft text-[14px]">Vous n&apos;avez pas encore passé de commande.</p>
-          <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+          <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
         </div>
       ) : (
         <MesCommandesListe commandes={JSON.parse(JSON.stringify(commandes))} />

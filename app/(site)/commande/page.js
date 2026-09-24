@@ -215,7 +215,7 @@ export default function CommandePage() {
       <main className="mx-auto max-w-[1400px] px-5 sm:px-7 py-12 sm:py-16 text-center">
         <h1 className="font-display font-bold text-[22px] sm:text-3xl">Votre panier est vide</h1>
         <p className="text-ink-soft mt-2 text-[13px] sm:text-base">Ajoutez des articles avant de passer commande.</p>
-        <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-7 py-3.5 mt-6 sm:mt-7 text-[13.5px] sm:text-base hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+        <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-7 py-3.5 mt-6 sm:mt-7 text-[13.5px] sm:text-base hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
       </main>
     );
   }

@@ -24,7 +24,7 @@ export default async function Realisations() {
           <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Nos réalisations</p>
           <h2 className="font-display font-bold text-ink text-[21px] sm:text-3xl mt-1 sm:mt-1.5">Des espaces qui ont pris vie</h2>
         </div>
-        <Link href="/realisations" className="text-orange font-semibold whitespace-nowrap text-[12.5px] sm:text-[15px] hover:text-orange-dark transition">
+        <Link prefetch={false} href="/realisations" className="text-orange font-semibold whitespace-nowrap text-[12.5px] sm:text-[15px] hover:text-orange-dark transition">
           <span className="sm:hidden">Tout voir →</span>
           <span className="hidden sm:inline">Toutes les réalisations →</span>
         </Link>
@@ -37,7 +37,7 @@ export default async function Realisations() {
         {reals.map((r) => {
           const sousTitre = [r.client, r.surface].filter(Boolean).join(" · ");
           return (
-            <Link key={r.id} href={`/realisations/${r.slug}`} className="group relative block shrink-0 md:shrink w-[270px] md:w-auto h-[250px] sm:h-[340px] rounded-[18px] sm:rounded-3xl overflow-hidden bg-charcoal [scroll-snap-align:start]">
+            <Link prefetch={false} key={r.id} href={`/realisations/${r.slug}`} className="group relative block shrink-0 md:shrink w-[270px] md:w-auto h-[250px] sm:h-[340px] rounded-[18px] sm:rounded-3xl overflow-hidden bg-charcoal [scroll-snap-align:start]">
               <img src={r.imageUrl} alt={r.titre} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(33,36,40,0.9) 0%, rgba(33,36,40,0.25) 55%, rgba(33,36,40,0.1) 100%)" }} />
               {r.secteur && (

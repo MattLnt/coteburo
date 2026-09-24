@@ -54,7 +54,7 @@ export default function PromoBandCarousel({ promos, favorisCodes = [], favorisVi
           <h2 className="relative font-display font-bold text-white text-[25px] sm:text-[34px] leading-tight mt-2 sm:mt-3">Des prix <span className="text-orange">réduits</span> sur une sélection</h2>
           <p className="relative text-[#c4c9d0] mt-2.5 sm:mt-3.5 text-[13px] sm:text-[15px] leading-relaxed">Sièges, bureaux et rangements en promotion — livrés et montés en région PACA.</p>
           <div className="relative flex flex-wrap gap-3 mt-4 sm:mt-6">
-            <Link href="/catalogue" className="bg-orange text-white font-semibold rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-[12.5px] sm:text-base hover:bg-orange-dark transition">Voir le catalogue →</Link>
+            <Link prefetch={false} href="/catalogue" className="bg-orange text-white font-semibold rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-[12.5px] sm:text-base hover:bg-orange-dark transition">Voir le catalogue →</Link>
           </div>
         </div>
 

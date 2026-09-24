@@ -62,13 +62,13 @@ export default async function ProduitPage({ params }) {
         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           <Link href="/" className="hidden sm:inline hover:text-orange">Accueil</Link>
           <span className="hidden sm:inline text-ink-soft/40">/</span>
-          <Link href="/catalogue" className="hidden sm:inline hover:text-orange">Catalogue</Link>
+          <Link prefetch={false} href="/catalogue" className="hidden sm:inline hover:text-orange">Catalogue</Link>
           <span className="hidden sm:inline text-ink-soft/40">/</span>
-          <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.categorieNom}</Link>
+          <Link prefetch={false} href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.categorieNom}</Link>
           {payload.carte.sousCategorieNom && (
             <>
               <span className="text-ink-soft/40 shrink-0">/</span>
-              <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}&sousCategorie=${payload.carte.sousCategorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.sousCategorieNom}</Link>
+              <Link prefetch={false} href={`/catalogue?categorie=${payload.carte.categorieSlug}&sousCategorie=${payload.carte.sousCategorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.sousCategorieNom}</Link>
             </>
           )}
           <span className="text-ink-soft/40 shrink-0">/</span>
@@ -97,7 +97,7 @@ export default async function ProduitPage({ params }) {
             <h2 className="font-display font-bold text-[19px] sm:text-2xl mb-4 sm:mb-6">Vous aimerez aussi</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {payload.autresCartes.map((c) => (
-                <Link key={c.id} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
+                <Link prefetch={false} key={c.id} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
                   className="group rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
                     {c.imageUrl ? (

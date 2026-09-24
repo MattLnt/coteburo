@@ -65,7 +65,7 @@ export default async function RealisationDetailPage({ params }) {
         <div className="flex items-center gap-1.5 min-w-0">
           <Link href="/" className="hidden sm:inline hover:text-orange">Accueil</Link>
           <span className="hidden sm:inline text-ink-soft/40">/</span>
-          <Link href="/realisations" className="hover:text-orange whitespace-nowrap shrink-0">Réalisations</Link>
+          <Link prefetch={false} href="/realisations" className="hover:text-orange whitespace-nowrap shrink-0">Réalisations</Link>
           <span className="text-ink-soft/40 shrink-0">/</span>
           <span className="text-ink truncate min-w-0">{r.titre}</span>
         </div>
@@ -257,7 +257,7 @@ export default async function RealisationDetailPage({ params }) {
             <h2 className="font-display font-bold text-[19px] sm:text-2xl mb-4 sm:mb-6">Mobilier installé</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {r.produitsLies.map((p) => (
-                <Link key={p.id} href={urlProduit({ categorieSlug: p.categories[0]?.slug || null, sousCategorieSlug: p.sousCategories[0]?.slug || null, slug: p.slug })}
+                <Link prefetch={false} key={p.id} href={urlProduit({ categorieSlug: p.categories[0]?.slug || null, sousCategorieSlug: p.sousCategories[0]?.slug || null, slug: p.slug })}
                   className="group rounded-2xl border border-line bg-surface overflow-hidden hover:border-orange/50 transition">
                   <div className="aspect-[4/3] bg-surface-2 overflow-hidden">
                     {p.imageUrl ? (
@@ -283,7 +283,7 @@ export default async function RealisationDetailPage({ params }) {
           <section className="pb-8 sm:pb-16">
             <div className="flex items-end justify-between mb-4 sm:mb-6">
               <h2 className="font-display font-bold text-[19px] sm:text-2xl">Autres réalisations</h2>
-              <Link href="/realisations" className="text-[12.5px] sm:text-[13.5px] font-semibold text-orange hover:text-orange-dark transition whitespace-nowrap">
+              <Link prefetch={false} href="/realisations" className="text-[12.5px] sm:text-[13.5px] font-semibold text-orange hover:text-orange-dark transition whitespace-nowrap">
                 <span className="sm:hidden">Tout voir →</span>
                 <span className="hidden sm:inline">Toutes les réalisations →</span>
               </Link>
@@ -292,7 +292,7 @@ export default async function RealisationDetailPage({ params }) {
                 font plus de 900px de haut pour un bloc secondaire. */}
             <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto sm:overflow-visible pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scroll-snap-type:x_mandatory] sm:[scroll-snap-type:none]">
               {autres.map((a) => (
-                <Link key={a.id} href={`/realisations/${a.slug}`}
+                <Link prefetch={false} key={a.id} href={`/realisations/${a.slug}`}
                   className="group relative shrink-0 sm:shrink w-[210px] sm:w-auto rounded-[18px] sm:rounded-[20px] overflow-hidden aspect-[4/5] [scroll-snap-align:start]">
                   {a.imageUrl ? (
                     <img src={a.imageUrl} alt={a.titre} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />

@@ -206,7 +206,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
           <div className="mx-auto max-w-[1400px] relative" onMouseLeave={() => setActive(null)}>
             <div className="px-5 sm:px-7" style={{ height: 52, display: "flex", alignItems: "center", gap: 4 }}>
               {categories.map((cat) => (
-                <Link key={cat.slug} href={`/catalogue?categorie=${cat.slug}`} onMouseEnter={() => enter(cat)}
+                <Link prefetch={false} key={cat.slug} href={`/catalogue?categorie=${cat.slug}`} onMouseEnter={() => enter(cat)}
                   className={`transition ${active === cat.slug ? "text-orange" : "text-ink hover:text-orange"}`}
                   style={{ display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 8, fontSize: 15, fontWeight: 600, whiteSpace: "nowrap" }}>
                   {cat.nom}
@@ -227,7 +227,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
                     {sousCatContent.length > 0 ? (
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                         {sousCatContent.map((s) => (
-                          <Link key={s.slug} href={`/catalogue?categorie=${content.slug}&sousCategorie=${s.slug}`} className="group" style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, border: "1px solid transparent", transition: "all .16s" }}
+                          <Link prefetch={false} key={s.slug} href={`/catalogue?categorie=${content.slug}&sousCategorie=${s.slug}`} className="group" style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, border: "1px solid transparent", transition: "all .16s" }}
                             onMouseEnter={(e) => { e.currentTarget.style.background = "#fce6d6"; e.currentTarget.style.borderColor = "rgba(240,102,27,0.25)"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent"; }}>
                             <span className="bg-surface-2 group-hover:bg-white transition" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "grid", placeItems: "center" }}>
@@ -244,12 +244,12 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
                       <p style={{ fontSize: 13.5, color: "#9aa0a8", padding: "10px 12px" }}>Nouveautés à venir dans cette catégorie.</p>
                     )}
 
-                    <Link href={`/catalogue?categorie=${content?.slug}`} className="text-orange hover:text-orange-dark font-semibold transition" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 18, marginLeft: 4, fontSize: 14 }}>
+                    <Link prefetch={false} href={`/catalogue?categorie=${content?.slug}`} className="text-orange hover:text-orange-dark font-semibold transition" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 18, marginLeft: 4, fontSize: 14 }}>
                       Voir tout {content?.nom?.toLowerCase()} →
                     </Link>
                   </div>
 
-                  <Link href={`/catalogue?categorie=${content?.slug}`} className="group" style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(150deg, #23262a 0%, #3a2820 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 24, minHeight: 220 }}>
+                  <Link prefetch={false} href={`/catalogue?categorie=${content?.slug}`} className="group" style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(150deg, #23262a 0%, #3a2820 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 24, minHeight: 220 }}>
                     <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "radial-gradient(circle, rgba(240,102,27,0.35), transparent 70%)" }} />
                     <span style={{ position: "relative", width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.08)", display: "grid", placeItems: "center", border: "1px solid rgba(255,255,255,0.12)" }}>
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f0661b" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{iconeDe(content)}</svg>
@@ -326,7 +326,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
 
             <div className="relative flex-1 overflow-y-auto px-5">
               <div className="rounded-2xl bg-white overflow-hidden" style={{ boxShadow: ombreCarte }}>
-                <Link href={`/catalogue?categorie=${catOuverte.slug}`} onClick={fermer}
+                <Link prefetch={false} href={`/catalogue?categorie=${catOuverte.slug}`} onClick={fermer}
                   className="flex items-center justify-between px-[17px] py-[15px]"
                   style={{ background: "linear-gradient(90deg, #fce6d6, rgba(252,230,214,0.35))" }}>
                   <span className="text-[14px] font-semibold text-orange-dark">Tout voir dans {catOuverte.nom}</span>
@@ -334,7 +334,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
                 </Link>
 
                 {catOuverte.sousCategories.map((s) => (
-                  <Link key={s.slug} href={`/catalogue?categorie=${catOuverte.slug}&sousCategorie=${s.slug}`} onClick={fermer}
+                  <Link prefetch={false} key={s.slug} href={`/catalogue?categorie=${catOuverte.slug}&sousCategorie=${s.slug}`} onClick={fermer}
                     className="flex items-center gap-3 px-[17px] py-[15px] border-t border-line/70 active:bg-surface-2 transition">
                     {/* Le rayon montre son icône, ou celle de sa catégorie
                         quand il n'en a pas : le menu ne doit pas trouer. */}
@@ -448,7 +448,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
 
 function Action({ href, label, children }) {
   return (
-    <Link href={href} className="text-ink hover:text-orange transition" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+    <Link prefetch={false} href={href} className="text-ink hover:text-orange transition" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
       {children}<span>{label}</span>
     </Link>
   );

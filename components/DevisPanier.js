@@ -70,7 +70,7 @@ export default function DevisPanier() {
           <span className="font-display font-bold text-[17px] sm:text-lg">{tousChiffres ? fmt(totalIndicatif) : `${fmt(totalIndicatif)}+`}</span>
         </div>
         <p className="text-[11px] sm:text-[11.5px] text-ink-soft mt-1.5 leading-relaxed">Prix indicatif hors remise et frais annexes — le devis final fera foi.</p>
-        <Link href="/catalogue" className="inline-flex items-center gap-1.5 text-[12.5px] sm:text-[13px] font-semibold text-orange hover:text-orange-dark transition mt-3">
+        <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-1.5 text-[12.5px] sm:text-[13px] font-semibold text-orange hover:text-orange-dark transition mt-3">
           + Ajouter d&apos;autres produits
         </Link>
       </div>

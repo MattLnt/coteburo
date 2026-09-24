@@ -63,7 +63,7 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
               </h1>
               <p className="text-ink-soft mt-3">{filtered.length} produit{filtered.length > 1 ? "s" : ""} trouvé{filtered.length > 1 ? "s" : ""}</p>
             </div>
-            <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-ink hover:border-orange hover:text-orange transition whitespace-nowrap">
+            <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-ink hover:border-orange hover:text-orange transition whitespace-nowrap">
               Voir tout le catalogue →
             </Link>
           </div>
@@ -85,12 +85,12 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
               </div>
               <p className="text-ink">Aucun produit ne correspond à «&nbsp;{query}&nbsp;»{aDesFiltres ? " avec ces filtres" : ""}.</p>
               <p className="text-[13px] text-ink-soft mt-1">Essayez un autre mot-clé, une gamme ou une marque.</p>
-              <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 hover:bg-orange-dark transition">Parcourir le catalogue →</Link>
+              <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 hover:bg-orange-dark transition">Parcourir le catalogue →</Link>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
               {filtered.map((r) => (
-                <Link key={r.id} href={r.href}
+                <Link prefetch={false} key={r.id} href={r.href}
                   className="group rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden relative">
                     {r.imageUrl ? (

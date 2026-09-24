@@ -38,7 +38,7 @@ export default async function ComptePage() {
           </p>
           {/* Boutons en demi-largeur sur mobile : côte à côte, ils débordaient. */}
           <div className="flex gap-2 sm:gap-3 mt-5 sm:mt-6">
-            <Link href="/catalogue" className="flex-1 sm:flex-none text-center rounded-full bg-orange text-white font-semibold px-4 sm:px-5 py-2.5 text-[12.5px] sm:text-sm hover:bg-orange-dark transition">
+            <Link prefetch={false} href="/catalogue" className="flex-1 sm:flex-none text-center rounded-full bg-orange text-white font-semibold px-4 sm:px-5 py-2.5 text-[12.5px] sm:text-sm hover:bg-orange-dark transition">
               Catalogue
             </Link>
             <Link href="/compte/commandes" className="flex-1 sm:flex-none text-center rounded-full border border-white/20 text-white font-semibold px-4 sm:px-5 py-2.5 text-[12.5px] sm:text-sm hover:bg-white/10 transition">
@@ -83,7 +83,7 @@ export default async function ComptePage() {
               <svg width="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 2H2" /><circle cx="9" cy="21" r="1.5" /><circle cx="18" cy="21" r="1.5" /></svg>
             </div>
             <p className="text-ink-soft text-[14px]">Vous n&apos;avez pas encore passé de commande.</p>
-            <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+            <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
           </div>
         ) : (
           <div className="divide-y divide-line">

@@ -204,7 +204,7 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
       <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20">
         <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" onChange={(actif) => basculerFavori(c.id, actif)} />
       </div>
-      <Link href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
+      <Link prefetch={false} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
         {/* Fond blanc uni + coins arrondis sur l'image : le dégradé crème
             entrait en conflit avec les photos d'ambiance rectangulaires. */}
         <div className="aspect-[4/3] bg-white overflow-hidden">

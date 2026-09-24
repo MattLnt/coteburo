@@ -48,7 +48,7 @@ export default async function RealisationsPage() {
             const extrait = extraitDuRecit(r.recit);
             return (
               <div key={r.id} className="grid lg:grid-cols-2 items-center gap-5 lg:gap-16 py-7 sm:py-16 lg:py-20 border-t border-line">
-                <Link
+                <Link prefetch={false}
                   href={`/realisations/${r.slug}`}
                   className={`group relative rounded-[18px] sm:rounded-[26px] overflow-hidden aspect-[4/3] sm:aspect-[4/3.3] ${inverse ? "lg:order-2" : ""}`}
                 >
@@ -72,7 +72,7 @@ export default async function RealisationsPage() {
                     <span className="w-10 h-px bg-line hidden sm:inline-block" />
                   </p>
                   <h2 className="font-display font-bold text-[22px] sm:text-4xl leading-tight tracking-[-0.01em] mb-3 sm:mb-5">
-                    <Link href={`/realisations/${r.slug}`} className="hover:text-orange transition">{r.titre}</Link>
+                    <Link prefetch={false} href={`/realisations/${r.slug}`} className="hover:text-orange transition">{r.titre}</Link>
                   </h2>
                   {(r.client || r.surface) && (
                     <div className="flex flex-wrap gap-2 mb-3.5 sm:mb-6">
@@ -81,7 +81,7 @@ export default async function RealisationsPage() {
                     </div>
                   )}
                   {extrait && <p className="text-[13px] sm:text-[15.5px] text-ink-soft leading-relaxed max-w-[440px] mb-4 sm:mb-6">{extrait}</p>}
-                  <Link href={`/realisations/${r.slug}`} className="group/lien inline-flex items-center gap-2.5 font-bold text-[13px] sm:text-[14px] text-ink">
+                  <Link prefetch={false} href={`/realisations/${r.slug}`} className="group/lien inline-flex items-center gap-2.5 font-bold text-[13px] sm:text-[14px] text-ink">
                     Découvrir le projet
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" className="transition group-hover/lien:translate-x-1"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                   </Link>

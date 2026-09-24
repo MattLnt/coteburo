@@ -72,7 +72,7 @@ export default async function FavorisPage() {
           </div>
           <p className="text-ink-soft text-[14px]">Vous n&apos;avez pas encore de favoris.</p>
           <p className="text-[12.5px] text-ink-soft/80 mt-1">Cliquez sur le cœur d&apos;un produit pour l&apos;enregistrer ici.</p>
-          <Link href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
+          <Link prefetch={false} href="/catalogue" className="inline-flex items-center gap-2 rounded-full bg-orange text-white font-semibold px-6 py-3 mt-5 text-sm hover:bg-orange-dark transition">Découvrir le catalogue →</Link>
         </div>
       ) : (
         <FavorisGrille items={JSON.parse(JSON.stringify(items))} />

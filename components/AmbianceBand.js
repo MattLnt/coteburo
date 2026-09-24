@@ -26,7 +26,7 @@ export default function AmbianceBand() {
                 <span className="sm:hidden">Mon projet →</span>
                 <span className="hidden sm:inline">Parler de mon projet →</span>
               </Link>
-              <Link href="/realisations" className="flex-1 sm:flex-none text-center text-white font-semibold rounded-full px-4 sm:px-7 py-3 sm:py-3.5 text-[12.5px] sm:text-base border border-white/30 hover:bg-white/10 transition">
+              <Link prefetch={false} href="/realisations" className="flex-1 sm:flex-none text-center text-white font-semibold rounded-full px-4 sm:px-7 py-3 sm:py-3.5 text-[12.5px] sm:text-base border border-white/30 hover:bg-white/10 transition">
                 <span className="sm:hidden">Réalisations</span>
                 <span className="hidden sm:inline">Voir nos réalisations</span>
               </Link>
