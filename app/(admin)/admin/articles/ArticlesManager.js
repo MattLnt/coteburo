@@ -25,20 +25,38 @@ function ArticleForm({ article, onDone, onCancel }) {
     slug: article?.slug || "",
   });
   const [saving, setSaving] = useState(false);
+  const [erreur, setErreur] = useState(null);
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
+  // Une action serveur qui échoue ne dit rien d'elle-même : sans ce filet,
+  // le bouton revenait à son état initial et l'article n'existait pas.
+  // Le cas typique : une image collée dans le texte en base64, qui fait
+  // dépasser la taille maximale d'une action serveur.
   const save = async () => {
     if (!form.titre.trim()) return;
     setSaving(true);
-    if (article) await updateArticle(article.id, form);
-    else await createArticle(form);
-    setSaving(false);
-    router.refresh();
-    onDone();
+    setErreur(null);
+    try {
+      const r = article ? await updateArticle(article.id, form) : await createArticle(form);
+      if (r?.error) throw new Error(r.error);
+      router.refresh();
+      onDone();
+    } catch (e) {
+      const poids = Math.round((form.contenu || "").length / 1024);
+      setErreur(`L'article n'a pas été enregistré (${e?.message || "erreur inconnue"}). `
+        + (poids > 800 ? `Le texte pèse ${poids} Ko : une image collée directement dans l'éditeur ? Passe par le champ Image, qui envoie le fichier à part.` : ""));
+    } finally {
+      setSaving(false);
+    }
   };
 
   const boutons = (
-    <div style={{ display: "flex", gap: 8 }}>
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      {erreur && (
+        <p role="alert" style={{ flexBasis: "100%", margin: 0, padding: "10px 12px", borderRadius: 10, background: "#fdecea", color: "#8a1f1f", fontSize: 13, lineHeight: 1.5 }}>
+          {erreur}
+        </p>
+      )}
       <button onClick={onCancel} style={{ padding: "12px 20px", borderRadius: 10, background: "#fff", color: "#5c616a", border: "1px solid #e8e3da", fontWeight: 600, fontSize: 13.5, cursor: "pointer", flexShrink: 0, fontFamily: "inherit" }}>
         Annuler
       </button>

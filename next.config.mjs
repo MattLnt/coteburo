@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Une action serveur refuse par défaut un corps de plus d'un mégaoctet.
+  // Un article de conseils — du HTML, des liens, quelques images en base64
+  // si l'auteur colle au lieu de téléverser — peut le dépasser, et l'échec
+  // ne remontait nulle part. Quatre mégaoctets laissent de la marge sans
+  // ouvrir la porte à n'importe quoi.
+  experimental: {
+    serverActions: { bodySizeLimit: "4mb" },
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
