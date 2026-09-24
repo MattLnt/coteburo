@@ -77,7 +77,7 @@ export default async function ArticlePage({ params }) {
               <h2 className="font-display font-bold text-[16px] sm:text-lg mb-4 sm:mb-5">Derniers articles</h2>
               <div className="flex flex-col gap-4 sm:gap-5">
                 {autres.map((a) => (
-                  <Link key={a.id} href={`/conseils/${a.slug}`} className="group flex gap-3 sm:gap-4 items-center">
+                  <Link prefetch={false} key={a.id} href={`/conseils/${a.slug}`} className="group flex gap-3 sm:gap-4 items-center">
                     <div className="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-surface-2 shrink-0 relative">
                       {a.imageUrl ? (
                         <Image src={a.imageUrl} alt={a.titre} fill sizes="80px" className="object-cover group-hover:scale-105 transition duration-500" />

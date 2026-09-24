@@ -104,7 +104,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
           <a href={telLink} className="lg:hidden text-white font-semibold whitespace-nowrap shrink-0">{tel}</a>
           <div className="cb-corp items-center gap-[18px] shrink-0">
             {CORP.map(([l, h]) => (
-              <Link key={h} href={h} className="hover:text-white transition">{l}</Link>
+              <Link prefetch={false} key={h} href={h} className="hover:text-white transition">{l}</Link>
             ))}
             <a href={telLink} className="text-white font-semibold">{tel}</a>
           </div>
@@ -397,7 +397,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
 
               <div className="flex flex-wrap gap-1.5">
                 {CORP.map(([l, h]) => (
-                  <Link key={h} href={h} onClick={fermer}
+                  <Link prefetch={false} key={h} href={h} onClick={fermer}
                     className="text-[12.5px] px-3.5 py-2 rounded-full bg-white/75 text-ink-soft active:bg-white transition">
                     {l}
                   </Link>

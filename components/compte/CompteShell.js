@@ -39,7 +39,7 @@ export default function CompteShell({ prenom, nom, email, children }) {
         {NAV.map((item) => {
           const actif = estActif(item.href);
           return (
-            <Link key={item.href} href={item.href}
+            <Link prefetch={false} key={item.href} href={item.href}
               style={{
                 display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", borderRadius: 12,
                 fontSize: 14.5, fontWeight: 600, textDecoration: "none", transition: "all .15s",
@@ -122,7 +122,7 @@ export default function CompteShell({ prenom, nom, email, children }) {
         {NAV.map((item) => {
           const actif = estActif(item.href);
           return (
-            <Link key={item.href} href={item.href} style={lienBottom}>
+            <Link prefetch={false} key={item.href} href={item.href} style={lienBottom}>
               <span style={{ color: actif ? "#f0661b" : "#9aa0a8", display: "flex", transition: "color .15s" }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{item.icon}</svg>
               </span>

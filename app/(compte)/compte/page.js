@@ -88,7 +88,7 @@ export default async function ComptePage() {
         ) : (
           <div className="divide-y divide-line">
             {commandes.slice(0, 4).map((c) => (
-              <Link key={c.id} href={`/compte/commandes/${c.id}`} className="block px-4 sm:px-6 py-3 sm:py-4 hover:bg-surface-2 transition">
+              <Link prefetch={false} key={c.id} href={`/compte/commandes/${c.id}`} className="block px-4 sm:px-6 py-3 sm:py-4 hover:bg-surface-2 transition">
                 {/* Le montant était masqué sous sm — or c'est l'information
                     que le client cherche en premier. Il passe donc sur la
                     ligne du numéro, statut et date en dessous. */}

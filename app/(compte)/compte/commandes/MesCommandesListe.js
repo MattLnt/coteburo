@@ -148,7 +148,7 @@ export default function MesCommandesListe({ commandes }) {
                 )}
               </div>
 
-              <Link href={`/compte/commandes/${c.id}`}
+              <Link prefetch={false} href={`/compte/commandes/${c.id}`}
                 className="mt-3 flex items-center justify-center gap-2 rounded-xl border border-line bg-surface-2 py-2.5 text-[12.5px] font-semibold text-ink hover:border-orange hover:text-orange-dark transition">
                 Voir le détail
                 <span className="text-orange-dark">→</span>

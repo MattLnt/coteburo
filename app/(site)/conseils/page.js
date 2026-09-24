@@ -52,7 +52,7 @@ export default async function ConseilsPage() {
             {/* ───── Colonne principale ───── */}
             <div className="min-w-0">
               {/* À la une — le dernier article, pleine largeur */}
-              <Link href={`/conseils/${premier.slug}`} className="group relative block h-[280px] sm:h-[440px] rounded-[18px] sm:rounded-[24px] overflow-hidden mb-5 sm:mb-10">
+              <Link prefetch={false} href={`/conseils/${premier.slug}`} className="group relative block h-[280px] sm:h-[440px] rounded-[18px] sm:rounded-[24px] overflow-hidden mb-5 sm:mb-10">
                 {premier.imageUrl ? (
                   <Image src={premier.imageUrl} alt={premier.titre} fill sizes="(max-width:1024px) 100vw, 70vw" className="object-cover group-hover:scale-[1.03] transition duration-500" priority />
                 ) : (
@@ -72,7 +72,7 @@ export default async function ConseilsPage() {
               {autresArticles.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                   {autresArticles.map((a) => (
-                    <Link key={a.id} href={`/conseils/${a.slug}`} className="group relative aspect-[16/10] sm:aspect-[4/3.2] rounded-[16px] sm:rounded-[20px] overflow-hidden">
+                    <Link prefetch={false} key={a.id} href={`/conseils/${a.slug}`} className="group relative aspect-[16/10] sm:aspect-[4/3.2] rounded-[16px] sm:rounded-[20px] overflow-hidden">
                       {a.imageUrl ? (
                         <Image src={a.imageUrl} alt={a.titre} fill sizes="(max-width:640px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition duration-500" />
                       ) : (
