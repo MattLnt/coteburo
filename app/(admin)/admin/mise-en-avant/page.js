@@ -9,6 +9,6 @@ export const metadata = { title: "Mise en avant · Admin" };
 // à gauche, la sélection à droite ; le reste des fiches en dessous, pour
 // piocher.
 export default async function MiseEnAvantPage() {
-  const cibles = await listerCibles();
-  return <MiseEnAvantClient cibles={cibles} />;
+  const { catalogue, categories } = await listerCibles();
+  return <MiseEnAvantClient cibles={categories} catalogue={catalogue} />;
 }

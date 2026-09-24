@@ -12,12 +12,21 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { PLAFOND } from "./constantes";
 
-const cle = (type) => (type === "categorie" ? "categorieId" : "sousCategorieId");
+// Trois cibles : une catégorie, un rayon, ou le catalogue entier — celui
+// qu'on voit sans filtre. Une mise en avant du catalogue n'a ni catégorie
+// ni rayon.
+const filtreCible = (type, id) => type === "catalogue"
+  ? { categorieId: null, sousCategorieId: null }
+  : type === "categorie" ? { categorieId: id } : { sousCategorieId: id };
 const ENTRE = { publie: true, accessoireSeul: false };
 
 /** L'arbre des cibles, avec le nombre de fiches et de mises en avant. */
 export async function listerCibles() {
   await exigerAdmin();
+  const [nbFiches, nbEnAvant] = await Promise.all([
+    prisma.produitVitrine.count({ where: ENTRE }),
+    prisma.miseEnAvant.count({ where: filtreCible("catalogue") }),
+  ]);
   const categories = await prisma.categorie.findMany({
     orderBy: { ordre: "asc" },
     select: {
@@ -32,22 +41,25 @@ export async function listerCibles() {
       },
     },
   });
-  return categories.map((c) => ({
-    id: c.id, nom: c.nom, slug: c.slug,
-    nbFiches: c._count.vitrines, nbEnAvant: c._count.misesEnAvant,
-    sousCategories: c.sousCategories.map((s) => ({
-      id: s.id, nom: s.nom, slug: s.slug,
-      nbFiches: s._count.vitrines, nbEnAvant: s._count.misesEnAvant,
+  return {
+    catalogue: { nbFiches, nbEnAvant },
+    categories: categories.map((c) => ({
+      id: c.id, nom: c.nom, slug: c.slug,
+      nbFiches: c._count.vitrines, nbEnAvant: c._count.misesEnAvant,
+      sousCategories: c.sousCategories.map((s) => ({
+        id: s.id, nom: s.nom, slug: s.slug,
+        nbFiches: s._count.vitrines, nbEnAvant: s._count.misesEnAvant,
+      })),
     })),
-  }));
+  };
 }
 
 /** Une cible : ses fiches en avant dans l'ordre, puis toutes les autres. */
 export async function chargerCible(type, id) {
   await exigerAdmin();
-  const where = type === "categorie"
-    ? { categories: { some: { id } } }
-    : { sousCategories: { some: { id } } };
+  const where = type === "catalogue" ? {}
+    : type === "categorie" ? { categories: { some: { id } } }
+      : { sousCategories: { some: { id } } };
 
   const [fiches, enAvant] = await Promise.all([
     prisma.produitVitrine.findMany({
@@ -56,7 +68,7 @@ export async function chargerCible(type, id) {
       select: { id: true, nom: true, imageUrl: true, images: true, gamme: { select: { nom: true } } },
     }),
     prisma.miseEnAvant.findMany({
-      where: { [cle(type)]: id },
+      where: filtreCible(type, id),
       orderBy: { ordre: "asc" },
       select: { vitrineId: true },
     }),
@@ -78,11 +90,11 @@ export async function chargerCible(type, id) {
 export async function definirMiseEnAvant(type, id, vitrineIds = []) {
   await exigerAdmin();
   const ids = [...new Set(vitrineIds.filter(Boolean))].slice(0, PLAFOND);
-  const champ = cle(type);
+  const cible = filtreCible(type, id);
   await prisma.$transaction([
-    prisma.miseEnAvant.deleteMany({ where: { [champ]: id } }),
+    prisma.miseEnAvant.deleteMany({ where: cible }),
     ...ids.map((vitrineId, ordre) => prisma.miseEnAvant.create({
-      data: { vitrineId, ordre, [champ]: id },
+      data: { vitrineId, ordre, ...cible },
     })),
   ]);
   revalidatePath("/admin/mise-en-avant");

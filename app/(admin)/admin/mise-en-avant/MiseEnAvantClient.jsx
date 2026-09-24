@@ -7,12 +7,13 @@ import { PLAFOND } from "./constantes";
 // L'écran de mise en avant. À gauche l'arbre des cibles ; à droite la
 // sélection ordonnée (douze au plus), puis les autres fiches du rayon avec
 // une recherche. Chaque geste enregistre : rien à valider.
-export default function MiseEnAvantClient({ cibles }) {
+export default function MiseEnAvantClient({ cibles, catalogue }) {
   const [cible, setCible] = useState(null);      // { type, id, nom }
   const [donnees, setDonnees] = useState(null);  // { enAvant, autres }
   const [q, setQ] = useState("");
   const [compte, setCompte] = useState(() => {
     const m = new Map();
+    m.set("catalogue:tout", catalogue?.nbEnAvant || 0);
     for (const c of cibles) {
       m.set(`categorie:${c.id}`, c.nbEnAvant);
       for (const s of c.sousCategories) m.set(`sousCategorie:${s.id}`, s.nbEnAvant);
@@ -71,14 +72,27 @@ export default function MiseEnAvantClient({ cibles }) {
       <div>
         <h1 className="font-display text-[24px] font-bold text-ink">Mise en avant</h1>
         <p className="mt-1 text-[13.5px] text-ink-soft">
-          Les {PLAFOND} premières cartes de chaque catégorie et de chaque rayon, dans l&apos;ordre que
-          tu choisis. Les autres suivent par nom.
+          Les {PLAFOND} premières cartes du catalogue, de chaque catégorie et de chaque rayon, dans
+          l&apos;ordre que tu choisis. Les autres suivent par nom.
         </p>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[300px_1fr]">
         {/* ── L'arbre ─────────────────────────────────────────────── */}
         <nav className="rounded-2xl border border-line bg-white p-2">
+          {/* Le catalogue sans filtre : la page /catalogue telle qu'on y
+              arrive depuis le menu. Sa sélection est à part. */}
+          <button
+            type="button"
+            onClick={() => choisir({ type: "catalogue", id: "tout", nom: "Tout le catalogue" })}
+            className={`mb-2 flex w-full items-center gap-2 rounded-xl border px-3 py-2 text-left text-[13.5px] font-semibold transition ${
+              cible?.type === "catalogue" ? "border-orange/40 bg-orange/10 text-orange-dark" : "border-line text-ink hover:bg-surface"
+            }`}
+          >
+            Tout le catalogue
+            <span className="text-[11px] font-normal text-ink-soft">{catalogue?.nbFiches ?? ""}</span>
+            {badge("catalogue", "tout")}
+          </button>
           {cibles.map((c) => (
             <div key={c.id} className="mb-1">
               <button
