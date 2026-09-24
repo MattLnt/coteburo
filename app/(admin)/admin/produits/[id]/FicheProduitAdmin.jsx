@@ -18,7 +18,7 @@ import { Icon } from "@/components/dashboard/Icon";
 import {
   majIdentite, creerChoix, majChoix, supprimerChoix,
   creerValeur, majValeur, supprimerValeur, tirerDUnNuancier,
-  majCombinaison, majVisuel, mettreEnAvant, supprimerVisuel, ajouterVisuels,
+  majCombinaison, majVisuel, mettreEnAvant, reordonnerVisuels, supprimerVisuel, ajouterVisuels,
 } from "./actions";
 import EditeurFinitions from "./EditeurFinitions";
 import EditeurTarifaire from "./EditeurTarifaire";
@@ -429,12 +429,23 @@ export default function FicheProduitAdmin({ produit, marge, surDevis, nuanciers,
           )}
 
           <div className="flex flex-wrap gap-4">
-            {produit.visuels.map((v) => (
+            {produit.visuels.map((v, i) => (
               <BlocVisuel
                 key={v.id}
                 visuel={v}
                 valeursFinition={finitions}
                 agir={agir}
+                position={i}
+                total={produit.visuels.length}
+                // Les flèches : on échange avec le voisin et on renvoie
+                // l'ordre complet — l'action réécrit tous les rangs.
+                onDeplacer={(sens) => {
+                  const ids = produit.visuels.map((x) => x.id);
+                  const j = i + sens;
+                  if (j < 0 || j >= ids.length) return;
+                  [ids[i], ids[j]] = [ids[j], ids[i]];
+                  agir(reordonnerVisuels(produit.id, ids));
+                }}
               />
             ))}
           </div>
@@ -537,7 +548,7 @@ function BlocChoix({ choix, agir, estFinition, bibliotheque = [], decomposition 
   );
 }
 
-function BlocVisuel({ visuel, valeursFinition, agir }) {
+function BlocVisuel({ visuel, valeursFinition, agir, position = 0, total = 1, onDeplacer = null }) {
   const estVignette = visuel.role === "vignette";
   const rattachees = new Set((visuel.valeurs || []).map((v) => v.valeurChoixId));
   const [selection, setSelection] = useState(rattachees);
@@ -627,13 +638,35 @@ function BlocVisuel({ visuel, valeursFinition, agir }) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => agir(supprimerVisuel(visuel.id))}
-          className="mt-1 text-left text-[12px] text-ink-soft hover:text-orange-dark"
-        >
-          Retirer ce visuel
-        </button>
+        <div className="mt-1 flex items-center gap-1.5">
+          {/* Déplacer d'un cran : la galerie du site suit cet ordre. */}
+          <button
+            type="button"
+            title="Vers la gauche"
+            disabled={position === 0}
+            onClick={() => onDeplacer?.(-1)}
+            className="grid h-7 w-7 place-items-center rounded-lg border border-line bg-white text-ink-soft hover:border-ink hover:text-ink disabled:opacity-30"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            title="Vers la droite"
+            disabled={position >= total - 1}
+            onClick={() => onDeplacer?.(1)}
+            className="grid h-7 w-7 place-items-center rounded-lg border border-line bg-white text-ink-soft hover:border-ink hover:text-ink disabled:opacity-30"
+          >
+            →
+          </button>
+          <span className="text-[11px] text-ink-soft">{position + 1}/{total}</span>
+          <button
+            type="button"
+            onClick={() => agir(supprimerVisuel(visuel.id))}
+            className="ml-auto text-[12px] text-ink-soft hover:text-orange-dark"
+          >
+            Retirer
+          </button>
+        </div>
       </div>
     </div>
   );
