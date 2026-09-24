@@ -15,6 +15,7 @@ import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { empreinteDe } from "@/lib/empreinteCombinaison";
+import { synchroniserImagePrincipale } from "@/lib/imagePrincipale";
 
 const nb = (v) => {
   if (v === "" || v == null) return null;
@@ -426,15 +427,7 @@ export async function ajouterVisuels(vitrineId, urls = []) {
     })),
   });
 
-  // Les anciens champs restent alimentés tant que lib/catalogue s'en sert
-  // pour les vignettes de liste et pour les accessoires.
-  const tous = await prisma.visuel.findMany({
-    where: { vitrineId }, orderBy: { ordre: "asc" }, select: { url: true },
-  });
-  await prisma.produitVitrine.update({
-    where: { id: vitrineId },
-    data: { imageUrl: tous[0]?.url || null, images: tous.slice(1).map((v) => v.url) },
-  });
+  await synchroniserImagePrincipale(prisma, vitrineId);
 
   rafraichir(vitrineId);
   return { ok: true, ajoutes: nouvelles.length, doublons: propres.length - nouvelles.length };
@@ -449,7 +442,15 @@ export async function majVisuel(visuelId, champs) {
   if (typeof champs.role === "string") data.role = champs.role;
   if (champs.ordre !== undefined) data.ordre = parseInt(champs.ordre, 10) || 0;
   if (Object.keys(data).length) {
+    // Une seule vignette par fiche : celle qu'on choisit remplace l'autre.
+    if (data.role === "vignette") {
+      await prisma.visuel.updateMany({
+        where: { vitrineId: visuel.vitrineId, role: "vignette", id: { not: visuelId } },
+        data: { role: "galerie" },
+      });
+    }
     await prisma.visuel.update({ where: { id: visuelId }, data });
+    await synchroniserImagePrincipale(prisma, visuel.vitrineId);
   }
 
   // Le rattachement est une liste : un visuel montre souvent un piétement ET
@@ -473,6 +474,7 @@ export async function reordonnerVisuels(vitrineId, idsDansLOrdre) {
   await prisma.$transaction(
     idsDansLOrdre.map((id, ordre) => prisma.visuel.update({ where: { id }, data: { ordre } })),
   );
+  await synchroniserImagePrincipale(prisma, vitrineId);
   rafraichir(vitrineId);
   return { ok: true };
 }
@@ -482,6 +484,7 @@ export async function supprimerVisuel(visuelId) {
   const visuel = await prisma.visuel.findUnique({ where: { id: visuelId }, select: { vitrineId: true } });
   if (!visuel) return { ok: false, error: "Visuel introuvable." };
   await prisma.visuel.delete({ where: { id: visuelId } });
+  await synchroniserImagePrincipale(prisma, visuel.vitrineId);
   rafraichir(visuel.vitrineId);
   return { ok: true };
 }

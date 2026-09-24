@@ -18,6 +18,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { synchroniserImagePrincipale } from "@/lib/imagePrincipale";
 import { readdir, mkdir, rename, readFile, stat } from "node:fs/promises";
 import { join, basename, extname } from "node:path";
 import {
@@ -229,17 +230,7 @@ export async function attribuer(vitrineId, rels = []) {
     }
   }
 
-  // La vignette de l'ancien modèle reste alimentée : lib/catalogue s'en sert
-  // encore pour les listes et pour les accessoires.
-  if (faits.length) {
-    const tous = await prisma.visuel.findMany({
-      where: { vitrineId: v.id }, orderBy: { ordre: "asc" }, select: { url: true },
-    });
-    await prisma.produitVitrine.update({
-      where: { id: v.id },
-      data: { imageUrl: tous[0]?.url || null, images: tous.slice(1).map((x) => x.url) },
-    });
-  }
+  if (faits.length) await synchroniserImagePrincipale(prisma, v.id);
 
   revalidatePath("/admin/visuels");
   revalidatePath(`/admin/produits/${v.id}`);
