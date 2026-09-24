@@ -59,6 +59,31 @@ const euros = (n) =>
   n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 
 /**
+ * Abrège les réponses d'une question en retirant ce qu'elles ont toutes en
+ * commun — « Goulotte métal simple — plan L120 », « … L140 » deviennent
+ * « plan L120 », « plan L140 ». On coupe sur une frontière de mot, jamais au
+ * milieu (« L120 » et « L140 » donneraient « 20 » et « 40 »), et on renonce
+ * dès qu'une réponse deviendrait vide ou que deux se confondraient. Le
+ * libellé complet reste dans l'infobulle et dans le récapitulatif.
+ */
+function abreger(valeurs) {
+  const libelles = valeurs.map((v) => v.libelle);
+  const court = new Map(libelles.map((l) => [l, l]));
+  if (libelles.length < 2) return court;
+  const mots = libelles.map((l) => l.split(/(\s+|\s—\s|\s-\s)/).filter((m) => m !== ""));
+  let debut = 0;
+  while (mots.every((m) => m.length > debut + 1 && m[debut] === mots[0][debut])) debut++;
+  let fin = 0;
+  while (mots.every((m) => m.length - fin > debut + 1 && m[m.length - 1 - fin] === mots[0][mots[0].length - 1 - fin])) fin++;
+  if (!debut && !fin) return court;
+  const nettoyer = (t) => t.replace(/^[\s—\-–:·,]+|[\s—\-–:·,(]+$/g, "").trim();
+  const abreges = mots.map((m) => nettoyer(m.slice(debut, m.length - fin).join("")));
+  if (abreges.some((a) => a.length < 2) || new Set(abreges).size !== abreges.length) return court;
+  libelles.forEach((l, i) => court.set(l, abreges[i].charAt(0).toUpperCase() + abreges[i].slice(1)));
+  return court;
+}
+
+/**
  * Une pastille de finition : la pastille du nuancier, sinon la couleur.
  *
  * Au survol du bouton parent (classe « group »), la pastille grossit d'un
@@ -285,6 +310,8 @@ export default function FicheProduitModele({
     () => impactPrix(produit, etape, reponses, marge),
     [produit, etape, reponses, marge],
   );
+  // Les réponses de l'étape courante, débarrassées de leur début commun.
+  const courts = useMemo(() => (etape ? abreger(etape.valeurs) : new Map()), [etape]);
 
   // La décomposition du libellé composite de l'étape courante, s'il y en a un.
   const decompo = useMemo(
@@ -445,9 +472,10 @@ export default function FicheProduitModele({
                     key={v.id}
                     type="button"
                     onClick={() => repondre(etape.choix.cle, v.libelle)}
+                    title={v.libelle}
                     className="min-w-[118px] rounded-xl border border-line bg-surface px-3.5 py-2.5 text-left hover:border-ink"
                   >
-                    <span className="block text-[15px] font-semibold">{v.libelle}</span>
+                    <span className="block text-[15px] font-semibold">{courts.get(v.libelle) ?? v.libelle}</span>
                     {impact.varie && (
                       // Répéter le même montant sous chaque bouton n'apprend
                       // rien et encombre : on ne l'écrit que s'il distingue.
