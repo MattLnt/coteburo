@@ -25,8 +25,13 @@ function PromoCard({ promo, cibles, marques, onEdit }) {
   const nomMarque = (slug) => marques.find((m) => m.slug === slug)?.nom || slug;
   const router = useRouter();
   const etat = etatCampagne(promo);
-  const remise = promo.typeRemise === "montant" ? `−${promo.valeur} €` : `−${promo.valeur} %`;
   const nbCibles = promo.cibles?.length || 0;
+  // Un taux par fournisseur, et la remise générale si elle vise quelque chose.
+  const remisesMarques = Object.entries(promo.remisesMarques && typeof promo.remisesMarques === "object" ? promo.remisesMarques : {})
+    .filter(([, p]) => Number(p) > 0);
+  const generale = promo.valeur > 0 && ((promo.categories?.length || 0) > 0 || nbCibles > 0);
+  const remiseGenerale = promo.typeRemise === "montant" ? `−${promo.valeur} €` : `−${promo.valeur} %`;
+  const remise = generale ? remiseGenerale : (remisesMarques.length ? `−${remisesMarques[0][1]} %` : "—");
 
   const toggle = async () => { await togglePromotion(promo.id, !promo.actif); router.refresh(); };
   const remove = async () => {
@@ -60,16 +65,19 @@ function PromoCard({ promo, cibles, marques, onEdit }) {
 
       {/* Cibles */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 5, padding: "10px 0", borderTop: "1px solid #f2efe9", borderBottom: "1px solid #f2efe9", marginBottom: 11 }}>
-        {promo.marques?.map((m) => (
-          <span key={`m-${m}`} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#fce6d6", color: "#d9551a" }}>{nomMarque(m)}</span>
+        {remisesMarques.map(([slug, pct]) => (
+          <span key={`m-${slug}`} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#fce6d6", color: "#d9551a" }}>{nomMarque(slug)} −{pct} %</span>
         ))}
+        {promo.afficherBandeau === false && (
+          <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#9aa0a8" }}>Sans bandeau</span>
+        )}
         {promo.categories?.map((c) => (
           <span key={c} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{CAT_LABELS[c] || c}</span>
         ))}
         {nbCibles > 0 && (
           <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{nbCibles} produit{nbCibles > 1 ? "s" : ""}</span>
         )}
-        {(!promo.marques?.length && !promo.categories?.length && !nbCibles) && (
+        {(!remisesMarques.length && !promo.categories?.length && !nbCibles) && (
           <span style={{ fontSize: 12, color: "#9aa0a8" }}>Aucune cible</span>
         )}
       </div>

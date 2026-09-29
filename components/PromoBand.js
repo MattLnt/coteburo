@@ -2,8 +2,7 @@ import { prisma } from "@/lib/prisma";
 import PromoBandCarousel from "@/components/PromoBandCarousel";
 import { getFavorisContext } from "@/lib/favoris";
 import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes } from "@/lib/catalogue";
-import { getCampagnesActives, lienCampagne } from "@/lib/promotions";
-import { libelleRemise } from "@/lib/bandeau";
+import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -12,9 +11,10 @@ export default async function PromoBand() {
   // sur un fournisseur ou une catégorie remisait des produits sans les y
   // faire apparaître. On ramène aussi tout ce que les campagnes visent.
   const campagnes = await getCampagnesActives();
-  const marques = [...new Set(campagnes.flatMap((c) => c.marques))];
-  const categoriesCiblees = [...new Set(campagnes.flatMap((c) => c.categories))];
-  const vitrinesCiblees = [...new Set(campagnes.flatMap((c) => c.vitrineIds))];
+  const marques = [...new Set(campagnes.flatMap((c) => Object.keys(c.remisesMarques)))];
+  const generales = campagnes.filter((c) => c.valeur > 0);
+  const categoriesCiblees = [...new Set(generales.flatMap((c) => c.categories))];
+  const vitrinesCiblees = [...new Set(generales.flatMap((c) => c.vitrineIds))];
   const cibles = [{ promoPct: { not: null } }];
   if (marques.length) cibles.push({ gamme: { marque: { slug: { in: marques } } } });
   if (categoriesCiblees.length) cibles.push({ categories: { some: { slug: { in: categoriesCiblees } } } });
@@ -38,10 +38,15 @@ export default async function PromoBand() {
   ]);
   attacherCampagnes(vitrines, campagnes);
 
-  // Un bouton par campagne qui vise un seul fournisseur : « Sokoa −25 % ».
-  const liens = campagnes
-    .map((c) => ({ href: lienCampagne(c), label: `${c.nom} · ${libelleRemise(c)}` }))
-    .filter((l) => l.href);
+  // Un bouton par fournisseur remisé : « Sokoa −20 % ». Le client choisit sa
+  // marque d'un tap, sans passer par les filtres.
+  const liens = [];
+  for (const c of campagnes) {
+    for (const m of c.marques) {
+      const href = `/catalogue?marque=${encodeURIComponent(m.slug)}&promo=1`;
+      if (!liens.some((l) => l.href === href)) liens.push({ href, label: `${m.nom} −${m.pct} %` });
+    }
+  }
 
   // Sans la marge, calculerPrixMini retombe sur les montants stockés : le
   // bandeau promo calculait donc sa remise sur un prix de base périmé.

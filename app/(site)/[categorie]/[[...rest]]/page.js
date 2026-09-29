@@ -98,7 +98,10 @@ export default async function ProduitPage({ params }) {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {payload.autresCartes.map((c) => (
                 <Link prefetch={false} key={c.id} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
-                  className="group rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
+                  className="group relative rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
+                  {c.promoPct != null && (
+                    <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 rounded-full bg-orange text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5">−{c.promoPct} %</span>
+                  )}
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
                     {c.imageUrl ? (
                       <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-[1.03] transition" />
@@ -111,7 +114,10 @@ export default async function ProduitPage({ params }) {
                   <div className="p-3 sm:p-4">
                     <p className="font-semibold text-ink text-[12.5px] sm:text-[15px] leading-snug group-hover:text-orange-dark transition line-clamp-2">{c.nom}</p>
                     {c.prixMini != null ? (
-                      <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">dès <span className="font-display font-bold text-ink text-[12.5px] sm:text-[15px]">{Math.round(c.prixMini).toLocaleString("fr-FR")} €</span> HT</p>
+                      <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">
+                        dès <span className="font-display font-bold text-ink text-[12.5px] sm:text-[15px]">{Math.round(c.prixMini).toLocaleString("fr-FR")} €</span> HT
+                        {c.prixMiniBase != null && <span className="ml-1.5 line-through text-ink-soft/70">{Math.round(c.prixMiniBase).toLocaleString("fr-FR")} €</span>}
+                      </p>
                     ) : (
                       <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">Sur devis</p>
                     )}

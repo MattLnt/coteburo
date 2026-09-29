@@ -2,7 +2,8 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import FavorisGrille from "./FavorisGrille";
-import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
+import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes } from "@/lib/catalogue";
+import { getCampagnesActives } from "@/lib/promotions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Mes favoris · Côté BURO" };
@@ -25,16 +26,21 @@ export default async function FavorisPage() {
     ? await prisma.produitVitrine.findMany({
         where: { id: { in: vitrineIds }, publie: true, gamme: { publie: true } },
         include: {
-          gamme: { select: { nom: true, venteSurDevis: true } },
-          categories: { select: { slug: true }, take: 1 },
+          gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { slug: true } } } },
+          categories: { select: { slug: true } },
           sousCategories: { select: { slug: true }, take: 1 },
         },
       })
     : [];
   const marge = await getMargeGlobale();
+  // Les favoris affichaient un prix sans promotion.
+  attacherCampagnes(vitrines, await getCampagnesActives());
   const itemsNouveaux = vitrines.map((v) => {
     const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
     const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
+    const promo = surDevis || prixMini == null
+      ? { prixFinal: prixMini, prixBase: null, enPromo: false, promoPct: null }
+      : appliquerPromoVitrine(v, prixMini);
     return {
       id: `vitrine:${v.id}`,
       vitrineId: v.id,
@@ -42,7 +48,9 @@ export default async function FavorisPage() {
       designation: v.nom,
       gamme: v.gamme.nom,
       imageUrl: (v.images && v.images[0]) || v.imageUrl || null,
-      prix: prixMini != null ? fmt(prixMini) : "Sur devis",
+      prix: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
+      prixBase: promo.enPromo ? fmt(promo.prixBase) : null,
+      promo: promo.enPromo ? `-${promo.promoPct}%` : null,
     };
   });
 

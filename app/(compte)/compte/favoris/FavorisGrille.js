@@ -90,7 +90,7 @@ export default function FavorisGrille({ items }) {
                 {it.gamme && <p className="text-[9.5px] font-bold uppercase tracking-wide text-orange">{it.gamme}</p>}
                 <h3 className="font-display font-bold text-[13.5px] text-ink mt-0.5 leading-snug line-clamp-2">{it.designation}</h3>
                 <p className="font-display font-bold text-[15px] text-ink mt-1.5">
-                  {prixAffiche === "Sur devis" ? "Sur devis" : <>{prixAffiche}<span className="text-[10.5px] font-normal text-ink-soft"> HT</span></>}
+                  {prixAffiche === "Sur devis" ? "Sur devis" : <>{prixAffiche}<span className="text-[10.5px] font-normal text-ink-soft"> HT</span>{it.prixBase && <span className="ml-1.5 text-[11px] font-normal line-through text-ink-soft/70">{it.prixBase}</span>}</>}
                 </p>
               </Link>
 
@@ -124,7 +124,7 @@ export default function FavorisGrille({ items }) {
                 </Link>
                 <div className="flex items-center justify-between mt-3">
                   <p className="font-display font-bold text-lg text-ink">
-                    {prixAffiche === "Sur devis" ? "Sur devis" : <>{prixAffiche}<span className="text-[12px] font-normal text-ink-soft"> HT</span></>}
+                    {prixAffiche === "Sur devis" ? "Sur devis" : <>{prixAffiche}<span className="text-[12px] font-normal text-ink-soft"> HT</span>{it.prixBase && <span className="ml-1.5 text-[12px] font-normal line-through text-ink-soft/70">{it.prixBase}</span>}</>}
                   </p>
                   {boutonCoeur(it, "w-9 h-9")}
                 </div>

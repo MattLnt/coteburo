@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import BestSellersCarousel from "@/components/BestSellersCarousel";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes } from "@/lib/catalogue";
+import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -11,14 +12,17 @@ export default async function BestSellers() {
     prisma.produitVitrine.findMany({
       where: { publie: true, bestSeller: true, gamme: { publie: true } },
       include: {
-        gamme: { select: { venteSurDevis: true } },
-        categories: { select: { slug: true }, take: 1 },
+        gamme: { select: { venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
+        categories: { select: { slug: true } },
         sousCategories: { select: { slug: true }, take: 1 },
       },
       orderBy: { updatedAt: "desc" },
       take: 10,
     }),
   ]);
+  // Les meilleures ventes affichaient un prix sans promotion, ni celle de
+  // la fiche ni les campagnes.
+  attacherCampagnes(vitrines, await getCampagnesActives());
 
   // Sans la marge, calculerPrixMini retombe sur les montants stockés : le
   // carrousel affichait un prix figé là où la carte du catalogue suivait les
@@ -28,18 +32,21 @@ export default async function BestSellers() {
   const formatted = vitrines.map((v) => {
     const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
     const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
+    const promo = surDevis || prixMini == null
+      ? { prixFinal: prixMini, prixBase: null, enPromo: false, promoPct: null }
+      : appliquerPromoVitrine(v, prixMini);
     return {
       id: `vitrine:${v.id}`,
       href: urlProduit({ categorieSlug: v.categories[0]?.slug || null, sousCategorieSlug: v.sousCategories[0]?.slug || null, slug: v.slug }),
       codeRacine: v.id,
       estNouveau: true,
-      brand: null,
+      brand: v.gamme.marque?.nom || null,
       name: v.nom,
       attr: null,
       images: (v.images && v.images.length ? v.images : (v.imageUrl ? [v.imageUrl] : [])),
-      price: prixMini != null ? fmt(prixMini) : "Sur devis",
-      oldPrice: undefined,
-      promo: undefined,
+      price: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
+      oldPrice: promo.enPromo ? fmt(promo.prixBase) : undefined,
+      promo: promo.enPromo ? `-${promo.promoPct}%` : undefined,
     };
   });
 

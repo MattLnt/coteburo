@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import ProductSelectionFilters from "@/components/ProductSelectionFilters";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
+import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes } from "@/lib/catalogue";
+import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
@@ -10,8 +11,8 @@ export default async function ProductSelection() {
     prisma.produitVitrine.findMany({
       where: { publie: true, enAvant: true, gamme: { publie: true } },
       include: {
-        gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true } } } },
-        categories: { select: { slug: true }, take: 1 },
+        gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
+        categories: { select: { slug: true } },
         sousCategories: { select: { slug: true }, take: 1 },
       },
       orderBy: { updatedAt: "desc" },
@@ -22,6 +23,8 @@ export default async function ProductSelection() {
   ]);
 
   if (vitrines.length === 0) return null;
+  // Sans les campagnes attachées, seule la promo propre à la fiche passait.
+  attacherCampagnes(vitrines, await getCampagnesActives());
 
   const produits = vitrines.map((v) => {
     const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;

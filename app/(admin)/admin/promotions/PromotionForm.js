@@ -32,7 +32,14 @@ export function PromotionForm({ initial, cibles, marques = [], onSubmit, onCance
   const [dateFin, setDateFin] = useState(toInputDate(initial?.dateFin));
   const [actif, setActif] = useState(initial?.actif ?? true);
   const [categories, setCategories] = useState(initial?.categories || []);
-  const [marquesSel, setMarquesSel] = useState(initial?.marques || []);
+  // Taux par fournisseur, en texte le temps de la saisie : { buronomic: "25" }.
+  const [remisesMarques, setRemisesMarques] = useState(() => {
+    const brut = initial?.remisesMarques;
+    if (!brut || typeof brut !== "object" || Array.isArray(brut)) return {};
+    return Object.fromEntries(Object.entries(brut).map(([s, v]) => [s, String(v)]));
+  });
+  const [afficherBandeau, setAfficherBandeau] = useState(initial?.afficherBandeau ?? true);
+  const marquesSel = Object.keys(remisesMarques);
   const [ciblesSel, setCiblesSel] = useState(initial?.cibles?.map((p) => p.vitrineId) || []);
   const [search, setSearch] = useState("");
   const [saving, setSaving] = useState(false);
@@ -41,7 +48,12 @@ export function PromotionForm({ initial, cibles, marques = [], onSubmit, onCance
   const [ciblesOuvert, setCiblesOuvert] = useState(false);
 
   const toggleCat = (v) => setCategories((c) => c.includes(v) ? c.filter((x) => x !== v) : [...c, v]);
-  const toggleMarque = (v) => setMarquesSel((m) => m.includes(v) ? m.filter((x) => x !== v) : [...m, v]);
+  const toggleMarque = (slug) => setRemisesMarques((r) => {
+    const suite = { ...r };
+    if (slug in suite) delete suite[slug]; else suite[slug] = "";
+    return suite;
+  });
+  const setTauxMarque = (slug, v) => setRemisesMarques((r) => ({ ...r, [slug]: v }));
   const toggleProd = (code) => setCiblesSel((p) => p.includes(code) ? p.filter((x) => x !== code) : [...p, code]);
 
   const filtered = search.trim()
@@ -51,10 +63,15 @@ export function PromotionForm({ initial, cibles, marques = [], onSubmit, onCance
   const submit = async () => {
     setError("");
     if (!nom.trim()) { setError("Le nom est requis."); return; }
-    if (!valeur || parseFloat(valeur) <= 0) { setError("La valeur de remise doit être supérieure à 0."); return; }
-    if (marquesSel.length === 0 && categories.length === 0 && ciblesSel.length === 0) { setError("Ciblez au moins un fournisseur, une catégorie ou un produit."); return; }
+    const generale = categories.length > 0 || ciblesSel.length > 0;
+    if (marquesSel.length === 0 && !generale) { setError("Ciblez au moins un fournisseur, une catégorie ou un produit."); return; }
+    // La remise générale ne sert qu'aux catégories et produits ; les
+    // fournisseurs ont chacun leur taux.
+    if (generale && (!valeur || parseFloat(String(valeur).replace(",", ".")) <= 0)) { setError("Indiquez la remise à appliquer aux catégories et produits ciblés."); return; }
+    const sansTaux = marquesSel.find((s) => !(parseFloat(String(remisesMarques[s]).replace(",", ".")) > 0));
+    if (sansTaux) { setError(`Indiquez le taux pour ${marques.find((m) => m.slug === sansTaux)?.nom || sansTaux}.`); return; }
     setSaving(true);
-    const res = await onSubmit({ nom, messageBandeau, typeRemise, valeur, dateDebut, dateFin, actif, categories, marques: marquesSel, cibles: ciblesSel });
+    const res = await onSubmit({ nom, messageBandeau, typeRemise, valeur, dateDebut, dateFin, actif, afficherBandeau, categories, remisesMarques, cibles: ciblesSel });
     setSaving(false);
     if (res && !res.ok) setError(res.error || "Erreur lors de l'enregistrement.");
   };
@@ -151,27 +168,65 @@ export function PromotionForm({ initial, cibles, marques = [], onSubmit, onCance
                 <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff" }} />
               </span>
             </button>
+
+            {/* Une campagne peut remiser sans s'annoncer : le bandeau du site
+                ne montre que celles qui le veulent. */}
+            <button
+              type="button"
+              onClick={() => setAfficherBandeau((a) => !a)}
+              style={{
+                width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+                padding: "11px 13px", borderRadius: 10, background: "#faf8f4", border: "1px solid #e8e3da",
+                cursor: "pointer", fontFamily: "inherit", textAlign: "left", marginTop: 8,
+              }}
+            >
+              <span>
+                <span style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#23262a" }}>Annoncer dans le bandeau</span>
+                <span style={{ display: "block", fontSize: 11, color: "#9aa0a8", marginTop: 2 }}>
+                  {afficherBandeau ? "Visible en haut du site, si le bandeau est activé dans les Réglages" : "La remise s'applique sans être annoncée"}
+                </span>
+              </span>
+              <span style={{
+                width: 42, height: 24, borderRadius: 999, flexShrink: 0, padding: "0 3px",
+                background: afficherBandeau ? "#f0661b" : "#d3d1c7",
+                display: "flex", alignItems: "center", justifyContent: afficherBandeau ? "flex-end" : "flex-start",
+                transition: "background .15s",
+              }}>
+                <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff" }} />
+              </span>
+            </button>
           </div>
 
           {marques.length > 0 && (
             <div style={card}>
               <label style={labelStyle}>Fournisseurs ciblés</label>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {marques.map((m) => {
-                  const sel = marquesSel.includes(m.slug);
+                  const sel = m.slug in remisesMarques;
                   return (
-                    <button key={m.slug} type="button" onClick={() => toggleMarque(m.slug)}
-                      style={{ padding: "8px 14px", borderRadius: 999, fontSize: 12.5, fontWeight: sel ? 700 : 500, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap",
-                        border: sel ? "1.5px solid #f0661b" : "1.5px solid #e8e3da",
-                        background: sel ? "#fce6d6" : "#faf8f4",
-                        color: sel ? "#d9551a" : "#5c616a" }}>
-                      {m.nom}
-                    </button>
+                    <div key={m.slug} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <button type="button" onClick={() => toggleMarque(m.slug)}
+                        style={{ flex: 1, textAlign: "left", padding: "9px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: sel ? 700 : 500, cursor: "pointer", fontFamily: "inherit",
+                          border: sel ? "1.5px solid #f0661b" : "1.5px solid #e8e3da",
+                          background: sel ? "#fce6d6" : "#faf8f4",
+                          color: sel ? "#d9551a" : "#5c616a" }}>
+                        {m.nom}
+                      </button>
+                      {sel && (
+                        <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#d9551a" }}>−</span>
+                          <input value={remisesMarques[m.slug]} onChange={(e) => setTauxMarque(m.slug, e.target.value)} inputMode="decimal" placeholder="25"
+                            aria-label={`Taux pour ${m.nom}`}
+                            style={{ ...inputStyle, width: 72, padding: "9px 10px", textAlign: "right" }} />
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#5c616a" }}>%</span>
+                        </span>
+                      )}
+                    </div>
                   );
                 })}
               </div>
               <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "10px 0 0" }}>
-                Tous les produits du fournisseur seront en promotion. Une campagne par fournisseur si les taux diffèrent : « Buronomic −20 % », « Sokoa −25 % ».
+                Tous les produits du fournisseur passent au taux indiqué. Plusieurs fournisseurs dans une même campagne, chacun à son taux, ne font qu&apos;un seul bandeau.
               </p>
             </div>
           )}

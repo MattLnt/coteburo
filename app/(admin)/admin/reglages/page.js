@@ -1,6 +1,6 @@
 import { Icon } from "@/components/dashboard/Icon";
 import { getReglages, getPaliersInstallation } from "./actions";
-import { getCampagnesActives } from "@/lib/promotions";
+import { getCampagnesActives, aUneRemise } from "@/lib/promotions";
 import { libelleRemise } from "@/lib/bandeau";
 import { ReglagesForm } from "./ReglagesForm";
 
@@ -16,7 +16,7 @@ export default async function ReglagesPage() {
   // De quoi afficher, à côté de l'interrupteur, le message qui sortira
   // réellement — celui rédigé dans la campagne, ou la remise chiffrée à défaut.
   const campagnesLisibles = campagnes
-    .filter((c) => c.valeur > 0)
+    .filter((c) => c.afficherBandeau && aUneRemise(c))
     .map((c) => ({ id: c.id, libelle: (c.messageBandeau || "").trim() || libelleRemise(c) }));
 
   return (
