@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import BestSellersCarousel from "@/components/BestSellersCarousel";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix , imagesVitrine } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
@@ -44,7 +44,7 @@ export default async function BestSellers() {
       brand: v.gamme.marque?.nom || null,
       name: v.nom,
       attr: null,
-      images: (v.images && v.images.length ? v.images : (v.imageUrl ? [v.imageUrl] : [])),
+      images: imagesVitrine(v),
       price: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
       oldPrice: promo.enPromo ? fmt(promo.prixBase) : undefined,
       promo: promo.enPromo ? `-${promo.promoPct}%` : undefined,

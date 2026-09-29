@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import PromoBandCarousel from "@/components/PromoBandCarousel";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
+import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes, inclureCombinaisonsPrix , imagesVitrine } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
@@ -69,7 +69,7 @@ export default async function PromoBand() {
       brand: v.gamme.marque?.nom || null,
       name: v.nom,
       attr: null,
-      images: (v.images && v.images.length ? v.images : (v.imageUrl ? [v.imageUrl] : [])),
+      images: imagesVitrine(v),
       price: fmt(calc.prixFinal),
       oldPrice: fmt(calc.prixBase),
       promo: `-${calc.promoPct}%`,

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import FavorisGrille from "./FavorisGrille";
-import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
+import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix , imagePrincipaleOuGalerie } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 export const dynamic = "force-dynamic";
@@ -48,7 +48,7 @@ export default async function FavorisPage() {
       href: urlProduit({ categorieSlug: v.categories[0]?.slug || null, sousCategorieSlug: v.sousCategories[0]?.slug || null, slug: v.slug }),
       designation: v.nom,
       gamme: v.gamme.nom,
-      imageUrl: (v.images && v.images[0]) || v.imageUrl || null,
+      imageUrl: imagePrincipaleOuGalerie(v),
       prix: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
       prixBase: promo.enPromo ? fmt(promo.prixBase) : null,
       promo: promo.enPromo ? `-${promo.promoPct}%` : null,

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { calculerPrixMini, urlProduit, getFiltresCatalogue, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getFiltresCatalogue, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix , imagePrincipaleOuGalerie } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 import RechercheClient from "@/components/RechercheClient";
 
@@ -84,7 +84,7 @@ export default async function RecherchePage({ searchParams }) {
       nom: v.nom,
       gammeNom: v.gamme.nom,
       brand: v.gamme.marque?.nom || null,
-      imageUrl: (v.images && v.images[0]) || v.imageUrl || null,
+      imageUrl: imagePrincipaleOuGalerie(v),
       prix: promo.prixFinal,
       prixAffiche: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
       oldPrice: promo.enPromo ? fmt(promo.prixBase) : null,

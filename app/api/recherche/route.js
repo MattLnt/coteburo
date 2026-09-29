@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix , imagePrincipaleOuGalerie } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 export const runtime = "nodejs";
@@ -71,7 +71,7 @@ export async function GET(req) {
         designation: v.nom,
         gamme: v.gamme.nom,
         brand: v.gamme.marque?.nom || null,
-        image: (v.images && v.images[0]) || v.imageUrl || null,
+        image: imagePrincipaleOuGalerie(v),
         price: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
         oldPrice: promo.enPromo ? fmt(promo.prixBase) : null,
         promo: promo.enPromo ? `-${promo.promoPct}%` : null,
