@@ -103,9 +103,14 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
                     {r.promo && <span className="absolute top-3 left-3 rounded-full bg-orange text-white text-[11px] font-bold px-2.5 py-1">{r.promo}</span>}
                   </div>
                   <div className="p-4">
-                    {r.brand && <p className="text-[11px] font-semibold uppercase tracking-wide text-orange">{r.brand}</p>}
-                    <p className="font-semibold text-ink text-[15px] leading-snug mt-1 group-hover:text-orange-dark transition line-clamp-2">{r.nom}</p>
-                    {r.gammeNom && <p className="text-[12px] text-ink-soft mt-0.5">{r.gammeNom}</p>}
+                    <p className="font-semibold text-ink text-[15px] leading-snug group-hover:text-orange-dark transition line-clamp-2">{r.nom}</p>
+                    {(r.brand || r.gammeNom) && (
+                      <p className="text-[12px] text-ink-soft mt-1 line-clamp-1">
+                        {r.brand && <span className="font-semibold uppercase tracking-wide text-orange text-[11px]">{r.brand}</span>}
+                        {r.brand && r.gammeNom && <span className="mx-1.5 text-ink-soft/50">·</span>}
+                        {r.gammeNom}
+                      </p>
+                    )}
                     <p className="text-[13px] text-ink-soft mt-1.5">
                       {r.prixAffiche === "Sur devis" ? (
                         "Sur devis"

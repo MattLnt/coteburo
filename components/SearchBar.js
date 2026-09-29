@@ -91,14 +91,25 @@ export default function SearchBar({ variant = "desktop" }) {
                       {p.image ? <img src={p.image} alt="" className="w-full h-full object-cover" /> : <svg width="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" className="text-ink-soft/30"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.5-3.5L9 20" /></svg>}
                     </div>
                     <div className="min-w-0 flex-1">
-                      {p.brand && <p className="text-[10.5px] font-bold uppercase tracking-wide text-orange">{p.brand}</p>}
-                      <p className="text-[14px] font-semibold text-ink leading-snug line-clamp-1 group-hover:text-orange-dark transition mt-0.5">{p.designation}</p>
-                      {p.gamme && <p className="text-[12px] text-ink-soft line-clamp-1 mt-0.5">{p.gamme}</p>}
+                      <p className="text-[14px] font-semibold text-ink leading-snug line-clamp-1 group-hover:text-orange-dark transition">{p.designation}</p>
+                      {(p.brand || p.gamme) && (
+                        <p className="text-[11.5px] text-ink-soft line-clamp-1 mt-0.5">
+                          {p.brand && <span className="font-bold uppercase tracking-wide text-orange text-[10.5px]">{p.brand}</span>}
+                          {p.brand && p.gamme && <span className="mx-1.5 text-ink-soft/50">·</span>}
+                          {p.gamme}
+                        </p>
+                      )}
                     </div>
                     <div className="text-right shrink-0 pr-1">
-                      <p className="text-[14px] font-display font-bold text-ink whitespace-nowrap">{p.price}</p>
-                      {p.price !== "Sur devis" && <p className="text-[10px] text-ink-soft">HT</p>}
-                      {p.promo && <span className="inline-block mt-1 rounded-full bg-orange text-white text-[10px] font-bold px-2 py-0.5">{p.promo}</span>}
+                      <p className="text-[14px] font-display font-bold text-ink whitespace-nowrap">
+                        {p.price}{p.price !== "Sur devis" && <span className="ml-1 text-[10px] font-sans font-normal text-ink-soft">HT</span>}
+                      </p>
+                      {p.promo && (
+                        <p className="mt-0.5 flex items-center justify-end gap-1.5 whitespace-nowrap">
+                          {p.oldPrice && <span className="text-[11px] text-ink-soft/70 line-through">{p.oldPrice}</span>}
+                          <span className="rounded-full bg-orange text-white text-[10px] font-bold px-2 py-0.5">{p.promo}</span>
+                        </p>
+                      )}
                     </div>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-ink-soft/0 group-hover:text-orange shrink-0 -ml-1 group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6" /></svg>
                   </button>
