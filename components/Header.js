@@ -116,7 +116,16 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
       {bandeauPromo && (
         <div className="bg-orange text-white text-[11.5px] sm:text-[13.5px] font-semibold">
           <div className="mx-auto max-w-[1400px] px-5 sm:px-7 min-h-[34px] sm:min-h-[38px] py-1.5 flex items-center justify-center text-center">
-            {bandeauPromo.message}
+            {bandeauPromo.parties?.length ? (
+              // Sans message rédigé : un mot d'annonce, puis une pastille par
+              // remise. Plus lisible qu'une phrase hachée de points.
+              <span className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                <span className="mr-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] text-white/85">Promotions en cours</span>
+                {bandeauPromo.parties.map((p) => (
+                  <span key={p} className="rounded-full bg-white/15 px-3 py-0.5 text-[11.5px] sm:text-[13px] font-semibold">{p}</span>
+                ))}
+              </span>
+            ) : bandeauPromo.message}
           </div>
         </div>
       )}

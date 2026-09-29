@@ -47,17 +47,20 @@ export default function FavoriButton({ codeRacine, vitrineId, initial = false, c
     );
   }
 
-  // Variante bouton texte (sur une page produit)
+  // Variante fiche produit : un rond à côté du titre. Le libellé passait sur
+  // deux lignes et faisait un bloc ; le cœur seul dit la même chose.
+  const libelle = favori ? "Retirer des favoris" : "Ajouter aux favoris";
   return (
     <button
       onClick={handleClick}
       disabled={isPending}
-      className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 font-semibold text-sm transition ${favori ? "border-orange bg-orange-tint text-orange-dark" : "border-line text-ink hover:border-orange"}`}
+      aria-label={libelle}
+      title={libelle}
+      className={`grid shrink-0 place-items-center w-11 h-11 rounded-full border transition ${favori ? "border-orange bg-orange-tint text-orange-dark" : "border-line bg-white text-ink hover:border-orange hover:text-orange"}`}
     >
-      <svg width="18" height="18" viewBox="0 0 24 24" fill={favori ? "#f0661b" : "none"} stroke="currentColor" strokeWidth="1.9">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill={favori ? "#f0661b" : "none"} stroke="currentColor" strokeWidth="1.9">
         <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
       </svg>
-      {favori ? "Dans vos favoris" : "Ajouter aux favoris"}
     </button>
   );
 }
