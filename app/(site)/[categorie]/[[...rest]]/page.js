@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCarteFrontParCategorie, urlProduit, getMargeGlobale } from "@/lib/catalogue";
+import { getCarteFrontParCategorie, urlProduit, getMargeGlobale, attacherCampagnes } from "@/lib/catalogue";
+import { getCampagnesActives } from "@/lib/promotions";
 import { getFavorisContext } from "@/lib/favoris";
 import { chargerProduit, surDevis as estSurDevis } from "@/lib/chargerProduit";
 import FicheProduitModele from "@/components/FicheProduitModele";
@@ -44,11 +45,15 @@ export default async function ProduitPage({ params }) {
 
   // Le produit lu dans le modèle à choix. La carte reste chargée pour le fil
   // d'ariane et les suggestions, qui n'en dépendent pas.
-  const [produit, marge] = await Promise.all([
+  const [produit, marge, campagnes] = await Promise.all([
     chargerProduit(data.carte.id),
     getMargeGlobale(),
+    getCampagnesActives(),
   ]);
   if (!produit) notFound();
+  // Les campagnes qui visent ce produit voyagent avec lui : la fiche applique
+  // la même remise que la carte du catalogue, et le panier hérite du bon prix.
+  attacherCampagnes(produit, campagnes);
 
   const payload = JSON.parse(JSON.stringify({
     ...data, favori, connecte: favCtx.connecte, produit, marge,

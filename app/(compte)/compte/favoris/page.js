@@ -2,7 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import FavorisGrille from "./FavorisGrille";
-import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes } from "@/lib/catalogue";
+import { urlProduit, calculerPrixMini, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +26,7 @@ export default async function FavorisPage() {
     ? await prisma.produitVitrine.findMany({
         where: { id: { in: vitrineIds }, publie: true, gamme: { publie: true } },
         include: {
+          combinaisons: inclureCombinaisonsPrix,
           gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { slug: true } } } },
           categories: { select: { slug: true } },
           sousCategories: { select: { slug: true }, take: 1 },

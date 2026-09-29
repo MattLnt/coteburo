@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import ProductSelectionFilters from "@/components/ProductSelectionFilters";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes } from "@/lib/catalogue";
+import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
@@ -11,6 +11,7 @@ export default async function ProductSelection() {
     prisma.produitVitrine.findMany({
       where: { publie: true, enAvant: true, gamme: { publie: true } },
       include: {
+        combinaisons: inclureCombinaisonsPrix,
         gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
         categories: { select: { slug: true } },
         sousCategories: { select: { slug: true }, take: 1 },

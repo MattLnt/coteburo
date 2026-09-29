@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { calculerPrixMini, urlProduit, getFiltresCatalogue, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getFiltresCatalogue, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 import RechercheClient from "@/components/RechercheClient";
 
@@ -60,6 +60,7 @@ export default async function RecherchePage({ searchParams }) {
       ],
     },
     include: {
+      combinaisons: inclureCombinaisonsPrix,
       gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
       // Toutes les catégories : une campagne peut viser n'importe laquelle.
       categories: { select: { slug: true } },

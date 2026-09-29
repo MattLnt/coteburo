@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes, inclureCombinaisonsPrix } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 export const runtime = "nodejs";
@@ -40,6 +40,7 @@ export async function GET(req) {
     prisma.produitVitrine.findMany({
       where: whereNouveau,
       include: {
+        combinaisons: inclureCombinaisonsPrix,
         gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
         // Toutes les catégories, pas la première : une campagne peut viser
         // n'importe laquelle.

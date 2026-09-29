@@ -25,6 +25,7 @@ import {
   decomposerComposite, combinaisonsCompatibles, impactPrix,
   estComposee, elementsDe,
 } from "@/lib/modeleProduit";
+import { appliquerPromoVitrine } from "@/lib/prixCatalogue";
 import RecapComposition from "@/components/RecapComposition";
 
 /** Section descriptive : repliée sur mobile, dépliée sur desktop. */
@@ -135,6 +136,12 @@ export default function FicheProduitModele({
   const etape = useMemo(() => prochaineEtape(produit, reponses), [produit, reponses]);
   const restantes = useMemo(() => etapesRestantes(produit, reponses), [produit, reponses]);
   const prix = useMemo(() => prixDe(produit, reponses, marge), [produit, reponses, marge]);
+  // La remise — promo de la fiche ou campagne, la meilleure des deux, jamais
+  // les deux — par-dessus le montant. Sur devis, rien n'est engageant.
+  const remiser = (montant) => (surDevis || montant == null
+    ? { enPromo: false, prixFinal: montant, prixBase: null, promoPct: null }
+    : appliquerPromoVitrine(produit, montant));
+  const promo = useMemo(() => remiser(prix.montant), [produit, prix.montant, surDevis]); // eslint-disable-line react-hooks/exhaustive-deps
   const reference = useMemo(() => detailReference(produit, reponses), [produit, reponses]);
   const visuels = useMemo(() => visuelsPour(produit, reponses), [produit, reponses]);
   const verdict = useMemo(() => commandable(produit, reponses), [produit, reponses]);
@@ -232,7 +239,8 @@ export default function FicheProduitModele({
         // tout partait chez Buronomic, Sokoa et OfficePro compris.
         marque: identite.fournisseur,
         image: principalUrl,
-        prix: prix.montant,
+        // Le prix remisé : le paiement le recalcule à l'identique.
+        prix: promo.prixFinal,
       },
       identite.finition,
       qte,
@@ -289,7 +297,7 @@ export default function FicheProduitModele({
       image: principalUrl,
       config: identite.finition,
       finitions: [],
-      prixIndicatif: prix.montant,
+      prixIndicatif: promo.prixFinal,
       quantite: qte,
     });
     setAjoute(true);
@@ -306,10 +314,13 @@ export default function FicheProduitModele({
   // tarifaire ne fait pas toujours bouger le prix aux dimensions déjà
   // retenues : l'annoncer quand ce n'est pas le cas trompe le client sur ce
   // qu'il décide.
-  const impact = useMemo(
-    () => impactPrix(produit, etape, reponses, marge),
-    [produit, etape, reponses, marge],
-  );
+  const impact = useMemo(() => {
+    const brut = impactPrix(produit, etape, reponses, marge);
+    // Les « dès … » sous les boutons suivent la remise, sinon ils annoncent
+    // des montants que le prix final contredit.
+    const parValeur = new Map([...brut.parValeur].map(([k, m]) => [k, remiser(m).prixFinal]));
+    return { varie: brut.varie, parValeur };
+  }, [produit, etape, reponses, marge, surDevis]); // eslint-disable-line react-hooks/exhaustive-deps
   // Les réponses de l'étape courante, débarrassées de leur début commun.
   const courts = useMemo(() => (etape ? abreger(etape.valeurs) : new Map()), [etape]);
 
@@ -599,8 +610,14 @@ export default function FicheProduitModele({
               {surDevis ? "estimation" : prix.ferme ? "votre prix" : "à partir de"}
             </span>
             <span className="font-display text-2xl font-bold">
-              {euros(prix.montant == null ? null : prix.montant + (totalOptions || 0))}{" "}
+              {euros(promo.prixFinal == null ? null : promo.prixFinal + (totalOptions || 0))}{" "}
               <span className="text-sm font-medium text-ink-soft">HT</span>
+              {promo.enPromo && (
+                <>
+                  <span className="ml-2 text-base font-medium text-ink-soft line-through">{euros(promo.prixBase + (totalOptions || 0))}</span>
+                  <span className="ml-2 inline-block align-middle rounded-full bg-orange px-2 py-0.5 text-xs font-bold text-white">−{promo.promoPct} %</span>
+                </>
+              )}
             </span>
             {totalOptions > 0 && (
               <span className="text-xs text-ink-soft">
