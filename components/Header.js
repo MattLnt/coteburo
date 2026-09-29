@@ -48,7 +48,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
   const tel = formatTel(reglages.telephone) || "06 35 58 43 78";
   const telLink = "tel:" + tel.replace(/\s/g, "");
   const bandeauActif = reglages.bandeauActif;
-  const bandeauTexte = reglages.bandeauTexte || "Showroom Aix-en-Provence — 645 rue Mayor de Montricher";
+  const bandeauTexte = reglages.bandeauTexte || "Côté BURO Aix-en-Provence — 645 rue Mayor de Montricher";
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -99,7 +99,7 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
       <div className="bg-charcoal text-[#cdd1d6] text-[11px] sm:text-[13px]">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-7 h-8 sm:h-[38px] flex items-center justify-between gap-3 sm:gap-4">
           <p className="truncate min-w-0">
-            <span className="text-orange">●</span> {bandeauActif ? bandeauTexte : "Showroom Aix-en-Provence — 645 rue Mayor de Montricher"}
+            <span className="text-orange">●</span> {bandeauActif ? bandeauTexte : "Côté BURO Aix-en-Provence — 645 rue Mayor de Montricher"}
           </p>
           <a href={telLink} className="lg:hidden text-white font-semibold whitespace-nowrap shrink-0">{tel}</a>
           <div className="cb-corp items-center gap-[18px] shrink-0">

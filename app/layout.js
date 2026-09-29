@@ -71,7 +71,7 @@ export const viewport = {
 // Données structurées — c'est ce que Google lit pour associer un logo, une
 // adresse et des horaires à l'entreprise (fiche établissement, panneau de
 // connaissance). Le type FurnitureStore convient à un commerce de mobilier
-// avec showroom.
+// et à ses services.
 const donneesStructurees = {
   "@context": "https://schema.org",
   "@type": "FurnitureStore",

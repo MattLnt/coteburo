@@ -231,7 +231,7 @@ export function ReglagesForm({ reglages, paliersInitiaux, campagnes = [] }) {
             <Field label="Email" value={form.email} onChange={(v) => set("email", v)} placeholder="coteburo@orange.fr" />
           </div>
           <div style={{ marginBottom: 14 }}>
-            <Field label="Adresse du showroom" value={form.adresse} onChange={(v) => set("adresse", v)} placeholder="645 rue Mayor de Montricher, 13290 Aix-en-Provence" />
+            <Field label="Adresse de la société" value={form.adresse} onChange={(v) => set("adresse", v)} placeholder="645 rue Mayor de Montricher, 13290 Aix-en-Provence" />
           </div>
           <Field label="Horaires" value={form.horaires} onChange={(v) => set("horaires", v)} placeholder="Du lundi au vendredi · 9h–18h" />
         </div>
@@ -323,10 +323,10 @@ export function ReglagesForm({ reglages, paliersInitiaux, campagnes = [] }) {
           <div style={{ marginBottom: 14 }}>
             {interrupteur(form.bandeauActif, () => set("bandeauActif", !form.bandeauActif), "Afficher le bandeau", form.bandeauActif ? "Visible sur tout le site" : "Masqué")}
           </div>
-          <Field label="Texte du bandeau" value={form.bandeauTexte} onChange={(v) => set("bandeauTexte", v)} placeholder="Showroom Aix-en-Provence — 645 rue Mayor de Montricher" />
+          <Field label="Texte du bandeau" value={form.bandeauTexte} onChange={(v) => set("bandeauTexte", v)} placeholder="Côté BURO Aix-en-Provence — 645 rue Mayor de Montricher" />
 
           {/* Bandeau promotionnel — distinct du précédent, qui porte l'adresse
-              du showroom et le téléphone. Celui-ci annonce une remise, et se
+              de la société et le téléphone. Celui-ci annonce une remise, et se
               masque de lui-même quand la campagne expire. */}
           <div style={{ borderTop: "1px solid #eceae5", margin: "22px 0 0", paddingTop: 18 }}>
             <CardHead title="Bandeau promotionnel" sub="Annonce une remise en cours, au-dessus de l'en-tête." />

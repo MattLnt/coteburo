@@ -111,7 +111,7 @@ export default function CompteAuth({ mode }) {
                 <span key={i} className="w-8 h-8 rounded-full border-2 border-charcoal" style={{ background: c }} />
               ))}
             </div>
-            <p className="text-white/60 text-[13px]"><span className="text-white font-semibold">Garantie 7 ans</span><br />Showroom à Aix-en-Provence</p>
+            <p className="text-white/60 text-[13px]"><span className="text-white font-semibold">Garantie 7 ans</span><br />Basés à Aix-en-Provence</p>
           </div>
         </div>
       </div>

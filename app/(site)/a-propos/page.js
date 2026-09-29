@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function AProposPage() {
   const VALUES = [
-    { title: "Proximité", text: "Un interlocuteur unique et un showroom à Aix-en-Provence, au plus près de vos projets.", icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
+    { title: "Proximité", text: "Un interlocuteur unique, basé à Aix-en-Provence, au plus près de vos projets.", icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
     { title: "Expertise", text: "Plus de 20 ans d'expérience dans l'aménagement d'espaces de travail professionnels.", icon: (<><circle cx="12" cy="9" r="6" /><path d="m8.5 14-1.5 7 5-3 5 3-1.5-7" /></>) },
     { title: "Sur-mesure", text: "Chaque projet est unique : nous concevons des espaces qui vous ressemblent.", icon: (<><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4" /><circle cx="12" cy="12" r="1" fill="currentColor" /></>) },
     { title: "Durabilité", text: "Du mobilier de qualité, garanti 7 ans, et la reprise des emballages après pose.", icon: (<><path d="M5 19c0-8 6-13 14-13 0 8-5 14-14 13z" /><path d="M5 19c3-4 6-6 10-7" /></>) },
