@@ -116,7 +116,9 @@ export default function Header({ reglages = {}, categories = [], bandeauPromo = 
       {bandeauPromo && (
         <div className="bg-orange text-white text-[11.5px] sm:text-[13.5px] font-semibold">
           <div className="mx-auto max-w-[1400px] px-5 sm:px-7 min-h-[34px] sm:min-h-[38px] py-1.5 flex items-center justify-center text-center">
-            {bandeauPromo.message}
+            {bandeauPromo.href ? (
+              <Link prefetch={false} href={bandeauPromo.href} className="underline-offset-2 hover:underline">{bandeauPromo.message} →</Link>
+            ) : bandeauPromo.message}
           </div>
         </div>
       )}

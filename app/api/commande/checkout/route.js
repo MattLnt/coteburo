@@ -78,7 +78,7 @@ export async function POST(req) {
       ? await prisma.produitVitrine.findMany({
           where: { id: { in: vitrineIds }, publie: true },
           include: {
-            gamme: { include: { marque: { select: { nom: true } } } },
+            gamme: { include: { marque: { select: { nom: true, slug: true } } } },
             // Pour appliquer les campagnes qui visent une categorie entiere.
             categories: { select: { slug: true } },
           },

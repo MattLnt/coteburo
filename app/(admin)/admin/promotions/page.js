@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function PromotionsPage() {
   // Les campagnes ciblent des fiches vitrine. L'ancien sélecteur lisait la
   // table Produit, vide depuis la migration, et n'affichait donc jamais rien.
-  const [promotions, vitrines] = await Promise.all([
+  const [promotions, vitrines, marques] = await Promise.all([
     prisma.promotion.findMany({
       include: { vitrines: { select: { vitrineId: true } } },
       orderBy: { createdAt: "desc" },
@@ -15,6 +15,13 @@ export default async function PromotionsPage() {
     prisma.produitVitrine.findMany({
       where: { publie: true },
       select: { id: true, nom: true, gamme: { select: { nom: true } } },
+      orderBy: { nom: "asc" },
+    }),
+    // Les fournisseurs, lus en base : la liste des catégories du formulaire
+    // est codée en dur, celle-ci suit l'onglet Marques.
+    prisma.marque.findMany({
+      where: { actif: true },
+      select: { nom: true, slug: true },
       orderBy: { nom: "asc" },
     }),
   ]);
@@ -30,13 +37,14 @@ export default async function PromotionsPage() {
         </span>
         <div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: 0, lineHeight: 1.1 }}>Promotions</h1>
-          <p style={{ fontSize: 14, color: "#5c616a", margin: "3px 0 0" }}>Créez des campagnes de remise sur des catégories ou des produits.</p>
+          <p style={{ fontSize: 14, color: "#5c616a", margin: "3px 0 0" }}>Créez des campagnes de remise sur un fournisseur, des catégories ou des produits.</p>
         </div>
       </div>
 
       <PromotionsManager
         promotions={JSON.parse(JSON.stringify(promotionsPlates))}
         cibles={JSON.parse(JSON.stringify(cibles))}
+        marques={marques}
       />
     </>
   );

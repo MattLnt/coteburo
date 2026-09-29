@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 
-export default function PromoBandCarousel({ promos, favorisCodes = [], favorisVitrines = [], connecte = false }) {
+export default function PromoBandCarousel({ promos, liens = [], favorisCodes = [], favorisVitrines = [], connecte = false }) {
   const [start, setStart] = useState(0);
   const pause = useRef(false);
   const favSetCodes = useMemo(() => new Set(favorisCodes), [favorisCodes]);
@@ -54,7 +54,14 @@ export default function PromoBandCarousel({ promos, favorisCodes = [], favorisVi
           <h2 className="relative font-display font-bold text-white text-[25px] sm:text-[34px] leading-tight mt-2 sm:mt-3">Des prix <span className="text-orange">réduits</span> sur une sélection</h2>
           <p className="relative text-[#c4c9d0] mt-2.5 sm:mt-3.5 text-[13px] sm:text-[15px] leading-relaxed">Sièges, bureaux et rangements en promotion — livrés et montés en région PACA.</p>
           <div className="relative flex flex-wrap gap-3 mt-4 sm:mt-6">
-            <Link prefetch={false} href="/catalogue" className="bg-orange text-white font-semibold rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-[12.5px] sm:text-base hover:bg-orange-dark transition">Voir le catalogue →</Link>
+            {/* Les campagnes par fournisseur ont chacune leur bouton : le
+                client choisit sa marque d'un tap, sans passer par les filtres. */}
+            {liens.map((l) => (
+              <Link key={l.href} prefetch={false} href={l.href} className="bg-orange text-white font-semibold rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-[12.5px] sm:text-base hover:bg-orange-dark transition">{l.label} →</Link>
+            ))}
+            <Link prefetch={false} href={liens.length ? "/catalogue?promo=1" : "/catalogue"} className={`${liens.length ? "bg-white/10 text-white border border-white/25 hover:bg-white/20" : "bg-orange text-white hover:bg-orange-dark"} font-semibold rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-[12.5px] sm:text-base transition`}>
+              {liens.length ? "Toutes les promos →" : "Voir le catalogue →"}
+            </Link>
           </div>
         </div>
 

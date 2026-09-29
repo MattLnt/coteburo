@@ -21,7 +21,8 @@ function etatCampagne(promo) {
   return { label: "En cours", color: "#1f7a52", bg: "#d8f0e4" };
 }
 
-function PromoCard({ promo, cibles, onEdit }) {
+function PromoCard({ promo, cibles, marques, onEdit }) {
+  const nomMarque = (slug) => marques.find((m) => m.slug === slug)?.nom || slug;
   const router = useRouter();
   const etat = etatCampagne(promo);
   const remise = promo.typeRemise === "montant" ? `−${promo.valeur} €` : `−${promo.valeur} %`;
@@ -59,13 +60,16 @@ function PromoCard({ promo, cibles, onEdit }) {
 
       {/* Cibles */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 5, padding: "10px 0", borderTop: "1px solid #f2efe9", borderBottom: "1px solid #f2efe9", marginBottom: 11 }}>
+        {promo.marques?.map((m) => (
+          <span key={`m-${m}`} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#fce6d6", color: "#d9551a" }}>{nomMarque(m)}</span>
+        ))}
         {promo.categories?.map((c) => (
           <span key={c} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{CAT_LABELS[c] || c}</span>
         ))}
         {nbCibles > 0 && (
           <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{nbCibles} produit{nbCibles > 1 ? "s" : ""}</span>
         )}
-        {(!promo.categories?.length && !nbCibles) && (
+        {(!promo.marques?.length && !promo.categories?.length && !nbCibles) && (
           <span style={{ fontSize: 12, color: "#9aa0a8" }}>Aucune cible</span>
         )}
       </div>
@@ -89,7 +93,7 @@ function PromoCard({ promo, cibles, onEdit }) {
   );
 }
 
-export function PromotionsManager({ promotions, cibles }) {
+export function PromotionsManager({ promotions, cibles, marques = [] }) {
   const router = useRouter();
   const [mode, setMode] = useState(null); // null | "create" | promo.id (edit)
 
@@ -108,7 +112,7 @@ export function PromotionsManager({ promotions, cibles }) {
   // Formulaire de création
   if (mode === "create") {
     return (
-      <PromotionForm cibles={cibles} onSubmit={handleCreate} onCancel={() => setMode(null)} submitLabel="Créer la campagne" titre="Nouvelle campagne" />
+      <PromotionForm cibles={cibles} marques={marques} onSubmit={handleCreate} onCancel={() => setMode(null)} submitLabel="Créer la campagne" titre="Nouvelle campagne" />
     );
   }
 
@@ -117,7 +121,7 @@ export function PromotionsManager({ promotions, cibles }) {
     const promo = promotions.find((p) => p.id === mode);
     if (promo) {
       return (
-        <PromotionForm initial={promo} cibles={cibles} onSubmit={handleUpdate(promo.id)} onCancel={() => setMode(null)} submitLabel="Enregistrer" titre={promo.nom} />
+        <PromotionForm initial={promo} cibles={cibles} marques={marques} onSubmit={handleUpdate(promo.id)} onCancel={() => setMode(null)} submitLabel="Enregistrer" titre={promo.nom} />
       );
     }
   }
@@ -156,7 +160,7 @@ export function PromotionsManager({ promotions, cibles }) {
       ) : (
         <div className="pr-grille">
           {promotions.map((p) => (
-            <PromoCard key={p.id} promo={p} cibles={cibles} onEdit={() => setMode(p.id)} />
+            <PromoCard key={p.id} promo={p} cibles={cibles} marques={marques} onEdit={() => setMode(p.id)} />
           ))}
         </div>
       )}

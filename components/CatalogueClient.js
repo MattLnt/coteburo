@@ -27,6 +27,11 @@ const LIBELLES_TRI = { nom: "Nom (A–Z)", "prix-asc": "Prix croissant", "prix-d
 export default function CatalogueClient({ cartes, filtres, favorisVitrines, connecte, estAdmin = false, valeursInitiales, basePath = "/catalogue" }) {
   const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);
   const [sousCategorieSlug, setSousCategorieSlug] = useState(valeursInitiales.sousCategorieSlug || null);
+  // Marque et « en promotion » : posés par l'adresse (bandeau, boutons des
+  // campagnes), retirables d'une pastille. Les filtres du panneau ne les
+  // proposent pas, ils suivent les campagnes plutôt que le catalogue.
+  const [marqueSlug, setMarqueSlug] = useState(valeursInitiales.marqueSlug || null);
+  const [promo, setPromo] = useState(!!valeursInitiales.promo);
   const [prixMin, setPrixMin] = useState(valeursInitiales.prixMin || null);
   const [prixMax, setPrixMax] = useState(valeursInitiales.prixMax || null);
 
@@ -73,13 +78,15 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   // Le composant est réutilisé d'une URL à l'autre (bureaux → sièges) : les
   // useState ne sont évalués qu'au montage, donc l'état resterait figé sur la
   // catégorie d'origine. On resynchronise quand les valeurs initiales changent.
-  const cleInitiale = `${valeursInitiales.categorieSlug || ""}|${valeursInitiales.sousCategorieSlug || ""}`;
+  const cleInitiale = `${valeursInitiales.categorieSlug || ""}|${valeursInitiales.sousCategorieSlug || ""}|${valeursInitiales.marqueSlug || ""}|${valeursInitiales.promo ? 1 : ""}`;
   const cleAppliquee = useRef(cleInitiale);
   useEffect(() => {
     if (cleAppliquee.current === cleInitiale) return;
     cleAppliquee.current = cleInitiale;
     setCategorieSlug(valeursInitiales.categorieSlug || null);
     setSousCategorieSlug(valeursInitiales.sousCategorieSlug || null);
+    setMarqueSlug(valeursInitiales.marqueSlug || null);
+    setPromo(!!valeursInitiales.promo);
     setPrixMin(valeursInitiales.prixMin || null);
     setPrixMax(valeursInitiales.prixMax || null);
     setLargeurMin(valeursInitiales.largeurMin || null);
@@ -104,6 +111,8 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     const params = new URLSearchParams();
     if (categorieSlug) params.set("categorie", categorieSlug);
     if (sousCategorieSlug) params.set("sousCategorie", sousCategorieSlug);
+    if (marqueSlug) params.set("marque", marqueSlug);
+    if (promo) params.set("promo", "1");
     if (prixMin) params.set("prixMin", prixMin);
     if (prixMax) params.set("prixMax", prixMax);
     if (largeurMin) params.set("largeurMin", largeurMin);
@@ -116,14 +125,16 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     const qs = params.toString();
     // Garde la clé de synchro alignée : sans ça, revenir manuellement sur la
     // catégorie d'origine relancerait l'effet de resynchronisation.
-    cleAppliquee.current = `${categorieSlug || ""}|${sousCategorieSlug || ""}`;
+    cleAppliquee.current = `${categorieSlug || ""}|${sousCategorieSlug || ""}|${marqueSlug || ""}|${promo ? 1 : ""}`;
     window.history.replaceState(null, "", `${basePath}${qs ? `?${qs}` : ""}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
+  }, [categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
 
   const handleFiltresChange = (updates) => {
     if ("categorieSlug" in updates) setCategorieSlug(updates.categorieSlug);
     if ("sousCategorieSlug" in updates) setSousCategorieSlug(updates.sousCategorieSlug);
+    if ("marqueSlug" in updates) setMarqueSlug(updates.marqueSlug);
+    if ("promo" in updates) setPromo(!!updates.promo);
     if ("prixMin" in updates) setPrixMin(updates.prixMin);
     if ("prixMax" in updates) setPrixMax(updates.prixMax);
     if ("largeurMin" in updates) setLargeurMin(updates.largeurMin);
@@ -140,6 +151,8 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     if (estAdmin && filtreFavoris === "sans") list = list.filter((c) => !favSet.has(c.id));
     if (categorieSlug) list = list.filter((c) => c.categorieSlug === categorieSlug);
     if (sousCategorieSlug) list = list.filter((c) => c.sousCategorieSlug === sousCategorieSlug);
+    if (marqueSlug) list = list.filter((c) => c.marqueSlug === marqueSlug);
+    if (promo) list = list.filter((c) => c.promoPct != null);
 
     const min = num(prixMin);
     const max = num(prixMax);
@@ -176,15 +189,20 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
       arr.sort(trieurMiseEnAvant({ categorieSlug, sousCategorieSlug, parNom }));
     }
     return arr;
-  }, [cartes, categorieSlug, sousCategorieSlug, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri, estAdmin, filtreFavoris, favSet]);
+  }, [cartes, categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri, estAdmin, filtreFavoris, favSet]);
 
   const categorieActive = filtres.categories.find((c) => c.slug === categorieSlug);
   const sousCategorieActive = categorieActive?.sousCategories.find((s) => s.slug === sousCategorieSlug);
-  const titre = sousCategorieActive?.nom || categorieActive?.nom || "Tout le catalogue";
-  const aDesFiltres = !!(categorieSlug || sousCategorieSlug || prixMin || prixMax || largeurMin || largeurMax || hauteurMin || hauteurMax || profondeurMin || profondeurMax);
+  const marqueActive = (filtres.marques || []).find((m) => m.slug === marqueSlug);
+  // « Promotions Sokoa » quand on arrive par une campagne ; la catégorie
+  // garde la main si elle est choisie.
+  const titre = sousCategorieActive?.nom || categorieActive?.nom
+    || (promo ? `Promotions${marqueActive ? ` ${marqueActive.nom}` : ""}` : marqueActive?.nom)
+    || "Tout le catalogue";
+  const aDesFiltres = !!(categorieSlug || sousCategorieSlug || marqueSlug || promo || prixMin || prixMax || largeurMin || largeurMax || hauteurMin || hauteurMax || profondeurMin || profondeurMax);
 
   const reinitialiserTout = () => handleFiltresChange({
-    categorieSlug: null, sousCategorieSlug: null, prixMin: null, prixMax: null,
+    categorieSlug: null, sousCategorieSlug: null, marqueSlug: null, promo: false, prixMin: null, prixMax: null,
     largeurMin: null, largeurMax: null, hauteurMin: null, hauteurMax: null, profondeurMin: null, profondeurMax: null,
   });
 
@@ -194,6 +212,8 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   const pastillesActives = [];
   if (categorieActive) pastillesActives.push({ cle: "cat", label: categorieActive.nom, retirer: () => handleFiltresChange({ categorieSlug: null, sousCategorieSlug: null }) });
   if (sousCategorieActive) pastillesActives.push({ cle: "sscat", label: sousCategorieActive.nom, retirer: () => handleFiltresChange({ sousCategorieSlug: null }) });
+  if (marqueSlug) pastillesActives.push({ cle: "marque", label: marqueActive?.nom || marqueSlug, retirer: () => handleFiltresChange({ marqueSlug: null }) });
+  if (promo) pastillesActives.push({ cle: "promo", label: "En promotion", retirer: () => handleFiltresChange({ promo: false }) });
   if (prixMin || prixMax) pastillesActives.push({ cle: "prix", label: `${prixMin || "…"} – ${prixMax || "…"} €`, retirer: () => handleFiltresChange({ prixMin: null, prixMax: null }) });
   if (largeurMin || largeurMax) pastillesActives.push({ cle: "larg", label: `Larg. ${largeurMin || "…"}–${largeurMax || "…"}`, retirer: () => handleFiltresChange({ largeurMin: null, largeurMax: null }) });
   if (hauteurMin || hauteurMax) pastillesActives.push({ cle: "haut", label: `Haut. ${hauteurMin || "…"}–${hauteurMax || "…"}`, retirer: () => handleFiltresChange({ hauteurMin: null, hauteurMax: null }) });
@@ -204,6 +224,9 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
       <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20">
         <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" onChange={(actif) => basculerFavori(c.id, actif)} />
       </div>
+      {c.promoPct != null && (
+        <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 rounded-full bg-orange text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5">−{c.promoPct} %</span>
+      )}
       <Link prefetch={false} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
         {/* Fond blanc uni + coins arrondis sur l'image : le dégradé crème
             entrait en conflit avec les photos d'ambiance rectangulaires. */}
@@ -220,7 +243,10 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
           <p className="text-[9.5px] sm:text-[11px] font-semibold uppercase tracking-wide text-orange truncate">{c.gammeNom}</p>
           <p className="font-semibold text-ink text-[12.5px] sm:text-[15px] leading-snug mt-1 group-hover:text-orange-dark transition line-clamp-2">{c.nom}</p>
           {c.prixMini != null ? (
-            <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">dès <span className="font-display font-bold text-ink text-[13px] sm:text-[15px]">{fmt(c.prixMini)}</span> HT</p>
+            <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">
+              dès <span className="font-display font-bold text-ink text-[13px] sm:text-[15px]">{fmt(c.prixMini)}</span> HT
+              {c.prixMiniBase != null && <span className="ml-1.5 line-through text-ink-soft/70">{fmt(c.prixMiniBase)}</span>}
+            </p>
           ) : (
             <p className="text-[11.5px] sm:text-[13px] text-ink-soft mt-1.5">Sur devis</p>
           )}

@@ -256,6 +256,8 @@ model Promotion {
   // elle qui sait ce qu'elle annonce, pas les réglages généraux.
   messageBandeau String?
   categories String[]           @default([])
+  // Fournisseurs visés (slugs de Marque) : « 20 % sur tout Buronomic ».
+  marques    String[]           @default([])
   createdAt  DateTime           @default(now())
   produits   PromotionProduit[]
   vitrines   PromotionVitrine[]

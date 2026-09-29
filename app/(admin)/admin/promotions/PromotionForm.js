@@ -23,7 +23,7 @@ const toInputDate = (d) => {
   return date.toISOString().slice(0, 10);
 };
 
-export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel, titre }) {
+export function PromotionForm({ initial, cibles, marques = [], onSubmit, onCancel, submitLabel, titre }) {
   const [nom, setNom] = useState(initial?.nom || "");
   const [messageBandeau, setMessageBandeau] = useState(initial?.messageBandeau || "");
   const [typeRemise, setTypeRemise] = useState(initial?.typeRemise || "pourcentage");
@@ -32,6 +32,7 @@ export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel
   const [dateFin, setDateFin] = useState(toInputDate(initial?.dateFin));
   const [actif, setActif] = useState(initial?.actif ?? true);
   const [categories, setCategories] = useState(initial?.categories || []);
+  const [marquesSel, setMarquesSel] = useState(initial?.marques || []);
   const [ciblesSel, setCiblesSel] = useState(initial?.cibles?.map((p) => p.vitrineId) || []);
   const [search, setSearch] = useState("");
   const [saving, setSaving] = useState(false);
@@ -40,6 +41,7 @@ export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel
   const [ciblesOuvert, setCiblesOuvert] = useState(false);
 
   const toggleCat = (v) => setCategories((c) => c.includes(v) ? c.filter((x) => x !== v) : [...c, v]);
+  const toggleMarque = (v) => setMarquesSel((m) => m.includes(v) ? m.filter((x) => x !== v) : [...m, v]);
   const toggleProd = (code) => setCiblesSel((p) => p.includes(code) ? p.filter((x) => x !== code) : [...p, code]);
 
   const filtered = search.trim()
@@ -50,9 +52,9 @@ export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel
     setError("");
     if (!nom.trim()) { setError("Le nom est requis."); return; }
     if (!valeur || parseFloat(valeur) <= 0) { setError("La valeur de remise doit être supérieure à 0."); return; }
-    if (categories.length === 0 && ciblesSel.length === 0) { setError("Ciblez au moins une catégorie ou un produit."); return; }
+    if (marquesSel.length === 0 && categories.length === 0 && ciblesSel.length === 0) { setError("Ciblez au moins un fournisseur, une catégorie ou un produit."); return; }
     setSaving(true);
-    const res = await onSubmit({ nom, messageBandeau, typeRemise, valeur, dateDebut, dateFin, actif, categories, cibles: ciblesSel });
+    const res = await onSubmit({ nom, messageBandeau, typeRemise, valeur, dateDebut, dateFin, actif, categories, marques: marquesSel, cibles: ciblesSel });
     setSaving(false);
     if (res && !res.ok) setError(res.error || "Erreur lors de l'enregistrement.");
   };
@@ -150,6 +152,29 @@ export function PromotionForm({ initial, cibles, onSubmit, onCancel, submitLabel
               </span>
             </button>
           </div>
+
+          {marques.length > 0 && (
+            <div style={card}>
+              <label style={labelStyle}>Fournisseurs ciblés</label>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {marques.map((m) => {
+                  const sel = marquesSel.includes(m.slug);
+                  return (
+                    <button key={m.slug} type="button" onClick={() => toggleMarque(m.slug)}
+                      style={{ padding: "8px 14px", borderRadius: 999, fontSize: 12.5, fontWeight: sel ? 700 : 500, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap",
+                        border: sel ? "1.5px solid #f0661b" : "1.5px solid #e8e3da",
+                        background: sel ? "#fce6d6" : "#faf8f4",
+                        color: sel ? "#d9551a" : "#5c616a" }}>
+                      {m.nom}
+                    </button>
+                  );
+                })}
+              </div>
+              <p style={{ fontSize: 11.5, color: "#9aa0a8", margin: "10px 0 0" }}>
+                Tous les produits du fournisseur seront en promotion. Une campagne par fournisseur si les taux diffèrent : « Buronomic −20 % », « Sokoa −25 % ».
+              </p>
+            </div>
+          )}
 
           <div style={card}>
             <label style={labelStyle}>Catégories ciblées</label>

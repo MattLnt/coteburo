@@ -1,22 +1,47 @@
 import { prisma } from "@/lib/prisma";
 import PromoBandCarousel from "@/components/PromoBandCarousel";
 import { getFavorisContext } from "@/lib/favoris";
-import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
+import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes } from "@/lib/catalogue";
+import { getCampagnesActives, lienCampagne } from "@/lib/promotions";
+import { libelleRemise } from "@/lib/bandeau";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
 export default async function PromoBand() {
+  // Le bandeau ne montrait que les promos de fiche (promoPct) : une campagne
+  // sur un fournisseur ou une catégorie remisait des produits sans les y
+  // faire apparaître. On ramène aussi tout ce que les campagnes visent.
+  const campagnes = await getCampagnesActives();
+  const marques = [...new Set(campagnes.flatMap((c) => c.marques))];
+  const categoriesCiblees = [...new Set(campagnes.flatMap((c) => c.categories))];
+  const vitrinesCiblees = [...new Set(campagnes.flatMap((c) => c.vitrineIds))];
+  const cibles = [{ promoPct: { not: null } }];
+  if (marques.length) cibles.push({ gamme: { marque: { slug: { in: marques } } } });
+  if (categoriesCiblees.length) cibles.push({ categories: { some: { slug: { in: categoriesCiblees } } } });
+  if (vitrinesCiblees.length) cibles.push({ id: { in: vitrinesCiblees } });
+
   const [favCtx, vitrines] = await Promise.all([
     getFavorisContext(),
     prisma.produitVitrine.findMany({
-      where: { publie: true, gamme: { publie: true }, promoPct: { not: null } },
+      // Même règle que le catalogue : un accessoire vendu seulement avec un
+      // produit n'est pas une offre en soi.
+      where: { publie: true, accessoireSeul: false, gamme: { publie: true }, OR: cibles },
       include: {
-        gamme: { select: { venteSurDevis: true } },
-        categories: { select: { slug: true }, take: 1 },
+        gamme: { select: { venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
+        categories: { select: { slug: true } },
         sousCategories: { select: { slug: true }, take: 1 },
       },
+      orderBy: { nom: "asc" },
+      // Une campagne fournisseur vise des centaines de fiches ; neuf suffisent.
+      take: 40,
     }),
   ]);
+  attacherCampagnes(vitrines, campagnes);
+
+  // Un bouton par campagne qui vise un seul fournisseur : « Sokoa −25 % ».
+  const liens = campagnes
+    .map((c) => ({ href: lienCampagne(c), label: `${c.nom} · ${libelleRemise(c)}` }))
+    .filter((l) => l.href);
 
   // Sans la marge, calculerPrixMini retombe sur les montants stockés : le
   // bandeau promo calculait donc sa remise sur un prix de base périmé.
@@ -35,7 +60,7 @@ export default async function PromoBand() {
       href: urlProduit({ categorieSlug: v.categories[0]?.slug || null, sousCategorieSlug: v.sousCategories[0]?.slug || null, slug: v.slug }),
       codeRacine: v.id,
       estNouveau: true,
-      brand: null,
+      brand: v.gamme.marque?.nom || null,
       name: v.nom,
       attr: null,
       images: (v.images && v.images.length ? v.images : (v.imageUrl ? [v.imageUrl] : [])),
@@ -47,5 +72,5 @@ export default async function PromoBand() {
 
   if (enPromo.length === 0) return null;
 
-  return <PromoBandCarousel promos={enPromo} favorisCodes={favCtx.favorisCodes} favorisVitrines={favCtx.favorisVitrines} connecte={favCtx.connecte} />;
+  return <PromoBandCarousel promos={enPromo} liens={liens} favorisCodes={favCtx.favorisCodes} favorisVitrines={favCtx.favorisVitrines} connecte={favCtx.connecte} />;
 }

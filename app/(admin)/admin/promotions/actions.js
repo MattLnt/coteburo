@@ -22,6 +22,7 @@ export async function createPromotion(data) {
       dateFin: data.dateFin ? new Date(data.dateFin) : null,
       actif: data.actif !== false,
       categories: Array.isArray(data.categories) ? data.categories : [],
+      marques: Array.isArray(data.marques) ? data.marques : [],
     },
   });
 
@@ -53,6 +54,7 @@ export async function updatePromotion(id, data) {
       dateFin: data.dateFin ? new Date(data.dateFin) : null,
       actif: !!data.actif,
       categories: Array.isArray(data.categories) ? data.categories : [],
+      marques: Array.isArray(data.marques) ? data.marques : [],
     },
   });
 

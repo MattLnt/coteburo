@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix } from "@/lib/catalogue";
+import { calculerPrixMini, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, appliquerPromoVitrine, attacherCampagnes } from "@/lib/catalogue";
+import { getCampagnesActives } from "@/lib/promotions";
 
 export const runtime = "nodejs";
 
@@ -39,8 +40,10 @@ export async function GET(req) {
     prisma.produitVitrine.findMany({
       where: whereNouveau,
       include: {
-        gamme: { select: { nom: true, venteSurDevis: true } },
-        categories: { select: { slug: true }, take: 1 },
+        gamme: { select: { nom: true, venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
+        // Toutes les catégories, pas la première : une campagne peut viser
+        // n'importe laquelle.
+        categories: { select: { slug: true } },
         sousCategories: { select: { slug: true }, take: 1 },
       },
       orderBy: { nom: "asc" },
@@ -49,22 +52,28 @@ export async function GET(req) {
     prisma.produitVitrine.count({ where: whereNouveau }),
     getMargeGlobale(),
   ]);
+  // Le prix de la recherche ignorait les promotions : une fiche remisée y
+  // gardait son ancien tarif, contredit dès la carte du catalogue.
+  attacherCampagnes(vitrines, await getCampagnesActives());
 
   const produits = vitrines
     .map((v) => {
       const surDevis = v.gamme.venteSurDevis || v.venteSurDevis;
       // Sans la marge, le prix affiché dans la recherche ne suit pas les Réglages.
       const prixMini = calculerPrixMini(resoudreVitrinePourPrix(v, marge), surDevis, marge);
+      const promo = surDevis || prixMini == null
+        ? { prixFinal: prixMini, prixBase: null, enPromo: false, promoPct: null }
+        : appliquerPromoVitrine(v, prixMini);
       return {
         id: `vitrine:${v.id}`,
         href: urlProduit({ categorieSlug: v.categories[0]?.slug || null, sousCategorieSlug: v.sousCategories[0]?.slug || null, slug: v.slug }),
         designation: v.nom,
         gamme: v.gamme.nom,
-        brand: null,
+        brand: v.gamme.marque?.nom || null,
         image: (v.images && v.images[0]) || v.imageUrl || null,
-        price: prixMini != null ? fmt(prixMini) : "Sur devis",
-        oldPrice: null,
-        promo: null,
+        price: promo.prixFinal != null ? fmt(promo.prixFinal) : "Sur devis",
+        oldPrice: promo.enPromo ? fmt(promo.prixBase) : null,
+        promo: promo.enPromo ? `-${promo.promoPct}%` : null,
       };
     })
     .sort((a, b) => (a.designation || "").localeCompare(b.designation || ""))

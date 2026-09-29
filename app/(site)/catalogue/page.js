@@ -20,6 +20,9 @@ export default async function CataloguePage({ searchParams }) {
     // et « convivialité » existent chacun dans deux catégories.
     sousCategorieSlug: sp?.categorie ? (sp?.sousCategorie || null) : null,
     marqueSlug: sp?.marque || null,
+    // « En promotion seulement » : c'est là que mènent le bandeau et les
+    // boutons des campagnes.
+    promo: sp?.promo === "1",
     prixMin: sp?.prixMin || null,
     prixMax: sp?.prixMax || null,
   };
