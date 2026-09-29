@@ -22,7 +22,7 @@ export default function ServicesPage() {
     <main>
       <section className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-7 sm:pt-14 pb-5 sm:pb-8">
         <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-orange">Nos services</p>
-        <h1 className="font-display font-bold text-[29px] sm:text-5xl lg:text-6xl mt-2 sm:mt-3 max-w-3xl leading-tight">Un accompagnement de A à Z</h1>
+        <h1 className="font-display font-bold mt-2 sm:mt-3 leading-tight whitespace-nowrap" style={{ fontSize: "clamp(20px, (100vw - 64px) / 14.5, 60px)" }}>Un accompagnement de A à Z</h1>
         <p className="text-ink-soft text-[13.5px] sm:text-lg mt-3 sm:mt-5 max-w-[580px] leading-relaxed">
           De l&apos;analyse de vos besoins à l&apos;installation finale, nous gérons l&apos;ensemble de votre projet d&apos;aménagement.
         </p>

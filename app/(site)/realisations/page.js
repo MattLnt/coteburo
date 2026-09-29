@@ -30,7 +30,7 @@ export default async function RealisationsPage() {
         {/* En-tête */}
         <div className="pt-8 sm:pt-20 pb-7 sm:pb-16">
           <p className="text-[10px] sm:text-[11.5px] font-bold uppercase tracking-[0.22em] text-orange mb-2.5 sm:mb-4">Nos réalisations</p>
-          <h1 className="font-display font-bold text-[30px] sm:text-6xl leading-[1.08] sm:leading-[1.05] tracking-[-0.02em] max-w-3xl">Des espaces qui ont pris vie</h1>
+          <h1 className="font-display font-bold leading-[1.08] sm:leading-[1.05] tracking-[-0.02em] whitespace-nowrap" style={{ fontSize: "clamp(20px, (100vw - 64px) / 13, 60px)" }}>Des espaces qui ont pris vie</h1>
           <p className="text-ink-soft text-[13.5px] sm:text-lg mt-3 sm:mt-5 max-w-[540px] leading-relaxed">
             Quelques aménagements livrés clés en main par nos équipes en région PACA — du cabinet au grand plateau.
           </p>
