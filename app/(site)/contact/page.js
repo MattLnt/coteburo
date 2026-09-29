@@ -18,13 +18,17 @@ export default async function ContactPage() {
   const horaires = reglages.horaires || "Du lundi au vendredi\n9h – 18h";
 
   const INFOS = [
-    { label: "Showroom", value: adresse, icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
+    { label: "Showroom", value: adresse, href: ficheGoogle, externe: true, icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
     { label: "Téléphone", value: tel, href: telLink, icon: (<path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z" />) },
     { label: "Email", value: email, href: `mailto:${email}`, icon: (<><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>) },
     { label: "Horaires", value: horaires, icon: (<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>) },
   ];
 
-  const adresseMap = encodeURIComponent(adresse.replace(/\n/g, " "));
+  // Identifiant de la fiche Google « Côté Buro » (CID). Avec lui, la carte
+  // ouvre la fiche établissement — avis, horaires, itinéraire — au lieu
+  // d'un simple repère posé sur l'adresse.
+  const GOOGLE_CID = "3795123439626097404";
+  const ficheGoogle = `https://maps.google.com/?cid=${GOOGLE_CID}`;
 
   return (
     <main>
@@ -62,7 +66,7 @@ export default async function ContactPage() {
               </span>
               <p className="text-[10.5px] sm:text-[12px] font-semibold uppercase tracking-wide text-ink-soft">{it.label}</p>
               {it.href ? (
-                <a href={it.href} className="block font-display font-bold text-[12.5px] sm:text-[15px] mt-1 hover:text-orange transition whitespace-pre-line leading-snug break-words">{it.value}</a>
+                <a href={it.href} {...(it.externe ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="block font-display font-bold text-[12.5px] sm:text-[15px] mt-1 hover:text-orange transition whitespace-pre-line leading-snug break-words">{it.value}</a>
               ) : (
                 <p className="font-display font-bold text-[12.5px] sm:text-[15px] mt-1 whitespace-pre-line leading-snug break-words">{it.value}</p>
               )}
@@ -81,7 +85,7 @@ export default async function ContactPage() {
           <div className="rounded-[18px] sm:rounded-[24px] overflow-hidden border border-line lg:sticky lg:top-24">
             <iframe
               title="Plan d'accès Côté BURO"
-              src={`https://www.google.com/maps?q=${adresseMap}&output=embed`}
+              src={`https://maps.google.com/maps?cid=${GOOGLE_CID}&hl=fr&output=embed`}
               className="w-full h-[240px] sm:h-[400px] lg:h-[560px] border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
