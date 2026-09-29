@@ -17,18 +17,18 @@ export default async function ContactPage() {
   const adresse = reglages.adresse || "645 rue Mayor de Montricher\n13290 Aix-en-Provence";
   const horaires = reglages.horaires || "Du lundi au vendredi\n9h – 18h";
 
+  // Identifiant de la fiche Google « Côté Buro » (CID). Avec lui, la carte
+  // ouvre la fiche établissement — avis, horaires, itinéraire — au lieu
+  // d'un simple repère posé sur l'adresse.
+  const GOOGLE_CID = "3795123439626097404";
+  const ficheGoogle = `https://maps.google.com/?cid=${GOOGLE_CID}`;
+
   const INFOS = [
     { label: "Showroom", value: adresse, href: ficheGoogle, externe: true, icon: (<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>) },
     { label: "Téléphone", value: tel, href: telLink, icon: (<path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z" />) },
     { label: "Email", value: email, href: `mailto:${email}`, icon: (<><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>) },
     { label: "Horaires", value: horaires, icon: (<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>) },
   ];
-
-  // Identifiant de la fiche Google « Côté Buro » (CID). Avec lui, la carte
-  // ouvre la fiche établissement — avis, horaires, itinéraire — au lieu
-  // d'un simple repère posé sur l'adresse.
-  const GOOGLE_CID = "3795123439626097404";
-  const ficheGoogle = `https://maps.google.com/?cid=${GOOGLE_CID}`;
 
   return (
     <main>
