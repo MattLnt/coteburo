@@ -17,7 +17,14 @@ function etatCampagne(promo) {
   if (!promo.actif) return { label: "Inactive", color: "#9aa0a8", bg: "#f0ece4" };
   const now = new Date();
   if (promo.dateDebut && new Date(promo.dateDebut) > now) return { label: "Programmée", color: "#b8860b", bg: "#fdf3d8" };
-  if (promo.dateFin && new Date(promo.dateFin) < now) return { label: "Terminée", color: "#9aa0a8", bg: "#f0ece4" };
+  // La date de fin est INCLUSE : une campagne qui finit aujourd'hui court
+  // encore. Comparée au premier instant du jour, elle s'affichait « Terminée »
+  // alors qu'elle remisait toujours.
+  if (promo.dateFin) {
+    const fin = new Date(promo.dateFin);
+    fin.setHours(23, 59, 59, 999);
+    if (fin < now) return { label: "Terminée", color: "#9aa0a8", bg: "#f0ece4" };
+  }
   return { label: "En cours", color: "#1f7a52", bg: "#d8f0e4" };
 }
 
@@ -31,7 +38,11 @@ function PromoCard({ promo, cibles, marques, onEdit }) {
     .filter(([, p]) => Number(p) > 0);
   const generale = promo.valeur > 0 && ((promo.categories?.length || 0) > 0 || nbCibles > 0);
   const remiseGenerale = promo.typeRemise === "montant" ? `−${promo.valeur} €` : `−${promo.valeur} %`;
-  const remise = generale ? remiseGenerale : (remisesMarques.length ? `−${remisesMarques[0][1]} %` : "—");
+  // Un code promo n'a pas de cible : sa remise est celle qu'il annonce.
+  const estCode = promo.modeRemise === "code" && !!promo.code;
+  const remise = estCode
+    ? remiseGenerale
+    : (generale ? remiseGenerale : (remisesMarques.length ? `−${remisesMarques[0][1]} %` : "—"));
 
   const toggle = async () => { await togglePromotion(promo.id, !promo.actif); router.refresh(); };
   const remove = async () => {
@@ -40,9 +51,14 @@ function PromoCard({ promo, cibles, marques, onEdit }) {
     router.refresh();
   };
 
-  const periode = promo.dateDebut || promo.dateFin
-    ? `${fmtDate(promo.dateDebut) || "…"} → ${fmtDate(promo.dateFin) || "…"}`
-    : "Permanente";
+  // Un seul jour s'écrit « Le 7 oct. 2026 » : début et fin tombent le même jour.
+  const unSeulJour = promo.dateDebut && promo.dateFin
+    && fmtDate(promo.dateDebut) === fmtDate(promo.dateFin);
+  const periode = unSeulJour
+    ? `Le ${fmtDate(promo.dateDebut)}`
+    : (promo.dateDebut || promo.dateFin
+      ? `${fmtDate(promo.dateDebut) || "…"} → ${fmtDate(promo.dateFin) || "…"}`
+      : "Permanente");
 
   return (
     <div style={card}>
@@ -63,8 +79,31 @@ function PromoCard({ promo, cibles, marques, onEdit }) {
         <span style={{ padding: "3px 9px", borderRadius: 999, fontSize: 10.5, fontWeight: 700, color: etat.color, background: etat.bg, flexShrink: 0, whiteSpace: "nowrap" }}>{etat.label}</span>
       </div>
 
-      {/* Cibles */}
+      {/* Cibles — ou, pour un code, le code lui-même et ses garde-fous */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 5, padding: "10px 0", borderTop: "1px solid #f2efe9", borderBottom: "1px solid #f2efe9", marginBottom: 11 }}>
+        {estCode && (
+          <>
+            <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 800, background: "#23262a", color: "#fff", letterSpacing: "0.04em" }}>
+              {promo.code}
+            </span>
+            <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>
+              Au panier
+            </span>
+            <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>
+              {promo.utilisations || 0}{promo.codeMaxUtilisations ? ` / ${promo.codeMaxUtilisations}` : ""} utilisation{(promo.utilisations || 0) > 1 ? "s" : ""}
+            </span>
+            {promo.codeMinimumHT > 0 && (
+              <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>
+                dès {promo.codeMinimumHT.toLocaleString("fr-FR")} € HT
+              </span>
+            )}
+            {promo.codeUneFoisParClient && (
+              <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>
+                1 fois par client
+              </span>
+            )}
+          </>
+        )}
         {remisesMarques.map(([slug, pct]) => (
           <span key={`m-${slug}`} style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: "#fce6d6", color: "#d9551a" }}>{nomMarque(slug)} −{pct} %</span>
         ))}
@@ -77,7 +116,7 @@ function PromoCard({ promo, cibles, marques, onEdit }) {
         {nbCibles > 0 && (
           <span style={{ padding: "3px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 600, background: "#f0ece4", color: "#5c616a" }}>{nbCibles} produit{nbCibles > 1 ? "s" : ""}</span>
         )}
-        {(!remisesMarques.length && !promo.categories?.length && !nbCibles) && (
+        {(!estCode && !remisesMarques.length && !promo.categories?.length && !nbCibles) && (
           <span style={{ fontSize: 12, color: "#9aa0a8" }}>Aucune cible</span>
         )}
       </div>

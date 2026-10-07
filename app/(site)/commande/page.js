@@ -7,6 +7,7 @@ import { useSession, signIn } from "next-auth/react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useCart } from "@/components/cart/CartContext";
+import { ChampCodePromo } from "@/components/cart/ChampCodePromo";
 import PaymentForm from "@/components/cart/PaymentForm";
 import ModalMotDePasseOublie from "@/components/ModalMotDePasseOublie";
 import { getInfosPrefill } from "./actions";
@@ -33,7 +34,7 @@ const MODES = [
 
 export default function CommandePage() {
   const { data: session, status: sessionStatus } = useSession();
-  const { items, totalHT, prixLigneAffichee, loaded } = useCart();
+  const { items, sousTotalHT, totalHT, remiseCode, codePromo, prixLigneAffichee, loaded } = useCart();
   const tauxTva = useTauxTva();
   const [form, setForm] = useState({
     email: "", telephone: "", prenom: "", nom: "", societe: "",
@@ -119,6 +120,8 @@ export default function CommandePage() {
     return () => window.removeEventListener("popstate", onPop);
   }, [etape]);
 
+  // totalHT est NET : la remise du code promo en est déjà déduite, donc la TVA,
+  // le seuil de livraison offerte et le montant payé en découlent.
   const tva = montantTVA(totalHT, tauxTva);
   const totalTTCProduits = totalHT + tva;
 
@@ -181,6 +184,12 @@ export default function CommandePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           client: form, items, avecInstallation,
+          // Le code est revérifié par le serveur, qui recalcule la remise :
+          // ce que le navigateur a affiché ne l'engage à rien. On ne l'envoie
+          // que s'il remise effectivement — un code retenu mais sous son
+          // montant minimum ferait refuser une commande que le client voit
+          // pourtant au plein tarif.
+          codePromo: remiseCode > 0 ? (codePromo?.code || null) : null,
           creerCompte,
           motDePasse: creerCompte ? motDePasse : undefined,
         }),
@@ -257,7 +266,10 @@ export default function CommandePage() {
 
   const lignesTotaux = (
     <div className="flex flex-col gap-2 sm:gap-2.5 text-[12.5px] sm:text-sm">
-      <div className="flex justify-between"><span className="text-ink-soft">Sous-total HT</span><span className="font-semibold">{fmt(totalHT)}</span></div>
+      <div className="flex justify-between"><span className="text-ink-soft">Sous-total HT</span><span className="font-semibold">{fmt(sousTotalHT)}</span></div>
+      {remiseCode > 0 && (
+        <div className="flex justify-between text-[#1f7a52]"><span>Code {codePromo?.code}</span><span className="font-semibold">−{fmt(remiseCode)}</span></div>
+      )}
       <div className="flex justify-between"><span className="text-ink-soft">{libelleTVA(tauxTva)}</span><span className="font-semibold">{fmt(tva)}</span></div>
       <div className="flex justify-between">
         <span className="text-ink-soft">Livraison</span>
@@ -270,6 +282,10 @@ export default function CommandePage() {
       {avecInstallation && (
         <div className="flex justify-between"><span className="text-ink-soft">Installation</span><span className="font-semibold">{fmt(fraisInstallation)}</span></div>
       )}
+      {/* Le code se saisit et se retire aussi ici : un client refusé au paiement
+          — code déjà utilisé, montant minimum — doit pouvoir s'en défaire sans
+          repasser par le panier. */}
+      <ChampCodePromo />
       <div className="flex justify-between items-center pt-2 border-t border-line mt-1">
         <span className="font-display font-bold text-[15px] sm:text-lg">Total TTC</span>
         <span className="font-display font-bold text-[18px] sm:text-lg text-orange">{fmt(totalTTCFinal)}</span>

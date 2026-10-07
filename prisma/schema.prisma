@@ -261,6 +261,26 @@ model Promotion {
   remisesMarques Json           @default("{}")
   // La campagne peut s'annoncer dans le bandeau du site, ou rester discrète.
   afficherBandeau Boolean       @default(true)
+
+  // ── Comment la remise atteint le client ─────────────────────────
+  // "auto" : elle est déduite des prix du catalogue, pour tout ce que la
+  //          campagne vise (fournisseurs, catégories, fiches). C'est le
+  //          fonctionnement d'origine, et celui par défaut.
+  // "code" : rien ne bouge au catalogue ; le client tape un code au panier
+  //          et la remise s'applique à son sous-total. Elle se CUMULE donc
+  //          avec les prix déjà remis par les campagnes automatiques —
+  //          c'est ce qu'un client attend d'un code, et c'est assumé.
+  modeRemise String            @default("auto")
+  // Le code, tel que l'administration l'écrit. Rangé en MAJUSCULES sans
+  // espaces : la casse ne doit pas décider si une remise s'applique.
+  code       String?           @unique
+  // Garde-fous d'un code, tous optionnels.
+  // Montant minimum du panier, HT, en dessous duquel le code est refusé.
+  codeMinimumHT      Float?
+  // Nombre total de commandes payées que le code peut servir.
+  codeMaxUtilisations Int?
+  // Un seul usage par adresse e-mail — ce que promet « première commande ».
+  codeUneFoisParClient Boolean  @default(false)
   createdAt  DateTime           @default(now())
   produits   PromotionProduit[]
   vitrines   PromotionVitrine[]
@@ -310,6 +330,11 @@ model Commande {
   // Somme des éco-contributions des lignes, affichée distinctement sur
   // la facture comme la loi l'impose.
   totalEcoPart      Float           @default(0)
+  // ── Code promo utilisé, et ce qu'il a retiré ───────────────────
+  // totalHT est NET : la remise en est déjà déduite. Le brut se relit en
+  // additionnant remiseCode, pour que la facture puisse montrer les deux.
+  codePromo         String?
+  remiseCode        Float           @default(0)
   fraisLivraison    Float           @default(0)
   fraisInstallation Float           @default(0)
   avecInstallation  Boolean         @default(false)
@@ -324,6 +349,7 @@ model Commande {
 
   @@index([email])
   @@index([statut])
+  @@index([codePromo])
 }
 
 model LigneCommande {

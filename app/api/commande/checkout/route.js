@@ -8,6 +8,7 @@ import { prixVitrine } from "@/lib/prixCatalogue";
 import { montantTVA, TVA_DEFAUT } from "@/lib/tva";
 import { getCampagnesActives } from "@/lib/promotions";
 import { attacherCampagnes } from "@/lib/catalogue";
+import { verifierCodePromo, remiseDuCode } from "@/lib/codePromo";
 
 // Quantité maximale par ligne de commande en ligne. Au-delà, c'est un projet
 // d'aménagement : il se chiffre en devis, pas au panier.
@@ -32,7 +33,7 @@ function motDePasseValide(mdp) {
 
 export async function POST(req) {
   try {
-    const { client, items, avecInstallation, creerCompte, motDePasse } = await req.json();
+    const { client, items, avecInstallation, creerCompte, motDePasse, codePromo } = await req.json();
 
     if (!items?.length) {
       return NextResponse.json({ error: "Panier vide." }, { status: 400 });
@@ -255,7 +256,26 @@ export async function POST(req) {
       }
     }
 
-    const totalHT = lignes.reduce((s, l) => s + l.prixHT * l.quantite, 0);
+    const sousTotalHT = lignes.reduce((s, l) => s + l.prixHT * l.quantite, 0);
+
+    // ── Code promo : revérifié ici, jamais cru sur parole ──
+    //
+    // Le panier a pu rester ouvert des semaines, le code expirer, la commande
+    // changer de montant, le client déjà l'avoir utilisé. Un refus est une
+    // erreur franche, pas un silence : il doit retirer le code pour continuer,
+    // sinon il paierait un montant qu'il n'a pas vu.
+    let codeRetenu = null;
+    let remiseCode = 0;
+    if (codePromo) {
+      const verif = await verifierCodePromo({ code: codePromo, sousTotalHT, email });
+      if (!verif.ok) return NextResponse.json({ error: verif.erreur }, { status: 400 });
+      codeRetenu = verif.code;
+      remiseCode = remiseDuCode(verif.campagne, sousTotalHT);
+    }
+
+    // totalHT est NET : la TVA, les frais de port et le montant débité en
+    // découlent, et la remise reste lisible à côté sur la facture.
+    const totalHT = Math.round(Math.max(0, sousTotalHT - remiseCode) * 100) / 100;
     const totalTVA = montantTVA(totalHT, tauxTva);
     const totalTTC = totalHT + totalTVA;
 
@@ -285,6 +305,8 @@ export async function POST(req) {
         ville: client.ville.trim(),
         pays: "France",
         totalHT, totalTVA, totalTTC,
+        codePromo: codeRetenu,
+        remiseCode,
         fraisLivraison,
         fraisInstallation,
         avecInstallation: installationValidee,

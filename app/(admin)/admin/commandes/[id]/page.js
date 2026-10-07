@@ -63,7 +63,14 @@ export default async function CommandeDetailPage({ params }) {
 
             {/* Totaux */}
             <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8, fontSize: 14 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", color: "#5c616a" }}><span>Sous-total HT</span><span>{euro(c.totalHT)}</span></div>
+              {/* totalHT est NET. Avec un code promo, on remonte au brut pour
+                  que la remise se lise au lieu d'être fondue dans le total. */}
+              <div style={{ display: "flex", justifyContent: "space-between", color: "#5c616a" }}><span>Sous-total HT</span><span>{euro(c.totalHT + (c.remiseCode || 0))}</span></div>
+              {c.remiseCode > 0 && (
+                <div style={{ display: "flex", justifyContent: "space-between", color: "#1f7a52", fontWeight: 600 }}>
+                  <span>Code {c.codePromo}</span><span>−{euro(c.remiseCode)}</span>
+                </div>
+              )}
               <div style={{ display: "flex", justifyContent: "space-between", color: "#5c616a" }}><span>{libelleTVA(tauxDepuisMontants(c.totalHT, c.totalTVA))}</span><span>{euro(c.totalTVA)}</span></div>
               <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 16, paddingTop: 8, borderTop: "1px solid #f2efe9" }}>
                 <span>Total TTC</span><span style={{ color: "#f0661b" }}>{euro(c.totalTTC)}</span>

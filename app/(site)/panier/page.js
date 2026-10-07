@@ -5,6 +5,7 @@ import { montantTVA, libelleTVA } from "@/lib/tva";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/components/cart/CartContext";
+import { ChampCodePromo } from "@/components/cart/ChampCodePromo";
 import { urlProduit } from "@/lib/catalogue";
 
 const fmt = (n) => `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
@@ -13,9 +14,11 @@ const ICONE_MEUBLE = (<><path d="M7 11V6a2.5 2.5 0 0 1 2.5-2.5h5A2.5 2.5 0 0 1 1
 const ICONE_POUBELLE = (<><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" /></>);
 
 export default function PanierPage() {
-  const { items, totalHT, prixLigneAffichee, updateQuantite, removeItem, loaded } = useCart();
+  const { items, sousTotalHT, totalHT, remiseCode, codePromo, prixLigneAffichee, updateQuantite, removeItem, loaded } = useCart();
   const tauxTva = useTauxTva();
 
+  // totalHT est NET : la remise du code en est déjà déduite, et c'est donc elle
+  // qui porte la TVA, le seuil de livraison offerte et le montant à payer.
   const tva = montantTVA(totalHT, tauxTva);
   const totalTTCProduits = totalHT + tva;
 
@@ -194,8 +197,14 @@ export default function PanierPage() {
           <div className="flex flex-col gap-2.5 sm:gap-3 text-[12.5px] sm:text-sm">
             <div className="flex justify-between">
               <span className="text-ink-soft">Sous-total HT</span>
-              <span className="font-semibold">{fmt(totalHT)}</span>
+              <span className="font-semibold">{fmt(sousTotalHT)}</span>
             </div>
+            {remiseCode > 0 && (
+              <div className="flex justify-between text-[#1f7a52]">
+                <span>Code {codePromo?.code}</span>
+                <span className="font-semibold">−{fmt(remiseCode)}</span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="text-ink-soft">{libelleTVA(tauxTva)}</span>
               <span className="font-semibold">{fmt(tva)}</span>
@@ -210,6 +219,7 @@ export default function PanierPage() {
                 <span className="font-semibold">{fmt(fraisLivraison)}</span>
               )}
             </div>
+            <ChampCodePromo />
             <div className="h-px bg-line my-1 sm:my-2" />
             <div className="flex justify-between items-center">
               <span className="font-display font-bold text-[15px] sm:text-lg">Total TTC</span>

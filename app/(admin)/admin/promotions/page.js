@@ -26,8 +26,24 @@ export default async function PromotionsPage() {
     }),
   ]);
 
+  // Combien de fois chaque code a réellement servi. Compté sur les commandes
+  // PAYÉES, comme le garde-fou : un panier abandonné ne consomme pas une place.
+  const codes = promotions.map((p) => p.code).filter(Boolean);
+  const usages = codes.length
+    ? await prisma.commande.groupBy({
+      by: ["codePromo"],
+      where: { codePromo: { in: codes }, paye: true },
+      _count: { _all: true },
+    })
+    : [];
+  const parCode = Object.fromEntries(usages.map((u) => [u.codePromo, u._count._all]));
+
   const cibles = vitrines.map((v) => ({ vitrineId: v.id, nom: v.nom, gammeNom: v.gamme?.nom || null }));
-  const promotionsPlates = promotions.map((p) => ({ ...p, cibles: p.vitrines }));
+  const promotionsPlates = promotions.map((p) => ({
+    ...p,
+    cibles: p.vitrines,
+    utilisations: p.code ? (parCode[p.code] || 0) : 0,
+  }));
 
   return (
     <>
@@ -37,7 +53,7 @@ export default async function PromotionsPage() {
         </span>
         <div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: 0, lineHeight: 1.1 }}>Promotions</h1>
-          <p style={{ fontSize: 14, color: "#5c616a", margin: "3px 0 0" }}>Créez des campagnes de remise sur un fournisseur, des catégories ou des produits.</p>
+          <p style={{ fontSize: 14, color: "#5c616a", margin: "3px 0 0" }}>Remises automatiques sur un fournisseur, des catégories ou des produits — ou codes promo à saisir au panier.</p>
         </div>
       </div>
 

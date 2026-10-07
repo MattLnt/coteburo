@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { remiseDuCode } from "@/lib/codePromo";
 
 const CartContext = createContext(null);
 const STORAGE_KEY = "coteburo_panier";
@@ -11,6 +12,11 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [open, setOpen] = useState(false); // tiroir panier (optionnel plus tard)
+  // Code promo retenu, tel que /api/code-promo l'a validé :
+  // { code, nom, typeRemise, valeur, minimumHT }. Il survit au rechargement
+  // de la page — un client qui revient ne retape pas son code — mais il est
+  // TOUJOURS revérifié au paiement : ce qui est ici n'est qu'un affichage.
+  const [codePromo, setCodePromo] = useState(null);
 
   // Chargement initial depuis localStorage
   useEffect(() => {
@@ -22,6 +28,9 @@ export function CartProvider({ children }) {
         // pour éviter des articles au format périmé qui casseraient le paiement.
         if (data && data.v === STORAGE_VERSION && Array.isArray(data.items)) {
           setItems(data.items);
+          // Le code promo voyage à côté des articles. Son absence n'a rien
+          // d'anormal : la plupart des paniers n'en ont pas.
+          if (data.codePromo?.code) setCodePromo(data.codePromo);
         } else {
           localStorage.removeItem(STORAGE_KEY);
         }
@@ -35,8 +44,8 @@ export function CartProvider({ children }) {
   // Sauvegarde à chaque changement (une fois chargé)
   useEffect(() => {
     if (!loaded) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: STORAGE_VERSION, items })); } catch {}
-  }, [items, loaded]);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: STORAGE_VERSION, items, codePromo })); } catch {}
+  }, [items, loaded, codePromo]);
 
   // Identifiant unique d'une ligne.
   //
@@ -120,17 +129,42 @@ export function CartProvider({ children }) {
     setItems((prev) => prev.map((it) => it.id === id ? { ...it, quantite: Math.max(1, quantite) } : it));
   }, []);
 
-  const clear = useCallback(() => setItems([]), []);
+  const clear = useCallback(() => { setItems([]); setCodePromo(null); }, []);
+
+  // Le code s'oublie avec le panier vidé : une remise sans articles n'a plus
+  // d'objet, et le garde-fou du montant minimum doit être rejoué.
+  const retirerCode = useCallback(() => setCodePromo(null), []);
 
   const count = items.reduce((sum, it) => sum + it.quantite, 0);
   // Total indicatif, cote navigateur. Le montant facture est celui que
   // /api/commande/checkout recalcule. prix : ancien nom, pour les paniers
   // deja enregistres en localStorage avant le renommage.
   const prixLigneAffichee = (it) => it.prixAffichage ?? it.prix ?? 0;
-  const totalHT = items.reduce((sum, it) => sum + prixLigneAffichee(it) * it.quantite, 0);
+  // Sous-total des articles, remises du catalogue déjà comprises dans leur prix.
+  const sousTotalHT = items.reduce((sum, it) => sum + prixLigneAffichee(it) * it.quantite, 0);
+
+  // La remise du code se RECALCULE à chaque rendu, depuis le taux retenu : une
+  // quantité modifiée, une ligne retirée, et le montant suit. Mémoriser un
+  // montant figé aurait laissé « −300 € » sur un panier devenu plus petit.
+  const remiseCode = codePromo ? remiseDuCode(codePromo, sousTotalHT) : 0;
+
+  // Le code tombe de lui-même si le panier repasse sous son montant minimum.
+  // On ne le retire pas — le client le retrouvera en complétant son panier —
+  // mais il ne remise rien tant que le minimum n'est pas atteint.
+  const minimumAtteint = !codePromo?.minimumHT || sousTotalHT >= codePromo.minimumHT;
+  const remiseAppliquee = minimumAtteint ? remiseCode : 0;
+
+  // totalHT est NET : c'est lui que la TVA, les frais de port et le paiement
+  // prennent pour base, pour que le panier, la commande et la facture
+  // annoncent le même montant.
+  const totalHT = Math.max(0, sousTotalHT - remiseAppliquee);
 
   return (
-    <CartContext.Provider value={{ items, count, totalHT, prixLigneAffichee, loaded, open, setOpen, addItem, removeItem, updateQuantite, clear }}>
+    <CartContext.Provider value={{
+      items, count, sousTotalHT, totalHT, prixLigneAffichee, loaded, open, setOpen,
+      addItem, removeItem, updateQuantite, clear,
+      codePromo, setCodePromo, retirerCode, remiseCode: remiseAppliquee, minimumAtteint,
+    }}>
       {children}
     </CartContext.Provider>
   );
