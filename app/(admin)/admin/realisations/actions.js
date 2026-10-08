@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(str) {
   return str
@@ -61,6 +62,7 @@ export async function createRealisation(data) {
   });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  invaliderSitePublic();
   return { ok: true, id: r.id };
 }
 
@@ -79,6 +81,7 @@ export async function updateRealisationInfos(id, data) {
   });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -107,6 +110,7 @@ export async function sauverRealisationComplete(id, data) {
   revalidatePath("/admin/realisations");
   revalidatePath(`/admin/realisations/${id}`);
   revalidatePath("/realisations");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -115,6 +119,7 @@ export async function deleteRealisation(id) {
   await prisma.realisation.delete({ where: { id } });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -123,5 +128,6 @@ export async function toggleRealisationPublie(id, publie) {
   await prisma.realisation.update({ where: { id }, data: { publie: !!publie } });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  invaliderSitePublic();
   return { ok: true };
 }

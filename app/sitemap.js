@@ -5,12 +5,15 @@ import { siteUrl } from "@/lib/site";
 // robots.txt annonçait un plan de site qui n'existait pas : l'adresse
 // répondait 404 depuis le début.
 //
-// Le plan est recalculé à chaque demande plutôt que figé au build. Le
-// catalogue bouge depuis l'admin — publier une gamme, dépublier une fiche —
-// et un plan figé annoncerait des pages retirées tout en taisant les
-// nouvelles. Les moteurs ne viennent le chercher que quelques fois par jour ;
-// trois requêtes maigres à cette fréquence ne coûtent rien.
-export const dynamic = "force-dynamic";
+// Le plan ne doit pas être figé au build : le catalogue bouge depuis l'admin
+// — publier une gamme, dépublier une fiche — et un plan figé annoncerait des
+// pages retirées tout en taisant les nouvelles.
+//
+// Il n'a pas besoin pour autant d'être recalculé à chaque demande : il parcourt
+// tout le catalogue, et les robots le réclament plus souvent qu'on ne le croit.
+// Une heure de fraîcheur suffit, et l'admin l'invalide dès qu'une fiche change
+// (voir lib/invalidation.js).
+export const revalidate = 3600;
 
 // Les pages fixes, avec leur importance relative. Tout ce que robots.txt
 // interdit en est absent — admin, api, compte, connexion, inscription,

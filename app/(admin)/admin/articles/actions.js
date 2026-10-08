@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(str) {
   return str
@@ -44,6 +45,7 @@ export async function createArticle(data) {
   });
   revalidatePath("/admin/articles");
   revalidatePath("/conseils");
+  invaliderSitePublic();
   return { ok: true, id: a.id };
 }
 
@@ -63,6 +65,7 @@ export async function updateArticle(id, data) {
   });
   revalidatePath("/admin/articles");
   revalidatePath("/conseils");
+  invaliderSitePublic();
   revalidatePath(`/conseils/${data.slug || ""}`);
   return { ok: true };
 }
@@ -72,6 +75,7 @@ export async function deleteArticle(id) {
   await prisma.article.delete({ where: { id } });
   revalidatePath("/admin/articles");
   revalidatePath("/conseils");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -80,5 +84,6 @@ export async function toggleArticlePublie(id, publie) {
   await prisma.article.update({ where: { id }, data: { publie: !!publie } });
   revalidatePath("/admin/articles");
   revalidatePath("/conseils");
+  invaliderSitePublic();
   return { ok: true };
 }

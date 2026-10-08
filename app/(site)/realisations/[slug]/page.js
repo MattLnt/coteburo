@@ -4,7 +4,15 @@ import { prisma } from "@/lib/prisma";
 import { urlProduit } from "@/lib/catalogue";
 import CtaBand from "@/components/CtaBand";
 
-export const dynamic = "force-dynamic";
+// Même raisonnement que la liste. Le generateStaticParams vide est
+// indispensable : sans lui, Next rend la page à la demande sans jamais garder
+// le résultat. Vide, parce que construire toutes les réalisations à chaque
+// déploiement n'apporterait rien — chacune est rendue à sa première visite.
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

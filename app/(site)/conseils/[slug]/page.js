@@ -3,7 +3,15 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+// Même raisonnement que la liste. Le generateStaticParams vide est
+// indispensable : sans lui, Next rend la page à la demande sans jamais garder
+// le résultat. Vide, parce que construire tous les articles à chaque
+// déploiement n'apporterait rien — chacun est rendu à sa première visite.
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
 
 const dateFR = (d) => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 const dateCourte = (d) => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });

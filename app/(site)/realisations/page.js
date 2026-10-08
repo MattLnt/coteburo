@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+// Les réalisations ne changent que depuis l'admin, et la page est la même pour
+// tous les visiteurs : elle est rendue une fois puis servie depuis le cache.
+// L'admin l'invalide à chaque publication (voir lib/invalidation.js).
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Réalisations",

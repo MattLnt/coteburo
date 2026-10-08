@@ -80,5 +80,12 @@ export async function GET(req) {
     .sort((a, b) => (a.designation || "").localeCompare(b.designation || ""))
     .slice(0, limit);
 
-  return NextResponse.json({ produits, total });
+  // La même recherche revient sans cesse : « bureau », « siège », « armoire »,
+  // tapées par des visiteurs différents, et la barre interroge à chaque
+  // frappe passé le délai d'attente. Une minute de cache partagé absorbe ces
+  // rafales sans que personne ne voie un prix périmé plus d'une minute, et la
+  // réponse reste servie pendant qu'une version fraîche se prépare.
+  return NextResponse.json({ produits, total }, {
+    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+  });
 }
