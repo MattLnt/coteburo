@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 export async function getReglages() {
   await exigerAdmin();
@@ -87,5 +88,7 @@ export async function sauverPaliersInstallation(paliers) {
   ]);
 
   revalidatePath("/admin/reglages");
+  // Les paliers d'installation nourrissent les frais affichés au panier.
+  invaliderSitePublic();
   return { ok: true };
 }

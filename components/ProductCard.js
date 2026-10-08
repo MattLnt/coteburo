@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import FavoriButton from "@/components/FavoriButton";
 
-export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId, brand, name, attr, price, oldPrice, promo, image, images, favori = false, connecte = false }) {
+export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId, brand, name, attr, price, oldPrice, promo, image, images }) {
   const gallery = (Array.isArray(images) && images.length > 0 ? images : image ? [image] : []);
   const [idx, setIdx] = useState(0);
   const hasMultiple = gallery.length > 1;
@@ -30,7 +30,7 @@ export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId
         )}
         {(codeRacine || vitrineId) && (
           <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20">
-            <FavoriButton codeRacine={codeRacine} vitrineId={vitrineId} initial={favori} connecte={connecte} variant="float" />
+            <FavoriButton codeRacine={codeRacine} vitrineId={vitrineId} variant="float" />
           </div>
         )}
 
@@ -38,7 +38,7 @@ export default function ProductCard({ href = "/catalogue", codeRacine, vitrineId
           // object-contain + coins arrondis : l'image entière reste visible,
           // et une photo rectangulaire devient un visuel assumé plutôt qu'un
           // rectangle posé au milieu de la carte.
-          <img src={gallery[idx]} alt={name} className="w-full h-full object-contain p-2.5 sm:p-3 rounded-[14px] transition duration-300 group-hover:scale-[1.03]" />
+          <img src={gallery[idx]} alt={name} className="w-full h-full object-contain p-2.5 sm:p-3 rounded-[14px] transition duration-300 group-hover:scale-[1.03]" loading="lazy" decoding="async" />
         ) : (
           <svg width="52%" viewBox="0 0 120 140" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" className="text-charcoal opacity-80 transition duration-300 group-hover:scale-105">
             <path d="M38 22c0-5 4-9 9-9h26c5 0 9 4 9 9v40H38z" /><path d="M32 62h56l-4 20H36z" /><path d="M60 82v28" /><path d="M40 130l20-16 20 16" />

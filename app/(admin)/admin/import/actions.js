@@ -4,6 +4,7 @@ import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { ecrireModeleAChoix } from "@/lib/ecrireModeleAChoix";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(s) {
   return (s || "")
@@ -555,8 +556,10 @@ export async function lancerImport({ json, gammeId, nouvelleGammeNom }) {
   }
 
   revalidatePath("/admin/produits");
+  invaliderSitePublic();
   for (const gid of new Set(creees.map((c) => c.gammeId))) {
     revalidatePath(`/admin/architecture/${gid}`);
+    invaliderSitePublic();
   }
 
   return { ok: true, gammeId: gammeIdFinal, produits: creees };

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 
 const FILTERS = [
@@ -12,9 +12,8 @@ const FILTERS = [
   { key: "accueil", label: "Accueil" },
 ];
 
-export default function ProductSelectionFilters({ produits, favorisVitrines = [], connecte = false }) {
+export default function ProductSelectionFilters({ produits }) {
   const [active, setActive] = useState("tous");
-  const favSet = useMemo(() => new Set(favorisVitrines), [favorisVitrines]);
   const shown = active === "tous" ? produits : produits.filter((p) => p.cat === active);
 
   const filtresVisibles = FILTERS.filter((f) => f.key === "tous" || produits.some((p) => p.cat === f.key));
@@ -48,8 +47,6 @@ export default function ProductSelectionFilters({ produits, favorisVitrines = []
               key={p.vitrineId}
               href={p.href}
               vitrineId={p.vitrineId}
-              favori={favSet.has(p.vitrineId)}
-              connecte={connecte}
               brand={p.brand}
               name={p.name}
               attr={p.attr}

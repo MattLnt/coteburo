@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import PromoBandCarousel from "@/components/PromoBandCarousel";
-import { getFavorisContext } from "@/lib/favoris";
 import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes, inclureCombinaisonsPrix , imagesVitrine } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
@@ -20,23 +19,20 @@ export default async function PromoBand() {
   if (categoriesCiblees.length) cibles.push({ categories: { some: { slug: { in: categoriesCiblees } } } });
   if (vitrinesCiblees.length) cibles.push({ id: { in: vitrinesCiblees } });
 
-  const [favCtx, vitrines] = await Promise.all([
-    getFavorisContext(),
-    prisma.produitVitrine.findMany({
-      // Même règle que le catalogue : un accessoire vendu seulement avec un
-      // produit n'est pas une offre en soi.
-      where: { publie: true, accessoireSeul: false, gamme: { publie: true }, OR: cibles },
-      include: {
-        combinaisons: inclureCombinaisonsPrix,
-        gamme: { select: { venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
-        categories: { select: { slug: true } },
-        sousCategories: { select: { slug: true }, take: 1 },
-      },
-      orderBy: { nom: "asc" },
-      // Une campagne fournisseur vise des centaines de fiches ; neuf suffisent.
-      take: 40,
-    }),
-  ]);
+  const vitrines = await prisma.produitVitrine.findMany({
+    // Même règle que le catalogue : un accessoire vendu seulement avec un
+    // produit n'est pas une offre en soi.
+    where: { publie: true, accessoireSeul: false, gamme: { publie: true }, OR: cibles },
+    include: {
+      combinaisons: inclureCombinaisonsPrix,
+      gamme: { select: { venteSurDevis: true, marque: { select: { nom: true, slug: true } } } },
+      categories: { select: { slug: true } },
+      sousCategories: { select: { slug: true }, take: 1 },
+    },
+    orderBy: { nom: "asc" },
+    // Une campagne fournisseur vise des centaines de fiches ; neuf suffisent.
+    take: 40,
+  });
   attacherCampagnes(vitrines, campagnes);
 
   // Un bouton par fournisseur remisé : « Sokoa −20 % ». Le client choisit sa
@@ -78,5 +74,5 @@ export default async function PromoBand() {
 
   if (enPromo.length === 0) return null;
 
-  return <PromoBandCarousel promos={enPromo} liens={liens} favorisCodes={favCtx.favorisCodes} favorisVitrines={favCtx.favorisVitrines} connecte={favCtx.connecte} />;
+  return <PromoBandCarousel promos={enPromo} liens={liens} />;
 }

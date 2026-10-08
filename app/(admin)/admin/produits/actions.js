@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(s) {
   return s
@@ -74,7 +75,9 @@ export async function creerProduitRapide({ nomProduit, gammeId, nouvelleGammeNom
   });
 
   revalidatePath("/admin/produits");
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${gammeIdFinal}`);
+  invaliderSitePublic();
   return { ok: true, id: vitrine.id, gammeId: gammeIdFinal };
 }
 
@@ -87,7 +90,9 @@ export async function supprimerLigneProduit({ mode, carteId, declinaisonId }) {
     const nouvelles = declinaisons.filter((d) => d.id !== declinaisonId);
     await prisma.produitVitrine.update({ where: { id: carteId }, data: { declinaisons: nouvelles } });
     revalidatePath("/admin/produits");
+    invaliderSitePublic();
     revalidatePath(`/admin/architecture/${vitrine.gammeId}/carte/${carteId}`);
+    invaliderSitePublic();
     return { ok: true };
   }
 
@@ -96,7 +101,9 @@ export async function supprimerLigneProduit({ mode, carteId, declinaisonId }) {
   await prisma.produit.updateMany({ where: { vitrineId: carteId }, data: { vitrineId: null } });
   await prisma.produitVitrine.delete({ where: { id: carteId } });
   revalidatePath("/admin/produits");
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -108,8 +115,11 @@ export async function toggleProduitPublie(carteId, publie) {
     select: { gammeId: true },
   });
   revalidatePath("/admin/produits");
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${vitrine.gammeId}/carte/${carteId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -124,8 +134,11 @@ export async function renommerProduit(carteId, nom) {
       select: { gammeId: true },
     });
     revalidatePath("/admin/produits");
+    invaliderSitePublic();
     revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+    invaliderSitePublic();
     revalidatePath(`/admin/architecture/${vitrine.gammeId}/carte/${carteId}`);
+    invaliderSitePublic();
     return { ok: true };
   } catch {
     return { ok: false, error: "Échec du renommage." };

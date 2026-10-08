@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(s) {
   return s
@@ -79,7 +80,9 @@ export async function sauverInfosGamme(id, data) {
     },
   });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${id}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -110,6 +113,7 @@ export async function renommerVitrine(id, nom) {
   await prisma.produitVitrine.update({ where: { id }, data: { nom: nom?.trim() || "Sans nom" } });
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -118,6 +122,7 @@ export async function toggleVitrinePublication(id, publie) {
   await prisma.produitVitrine.update({ where: { id }, data: { publie } });
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -126,6 +131,7 @@ export async function toggleVitrineDevis(id, venteSurDevis) {
   await prisma.produitVitrine.update({ where: { id }, data: { venteSurDevis } });
   const v = await prisma.produitVitrine.findUnique({ where: { id }, select: { gammeId: true } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -135,6 +141,7 @@ export async function reordonnerVitrines(gammeId, idsOrdonnes) {
     idsOrdonnes.map((id, index) => prisma.produitVitrine.update({ where: { id }, data: { ordre: index } }))
   );
   revalidatePath(`/admin/architecture/${gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -144,6 +151,7 @@ export async function supprimerVitrine(id) {
   await prisma.produit.updateMany({ where: { vitrineId: id }, data: { vitrineId: null } });
   await prisma.produitVitrine.delete({ where: { id } });
   if (v) revalidatePath(`/admin/architecture/${v.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -170,6 +178,7 @@ export async function creerVitrine(gammeId, { nom, venteSurDevis }) {
   });
 
   revalidatePath(`/admin/architecture/${gammeId}`);
+  invaliderSitePublic();
   return { ok: true, id: vitrine.id };
 }
 
@@ -196,6 +205,7 @@ export async function renommerFinition(id, nom) {
   await exigerAdmin();
   const f = await prisma.finition.update({ where: { id }, data: { nom: nom?.trim() || "Sans nom" }, select: { groupe: { select: { gammeId: true } } } });
   revalidatePath(`/admin/architecture/${f.groupe.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -207,6 +217,7 @@ export async function majFinitionImage(id, { imageUrl, couleur }) {
     select: { groupe: { select: { gammeId: true } } },
   });
   revalidatePath(`/admin/architecture/${f.groupe.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -214,5 +225,6 @@ export async function renommerGroupeFinition(id, nom) {
   await exigerAdmin();
   const g = await prisma.groupeFinition.update({ where: { id }, data: { nom: nom?.trim() || "Sans nom" }, select: { gammeId: true } });
   revalidatePath(`/admin/architecture/${g.gammeId}`);
+  invaliderSitePublic();
   return { ok: true };
 }

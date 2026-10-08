@@ -4,6 +4,7 @@ import { exigerAdmin } from "@/lib/session";
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 // Le détourage tourne dans le navigateur — la bibliothèque @imgly ne
 // fonctionne que côté client. Ces actions servent donc uniquement à
@@ -78,6 +79,7 @@ export async function enregistrerImages(produitId, images) {
       data: { imageUrl: images[0], images },
     });
     revalidatePath("/admin/detourage");
+    invaliderSitePublic();
     return { ok: true };
   } catch (e) {
     return { ok: false, message: e?.message || "Enregistrement impossible." };

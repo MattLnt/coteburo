@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 // ─────────────────────────────────────────────────────────────
 // Bibliothèque de finitions partagée : palettes + finitions modèles.
@@ -54,6 +55,7 @@ export async function creerPalette({ nom, marque }) {
     data: { nom: nomPropre, marque: (marque || "").trim() || null, ordre: (max._max.ordre ?? -1) + 1 },
   });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true, id: palette.id };
 }
 
@@ -64,6 +66,7 @@ export async function renommerPalette(id, { nom, marque }) {
     data: { nom: (nom || "").trim(), marque: (marque || "").trim() || null },
   });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -73,6 +76,7 @@ export async function supprimerPalette(id) {
   // (paletteId = null grâce à onDelete: SetNull).
   await prisma.paletteFinition.delete({ where: { id } });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -95,6 +99,7 @@ export async function creerFinition({ nom, couleur, imageUrl, paletteId }) {
     },
   });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true, id: finition.id };
 }
 
@@ -107,6 +112,7 @@ export async function majFinition(id, { nom, couleur, imageUrl, paletteId }) {
   if (paletteId !== undefined) data.paletteId = paletteId || null;
   await prisma.finitionModele.update({ where: { id }, data });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -114,6 +120,7 @@ export async function supprimerFinition(id) {
   await exigerAdmin();
   await prisma.finitionModele.delete({ where: { id } });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true };
 }
 

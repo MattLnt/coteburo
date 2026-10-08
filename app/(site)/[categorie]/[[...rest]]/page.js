@@ -2,11 +2,29 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCarteFrontParCategorie, urlProduit, getMargeGlobale, attacherCampagnes } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
-import { getFavorisContext } from "@/lib/favoris";
 import { chargerProduit, surDevis as estSurDevis } from "@/lib/chargerProduit";
 import FicheProduitModele from "@/components/FicheProduitModele";
 
-export const dynamic = "force-dynamic";
+// Une fiche produit est la même pour tous les visiteurs. Elle était pourtant
+// rendue à neuf à chaque consultation, parce qu'elle lisait les favoris — donc
+// un cookie. Les favoris sont passés côté navigateur (components/FavorisContext.js),
+// la fiche est donc rendue une fois puis servie depuis le cache.
+//
+// Le délai n'est qu'un filet : l'admin invalide la fiche concernée dès qu'un
+// prix, un visuel ou une publication change (voir lib/invalidation.js).
+export const revalidate = 3600;
+
+// Un segment dynamique n'est mis en cache à l'exécution que si la route
+// déclare generateStaticParams — même vide. Sans lui, Next continue de rendre
+// chaque fiche à la demande sans jamais garder le résultat, et le gain serait
+// nul.
+//
+// Le tableau est volontairement vide : construire les quelque mille sept
+// cents fiches à chaque déploiement allongerait le build pour rien. Chaque
+// fiche est donc rendue à sa première visite, puis servie depuis le cache.
+export async function generateStaticParams() {
+  return [];
+}
 
 // rest = [produit] → pas de sous-catégorie
 // rest = [sousCategorie, produit] → avec sous-catégorie
@@ -40,9 +58,6 @@ export default async function ProduitPage({ params }) {
   // Inversement : l'URL mentionne une sous-catégorie qui ne correspond pas à celle du produit.
   if (parsed.sousCategorie && parsed.sousCategorie !== data.carte.sousCategorieSlug) notFound();
 
-  const favCtx = await getFavorisContext();
-  const favori = favCtx.favorisVitrines.includes(data.carte.id);
-
   // Le produit lu dans le modèle à choix. La carte reste chargée pour le fil
   // d'ariane et les suggestions, qui n'en dépendent pas.
   const [produit, marge, campagnes] = await Promise.all([
@@ -55,9 +70,7 @@ export default async function ProduitPage({ params }) {
   // la même remise que la carte du catalogue, et le panier hérite du bon prix.
   attacherCampagnes(produit, campagnes);
 
-  const payload = JSON.parse(JSON.stringify({
-    ...data, favori, connecte: favCtx.connecte, produit, marge,
-  }));
+  const payload = JSON.parse(JSON.stringify({ ...data, produit, marge }));
 
   return (
     <main>
@@ -67,13 +80,13 @@ export default async function ProduitPage({ params }) {
         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           <Link href="/" className="hidden sm:inline hover:text-orange">Accueil</Link>
           <span className="hidden sm:inline text-ink-soft/40">/</span>
-          <Link prefetch={false} href="/catalogue" className="hidden sm:inline hover:text-orange">Catalogue</Link>
+          <Link href="/catalogue" className="hidden sm:inline hover:text-orange">Catalogue</Link>
           <span className="hidden sm:inline text-ink-soft/40">/</span>
-          <Link prefetch={false} href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.categorieNom}</Link>
+          <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.categorieNom}</Link>
           {payload.carte.sousCategorieNom && (
             <>
               <span className="text-ink-soft/40 shrink-0">/</span>
-              <Link prefetch={false} href={`/catalogue?categorie=${payload.carte.categorieSlug}&sousCategorie=${payload.carte.sousCategorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.sousCategorieNom}</Link>
+              <Link href={`/catalogue?categorie=${payload.carte.categorieSlug}&sousCategorie=${payload.carte.sousCategorieSlug}`} className="hover:text-orange whitespace-nowrap shrink-0">{payload.carte.sousCategorieNom}</Link>
             </>
           )}
           <span className="text-ink-soft/40 shrink-0">/</span>
@@ -87,8 +100,6 @@ export default async function ProduitPage({ params }) {
           produit={payload.produit}
           marge={payload.marge}
           surDevis={estSurDevis(payload.produit)}
-          favori={payload.favori}
-          connecte={payload.connecte}
           categorieSlug={payload.carte.categorieSlug}
           sousCategorieSlug={payload.carte.sousCategorieSlug}
           options={payload.carte.optionsAdditionnelles || []}
@@ -102,14 +113,14 @@ export default async function ProduitPage({ params }) {
             <h2 className="font-display font-bold text-[19px] sm:text-2xl mb-4 sm:mb-6">Vous aimerez aussi</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {payload.autresCartes.map((c) => (
-                <Link prefetch={false} key={c.id} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
+                <Link key={c.id} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
                   className="group relative rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
                   {c.promoPct != null && (
                     <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 rounded-full bg-orange text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5">−{c.promoPct} %</span>
                   )}
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden">
                     {c.imageUrl ? (
-                      <img src={c.imageUrl} alt={c.nom} className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-[1.03] transition" />
+                      <img src={c.imageUrl} alt={c.nom} loading="lazy" decoding="async" className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-[1.03] transition" />
                     ) : (
                       <div className="w-full h-full grid place-items-center text-charcoal/15">
                         <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>

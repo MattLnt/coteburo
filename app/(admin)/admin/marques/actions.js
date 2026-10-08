@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(s) {
   return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
@@ -30,6 +31,7 @@ export async function createMarque(data) {
   }
 
   revalidatePath("/admin/marques");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -48,6 +50,7 @@ export async function updateMarque(id, data) {
   });
 
   revalidatePath("/admin/marques");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -59,5 +62,6 @@ export async function deleteMarque(id) {
   }
   await prisma.marque.delete({ where: { id } });
   revalidatePath("/admin/marques");
+  invaliderSitePublic();
   return { ok: true };
 }

@@ -1,6 +1,8 @@
 "use client";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { Suspense, useState, useMemo, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useFavoris } from "@/components/FavorisContext";
 import CatalogueFilters from "@/components/CatalogueFilters";
 import FavoriButton from "@/components/FavoriButton";
 import { surFondBlanc } from "@/lib/imageProduit";
@@ -24,26 +26,81 @@ function dansPlage(cMin, cMax, selMin, selMax) {
 
 const LIBELLES_TRI = { nom: "Nom (A–Z)", "prix-asc": "Prix croissant", "prix-desc": "Prix décroissant" };
 
-export default function CatalogueClient({ cartes, filtres, favorisVitrines, connecte, estAdmin = false, valeursInitiales, basePath = "/catalogue" }) {
-  const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);
-  const [sousCategorieSlug, setSousCategorieSlug] = useState(valeursInitiales.sousCategorieSlug || null);
+// La grille posait d'un coup une carte par produit publié — près de deux mille
+// nœuds et autant d'images à télécharger. Le navigateur mettait plusieurs
+// secondes à peindre la page et bloquait sur le défilement.
+//
+// On en rend une tranche, puis les suivantes à mesure que le bas de la liste
+// approche. Le filtrage, lui, continue de porter sur la totalité des cartes :
+// c'est l'affichage qui est progressif, pas la recherche.
+const PAR_TRANCHE = 48;
+
+// Les filtres d'entrée se lisent dans l'adresse, côté navigateur, et non plus
+// dans les searchParams du serveur : une page qui lit ses searchParams est
+// rendue à chaque visite et ne peut pas être mise en cache. Le filtrage se
+// faisait déjà entièrement ici — seule la lecture de l'URL a changé de camp.
+function lireValeursInitiales(sp) {
+  const categorie = sp.get("categorie") || null;
+  return {
+    categorieSlug: categorie,
+    // Un rayon ne se lit qu'avec sa catégorie : « direction », « collaboratif »
+    // et « convivialité » existent chacun dans deux catégories.
+    sousCategorieSlug: categorie ? (sp.get("sousCategorie") || null) : null,
+    marqueSlug: sp.get("marque") || null,
+    // « En promotion seulement » : c'est là que mènent le bandeau et les
+    // boutons des campagnes.
+    promo: sp.get("promo") === "1",
+    prixMin: sp.get("prixMin") || null,
+    prixMax: sp.get("prixMax") || null,
+  };
+}
+
+// useSearchParams suspend au prérendu — les paramètres d'URL ne sont pas
+// connus à la construction. Appelé depuis le corps du catalogue, il mettait
+// toute la grille derrière une frontière Suspense : la page servie ne
+// contenait plus un seul produit, ni pour le visiteur ni pour les moteurs.
+//
+// On l'isole donc dans ce composant minuscule, qui n'affiche rien et se
+// contente de reporter les filtres de l'adresse. La grille, elle, est rendue
+// côté serveur sans attendre : /catalogue arrive complet, et une adresse
+// filtrée (/catalogue?categorie=sieges) s'ajuste à l'hydratation.
+function FiltresDepuisUrl({ appliquer }) {
+  const searchParams = useSearchParams();
+  const cle = searchParams.toString();
+  useEffect(() => {
+    appliquer(lireValeursInitiales(new URLSearchParams(cle)));
+  }, [cle, appliquer]);
+  return null;
+}
+
+export default function CatalogueClient({ cartes, filtres, basePath = "/catalogue" }) {
+  const router = useRouter();
+
+  // Favoris, état de connexion et rôle viennent du navigateur : le serveur ne
+  // lit plus de cookie pour rendre cette page.
+  const { favoris: favSet, connecte, estAdmin, basculer: basculerFavori } = useFavoris();
+
+  // Les filtres partent à vide : le rendu serveur montre le catalogue entier,
+  // et FiltresDepuisUrl applique l'adresse juste après, côté navigateur.
+  const [categorieSlug, setCategorieSlug] = useState(null);
+  const [sousCategorieSlug, setSousCategorieSlug] = useState(null);
   // Marque et « en promotion » : posés par l'adresse (bandeau, boutons des
   // campagnes), retirables d'une pastille. Les filtres du panneau ne les
   // proposent pas, ils suivent les campagnes plutôt que le catalogue.
-  const [marqueSlug, setMarqueSlug] = useState(valeursInitiales.marqueSlug || null);
-  const [promo, setPromo] = useState(!!valeursInitiales.promo);
-  const [prixMin, setPrixMin] = useState(valeursInitiales.prixMin || null);
-  const [prixMax, setPrixMax] = useState(valeursInitiales.prixMax || null);
+  const [marqueSlug, setMarqueSlug] = useState(null);
+  const [promo, setPromo] = useState(false);
+  const [prixMin, setPrixMin] = useState(null);
+  const [prixMax, setPrixMax] = useState(null);
 
   // Filtres dimensions (bornes demandées par l'utilisateur)
-  const [largeurMin, setLargeurMin] = useState(valeursInitiales.largeurMin || null);
-  const [largeurMax, setLargeurMax] = useState(valeursInitiales.largeurMax || null);
-  const [hauteurMin, setHauteurMin] = useState(valeursInitiales.hauteurMin || null);
-  const [hauteurMax, setHauteurMax] = useState(valeursInitiales.hauteurMax || null);
-  const [profondeurMin, setProfondeurMin] = useState(valeursInitiales.profondeurMin || null);
-  const [profondeurMax, setProfondeurMax] = useState(valeursInitiales.profondeurMax || null);
+  const [largeurMin, setLargeurMin] = useState(null);
+  const [largeurMax, setLargeurMax] = useState(null);
+  const [hauteurMin, setHauteurMin] = useState(null);
+  const [hauteurMax, setHauteurMax] = useState(null);
+  const [profondeurMin, setProfondeurMin] = useState(null);
+  const [profondeurMax, setProfondeurMax] = useState(null);
 
-  const [tri, setTri] = useState(valeursInitiales.tri || "nom");
+  const [tri, setTri] = useState("nom");
 
   // Panneaux mobile
   const [panneauFiltres, setPanneauFiltres] = useState(false);
@@ -52,14 +109,6 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   const [menuTriOuvert, setMenuTriOuvert] = useState(false);
   const menuTriRef = useRef(null);
 
-  // Les favoris vivent ici, pas seulement dans les props : une bascule sur
-  // une carte met à jour les compteurs et le filtre sans recharger la page.
-  const [favSet, setFavSet] = useState(() => new Set(favorisVitrines));
-  const basculerFavori = (id, actif) => setFavSet((prev) => {
-    const suite = new Set(prev);
-    if (actif) suite.add(id); else suite.delete(id);
-    return suite;
-  });
   // Réservé à l'admin : « favoris » / « sans favori », pour pointer ce qui
   // est validé pendant le travail sur les visuels. Pas dans l'URL — c'est
   // un outil de travail, pas un filtre du catalogue.
@@ -75,28 +124,17 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     return () => document.removeEventListener("mousedown", onClick);
   }, [menuTriOuvert]);
 
-  // Le composant est réutilisé d'une URL à l'autre (bureaux → sièges) : les
-  // useState ne sont évalués qu'au montage, donc l'état resterait figé sur la
-  // catégorie d'origine. On resynchronise quand les valeurs initiales changent.
-  const cleInitiale = `${valeursInitiales.categorieSlug || ""}|${valeursInitiales.sousCategorieSlug || ""}|${valeursInitiales.marqueSlug || ""}|${valeursInitiales.promo ? 1 : ""}`;
-  const cleAppliquee = useRef(cleInitiale);
-  useEffect(() => {
-    if (cleAppliquee.current === cleInitiale) return;
-    cleAppliquee.current = cleInitiale;
-    setCategorieSlug(valeursInitiales.categorieSlug || null);
-    setSousCategorieSlug(valeursInitiales.sousCategorieSlug || null);
-    setMarqueSlug(valeursInitiales.marqueSlug || null);
-    setPromo(!!valeursInitiales.promo);
-    setPrixMin(valeursInitiales.prixMin || null);
-    setPrixMax(valeursInitiales.prixMax || null);
-    setLargeurMin(valeursInitiales.largeurMin || null);
-    setLargeurMax(valeursInitiales.largeurMax || null);
-    setHauteurMin(valeursInitiales.hauteurMin || null);
-    setHauteurMax(valeursInitiales.hauteurMax || null);
-    setProfondeurMin(valeursInitiales.profondeurMin || null);
-    setProfondeurMax(valeursInitiales.profondeurMax || null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cleInitiale]);
+  // Appelée au montage puis à chaque changement d'adresse (bureaux → sièges) :
+  // le composant n'est pas remonté entre deux catégories, son état resterait
+  // sinon figé sur la première.
+  const appliquerValeursUrl = useCallback((v) => {
+    setCategorieSlug(v.categorieSlug);
+    setSousCategorieSlug(v.sousCategorieSlug);
+    setMarqueSlug(v.marqueSlug);
+    setPromo(!!v.promo);
+    setPrixMin(v.prixMin);
+    setPrixMax(v.prixMax);
+  }, []);
 
   // Empêche le scroll de la page derrière un panneau ouvert.
   useEffect(() => {
@@ -123,9 +161,8 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     if (profondeurMax) params.set("profondeurMax", profondeurMax);
     if (tri && tri !== "nom") params.set("tri", tri);
     const qs = params.toString();
-    // Garde la clé de synchro alignée : sans ça, revenir manuellement sur la
-    // catégorie d'origine relancerait l'effet de resynchronisation.
-    cleAppliquee.current = `${categorieSlug || ""}|${sousCategorieSlug || ""}|${marqueSlug || ""}|${promo ? 1 : ""}`;
+    // replaceState remet l'adresse à jour ; FiltresDepuisUrl la relit et
+    // réapplique les mêmes valeurs — React s'arrête là, rien ne re-rend.
     window.history.replaceState(null, "", `${basePath}${qs ? `?${qs}` : ""}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
@@ -191,6 +228,49 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
     return arr;
   }, [cartes, categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri, estAdmin, filtreFavoris, favSet]);
 
+  // Tranche affichée. Elle repart du début dès que l'utilisateur change un
+  // filtre ou le tri : sans ça, un filtre qui réduit la liste à douze produits
+  // en garderait quatre-vingt-seize de « déjà révélés ».
+  //
+  // La remise à zéro suit les critères, pas l'identité de `filtered` : ce
+  // tableau est recalculé à chaque bascule de favori (favSet est dans ses
+  // dépendances), et s'y fier replierait la grille sous les pieds d'un client
+  // connecté qui vient de cliquer sur un cœur au bout de deux cents cartes.
+  const cleFiltres = [
+    categorieSlug, sousCategorieSlug, marqueSlug, promo,
+    prixMin, prixMax, largeurMin, largeurMax,
+    hauteurMin, hauteurMax, profondeurMin, profondeurMax,
+    tri, filtreFavoris,
+  ].join("|");
+  const [nbVisibles, setNbVisibles] = useState(PAR_TRANCHE);
+  const [cleAffichee, setCleAffichee] = useState(cleFiltres);
+  if (cleAffichee !== cleFiltres) {
+    setCleAffichee(cleFiltres);
+    setNbVisibles(PAR_TRANCHE);
+  }
+
+  const visibles = useMemo(() => filtered.slice(0, nbVisibles), [filtered, nbVisibles]);
+  const resteAAfficher = filtered.length > nbVisibles;
+
+  // Sentinelle en bas de grille : quand elle approche, on déplie la tranche
+  // suivante. L'observateur se redéclare à chaque palier, ce qui suffit — il
+  // n'y a jamais qu'une sentinelle à l'écran.
+  const sentinelleRef = useRef(null);
+  useEffect(() => {
+    if (!resteAAfficher) return;
+    const cible = sentinelleRef.current;
+    if (!cible) return;
+    const obs = new IntersectionObserver(
+      (entrees) => {
+        if (entrees.some((e) => e.isIntersecting)) setNbVisibles((n) => n + PAR_TRANCHE);
+      },
+      // On déplie avant que le vide n'apparaisse à l'écran.
+      { rootMargin: "800px 0px" }
+    );
+    obs.observe(cible);
+    return () => obs.disconnect();
+  }, [resteAAfficher, nbVisibles]);
+
   const categorieActive = filtres.categories.find((c) => c.slug === categorieSlug);
   const sousCategorieActive = categorieActive?.sousCategories.find((s) => s.slug === sousCategorieSlug);
   const marqueActive = (filtres.marques || []).find((m) => m.slug === marqueSlug);
@@ -219,20 +299,33 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
   if (hauteurMin || hauteurMax) pastillesActives.push({ cle: "haut", label: `Haut. ${hauteurMin || "…"}–${hauteurMax || "…"}`, retirer: () => handleFiltresChange({ hauteurMin: null, hauteurMax: null }) });
   if (profondeurMin || profondeurMax) pastillesActives.push({ cle: "prof", label: `Prof. ${profondeurMin || "…"}–${profondeurMax || "…"}`, retirer: () => handleFiltresChange({ profondeurMin: null, profondeurMax: null }) });
 
+  const lecteurUrl = (
+    <Suspense fallback={null}>
+      <FiltresDepuisUrl appliquer={appliquerValeursUrl} />
+    </Suspense>
+  );
+
   const carteProduit = (c) => (
     <div key={c.id} className="group relative rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
       <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20">
-        <FavoriButton vitrineId={c.id} initial={favSet.has(c.id)} connecte={connecte} variant="float" onChange={(actif) => basculerFavori(c.id, actif)} />
+        <FavoriButton vitrineId={c.id} variant="float" />
       </div>
       {c.promoPct != null && (
         <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 rounded-full bg-orange text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5">−{c.promoPct} %</span>
       )}
-      <Link prefetch={false} href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}>
+      {/* Le préchargement automatique poserait une requête par carte entrant
+          dans l'écran — quarante-huit d'un coup. Au survol, il n'y en a qu'une,
+          et le clic qui suit est immédiat. */}
+      <Link
+        prefetch={false}
+        href={urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug })}
+        onMouseEnter={() => router.prefetch(urlProduit({ categorieSlug: c.categorieSlug, sousCategorieSlug: c.sousCategorieSlug, slug: c.slug }))}
+      >
         {/* Fond blanc uni + coins arrondis sur l'image : le dégradé crème
             entrait en conflit avec les photos d'ambiance rectangulaires. */}
         <div className="aspect-[4/3] bg-white overflow-hidden">
           {c.imageUrl ? (
-            <img src={surFondBlanc(c.imageUrl, 600)} alt={c.nom} className="w-full h-full object-contain p-2.5 sm:p-[10px] rounded-[14px] group-hover:scale-[1.03] transition" />
+            <img src={surFondBlanc(c.imageUrl, 600)} alt={c.nom} loading="lazy" decoding="async" className="w-full h-full object-contain p-2.5 sm:p-[10px] rounded-[14px] group-hover:scale-[1.03] transition" />
           ) : (
             <div className="w-full h-full grid place-items-center text-charcoal/15">
               <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
@@ -257,6 +350,7 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
 
   return (
     <>
+      {lecteurUrl}
       <div className="mx-auto max-w-[1400px] px-5 sm:px-7 pt-2 pb-5 sm:pb-8">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>
@@ -367,9 +461,28 @@ export default function CatalogueClient({ cartes, filtres, favorisVitrines, conn
               Aucun produit ne correspond à ces filtres.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
-              {filtered.map(carteProduit)}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
+                {visibles.map(carteProduit)}
+              </div>
+              {resteAAfficher && (
+                <>
+                  <div ref={sentinelleRef} aria-hidden className="h-px" />
+                  {/* Repli si l'observateur ne se déclenche pas (onglet en
+                      arrière-plan, navigateur ancien) : le clic fait le même
+                      travail. */}
+                  <div className="mt-8 flex justify-center">
+                    <button
+                      onClick={() => setNbVisibles((n) => n + PAR_TRANCHE)}
+                      className="rounded-full border border-line bg-white px-6 py-3 text-[13px] font-semibold text-ink hover:border-orange hover:text-orange transition"
+                    >
+                      Afficher plus de produits
+                      <span className="ml-2 font-normal text-ink-soft">{visibles.length} / {filtered.length}</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>

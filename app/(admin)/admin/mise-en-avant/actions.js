@@ -11,6 +11,7 @@ import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { PLAFOND } from "./constantes";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 // Trois cibles : une catégorie, un rayon, ou le catalogue entier — celui
 // qu'on voit sans filtre. Une mise en avant du catalogue n'a ni catégorie
@@ -98,6 +99,7 @@ export async function definirMiseEnAvant(type, id, vitrineIds = []) {
     })),
   ]);
   revalidatePath("/admin/mise-en-avant");
+  invaliderSitePublic();
   revalidatePath("/catalogue");
   return { ok: true, total: ids.length };
 }

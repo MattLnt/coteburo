@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { listerCandidatsOptions } from "@/lib/optionsLiees";
 import { chargerCatalogueAdmin } from "@/lib/catalogueAdmin";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(s) {
   return s
@@ -246,8 +247,11 @@ export async function sauverCarteComplete(vitrineId, data) {
   });
 
   revalidatePath(`/admin/architecture/${v.gammeId}`);
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${v.gammeId}/carte/${vitrineId}`);
+  invaliderSitePublic();
   revalidatePath("/admin/produits");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -296,9 +300,13 @@ export async function changerGammeProduit(vitrineId, { gammeId, nouvelleGammeNom
   await prisma.produitVitrine.update({ where: { id: vitrineId }, data: { gammeId: gammeIdFinal, slug: slugFinal } });
 
   revalidatePath(`/admin/architecture/${vitrine.gammeId}`);
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${gammeIdFinal}`);
+  invaliderSitePublic();
   revalidatePath(`/admin/architecture/${gammeIdFinal}/carte/${vitrineId}`);
+  invaliderSitePublic();
   revalidatePath("/admin/produits");
+  invaliderSitePublic();
   return { ok: true, gammeId: gammeIdFinal };
 }
 
@@ -343,6 +351,7 @@ export async function creerGroupeFinitionProduit(vitrineId, nom) {
 
   const gammeId = await gammeIdDeVitrine(vitrineId);
   if (gammeId) revalidatePath(`/admin/architecture/${gammeId}/carte/${vitrineId}`);
+  invaliderSitePublic();
   return { ok: true, id: groupe.id };
 }
 
@@ -358,6 +367,7 @@ export async function creerFinitionProduit(groupeId, nom) {
 
   const { vitrineId, gammeId } = await gammeIdDeGroupe(groupeId);
   if (gammeId && vitrineId) revalidatePath(`/admin/architecture/${gammeId}/carte/${vitrineId}`);
+  invaliderSitePublic();
   return { ok: true, id: finition.id };
 }
 
@@ -369,6 +379,7 @@ export async function renommerFinitionProduit(id, nom) {
   });
   const gammeId = f.groupe?.vitrine?.gammeId, vitrineId = f.groupe?.vitrineId;
   if (gammeId && vitrineId) revalidatePath(`/admin/architecture/${gammeId}/carte/${vitrineId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -381,6 +392,7 @@ export async function majFinitionImageProduit(id, { imageUrl, couleur }) {
   });
   const gammeId = f.groupe?.vitrine?.gammeId, vitrineId = f.groupe?.vitrineId;
   if (gammeId && vitrineId) revalidatePath(`/admin/architecture/${gammeId}/carte/${vitrineId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -391,6 +403,7 @@ export async function renommerGroupeFinitionProduit(id, nom) {
     select: { vitrineId: true, vitrine: { select: { gammeId: true } } },
   });
   if (g.vitrine?.gammeId && g.vitrineId) revalidatePath(`/admin/architecture/${g.vitrine.gammeId}/carte/${g.vitrineId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -399,6 +412,7 @@ export async function supprimerGroupeFinitionProduit(id) {
   const g = await prisma.groupeFinition.findUnique({ where: { id }, select: { vitrineId: true, vitrine: { select: { gammeId: true } } } });
   await prisma.groupeFinition.delete({ where: { id } });
   if (g?.vitrine?.gammeId && g.vitrineId) revalidatePath(`/admin/architecture/${g.vitrine.gammeId}/carte/${g.vitrineId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -408,6 +422,7 @@ export async function supprimerFinitionProduit(id) {
   await prisma.finition.delete({ where: { id } });
   const gammeId = f?.groupe?.vitrine?.gammeId, vitrineId = f?.groupe?.vitrineId;
   if (gammeId && vitrineId) revalidatePath(`/admin/architecture/${gammeId}/carte/${vitrineId}`);
+  invaliderSitePublic();
   return { ok: true };
 }
 // Catalogue du selecteur de produits lies : sans les accessoires, qui n ont

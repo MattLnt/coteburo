@@ -1,36 +1,27 @@
 import Link from "next/link";
 import { getFiltresCatalogue, getCartesFiltrables } from "@/lib/catalogue";
-import { getFavorisContext } from "@/lib/favoris";
 import CatalogueClient from "@/components/CatalogueClient";
 
-export const dynamic = "force-dynamic";
+// La page était en force-dynamic : à chaque visite, y compris celle d'un
+// robot, elle relisait tout le catalogue en base, recalculait le prix de
+// chaque produit et re-sérialisait l'ensemble. C'est ce qui consommait
+// l'essentiel du temps processeur du site.
+//
+// Rien ici ne dépend du visiteur : les mêmes cartes, les mêmes prix pour tout
+// le monde. La page est donc rendue une fois puis servie depuis le cache. Le
+// délai ci-dessous n'est qu'un filet — l'admin invalide la page dès qu'une
+// fiche, un prix ou une promotion change (voir lib/invalidation.js).
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Catalogue",
   alternates: { canonical: "/catalogue" },
 };
 
-export default async function CataloguePage({ searchParams }) {
-  const sp = await searchParams;
-  // Ces valeurs ne servent qu'au tout premier rendu (URL partagée directement) —
-  // ensuite, tout le filtrage se fait côté navigateur, sans redemander au serveur.
-  const valeursInitiales = {
-    categorieSlug: sp?.categorie || null,
-    // Un rayon ne se lit qu'avec sa catégorie : « direction », « collaboratif »
-    // et « convivialité » existent chacun dans deux catégories.
-    sousCategorieSlug: sp?.categorie ? (sp?.sousCategorie || null) : null,
-    marqueSlug: sp?.marque || null,
-    // « En promotion seulement » : c'est là que mènent le bandeau et les
-    // boutons des campagnes.
-    promo: sp?.promo === "1",
-    prixMin: sp?.prixMin || null,
-    prixMax: sp?.prixMax || null,
-  };
-
-  const [filtres, cartes, favCtx] = await Promise.all([
+export default async function CataloguePage() {
+  const [filtres, cartes] = await Promise.all([
     getFiltresCatalogue(),
     getCartesFiltrables({}), // tous les produits, sans filtre — le filtrage se fait ensuite en JS
-    getFavorisContext(),
   ]);
 
   return (
@@ -42,10 +33,6 @@ export default async function CataloguePage({ searchParams }) {
       <CatalogueClient
         cartes={JSON.parse(JSON.stringify(cartes))}
         filtres={JSON.parse(JSON.stringify(filtres))}
-        favorisVitrines={favCtx.favorisVitrines}
-        connecte={favCtx.connecte}
-        estAdmin={favCtx.estAdmin}
-        valeursInitiales={valeursInitiales}
         basePath="/catalogue"
       />
     </main>

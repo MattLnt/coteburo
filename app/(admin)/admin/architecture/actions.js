@@ -3,6 +3,7 @@
 import { exigerAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 function slugify(s) {
   return s
@@ -41,6 +42,7 @@ export async function togglePublicationGamme(id, publie) {
   await exigerAdmin();
   await prisma.gamme.update({ where: { id }, data: { publie } });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -82,6 +84,7 @@ export async function supprimerGamme(id) {
 
   await prisma.gamme.delete({ where: { id } });
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true };
 }
 
@@ -124,5 +127,6 @@ export async function creerGamme({ nom, marqueId, categorieIds }) {
   });
 
   revalidatePath("/admin/architecture");
+  invaliderSitePublic();
   return { ok: true, id: gamme.id };
 }

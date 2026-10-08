@@ -1,13 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import ProductSelectionFilters from "@/components/ProductSelectionFilters";
-import { getFavorisContext } from "@/lib/favoris";
 import { calculerPrixMini, appliquerPromoVitrine, urlProduit, getMargeGlobale, resoudreVitrinePourPrix, attacherCampagnes, inclureCombinaisonsPrix , imagesVitrine } from "@/lib/catalogue";
 import { getCampagnesActives } from "@/lib/promotions";
 
 const fmt = (n) => n == null ? null : `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
 export default async function ProductSelection() {
-  const [vitrines, favCtx, marge] = await Promise.all([
+  const [vitrines, marge] = await Promise.all([
     prisma.produitVitrine.findMany({
       where: { publie: true, enAvant: true, gamme: { publie: true } },
       include: {
@@ -19,7 +18,6 @@ export default async function ProductSelection() {
       orderBy: { updatedAt: "desc" },
       take: 16,
     }),
-    getFavorisContext(),
     getMargeGlobale(),
   ]);
 
@@ -47,5 +45,5 @@ export default async function ProductSelection() {
     };
   });
 
-  return <ProductSelectionFilters produits={produits} favorisVitrines={favCtx.favorisVitrines} connecte={favCtx.connecte} />;
+  return <ProductSelectionFilters produits={produits} />;
 }

@@ -25,6 +25,7 @@ import {
   racineMediatheque, souslaRacine, dossierFiche, dossierDepot,
   DEPOTS, EST_IMAGE, nomSain,
 } from "@/lib/mediatheque";
+import { invaliderSitePublic } from "@/lib/invalidation";
 
 // sharp est un module natif : en production son chargement échoue, et ce
 // fichier est tiré par un écran de l'admin. On ne le charge qu'au moment de
@@ -233,7 +234,9 @@ export async function attribuer(vitrineId, rels = []) {
   if (faits.length) await synchroniserImagePrincipale(prisma, v.id);
 
   revalidatePath("/admin/visuels");
+  invaliderSitePublic();
   revalidatePath(`/admin/produits/${v.id}`);
+  invaliderSitePublic();
   return { ok: true, faits: faits.length, echecs };
 }
 
@@ -263,5 +266,6 @@ export async function ecarter(rels = []) {
     } catch { /* déjà déplacé, ou verrouillé */ }
   }
   revalidatePath("/admin/visuels");
+  invaliderSitePublic();
   return { ok: true, ecartees: n };
 }

@@ -2,12 +2,28 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toggleFavori } from "@/app/(compte)/compte/favoris/actions";
+import { useFavoris } from "@/components/FavorisContext";
 
 // onChange(actif) : prévient le parent à chaque bascule, optimiste puis
 // confirmée — le catalogue tient ses compteurs de favoris à jour sans recharger.
-export default function FavoriButton({ codeRacine, vitrineId, initial = false, connecte = true, variant = "float", onChange = null }) {
+// `initial` et `connecte` restent acceptés : l'admin et l'espace compte, qui
+// vivent hors du fournisseur de favoris, continuent de les passer. Sur le
+// site, on les omet et l'état vient du navigateur — c'est ce qui permet aux
+// pages publiques d'être mises en cache (voir components/FavorisContext.js).
+export default function FavoriButton({ codeRacine, vitrineId, initial, connecte, variant = "float", onChange = null }) {
   const router = useRouter();
-  const [favori, setFavori] = useState(initial);
+  const ctx = useFavoris();
+  // Sans `initial`, le bouton lit le contexte ; la bascule y est écrite, si
+  // bien que toutes les cartes du même produit s'allument ensemble.
+  const depuisContexte = initial === undefined;
+  const connecteEffectif = connecte === undefined ? ctx.connecte : connecte;
+
+  const [favoriLocal, setFavoriLocal] = useState(initial ?? false);
+  const favori = depuisContexte ? ctx.favoris.has(vitrineId) : favoriLocal;
+  const setFavori = (v) => {
+    if (depuisContexte) ctx.basculer(vitrineId, v);
+    else setFavoriLocal(v);
+  };
   const [isPending, startTransition] = useTransition();
 
   const handleClick = (e) => {
@@ -15,7 +31,7 @@ export default function FavoriButton({ codeRacine, vitrineId, initial = false, c
     e.stopPropagation();
 
     // Si pas connecté, rediriger vers la connexion
-    if (!connecte) {
+    if (!connecteEffectif) {
       router.push("/connexion");
       return;
     }

@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
+import { FavorisProvider } from "@/components/FavorisContext";
 import { CartProvider } from "@/components/cart/CartContext";
 import { TauxTvaProvider } from "@/components/TauxTvaContext";
 import { DevisProvider } from "@/components/devis/DevisContext";
@@ -20,6 +21,7 @@ export default async function SiteLayout({ children }) {
 
   return (
     <AuthSessionProvider>
+      <FavorisProvider>
       <DevisProvider>
         <TauxTvaProvider taux={reglagesSafe.tva}>
         <CartProvider>
@@ -30,6 +32,7 @@ export default async function SiteLayout({ children }) {
           </CartProvider>
         </TauxTvaProvider>
       </DevisProvider>
+      </FavorisProvider>
     </AuthSessionProvider>
   );
 }
