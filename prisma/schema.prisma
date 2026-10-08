@@ -1,5 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  // relationJoins permet de demander à Prisma de charger les relations
+  // imbriquées par JOIN plutôt qu'en une requête par relation. Le drapeau
+  // ne change rien par défaut : il débloque l'option relationLoadStrategy,
+  // posée au cas par cas sur les requêtes qui en profitent.
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {

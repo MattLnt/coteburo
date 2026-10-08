@@ -3,6 +3,7 @@ import { Suspense, useState, useMemo, useEffect, useRef, useCallback } from "rea
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useFavoris } from "@/components/FavorisContext";
+import { useAffichageProgressif } from "@/components/useAffichageProgressif";
 import CatalogueFilters from "@/components/CatalogueFilters";
 import FavoriButton from "@/components/FavoriButton";
 import { surFondBlanc } from "@/lib/imageProduit";
@@ -26,14 +27,6 @@ function dansPlage(cMin, cMax, selMin, selMax) {
 
 const LIBELLES_TRI = { nom: "Nom (A–Z)", "prix-asc": "Prix croissant", "prix-desc": "Prix décroissant" };
 
-// La grille posait d'un coup une carte par produit publié — près de deux mille
-// nœuds et autant d'images à télécharger. Le navigateur mettait plusieurs
-// secondes à peindre la page et bloquait sur le défilement.
-//
-// On en rend une tranche, puis les suivantes à mesure que le bas de la liste
-// approche. Le filtrage, lui, continue de porter sur la totalité des cartes :
-// c'est l'affichage qui est progressif, pas la recherche.
-const PAR_TRANCHE = 48;
 
 // Les filtres d'entrée se lisent dans l'adresse, côté navigateur, et non plus
 // dans les searchParams du serveur : une page qui lit ses searchParams est
@@ -228,48 +221,16 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
     return arr;
   }, [cartes, categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri, estAdmin, filtreFavoris, favSet]);
 
-  // Tranche affichée. Elle repart du début dès que l'utilisateur change un
-  // filtre ou le tri : sans ça, un filtre qui réduit la liste à douze produits
-  // en garderait quatre-vingt-seize de « déjà révélés ».
-  //
-  // La remise à zéro suit les critères, pas l'identité de `filtered` : ce
-  // tableau est recalculé à chaque bascule de favori (favSet est dans ses
-  // dépendances), et s'y fier replierait la grille sous les pieds d'un client
-  // connecté qui vient de cliquer sur un cœur au bout de deux cents cartes.
+  // L'affichage se fait par tranches — voir useAffichageProgressif pour le
+  // pourquoi. La clé porte sur les critères choisis, pas sur `filtered` :
+  // ce tableau est recalculé à chaque bascule de favori.
   const cleFiltres = [
     categorieSlug, sousCategorieSlug, marqueSlug, promo,
     prixMin, prixMax, largeurMin, largeurMax,
     hauteurMin, hauteurMax, profondeurMin, profondeurMax,
     tri, filtreFavoris,
   ].join("|");
-  const [nbVisibles, setNbVisibles] = useState(PAR_TRANCHE);
-  const [cleAffichee, setCleAffichee] = useState(cleFiltres);
-  if (cleAffichee !== cleFiltres) {
-    setCleAffichee(cleFiltres);
-    setNbVisibles(PAR_TRANCHE);
-  }
-
-  const visibles = useMemo(() => filtered.slice(0, nbVisibles), [filtered, nbVisibles]);
-  const resteAAfficher = filtered.length > nbVisibles;
-
-  // Sentinelle en bas de grille : quand elle approche, on déplie la tranche
-  // suivante. L'observateur se redéclare à chaque palier, ce qui suffit — il
-  // n'y a jamais qu'une sentinelle à l'écran.
-  const sentinelleRef = useRef(null);
-  useEffect(() => {
-    if (!resteAAfficher) return;
-    const cible = sentinelleRef.current;
-    if (!cible) return;
-    const obs = new IntersectionObserver(
-      (entrees) => {
-        if (entrees.some((e) => e.isIntersecting)) setNbVisibles((n) => n + PAR_TRANCHE);
-      },
-      // On déplie avant que le vide n'apparaisse à l'écran.
-      { rootMargin: "800px 0px" }
-    );
-    obs.observe(cible);
-    return () => obs.disconnect();
-  }, [resteAAfficher, nbVisibles]);
+  const { visibles, resteAAfficher, sentinelleRef, afficherPlus } = useAffichageProgressif(filtered, cleFiltres);
 
   const categorieActive = filtres.categories.find((c) => c.slug === categorieSlug);
   const sousCategorieActive = categorieActive?.sousCategories.find((s) => s.slug === sousCategorieSlug);
@@ -473,7 +434,7 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
                       travail. */}
                   <div className="mt-8 flex justify-center">
                     <button
-                      onClick={() => setNbVisibles((n) => n + PAR_TRANCHE)}
+                      onClick={afficherPlus}
                       className="rounded-full border border-line bg-white px-6 py-3 text-[13px] font-semibold text-ink hover:border-orange hover:text-orange transition"
                     >
                       Afficher plus de produits

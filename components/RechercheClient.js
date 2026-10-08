@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import CatalogueFilters from "@/components/CatalogueFilters";
 import { surFondBlanc } from "@/lib/imageProduit";
+import { useAffichageProgressif } from "@/components/useAffichageProgressif";
 
 export default function RechercheClient({ resultats, filtres, query, valeursInitiales }) {
   const [categorieSlug, setCategorieSlug] = useState(valeursInitiales.categorieSlug || null);
@@ -45,6 +46,12 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
     if (max != null) list = list.filter((r) => r.prix == null || r.prix <= max);
     return list;
   }, [resultats, categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax]);
+
+  // Une recherche qui tombe sur une catégorie entière ramène des centaines de
+  // fiches, et la grille les posait toutes d'un coup — mêmes symptômes que le
+  // catalogue. Même remède : par tranches.
+  const cleFiltres = [categorieSlug, sousCategorieSlug, marqueSlug, prixMin, prixMax].join("|");
+  const { visibles, resteAAfficher, sentinelleRef, afficherPlus } = useAffichageProgressif(filtered, cleFiltres);
 
   const aDesFiltres = !!(categorieSlug || sousCategorieSlug || marqueSlug || prixMin || prixMax);
 
@@ -89,12 +96,12 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
-              {filtered.map((r) => (
+              {visibles.map((r) => (
                 <Link prefetch={false} key={r.id} href={r.href}
                   className="group rounded-2xl border border-line bg-white overflow-hidden hover:border-orange/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition">
                   <div className="aspect-[4/3] bg-[radial-gradient(120%_120%_at_60%_20%,#fff,#f4f1ec)] overflow-hidden relative">
                     {r.imageUrl ? (
-                      <img src={surFondBlanc(r.imageUrl, 400)} alt={r.nom} className="w-full h-full object-contain p-4 group-hover:scale-[1.03] transition" />
+                      <img src={surFondBlanc(r.imageUrl, 400)} alt={r.nom} loading="lazy" decoding="async" className="w-full h-full object-contain p-4 group-hover:scale-[1.03] transition" />
                     ) : (
                       <div className="w-full h-full grid place-items-center text-charcoal/15">
                         <svg width="35%" viewBox="0 0 120 90" fill="none" stroke="currentColor" strokeWidth="3"><rect x="12" y="30" width="96" height="10" rx="2" /><path d="M22 40v34M98 40v34" /></svg>
@@ -125,6 +132,23 @@ export default function RechercheClient({ resultats, filtres, query, valeursInit
                 </Link>
               ))}
             </div>
+          )}
+
+          {resteAAfficher && (
+            <>
+              <div ref={sentinelleRef} aria-hidden className="h-px" />
+              {/* Repli si l'observateur ne se déclenche pas (onglet en
+                  arrière-plan, navigateur ancien) : le clic fait le même travail. */}
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={afficherPlus}
+                  className="rounded-full border border-line bg-white px-6 py-3 text-[13px] font-semibold text-ink hover:border-orange hover:text-orange transition"
+                >
+                  Afficher plus de résultats
+                  <span className="ml-2 font-normal text-ink-soft">{visibles.length} / {filtered.length}</span>
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>
