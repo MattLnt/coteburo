@@ -113,8 +113,14 @@ function Pastille({ valeur, choisie, taille = 56 }) {
   );
 }
 
+// Ni `favori` ni `connecte` ici : le cœur lit l'un et l'autre dans le
+// contexte des favoris, côté navigateur, ce qui permet à la fiche d'être mise
+// en cache. Les déclarer avec `false` pour valeur par défaut les faisait
+// passer tels quels à FavoriButton, qui cessait alors de consulter le
+// contexte : le cœur restait vide sur toutes les fiches, et un clic renvoyait
+// vers la connexion même déjà connecté.
 export default function FicheProduitModele({
-  produit, marge = 0, surDevis = false, favori = false, connecte = false,
+  produit, marge = 0, surDevis = false,
   categorieSlug = null, sousCategorieSlug = null, options = [],
 }) {
   const { addItem } = useCart();
@@ -375,7 +381,7 @@ export default function FicheProduitModele({
           </div>
           <div className="mt-2 flex items-start justify-between gap-4">
             <h1 className="font-display text-2xl font-bold leading-tight lg:text-3xl">{produit.nom}</h1>
-            <FavoriButton vitrineId={produit.id} initial={favori} connecte={connecte} variant="inline" />
+            <FavoriButton vitrineId={produit.id} variant="inline" />
           </div>
 
           {/* La présentation du produit, sous son titre : c'est ce qu'on lit
