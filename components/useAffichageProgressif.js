@@ -3,9 +3,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 // Afficher une longue liste par tranches.
 //
-// Le catalogue posait une carte par produit publié — près de deux mille nœuds
-// et autant d'images à télécharger — et la recherche faisait de même avec tous
-// ses résultats. Le navigateur mettait plusieurs secondes à peindre la page et
+// Le catalogue posait une carte par produit publié — plus de quatre cents
+// nœuds et autant d'images à télécharger — et la recherche faisait de même
+// avec tous ses résultats. Le navigateur mettait plusieurs secondes à peindre la page et
 // bloquait sur le défilement.
 //
 // On en rend une tranche, puis les suivantes à mesure que le bas de la liste
