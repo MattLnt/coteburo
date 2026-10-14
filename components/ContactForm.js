@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { pixel } from "@/lib/pixel";
 
 const champStyle = "w-full rounded-xl border border-white/15 bg-white/5 px-3.5 sm:px-4 py-3 text-[13.5px] sm:text-sm text-white placeholder:text-white/40 outline-none focus:border-orange focus:bg-white/10 transition";
 const labelStyle = "block text-[12px] sm:text-[13px] font-semibold mb-1.5 text-white/80";
@@ -39,7 +40,14 @@ export default function ContactForm() {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (data.ok) setEnvoye(true);
+      if (data.ok) {
+        // ── Lead ──────────────────────────────────────────────────────
+        // Un message envoyé et accepté par le serveur. Pas au premier
+        // caractère tapé, pas sur un envoi refusé : une demande de contact
+        // réellement reçue.
+        pixel("Lead", { content_name: "Formulaire de contact", content_category: "contact" });
+        setEnvoye(true);
+      }
       else setErreurGlobale(data.error || "Une erreur est survenue.");
     } catch {
       setErreurGlobale("Impossible d'envoyer le message. Réessayez.");

@@ -13,7 +13,7 @@
 // composant ne fait qu'afficher ce qu'il en reçoit. C'est ce qui permet au
 // serveur de refaire le même calcul au moment de la commande.
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useDevis } from "@/components/devis/DevisContext";
 import FavoriButton from "@/components/FavoriButton";
@@ -27,6 +27,8 @@ import {
 } from "@/lib/modeleProduit";
 import { appliquerPromoVitrine } from "@/lib/prixCatalogue";
 import RecapComposition from "@/components/RecapComposition";
+import { pixel, montant as montantPixel, DEVISE } from "@/lib/pixel";
+import { useConsentement } from "@/components/ConsentementContext";
 
 /** Section descriptive : repliée sur mobile, dépliée sur desktop. */
 function SectionRepliable({ titre, contenu, ouvertParDefaut }) {
@@ -125,6 +127,10 @@ export default function FicheProduitModele({
 }) {
   const { addItem } = useCart();
   const { addDevis } = useDevis();
+  // La mesure d'audience : `accepte` sert de déclencheur à ViewContent, pour
+  // que quelqu'un qui accepte les cookies DEPUIS une fiche voie l'événement
+  // partir à ce moment-là, et pas jamais.
+  const { accepte } = useConsentement();
 
   // Les accessoires vendus avec le produit. Cent quatre-vingt-seize fiches en
   // ont, sous forme de produits liés ; le crochet qui sait les configurer
@@ -159,6 +165,28 @@ export default function FicheProduitModele({
     () => (composee ? elementsDe(produit, reponses) : []),
     [composee, produit, reponses],
   );
+
+  // ── ViewContent ───────────────────────────────────────────────────
+  // Une fiche vue, une fois. La route est un composant serveur : c'est ici,
+  // le seul endroit où une fiche s'affiche, que l'événement peut partir. Il
+  // ne se rejoue pas à chaque réponse du configurateur — c'est la MÊME fiche
+  // qu'on regarde, et le prix n'est pas encore ferme.
+  useEffect(() => {
+    if (!accepte) return;
+    pixel("ViewContent", {
+      content_type: "product",
+      content_ids: [String(produit.id)],
+      content_name: produit.nom,
+      // La catégorie du catalogue, pas le nom de la gamme : « Khong » est le
+      // modèle, il répétait déjà content_name.
+      content_category: categorieSlug || null,
+      value: montantPixel(promo.prixFinal),
+      currency: DEVISE,
+    });
+    // promo.prixFinal est volontairement hors dépendances : il bouge à chaque
+    // choix, et l'événement ne doit pas repartir pour autant.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accepte, produit.id]);
 
   // Les réponses déjà données, dans l'ordre où on les a posées.
   const repondues = etapes.filter((c) => reponses[c.cle] != null);
@@ -223,6 +251,11 @@ export default function FicheProduitModele({
         if (i === 0) racine = id;
       }
       ajouterOptions(racine);
+      // Un clic, un AddToCart — pas un par référence. Une composition pose
+      // quatre lignes (rangement, alcôve, portes, poignées) et les
+      // accessoires une de plus : mesuré dans le panier, le même geste
+      // compterait six fois.
+      annoncerAjout(identite);
       setAjoute(true);
       setTimeout(() => setAjoute(false), 2000);
       return;
@@ -252,8 +285,30 @@ export default function FicheProduitModele({
       qte,
     );
     ajouterOptions(parentId);
+    annoncerAjout(identite);
     setAjoute(true);
     setTimeout(() => setAjoute(false), 2000);
+  };
+
+  // ── AddToCart ─────────────────────────────────────────────────────
+  // La valeur est celle que le client vient de voir : le prix remisé, fois la
+  // quantité, accessoires compris — exactement ce que le panier va afficher.
+  const annoncerAjout = (identite) => {
+    const references = identite.elements?.length
+      ? identite.elements.map((e) => e.reference).filter(Boolean)
+      : [identite.referenceComplete].filter(Boolean);
+    pixel("AddToCart", {
+      content_type: "product",
+      content_ids: references.length ? references.map(String) : [String(produit.id)],
+      content_name: produit.nom,
+      contents: [{
+        id: String(identite.referenceComplete || produit.id),
+        quantity: qte,
+        item_price: montantPixel(promo.prixFinal),
+      }],
+      value: montantPixel((promo.prixFinal ?? 0) * qte + (totalOptions || 0)),
+      currency: DEVISE,
+    });
   };
 
   const versDevis = () => {

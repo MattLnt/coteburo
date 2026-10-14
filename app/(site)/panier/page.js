@@ -246,8 +246,11 @@ export default function PanierPage() {
       {/* ══ Barre de commande fixe (mobile) ══
           Sans elle, il faut faire défiler tous les articles pour atteindre
           le bouton de commande. */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/96 backdrop-blur-md border-t border-line px-4 pt-3"
-        style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))", boxShadow: "0 -4px 20px rgba(0,0,0,0.06)" }}>
+      {/* `bottom` suit le bandeau cookies, qui occupe le même bas d'écran :
+          superposés, il masquait « Passer la commande ». La variable vaut 0
+          dès qu'un choix est fait (components/BandeauCookies.js). */}
+      <div className="lg:hidden fixed left-0 right-0 z-40 bg-white/96 backdrop-blur-md border-t border-line px-4 pt-3"
+        style={{ bottom: "var(--bandeau-cookies, 0px)", paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))", boxShadow: "0 -4px 20px rgba(0,0,0,0.06)" }}>
         <div className="flex items-center justify-between gap-3 mb-2.5">
           <div className="min-w-0">
             <p className="text-[10.5px] text-ink-soft">Total TTC</p>

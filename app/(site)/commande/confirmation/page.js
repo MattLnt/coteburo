@@ -3,6 +3,7 @@ import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCart } from "@/components/cart/CartContext";
+import { pixel, contenus, montant as montantPixel, DEVISE } from "@/lib/pixel";
 
 function ConfirmationContent() {
   const params = useSearchParams();
@@ -27,7 +28,25 @@ function ConfirmationContent() {
         body: JSON.stringify({ paymentIntentId: paymentIntent }),
       })
         .then((r) => r.json())
-        .then(() => setConfirme(true))
+        .then((data) => {
+          // ── Purchase ──────────────────────────────────────────────────
+          // Le seul moment où un paiement est VÉRIFIÉ auprès de Stripe.
+          // Posé plus tôt, il compterait des paniers abandonnés.
+          //
+          // `dejaPaye` écarte le rechargement de cette page : la commande
+          // était déjà marquée payée, l'achat a déjà été compté.
+          if (data?.paye && !data.dejaPaye) {
+            pixel("Purchase", {
+              content_type: "product",
+              content_ids: (data.lignes || []).map((l) => String(l.id)),
+              contents: contenus(data.lignes),
+              num_items: (data.lignes || []).reduce((n, l) => n + (l.quantite || 0), 0),
+              value: montantPixel(data.totalTTC),
+              currency: data.devise || DEVISE,
+            }, { eventID: data.numero });
+          }
+          setConfirme(true);
+        })
         .catch(() => setConfirme(true));
     }
 

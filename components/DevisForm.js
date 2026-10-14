@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useDevis } from "@/components/devis/DevisContext";
+import { pixel, montant as montantPixel, DEVISE } from "@/lib/pixel";
 
 const champStyle = "w-full rounded-xl border border-white/15 bg-white/5 px-3.5 sm:px-4 py-3 text-[13.5px] sm:text-sm text-white placeholder:text-white/40 outline-none focus:border-orange focus:bg-white/10 transition";
 const labelStyle = "block text-[12px] sm:text-[13px] font-semibold mb-1.5 text-white/80";
@@ -110,7 +111,22 @@ export default function DevisForm() {
         body: JSON.stringify({ ...form, articles }),
       });
       const data = await res.json();
-      if (data.ok) { setEnvoye(true); clear(); }
+      if (data.ok) {
+        // ── Lead ──────────────────────────────────────────────────────
+        // Une demande de devis vaut un contact qualifié, et elle porte une
+        // valeur : le montant indicatif des articles demandés. Elle est
+        // déclarée AVANT le vidage du panier, qui efface les articles.
+        pixel("Lead", {
+          content_name: "Demande de devis",
+          content_category: "devis",
+          content_ids: articles.map((a) => a.codeRacine || a.vitrineId).filter(Boolean).map(String),
+          num_items: articles.reduce((n, a) => n + (a.quantite || 0), 0),
+          value: montantPixel(articles.reduce((t, a) => t + (a.prixIndicatif || 0) * (a.quantite || 0), 0)),
+          currency: DEVISE,
+        });
+        setEnvoye(true);
+        clear();
+      }
       else setErreurGlobale(data.error || "Une erreur est survenue.");
     } catch {
       setErreurGlobale("Impossible d'envoyer la demande. Réessayez.");

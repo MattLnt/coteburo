@@ -1,11 +1,12 @@
 import { PageLegale, Section, Placeholder } from "@/components/PageLegale";
 import { SOCIETE, adresseUneLigne } from "@/lib/societe";
+import ReglagesCookies from "@/components/ReglagesCookies";
 
 export const metadata = { title: "Politique de confidentialité" };
 
 export default function ConfidentialitePage() {
   return (
-    <PageLegale titre="Politique de confidentialité" sousTitre="Protection de vos données personnelles" maj="15 septembre 2026">
+    <PageLegale titre="Politique de confidentialité" sousTitre="Protection de vos données personnelles" maj="14 octobre 2026">
       <Section titre="1. Responsable du traitement">
         <p>Le responsable du traitement des données personnelles collectées sur coteburo.fr est la société <strong>{SOCIETE.nom}</strong>, {SOCIETE.formeCourte} au capital de {SOCIETE.capital}, dont le siège social est situé {adresseUneLigne()}.</p>
         <p>Contact pour toute question relative à vos données : {SOCIETE.email}</p>
@@ -17,7 +18,7 @@ export default function ConfidentialitePage() {
           • Identité : prénom, nom, société le cas échéant<br />
           • Coordonnées : email, téléphone, adresse de livraison<br />
           • Données de commande : produits, montants, historique<br />
-          • Données de navigation : cookies techniques nécessaires au fonctionnement du site
+          • Données de navigation : cookies techniques nécessaires au fonctionnement du site, et — seulement si vous y consentez — données de mesure d&apos;audience (pages et produits consultés)
         </p>
         <p>Vos données bancaires ne sont jamais collectées ni conservées par Côté BURO : elles sont traitées directement et exclusivement par notre prestataire de paiement sécurisé Stripe.</p>
       </Section>
@@ -39,14 +40,16 @@ export default function ConfidentialitePage() {
 
       <Section titre="5. Destinataires des données">
         <p>Vos données sont destinées aux services internes de Côté BURO et à ses sous-traitants techniques strictement nécessaires : Stripe (paiement), Resend (envoi d&apos;emails), Vercel et Railway (hébergement). Ces prestataires sont tenus à des obligations de confidentialité et de sécurité.</p>
+        <p>Si — et seulement si — vous avez accepté les cookies de mesure, vos données de navigation sont également transmises à Meta Platforms Ireland Limited (mesure d&apos;audience et publicité). Voir la section 8.</p>
         <p>Vos données ne sont jamais vendues ni cédées à des tiers à des fins commerciales.</p>
       </Section>
 
       {/* Obligation d'information de l'article 13.1.f du RGPD : le transfert
           hors Union européenne doit être annoncé, avec le mécanisme qui
-          l'encadre. Nos quatre sous-traitants techniques sont américains. */}
+          l'encadre. Nos quatre sous-traitants techniques sont américains, et
+          Meta transfère également vers les États-Unis. */}
       <Section titre="5 bis. Transferts hors Union européenne">
-        <p>Stripe, Resend, Vercel et Railway sont des sociétés établies aux États-Unis. Certaines de vos données y sont donc hébergées ou traitées, hors de l&apos;Union européenne.</p>
+        <p>Stripe, Resend, Vercel et Railway sont des sociétés établies aux États-Unis. Certaines de vos données y sont donc hébergées ou traitées, hors de l&apos;Union européenne. Il en va de même, si vous avez accepté les cookies de mesure, des données transmises à Meta : son entité européenne est irlandaise, mais elle les transfère vers les États-Unis.</p>
         <p>Ces transferts sont encadrés soit par la certification de ces prestataires au <em>Data Privacy Framework</em> UE–États-Unis, soit par les clauses contractuelles types adoptées par la Commission européenne, qui offrent des garanties appropriées au sens de l&apos;article 46 du RGPD.</p>
         <p>Vous pouvez obtenir une copie de ces garanties en écrivant à {SOCIETE.email}.</p>
       </Section>
@@ -69,8 +72,11 @@ export default function ConfidentialitePage() {
       </Section>
 
       <Section titre="8. Cookies">
-        <p>Le site utilise uniquement des cookies techniques nécessaires à son bon fonctionnement (gestion de la session et du panier). Ces cookies ne nécessitent pas de consentement préalable car ils sont indispensables au service demandé.</p>
-        <p>Le site n&apos;utilise pas de cookies publicitaires ou de traçage à des fins marketing.</p>
+        <p>Le site utilise des cookies techniques nécessaires à son bon fonctionnement (gestion de la session et du panier). Ces cookies ne nécessitent pas de consentement préalable car ils sont indispensables au service demandé.</p>
+        <p>Le site utilise également, <strong>uniquement avec votre accord</strong>, le pixel Meta (Facebook, Instagram) à des fins de mesure d&apos;audience et de publicité : il nous indique quelles pages et quels produits sont consultés, et permet de mesurer l&apos;efficacité de nos campagnes. Ces cookies sont déposés par Meta Platforms Ireland Limited, qui agit comme responsable de traitement conjoint pour cette mesure.</p>
+        <p>Aucun de ces cookies n&apos;est déposé avant votre acceptation : tant que vous n&apos;avez pas répondu au bandeau, ou si vous le refusez, le script n&apos;est pas chargé et aucune donnée ne part. Le refus n&apos;a aucune conséquence sur votre navigation, vos commandes ou vos devis.</p>
+        <p>Vous pouvez revenir sur votre choix à tout moment, ici :</p>
+        <ReglagesCookies />
       </Section>
 
       <Section titre="9. Sécurité">

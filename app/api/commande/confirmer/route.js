@@ -58,7 +58,26 @@ export async function POST(req) {
     }
 
     console.log(`✅ Commande ${commande.numero} confirmée payée`);
-    return NextResponse.json({ paye: true, numero: commande.numero });
+    // Ce que la page de confirmation renvoie à la mesure d'audience. Le
+    // montant vient de la base, jamais du navigateur : le panier en
+    // localStorage peut avoir vieilli, et c'est le TTC encaissé qui compte.
+    //
+    // `dejaPaye` est le garde-fou du double comptage : une page de
+    // confirmation rechargée repasse ici, et sans lui l'achat serait compté
+    // deux fois. L'eventID (le numéro de commande) double la sécurité côté
+    // Meta.
+    return NextResponse.json({
+      paye: true,
+      numero: commande.numero,
+      dejaPaye: !!avant?.paye,
+      totalTTC: commande.totalTTC,
+      devise: "EUR",
+      lignes: commande.lignes.map((l) => ({
+        id: l.referenceFournisseur || l.codeRacine || l.vitrineId || l.id,
+        quantite: l.quantite,
+        prix: l.prixHT,
+      })),
+    });
   } catch (err) {
     console.error("Erreur confirmation:", err.message);
     return NextResponse.json({ error: "Erreur de confirmation" }, { status: 500 });

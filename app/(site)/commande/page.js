@@ -11,6 +11,7 @@ import { ChampCodePromo } from "@/components/cart/ChampCodePromo";
 import PaymentForm from "@/components/cart/PaymentForm";
 import ModalMotDePasseOublie from "@/components/ModalMotDePasseOublie";
 import { getInfosPrefill } from "./actions";
+import { pixel, contenus, montant as montantPixel, DEVISE } from "@/lib/pixel";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -201,6 +202,23 @@ export default function CommandePage() {
         }
         setClientSecret(data.clientSecret);
         setNumero(data.numero);
+        // ── InitiateCheckout ──────────────────────────────────────────
+        // Posé ici, et pas à l'arrivée sur /commande : à cet instant le
+        // serveur a validé le panier, créé la commande et ouvert le
+        // paiement. C'est une intention de payer, pas une page consultée.
+        // Le montant est celui qui sera encaissé — TTC, frais compris.
+        pixel("InitiateCheckout", {
+          content_type: "product",
+          content_ids: items.map((it) => it.referenceComplete || it.vitrineId || it.codeRacine).filter(Boolean).map(String),
+          contents: contenus(items.map((it) => ({
+            id: it.referenceComplete || it.vitrineId || it.codeRacine,
+            quantite: it.quantite,
+            prix: prixLigneAffichee(it),
+          }))),
+          num_items: items.reduce((n, it) => n + it.quantite, 0),
+          value: montantPixel(totalTTCFinal),
+          currency: DEVISE,
+        }, { eventID: data.numero });
         setEtape("paiement");
         window.scrollTo({ top: 0, behavior: "smooth" });
         window.history.pushState({ etape: "paiement" }, "");
