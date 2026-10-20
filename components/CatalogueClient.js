@@ -107,6 +107,15 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
   // un outil de travail, pas un filtre du catalogue.
   const [filtreFavoris, setFiltreFavoris] = useState("tous");
 
+  // Signe qu'un geste vient d'être fait sur les filtres. Un ref ne conviendrait
+  // pas : le lecteur d'adresse est un enfant, ses effets passent avant ceux
+  // d'ici, et le ref serait déjà levé quand l'effet d'écriture tourne encore
+  // sur l'état du rendu précédent — c'est exactement ce qui laissait la boucle
+  // ouverte. Un état, lui, est posé dans le même lot que les valeurs : quand
+  // l'effet le voit bouger, il voit aussi les valeurs à jour.
+  const [gestes, setGestes] = useState(0);
+  const marquerGeste = () => setGestes((n) => n + 1);
+
   // Ferme le menu de tri au clic extérieur
   useEffect(() => {
     if (!menuTriOuvert) return;
@@ -120,9 +129,7 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
   // Appelée au montage puis à chaque changement d'adresse (bureaux → sièges) :
   // le composant n'est pas remonté entre deux catégories, son état resterait
   // sinon figé sur la première.
-  const urlLue = useRef(false);
   const appliquerValeursUrl = useCallback((v) => {
-    urlLue.current = true;
     setCategorieSlug(v.categorieSlug);
     setSousCategorieSlug(v.sousCategorieSlug);
     setMarqueSlug(v.marqueSlug);
@@ -153,10 +160,10 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
   // /catalogue?categorie=sieges le titre battait entre « Sièges » et « Tout le
   // catalogue » et la grille se reconstruisait sans fin.
   //
-  // On n'écrit donc rien tant que l'adresse n'a pas été lue une première fois,
-  // et rien non plus quand elle est déjà la bonne : la balle retombe.
+  // L'adresse ne se publie donc qu'après un geste sur les filtres — jamais sur
+  // l'état initial, qui est vide par construction — et seulement si elle change.
   useEffect(() => {
-    if (!urlLue.current) return;
+    if (gestes === 0) return;
     const params = new URLSearchParams();
     if (categorieSlug) params.set("categorie", categorieSlug);
     if (sousCategorieSlug) params.set("sousCategorie", sousCategorieSlug);
@@ -176,9 +183,12 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
     if (cible === window.location.pathname + window.location.search) return;
     window.history.replaceState(null, "", cible);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
+  }, [gestes, categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
+
+  const changerTri = (val) => { setTri(val); marquerGeste(); };
 
   const handleFiltresChange = (updates) => {
+    marquerGeste();
     if ("categorieSlug" in updates) setCategorieSlug(updates.categorieSlug);
     if ("sousCategorieSlug" in updates) setSousCategorieSlug(updates.sousCategorieSlug);
     if ("marqueSlug" in updates) setMarqueSlug(updates.marqueSlug);
@@ -374,7 +384,7 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
                   {Object.entries(LIBELLES_TRI).map(([val, label]) => {
                     const actif = tri === val;
                     return (
-                      <button key={val} type="button" onClick={() => { setTri(val); setMenuTriOuvert(false); }}
+                      <button key={val} type="button" onClick={() => { changerTri(val); setMenuTriOuvert(false); }}
                         className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-[13.5px] transition ${actif ? "bg-orange-tint text-orange-dark font-semibold" : "text-ink hover:bg-surface-2"}`}>
                         {label}
                         {actif && <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" className="shrink-0"><path d="M20 6 9 17l-5-5" /></svg>}
@@ -516,7 +526,7 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
               {Object.entries(LIBELLES_TRI).map(([val, label]) => {
                 const actif = tri === val;
                 return (
-                  <button key={val} onClick={() => { setTri(val); setPanneauTri(false); }}
+                  <button key={val} onClick={() => { changerTri(val); setPanneauTri(false); }}
                     className={`w-full flex items-center justify-between px-3.5 py-3.5 rounded-xl text-[14px] ${actif ? "bg-orange-tint text-orange-dark font-semibold" : "text-ink"}`}>
                     {label}
                     {actif && <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8"><path d="M20 6 9 17l-5-5" /></svg>}
