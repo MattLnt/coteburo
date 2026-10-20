@@ -120,7 +120,9 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
   // Appelée au montage puis à chaque changement d'adresse (bureaux → sièges) :
   // le composant n'est pas remonté entre deux catégories, son état resterait
   // sinon figé sur la première.
+  const urlLue = useRef(false);
   const appliquerValeursUrl = useCallback((v) => {
+    urlLue.current = true;
     setCategorieSlug(v.categorieSlug);
     setSousCategorieSlug(v.sousCategorieSlug);
     setMarqueSlug(v.marqueSlug);
@@ -136,9 +138,25 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
     return () => { document.body.style.overflow = ""; };
   }, [panneauFiltres, panneauTri]);
 
-  // Met à jour l'adresse dans le navigateur SANS passer par le routeur Next.js —
-  // ça garde l'URL partageable, sans jamais redemander la page au serveur.
+  // Met à jour l'adresse dans le navigateur sans redemander la page au serveur :
+  // l'URL reste partageable, le filtrage reste ici.
+  //
+  // Mais replaceState n'est pas muet côté Next : la doc du routeur dit que
+  // pushState et replaceState « s'intègrent au routeur, ce qui permet de se
+  // synchroniser avec usePathname et useSearchParams ». Ce que cet effet écrit,
+  // FiltresDepuisUrl le relit donc — et le réapplique.
+  //
+  // Au montage, les filtres partent à vide et FiltresDepuisUrl n'a pas encore
+  // parlé : cet effet écrivait « /catalogue » nu, effaçant la catégorie de
+  // l'adresse ; le lecteur relisait ce vide, vidait l'état, l'effet réécrivait
+  // la catégorie… Les deux se renvoyaient la balle indéfiniment : sur
+  // /catalogue?categorie=sieges le titre battait entre « Sièges » et « Tout le
+  // catalogue » et la grille se reconstruisait sans fin.
+  //
+  // On n'écrit donc rien tant que l'adresse n'a pas été lue une première fois,
+  // et rien non plus quand elle est déjà la bonne : la balle retombe.
   useEffect(() => {
+    if (!urlLue.current) return;
     const params = new URLSearchParams();
     if (categorieSlug) params.set("categorie", categorieSlug);
     if (sousCategorieSlug) params.set("sousCategorie", sousCategorieSlug);
@@ -154,9 +172,9 @@ export default function CatalogueClient({ cartes, filtres, basePath = "/catalogu
     if (profondeurMax) params.set("profondeurMax", profondeurMax);
     if (tri && tri !== "nom") params.set("tri", tri);
     const qs = params.toString();
-    // replaceState remet l'adresse à jour ; FiltresDepuisUrl la relit et
-    // réapplique les mêmes valeurs — React s'arrête là, rien ne re-rend.
-    window.history.replaceState(null, "", `${basePath}${qs ? `?${qs}` : ""}`);
+    const cible = `${basePath}${qs ? `?${qs}` : ""}`;
+    if (cible === window.location.pathname + window.location.search) return;
+    window.history.replaceState(null, "", cible);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categorieSlug, sousCategorieSlug, marqueSlug, promo, prixMin, prixMax, largeurMin, largeurMax, hauteurMin, hauteurMax, profondeurMin, profondeurMax, tri]);
 
