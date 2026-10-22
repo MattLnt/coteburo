@@ -15,10 +15,24 @@ import { verifierCodePromo, remiseDuCode } from "@/lib/codePromo";
 const QUANTITE_MAX = 200;
 
 // Génère un numéro de commande lisible : CB-2026-0001
+//
+// La suite repart du PLUS GRAND numéro déjà attribué, pas du nombre de
+// commandes en base. Compter, c'est rejouer les numéros libérés : supprimer
+// six commandes d'essai faisait retomber la septième sur un numéro déjà pris,
+// et la contrainte d'unicité refusait la commande — au moment du paiement.
+//
+// Les deux garde-fous qui restent : `numero` est unique en base, et l'appelant
+// réessaie. Deux commandes à la même seconde peuvent lire le même maximum ;
+// la seconde se verra refusée et repassera ici.
 async function genererNumero() {
   const annee = new Date().getFullYear();
-  const count = await prisma.commande.count();
-  const seq = String(count + 1).padStart(4, "0");
+  const dernier = await prisma.commande.findFirst({
+    where: { numero: { startsWith: `CB-${annee}-` } },
+    orderBy: { numero: "desc" },
+    select: { numero: true },
+  });
+  const precedent = dernier ? parseInt(dernier.numero.slice(-4), 10) : 0;
+  const seq = String((Number.isFinite(precedent) ? precedent : 0) + 1).padStart(4, "0");
   return `CB-${annee}-${seq}`;
 }
 
@@ -288,37 +302,51 @@ export async function POST(req) {
     const montantFinalTTC = totalTTC + fraisLivraison + fraisInstallation;
     const montantCentimes = Math.round(montantFinalTTC * 100);
 
-    // Création de la commande "en attente"
-    const numero = await genererNumero();
-    const commande = await prisma.commande.create({
-      data: {
-        numero,
-        statut: "en_attente",
-        email: client.email.trim(),
-        telephone: client.telephone?.trim() || null,
-        prenom: client.prenom.trim(),
-        nom: client.nom.trim(),
-        societe: client.societe?.trim() || null,
-        adresse: client.adresse.trim(),
-        complement: client.complement?.trim() || null,
-        codePostal: client.codePostal.trim(),
-        ville: client.ville.trim(),
-        pays: "France",
-        totalHT, totalTVA, totalTTC,
-        codePromo: codeRetenu,
-        remiseCode,
-        fraisLivraison,
-        fraisInstallation,
-        avecInstallation: installationValidee,
-        userId,
-        paye: false,
-        // « cleParente » et « clePanier » sont des repères du panier, pas des
-        // colonnes : on les retire avant d'écrire, puis on s'en sert pour
-        // rattacher chaque option à son produit une fois les lignes créées.
-        lignes: { create: lignes.map(({ cleParente, clePanier, ...l }) => l) },
-      },
-      include: { lignes: { select: { id: true, designation: true } } },
-    });
+    // Création de la commande "en attente".
+    // La boucle est le second garde-fou de la numérotation : deux paiements
+    // lancés dans la même seconde lisent le même maximum, et la contrainte
+    // d'unicité sur `numero` refuse le doublon (P2002). On relit, on réessaie.
+    let commande = null;
+    for (let essai = 0; essai < 5 && !commande; essai += 1) {
+      const numero = await genererNumero();
+      try {
+        commande = await prisma.commande.create({
+          data: {
+            numero,
+            statut: "en_attente",
+            email: client.email.trim(),
+            telephone: client.telephone?.trim() || null,
+            prenom: client.prenom.trim(),
+            nom: client.nom.trim(),
+            societe: client.societe?.trim() || null,
+            adresse: client.adresse.trim(),
+            complement: client.complement?.trim() || null,
+            codePostal: client.codePostal.trim(),
+            ville: client.ville.trim(),
+            pays: "France",
+            totalHT, totalTVA, totalTTC,
+            codePromo: codeRetenu,
+            remiseCode,
+            fraisLivraison,
+            fraisInstallation,
+            avecInstallation: installationValidee,
+            userId,
+            paye: false,
+            // « cleParente » et « clePanier » sont des repères du panier, pas des
+            // colonnes : on les retire avant d'écrire, puis on s'en sert pour
+            // rattacher chaque option à son produit une fois les lignes créées.
+            lignes: { create: lignes.map(({ cleParente, clePanier, ...l }) => l) },
+          },
+          include: { lignes: { select: { id: true, designation: true } } },
+        });
+      } catch (err) {
+        // Seul le numéro déjà pris mérite une nouvelle tentative. Tout le
+        // reste doit remonter : un échec silencieux ici perdrait la commande.
+        const numeroPris = err?.code === "P2002" && String(err?.meta?.target).includes("numero");
+        if (!numeroPris || essai === 4) throw err;
+        console.warn(`Numéro de commande déjà pris, nouvelle tentative (${essai + 1}/5)`);
+      }
+    }
 
     // Second temps : l'option désigne sa ligne parente, qui n'existait pas
     // encore au moment de l'écriture. Sur le bon de commande, une goulotte
