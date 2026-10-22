@@ -33,7 +33,14 @@ export default async function CommandeDetailPage({ params }) {
             <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 24, color: "#23262a", margin: 0 }}>{c.numero}</h1>
             <StatutCommande statut={c.statut} />
           </div>
-          <span style={{ fontSize: 13.5, color: "#9aa0a8" }}>{dateFR(c.createdAt)}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 13.5, color: "#9aa0a8" }}>{dateFR(c.createdAt)}</span>
+            <a href={`/api/facture/${c.id}`} target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "9px 16px", borderRadius: 10, border: "1px solid #e8e3da", background: "#faf8f4", color: "#23262a", textDecoration: "none", fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5" /><path d="M12 15V3" /></svg>
+              Télécharger la facture
+            </a>
+          </div>
         </div>
       </div>
 
