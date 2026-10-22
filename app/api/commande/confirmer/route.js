@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
-import { envoyerConfirmationClient, envoyerNotificationInterne } from "@/lib/emails";
+import { marquerPayeeEtNotifier } from "@/lib/encaissement";
 
 export const runtime = "nodejs";
 
@@ -23,38 +22,17 @@ export async function POST(req) {
       return NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
     }
 
-    // On récupère la commande avant mise à jour (pour savoir si déjà payée)
-    const avant = await prisma.commande.findUnique({
-      where: { id: commandeId },
-      select: { paye: true },
+    // Encaissement et emails vivent dans lib/encaissement.js, partagé avec le
+    // webhook : les deux chemins arrivaient en course, et celui qui perdait
+    // sautait les emails. Le verrou est en base, pas ici.
+    const { commande, dejaPaye } = await marquerPayeeEtNotifier({
+      commandeId,
+      stripePaymentId: pi.id,
+      origine: "page de confirmation",
     });
 
-    const commande = await prisma.commande.update({
-      where: { id: commandeId },
-      data: { paye: true, statut: "payee", stripePaymentId: pi.id },
-      include: { lignes: true },
-    });
-
-    // Si la commande vient d'un devis, il passe en « accepté » maintenant —
-    // pas au lancement du paiement, sinon un abandon laisserait un devis
-    // accepté sans encaissement.
-    await prisma.devis.updateMany({
-      where: { commandeId: commande.id },
-      data: { statut: "accepte", dateReponse: new Date() },
-    });
-
-    // On envoie les emails UNIQUEMENT si la commande n'était pas déjà payée
-    if (!avant?.paye) {
-      try {
-        await Promise.all([
-          envoyerConfirmationClient(commande),
-          envoyerNotificationInterne(commande),
-        ]);
-        console.log(`📧 Emails envoyés pour ${commande.numero}`);
-      } catch (mailErr) {
-        // On ne bloque pas la confirmation si l'email échoue
-        console.error("Erreur envoi emails:", mailErr.message);
-      }
+    if (!commande) {
+      return NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
     }
 
     console.log(`✅ Commande ${commande.numero} confirmée payée`);
@@ -66,10 +44,15 @@ export async function POST(req) {
     // confirmation rechargée repasse ici, et sans lui l'achat serait compté
     // deux fois. L'eventID (le numéro de commande) double la sécurité côté
     // Meta.
+    //
+    // Il vaut vrai aussi quand le webhook a encaissé avant l'arrivée du
+    // navigateur. C'est le bon choix pour la mesure — l'achat est réel et
+    // mérite d'être compté une fois — mais cela veut dire qu'un Purchase peut
+    // manquer si le webhook gagne. Le compte côté Stripe reste la référence.
     return NextResponse.json({
       paye: true,
       numero: commande.numero,
-      dejaPaye: !!avant?.paye,
+      dejaPaye,
       totalTTC: commande.totalTTC,
       devise: "EUR",
       lignes: commande.lignes.map((l) => ({

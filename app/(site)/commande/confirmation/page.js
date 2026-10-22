@@ -5,6 +5,30 @@ import { useSearchParams } from "next/navigation";
 import { useCart } from "@/components/cart/CartContext";
 import { pixel, contenus, montant as montantPixel, DEVISE } from "@/lib/pixel";
 
+// Les commandes dont l'achat a déjà été transmis à la mesure d'audience.
+// localStorage et non sessionStorage : un rechargement dans un nouvel onglet
+// ne doit pas recompter. Les accesseurs peuvent lever (navigation privée,
+// stockage bloqué) — dans ce cas on compte, et l'eventID fait le tri côté Meta.
+const CLE_COMPTES = "coteburo_achats_comptes";
+
+function dejaCompte(numero) {
+  if (!numero) return false;
+  try {
+    return JSON.parse(localStorage.getItem(CLE_COMPTES) || "[]").includes(numero);
+  } catch { return false; }
+}
+
+function marquerCompte(numero) {
+  if (!numero) return;
+  try {
+    const liste = JSON.parse(localStorage.getItem(CLE_COMPTES) || "[]");
+    if (!liste.includes(numero)) liste.push(numero);
+    // On ne garde que les vingt derniers : cette liste n'a pas à grandir
+    // indéfiniment dans le navigateur d'un client fidèle.
+    localStorage.setItem(CLE_COMPTES, JSON.stringify(liste.slice(-20)));
+  } catch {}
+}
+
 function ConfirmationContent() {
   const params = useSearchParams();
   const { clear } = useCart();
@@ -33,9 +57,14 @@ function ConfirmationContent() {
           // Le seul moment où un paiement est VÉRIFIÉ auprès de Stripe.
           // Posé plus tôt, il compterait des paniers abandonnés.
           //
-          // `dejaPaye` écarte le rechargement de cette page : la commande
-          // était déjà marquée payée, l'achat a déjà été compté.
-          if (data?.paye && !data.dejaPaye) {
+          // Le garde-fou du double comptage est ici, dans le navigateur, et
+          // non plus sur `dejaPaye` : le webhook Stripe marque la commande
+          // payée avant que cette page n'arrive, et presque tous les achats
+          // réels étaient donc écartés comme des rechargements. On marque la
+          // commande comptée, par numéro ; l'eventID double la sécurité côté
+          // Meta pour le navigateur qui aurait vidé son stockage.
+          if (data?.paye && !dejaCompte(data.numero)) {
+            marquerCompte(data.numero);
             pixel("Purchase", {
               content_type: "product",
               content_ids: (data.lignes || []).map((l) => String(l.id)),

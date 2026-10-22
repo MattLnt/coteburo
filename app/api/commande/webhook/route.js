@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
+import { marquerPayeeEtNotifier } from "@/lib/encaissement";
 
 // En App Router, le corps brut se lit avec req.text() — pas besoin de config.
 export const runtime = "nodejs";
@@ -26,11 +27,16 @@ export async function POST(req) {
     console.log(`   → commandeId dans metadata : ${commandeId || "AUCUN"}`);
     if (commandeId) {
       try {
-        await prisma.commande.update({
-          where: { id: commandeId },
-          data: { paye: true, statut: "payee", stripePaymentId: pi.id },
+        // Le webhook envoie les emails lui aussi, désormais. C'est même lui
+        // qui compte : il arrive presque toujours avant le navigateur, et il
+        // arrive même quand le client a fermé l'onglet. Le verrou en base
+        // (voir lib/encaissement.js) garantit un seul envoi.
+        const { commande } = await marquerPayeeEtNotifier({
+          commandeId,
+          stripePaymentId: pi.id,
+          origine: "webhook Stripe",
         });
-        console.log(`✅ Commande ${pi.metadata.numero} marquée payée`);
+        console.log(`✅ Commande ${commande?.numero || pi.metadata?.numero} marquée payée`);
       } catch (err) {
         console.error("❌ Erreur mise à jour commande:", err.message);
       }
