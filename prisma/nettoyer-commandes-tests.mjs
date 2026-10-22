@@ -38,10 +38,11 @@ const COMMANDES_TESTS = [
   { numero: "CB-2026-0006", email: "admin@coteburo.fr", statut: "annulee", totalTTC: 463.5 },
 ];
 
-// Comptes CLIENT à supprimer. Vide par défaut : à Matiaz de décider si son
-// propre compte client de test (lenivet.matiaz@gmail.com, 0 commande) part.
+// Comptes CLIENT à supprimer. Matiaz a tranché le 22/10/2026 : son propre
+// compte client de test part. Le filet « attenduCommandes » reste : si une
+// commande s'y rattache entre-temps, le script refuse d'écrire.
 const COMPTES_TESTS = [
-  // { email: "lenivet.matiaz@gmail.com", attenduCommandes: 0 },
+  { email: "lenivet.matiaz@gmail.com", attenduCommandes: 0 },
 ];
 
 // Ce qui ne doit JAMAIS disparaître, quoi qu'il arrive.
