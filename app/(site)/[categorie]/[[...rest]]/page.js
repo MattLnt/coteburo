@@ -12,7 +12,7 @@ import FicheProduitModele from "@/components/FicheProduitModele";
 //
 // Le délai n'est qu'un filet : l'admin invalide la fiche concernée dès qu'un
 // prix, un visuel ou une publication change (voir lib/invalidation.js).
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 // Un segment dynamique n'est mis en cache à l'exécution que si la route
 // déclare generateStaticParams — même vide. Sans lui, Next continue de rendre
